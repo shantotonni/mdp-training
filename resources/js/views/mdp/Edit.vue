@@ -161,7 +161,7 @@
                         <div class="row" v-for="(initiat, index) in form.initiative">
                           <div class="col-3 col-md-3">
                             <div class="form-group">
-                              <label>Name</label>
+                              <label>Title</label>
                               <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="Name" placeholder="Name" required>
                               <div class="error" v-if="form.errors.has('Name')" v-html="form.errors.get('Name')" />
                             </div>
@@ -198,7 +198,7 @@
                           <div class="col-4 col-md-4">
                             <div class="form-group">
                               <label>Select Training</label>
-                              <select v-model="trainValue.TrainingTitle" name="TrainingTitle" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }" required>
+                              <select v-model="trainValue.TrainingTitle" name="TrainingTitle" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }">
                                 <option value="">Select Training Title</option>
                                 <option :value="train.TrainingTitle" v-for="(train,index) in training_list" :key="index">{{train.TrainingTitle}}</option>
                               </select>
@@ -208,7 +208,7 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Type</label>
-                              <select v-model="trainValue.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }" required>
+                              <select v-model="trainValue.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }">
                                 <option value="">Select Type</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
@@ -224,10 +224,10 @@
                               <div class="error" v-if="form.errors.has('TrainingDate')" v-html="form.errors.get('TrainingDate')" />
                             </div>
                           </div>
-                          <div class="col-2" style="padding-top: 30px">
-                            <button type="button" class="btn btn-danger btn-sm" @click="Training_deleteFind(index2)">x</button>&nbsp;
-                            <button type="button" class="btn btn-success btn-sm" @click="Training_addFind">+</button>
-                          </div>
+<!--                          <div class="col-2" style="padding-top: 30px">-->
+<!--                            <button type="button" class="btn btn-danger btn-sm" @click="Training_deleteFind(index2)">x</button>&nbsp;-->
+<!--                            <button type="button" class="btn btn-success btn-sm" @click="Training_addFind">+</button>-->
+<!--                          </div>-->
                         </div>
 
                         <div class="row">
@@ -340,7 +340,13 @@ export default {
         AreaOne:'',
         AreaTwo:'',
         initiative: [{ Name: '' , Type: '', Date: ''}],
-        training: [{ TrainingTitle: '' , TrainingType: '', TrainingDate: ''}],
+        training: [
+          { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
+          { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
+          { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
+          { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
+          { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
+        ],
       }),
       isLoading: false,
     }

@@ -37,31 +37,33 @@
                               <br>
                               <div class="second_part">
                                 <p style="font-width: bold;">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
-                                  Which you will acquire at your personal initiative:</p>
-                                <p>
-                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                  Which you will acquire at your personal initiative:
                                 </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+
+                                <p v-for="(number, i) in row_number" :key="i" v-if="initiative.length">
+                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center">{{ initiative[i] !== undefined ? initiative[i].Name: '' }}</span>
                                 </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
-                                </p>
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[1].Name }}</span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[2].Name }}</span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[3].Name }}</span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[4].Name }}</span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[5].Name }}</span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[6].Name }}</span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[7].Name }}</span>-->
+<!--                                </p>-->
                               </div>
                               <br>
                               <div class="third_part">
@@ -215,6 +217,7 @@ export default {
     data() {
         return {
           mdplist: [],
+          initiative: [],
             pagination: {
                 current_page: 1
             },
@@ -233,15 +236,26 @@ export default {
                 engine_brand: '',
                 engine_serial: '',
             }),
+          row_number: [
+            {number: 0},
+            {number: 1},
+            {number: 2},
+            {number: 3},
+            {number: 4},
+            {number: 5},
+            {number: 6},
+            {number: 7},
+          ],
         }
     },
   created() {
     axios.get(baseurl + `api/mdp/print/${this.$route.params.ID}`).then((response)=>{
-      console.log(response)
+      console.log(response.data.data.initiative)
       this.mdplist = response.data.data
-      setTimeout(function(){
-        window.print()
-      },2000)
+      this.initiative = response.data.data.initiative
+      // setTimeout(function(){
+      //   window.print()
+      // },2000)
     });
   },
 

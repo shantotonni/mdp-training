@@ -28,7 +28,11 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid'], 400);
         }
 
-        if ($request->EmpCode == 'admin' && $request->Password == 'admin'){
+//        $admin_user = ['23284','11936'];
+//        $admin_user_found = in_array($request->EmpCode, $admin_user);
+//        return $admin_user_found;
+
+        if ($request->EmpCode == '10259' && $request->Password == '10259'){
             $user = ['EmpCode'=>'admin'];
             return response()->json([
                 'status' => 'success',
