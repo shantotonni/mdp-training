@@ -1,0 +1,255 @@
+<template>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="datatable" v-if="!isLoading">
+                            <div class="card-body">
+                              <div>
+                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;margin-left: 879px" alt="user" class="rounded-circle" />
+                              </div>
+                              <div class="first_part">
+                                <h3>7.15.2. Management Development Plan</h3>
+                                <hr>
+                                <br>
+                                <p>
+                                  Appraisal Period <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center"></span>
+                                  Training Period From July <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center"></span>
+                                  to June <span style="display: inline-block;border-bottom: 1px solid;width: 220px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 820px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 500px;text-align: center"></span>
+                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 280px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  Present Age <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
+                                  Date of joining company <span style="display: inline-block;border-bottom: 1px solid;width: 305px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  Present Job Started <span style="display: inline-block;border-bottom: 1px solid;width: 430px;text-align: center"></span>
+                                  Qualification <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                </p>
+                              </div>
+                              <br>
+                              <div class="second_part">
+                                <p style="font-width: bold;">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
+                                  Which you will acquire at your personal initiative:</p>
+                                <p>
+                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
+                                </p>
+                              </div>
+                              <br>
+                              <div class="third_part">
+                                <p>Which will require in-house or external training that you think should be organized by the Company:</p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
+                                </p>
+                              </div>
+                              <br>
+                              <div class="third_part">
+                                <h4 style="font-width: bold;">Training & Development Policy</h4>
+                                <p>
+                                  Issued by: Ms. Sheema Abed Rahman, GM, CS
+                                  <br>
+                                 <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>
+                                </p>
+                              </div>
+                              <br><br><br><br><br><br><br><br>
+                              <div>
+                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;margin-left: 879px" alt="user" class="rounded-circle" />
+                              </div>
+                              <br>
+                              <div class="fourth_part">
+                                <p>B. For development to take future responsibilities Other than those mentioned in A,
+                                  list below two areas of personal development/training that you would like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
+                                <p>
+                                  1. <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
+                                </p>
+                              </div>
+                              <br>
+                              <div class="fifth_part">
+                                <p>
+                                  2. <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
+                                </p>
+                              </div>
+                              <br>
+                              <div class="six_part">
+                                <p>
+                                  Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
+                                </p>
+                              </div>
+                              <br>
+                              <div class="fourth_part">
+                                <p>Remarks and recommendations of superior</p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
+                                </p>
+                              </div>
+                              <br>
+                              <div class="six_part">
+                                <p>
+                                  Signature <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
+                                </p>
+                              </div>
+                              <div class="third_part">
+                                <h4 style="font-width: bold;">Training & Development Policy</h4>
+                                <p>
+                                  Issued by: Ms. Sheema Abed Rahman, GM, CS
+                                  <br>
+                                  <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>
+                                </p>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import {baseurl} from '../../base_url'
+export default {
+    name: "List",
+    data() {
+        return {
+          mdplist: [],
+            pagination: {
+                current_page: 1
+            },
+            isMessage : false,
+            query: "",
+            editMode: false,
+            isLoading: false,
+            form: new Form({
+                id:'',
+                generator_name:'',
+                unique_generator_code: '',
+                generator_model: '',
+                brand_id:'',
+                rating: '',
+                generator_serial: '',
+                engine_brand: '',
+                engine_serial: '',
+            }),
+        }
+    },
+  created() {
+    axios.get(baseurl + `api/mdp/print/${this.$route.params.ID}`).then((response)=>{
+      console.log(response)
+      setTimeout(function(){
+        window.print()
+      },2000)
+    });
+  },
+
+    methods: {
+      //
+    },
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
