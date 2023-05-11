@@ -78,6 +78,13 @@
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
+                              <label>Date Of Birth</label>
+                              <input type="text" name="DateOfBirth" v-model="form.DateOfBirth" readonly class="form-control" :class="{ 'is-invalid': form.errors.has('DateOfBirth') }">
+                              <div class="error" v-if="form.errors.has('DateOfBirth')" v-html="form.errors.get('DateOfBirth')" />
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
                               <label>Joining Date</label>
 <!--                              <datepicker v-model="form.JoiningDate" :format="customFormatter" readonly placeholder="Enter Date" input-class="form-control"></datepicker>-->
                               <input type="text" name="JoiningDate" v-model="form.JoiningDate" readonly class="form-control" :class="{ 'is-invalid': form.errors.has('JoiningDate') }">
@@ -155,14 +162,14 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Name</label>
-                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="Name" placeholder="Name">
+                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="Name" placeholder="Name" required>
                               <div class="error" v-if="form.errors.has('Name')" v-html="form.errors.get('Name')" />
                             </div>
                           </div>
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Type</label>
-                              <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }">
+                              <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }" required>
                                 <option value="">Select Type</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
@@ -191,7 +198,7 @@
                           <div class="col-4 col-md-4">
                             <div class="form-group">
                               <label>Select Training</label>
-                              <select v-model="trainValue.TrainingTitle" name="TrainingTitle" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }">
+                              <select v-model="trainValue.TrainingTitle" name="TrainingTitle" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }" required>
                                 <option value="">Select Training Title</option>
                                 <option :value="train.TrainingTitle" v-for="(train,index) in training_list" :key="index">{{train.TrainingTitle}}</option>
                               </select>
@@ -201,7 +208,7 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Type</label>
-                              <select v-model="trainValue.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }">
+                              <select v-model="trainValue.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }" required>
                                 <option value="">Select Type</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
@@ -262,16 +269,16 @@
                         <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                           <thead>
                             <tr>
-                              <th class="text-center">Organized By</th>
-                              <th class="text-center">Tranning_Category</th>
-                              <th class="text-center">Tranning_Name</th>
+                              <th>Organized By</th>
+                              <th>Training Category</th>
+                              <th>Training Name</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr v-for="(training, i) in training_history" :key="i" v-if="training_history.length">
-                                <td class="text-center">{{ training.Organized_By }}</td>
-                                <td class="text-center">{{ training.Tranning_Category }}</td>
-                                <td class="text-center">{{ training.Tranning_Name }}</td>
+                                <td>{{ training.Organized_By }}</td>
+                                <td>{{ training.Tranning_Category }}</td>
+                                <td>{{ training.Tranning_Name }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -320,6 +327,7 @@ export default {
         Department: '',
         OfficialEmail:'',
         Mobile:'',
+        DateOfBirth:'',
         JoiningDate:'',
         CurrentPosition:'',
         PresentJobStartedOn:'',
@@ -381,6 +389,7 @@ export default {
         this.form.Department = response.data.employee.Department;
         this.form.OfficialEmail = response.data.employee.OfficialEmail;
         this.form.Mobile = response.data.employee.Mobile;
+        this.form.DateOfBirth = response.data.employee.DateOfBirth;
         this.form.JoiningDate = response.data.employee.JoiningDate;
         this.form.CurrentPosition = response.data.employee.CurrentPosition;
         this.form.PresentJobStartedOn = response.data.employee.PresentJobStartedOn;
@@ -391,12 +400,18 @@ export default {
     },
     getSupervisorByStaffID(){
       axios.post(baseurl +'api/get-supervisor-by-employee-code/', {
-        EmpCode: this.form.SuppervisorStaffID,
+        EmpCode: this.form.StaffID,
+        SuperVisorEmpCode: this.form.SuppervisorStaffID,
       }).then((response)=>{
-        this.form.SuppervisorName = response.data.employee.SuppervisorName;
-        this.form.SuppervisorDesignation = response.data.employee.SuppervisorDesignation;
-        this.form.SuppervisorEmail = response.data.employee.SuppervisorEmail;
-        this.form.SuppervisorMobile = response.data.employee.SuppervisorMobile;
+        if (response.data.status === 'error'){
+          this.errorNoti(response.data.message);
+        }else {
+          this.form.SuppervisorName = response.data.employee.SuppervisorName;
+          this.form.SuppervisorDesignation = response.data.employee.SuppervisorDesignation;
+          this.form.SuppervisorEmail = response.data.employee.SuppervisorEmail;
+          this.form.SuppervisorMobile = response.data.employee.SuppervisorMobile;
+        }
+
       }).catch((error)=>{
 
       })

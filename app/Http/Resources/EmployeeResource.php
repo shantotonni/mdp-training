@@ -22,11 +22,12 @@ class EmployeeResource extends JsonResource
             'DesgCode'=>$this->DesgCode,
             'Designation'=>isset($this->designation) ? $this->designation->DesgName: '',
             'OfficialEmail'=>isset($this->email) ? $this->email->EmailID: '',
-            'Mobile'=>isset($this->personal) ? $this->personal->MobileNo: '',
+            'Mobile'=>isset($this->personal) ? substr($this->personal->MobileNo,3): '',
+            'DateOfBirth'=>isset($this->personal) ? date('Y-m-d',strtotime($this->personal->BirthDate)): '',
             'CurrentPosition'=>isset($this->designation) ? $this->designation->DesgName: '',
-            'PresentJobStartedOn'=>isset($this->emphist) ? $this->emphist->EffectiveDate: '',
+            'PresentJobStartedOn'=>isset($this->emphist) ? date('Y-m-d',strtotime($this->emphist->EffectiveDate)): '',
             'Qualification'=> isset($this->education) ? $this->education->Degree: '',
-            'JoiningDate'=>$this->JoiningDate,
+            'JoiningDate'=>date('Y-m-d',strtotime($this->JoiningDate)),
         ];
     }
 }

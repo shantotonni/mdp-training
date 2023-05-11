@@ -48,6 +48,14 @@ class MDPController extends Controller
                     ]);
                 }
             }
+            if ($request->StaffID == 'admin'){
+                if ($empcode != $request->StaffID){
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Same Employee Code'
+                    ]);
+                }
+            }
 
             $exist_check = ManagementDevelopmentPlane::where('AppraisalPeriod',$request->AppraisalPeriod)->where('StaffID',$request->StaffID)->exists();
             if ($exist_check){
@@ -68,6 +76,7 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->Department = $request->Department;
             $ManagementDevelopmentPlane->OfficialEmail = $request->OfficialEmail;
             $ManagementDevelopmentPlane->Mobile = $request->Mobile;
+            $ManagementDevelopmentPlane->DateOfBirth = $request->DateOfBirth;
             $ManagementDevelopmentPlane->JoiningDate = $request->JoiningDate;
             $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
             $ManagementDevelopmentPlane->PresentJobStartedOn = $request->PresentJobStartedOn;
@@ -136,6 +145,7 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->Department = $request->Department;
             $ManagementDevelopmentPlane->OfficialEmail = $request->OfficialEmail;
             $ManagementDevelopmentPlane->Mobile = $request->Mobile;
+            $ManagementDevelopmentPlane->DateOfBirth = $request->DateOfBirth;
             $ManagementDevelopmentPlane->JoiningDate = $request->JoiningDate;
             $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
             $ManagementDevelopmentPlane->PresentJobStartedOn = $request->PresentJobStartedOn;
@@ -216,7 +226,13 @@ class MDPController extends Controller
     }
 
     public function getSupervisorByEmployeeCode(Request $request){
-        $employee = Employee::where('EmpCode', $request->EmpCode)->with('department','designation','email','personal','education')->first();
+        if ($request->SuperVisorEmpCode === $request->EmpCode){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Same Employee Code'
+            ]);
+        }
+        $employee = Employee::where('EmpCode', $request->SuperVisorEmpCode)->with('department','designation','email','personal','education')->first();
         return response()->json([
             'employee'=>new SupervisorResource($employee),
         ]);

@@ -14,24 +14,24 @@
                                 <hr>
                                 <br>
                                 <p>
-                                  Appraisal Period <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center"></span>
-                                  Training Period From July <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center"></span>
-                                  to June <span style="display: inline-block;border-bottom: 1px solid;width: 220px;text-align: center"></span>
+                                  Appraisal Period <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">{{ mdplist.AppraisalPeriod }}</span>
+                                  Training Period From July <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">{{ mdplist.from_period }}</span>
+                                  to June <span style="display: inline-block;border-bottom: 1px solid;width: 220px;text-align: center">{{ mdplist.to_period }}</span>
                                 </p>
                                 <p>
-                                  Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 820px;text-align: center"></span>
+                                  Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 820px;text-align: center">{{ mdplist.EmployeeName }}</span>
                                 </p>
                                 <p>
-                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 500px;text-align: center"></span>
-                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 280px;text-align: center"></span>
+                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 500px;text-align: center">{{ mdplist.EmployeeName }}</span>
+                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 280px;text-align: center">{{ mdplist.DateOfBirth }}</span>
                                 </p>
                                 <p>
                                   Present Age <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
-                                  Date of joining company <span style="display: inline-block;border-bottom: 1px solid;width: 305px;text-align: center"></span>
+                                  Date of joining company <span style="display: inline-block;border-bottom: 1px solid;width: 305px;text-align: center">{{ mdplist.JoiningDate }}</span>
                                 </p>
                                 <p>
-                                  Present Job Started <span style="display: inline-block;border-bottom: 1px solid;width: 430px;text-align: center"></span>
-                                  Qualification <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                  Present Job Started <span style="display: inline-block;border-bottom: 1px solid;width: 430px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>
+                                  Qualification <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">{{ mdplist.Qualification }}</span>
                                 </p>
                               </div>
                               <br>
@@ -238,6 +238,7 @@ export default {
   created() {
     axios.get(baseurl + `api/mdp/print/${this.$route.params.ID}`).then((response)=>{
       console.log(response)
+      this.mdplist = response.data.data
       setTimeout(function(){
         window.print()
       },2000)

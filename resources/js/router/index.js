@@ -7,6 +7,7 @@ import MDPList from '../views/mdp/MDPList'
 import MDPCreate from '../views/mdp/Create'
 import MDPEdit from '../views/mdp/Edit'
 import MDPPrint from '../views/mdp/Print'
+import MDPPrintTwo from '../views/mdp/PrintTwo'
 
 import NotFound from '../views/404/Index';
 import {baseurl} from '../base_url'
@@ -61,6 +62,9 @@ const routes = [
             },
             {
                 path: baseurl + 'mdp-print/:ID', name: 'MDPPrint', component: MDPPrint
+            },
+            {
+                path: baseurl + 'mdp-print_two/:ID', name: 'MDPPrintTwo', component: MDPPrintTwo
             },
         ],
         beforeEnter(to, from, next) {

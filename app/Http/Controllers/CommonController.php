@@ -27,7 +27,13 @@ class CommonController extends Controller
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
-        $training_list = MDPEmployeeTrainingList::where('StaffID', $empcode)->get();
+        $role = $payload['Type'];
+        if ($role == 'admin'){
+            $training_list = MDPEmployeeTrainingList::all();
+        }else{
+            $training_list = MDPEmployeeTrainingList::where('StaffID', $empcode)->get();
+        }
+
         return response()->json([
             'training_list' => $training_list
         ]);
