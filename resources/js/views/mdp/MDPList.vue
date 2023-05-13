@@ -34,24 +34,24 @@
                                     <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                         <thead>
                                           <tr>
-                                              <th class="text-center">SN</th>
-                                              <th class="text-center">Employee Name</th>
-                                              <th class="text-center">Designation</th>
-                                              <th class="text-center">Department</th>
-                                              <th class="text-center">OfficialEmail</th>
-                                              <th class="text-center">Mobile</th>
-                                              <th class="text-center">Action</th>
+                                              <th>SN</th>
+                                              <th>Employee Name</th>
+                                              <th>Designation</th>
+                                              <th>Department</th>
+                                              <th>OfficialEmail</th>
+                                              <th>Mobile</th>
+                                              <th>Action</th>
                                           </tr>
                                         </thead>
                                         <tbody>
                                           <tr v-for="(mdp, i) in mdplist" :key="mdp.ID" v-if="mdplist.length">
-                                              <th class="text-center" scope="row">{{ ++i }}</th>
-                                              <td class="text-center">{{ mdp.EmployeeName }}</td>
-                                              <td class="text-center">{{ mdp.Designation }}</td>
-                                              <td class="text-center">{{ mdp.Department }}</td>
-                                              <td class="text-center">{{ mdp.OfficialEmail }}</td>
-                                              <td class="text-center">{{ mdp.Mobile }}</td>
-                                              <td class="text-center">
+                                              <th>{{ ++i }}</th>
+                                              <td>{{ mdp.EmployeeName }}</td>
+                                              <td>{{ mdp.Designation }}</td>
+                                              <td>{{ mdp.Department }}</td>
+                                              <td>{{ mdp.OfficialEmail }}</td>
+                                              <td>{{ mdp.Mobile }}</td>
+                                              <td>
                                                 <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i></router-link>
                                                 <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i></router-link>
                                                 <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i></router-link>
@@ -117,7 +117,7 @@ export default {
         }
     },
     mounted() {
-        document.title = 'MDP List | Diesel Engine';
+        document.title = 'MDP List | MDP';
         this.getAllMDPList();
     },
     methods: {
