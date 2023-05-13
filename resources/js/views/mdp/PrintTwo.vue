@@ -45,20 +45,33 @@
                                 <hr>
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                   <thead>
-                                  <tr>
-                                    <th class="text-center">Area of Performance Improvement</th>
-                                    <th class="text-center">Required Training/Learning Topic</th>
-                                    <th class="text-center">Program Type</th>
-                                    <th class="text-center">Planned Month</th>
-                                  </tr>
+                                    <tr>
+                                      <th>Area of Performance Improvement</th>
+                                      <th>Required Training/Learning Topic</th>
+                                      <th>Program Type</th>
+                                      <th>Planned Month</th>
+                                    </tr>
                                   </thead>
                                   <tbody>
-                                  <tr v-for="(training, i) in mdplist.training" :key="training.ID" v-if="mdplist.training.length">
-                                    <td class="text-center">In-house or External Training</td>
-                                    <td class="text-center">{{ training.TrainingTitle }}</td>
-                                    <td class="text-center">{{ training.TrainingType }}</td>
-                                    <td class="text-center"></td>
-                                  </tr>
+                                    <tr>
+                                      <td>In-house or External Training By the Company for Delivering Present Job Responsibility</td>
+                                      <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingTitle }}</p></td>
+                                      <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingType }}</p></td>
+                                      <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingDate }}</p></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Personal Development / Training to Deliver Futer Job Responsibilities</td>
+                                      <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Name }}</p></td>
+                                      <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Type }}</p></td>
+                                      <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Date }}</p></td>
+                                    </tr>
+
+                                    <tr>
+                                      <td>Knowledgge and skill will be Acquire at personal Initiative</td>
+                                      <td v-html="mdplist.AreaOneText"></td>
+                                      <td v-html="mdplist.AreaTwoText"></td>
+                                      <td></td>
+                                    </tr>
                                   </tbody>
                                 </table>
                               </div>
@@ -107,6 +120,8 @@ export default {
     data() {
         return {
           mdplist: [],
+          initiative: [],
+          training: [],
             pagination: {
                 current_page: 1
             },
@@ -131,6 +146,8 @@ export default {
     axios.get(baseurl + `api/mdp/print/${this.$route.params.ID}`).then((response)=>{
       console.log(response)
       this.mdplist = response.data.data
+      this.training = response.data.data.training
+      this.initiative = response.data.data.initiative
       setTimeout(function(){
         window.print()
       },2000)

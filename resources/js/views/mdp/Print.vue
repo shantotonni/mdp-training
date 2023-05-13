@@ -68,27 +68,30 @@
                               <br>
                               <div class="third_part">
                                 <p>Which will require in-house or external training that you think should be organized by the Company:</p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+                                <p v-for="(number, i) in row_number" :key="i" v-if="training.length">
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center">{{ training[i] !== undefined ? training[i].TrainingTitle: '' }}</span>
                                 </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
-                                </p>
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>-->
+<!--                                </p>-->
                               </div>
                               <br>
                               <div class="third_part">
@@ -107,51 +110,55 @@
                               <div class="fourth_part">
                                 <p>B. For development to take future responsibilities Other than those mentioned in A,
                                   list below two areas of personal development/training that you would like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
-                                <p>
-                                  1. <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+
+                                1. <p v-for="(number, i) in row_number" :key="i" v-if="AreaOne.length">
+                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ AreaOne[i] !== undefined ? AreaOne[i]: '' }}</span>
                                 </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
-                                </p>
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>-->
+<!--                                </p>-->
                               </div>
                               <br>
                               <div class="fifth_part">
-                                <p>
-                                  2. <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
-                                </p>
+<!--                                <p>-->
+<!--                                  2. <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+                                2. <p v-for="(number, i) in row_number" :key="i" v-if="AreaTwo.length">
+                                <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ AreaTwo[i] !== undefined ? AreaTwo[i]: '' }}</span>
+                              </p>
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>-->
+<!--                                </p>-->
                               </div>
                               <br>
                               <div class="six_part">
@@ -218,6 +225,9 @@ export default {
         return {
           mdplist: [],
           initiative: [],
+          training: [],
+          AreaOne: [],
+          AreaTwo: [],
             pagination: {
                 current_page: 1
             },
@@ -244,18 +254,20 @@ export default {
             {number: 4},
             {number: 5},
             {number: 6},
-            {number: 7},
           ],
         }
     },
   created() {
     axios.get(baseurl + `api/mdp/print/${this.$route.params.ID}`).then((response)=>{
-      console.log(response.data.data.initiative)
+      console.log(response.data.data)
       this.mdplist = response.data.data
       this.initiative = response.data.data.initiative
-      // setTimeout(function(){
-      //   window.print()
-      // },2000)
+      this.training = response.data.data.training
+      this.AreaOne = response.data.data.AreaOne
+      this.AreaTwo = response.data.data.AreaTwo
+      setTimeout(function(){
+        window.print()
+      },2000)
     });
   },
 
