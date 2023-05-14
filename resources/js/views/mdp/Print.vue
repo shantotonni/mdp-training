@@ -26,7 +26,7 @@
                                   Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 280px;text-align: center">{{ mdplist.DateOfBirth }}</span>
                                 </p>
                                 <p>
-                                  Present Age <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
+                                  Present Age <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">{{ mdplist.Age }}</span>
                                   Date of joining company <span style="display: inline-block;border-bottom: 1px solid;width: 305px;text-align: center">{{ mdplist.JoiningDate }}</span>
                                 </p>
                                 <p>
@@ -41,7 +41,7 @@
                                 </p>
 
                                 <p v-for="(number, i) in row_number" :key="i" v-if="initiative.length">
-                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center">{{ initiative[i] !== undefined ? initiative[i].Name: '' }}</span>
+                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ initiative[i] !== undefined ? initiative[i].Name: '' }}</span>
                                 </p>
 <!--                                <p>-->
 <!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[1].Name }}</span>-->
@@ -72,7 +72,7 @@
 <!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
 <!--                                </p>-->
                                 <p v-for="(number, i) in row_number" :key="i" v-if="training.length">
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center">{{ training[i] !== undefined ? training[i].TrainingTitle: '' }}</span>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ training[i] !== undefined ? training[i].TrainingTitle: '' }}</span>
                                 </p>
 <!--                                <p>-->
 <!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
@@ -94,14 +94,22 @@
 <!--                                </p>-->
                               </div>
                               <br>
-                              <div class="third_part">
-                                <h4 style="font-width: bold;">Training & Development Policy</h4>
-                                <p>
-                                  Issued by: Ms. Sheema Abed Rahman, GM, CS
-                                  <br>
-                                 <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>
-                                </p>
-                              </div>
+                              <br>
+                              <br>
+                              <br>
+                              <br>
+                              <br>
+                              <br>
+                              <br>
+                              <br>
+<!--                              <div class="third_part">-->
+<!--                                <h4 style="font-width: bold;">Training & Development Policy</h4>-->
+<!--                                <p>-->
+<!--                                  Issued by: Ms. Sheema Abed Rahman, GM, CS-->
+<!--                                  <br>-->
+<!--                                 <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>-->
+<!--                                </p>-->
+<!--                              </div>-->
                               <br><br><br><br><br><br><br><br>
                               <div>
                                 <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;margin-left: 879px" alt="user" class="rounded-circle" />
@@ -111,8 +119,8 @@
                                 <p>B. For development to take future responsibilities Other than those mentioned in A,
                                   list below two areas of personal development/training that you would like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
 
-                                1. <p v-for="(number, i) in row_number" :key="i" v-if="AreaOne.length">
-                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ AreaOne[i] !== undefined ? AreaOne[i]: '' }}</span>
+                                1. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">
+                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaOneName: '' }}</span>
                                 </p>
 <!--                                <p>-->
 <!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
@@ -138,8 +146,8 @@
 <!--                                <p>-->
 <!--                                  2. <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
 <!--                                </p>-->
-                                2. <p v-for="(number, i) in row_number" :key="i" v-if="AreaTwo.length">
-                                <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ AreaTwo[i] !== undefined ? AreaTwo[i]: '' }}</span>
+                                2. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">
+                                <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaTwoName: '' }}</span>
                               </p>
 <!--                                <p>-->
 <!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
@@ -161,14 +169,14 @@
 <!--                                </p>-->
                               </div>
                               <br>
-                              <div class="six_part">
-                                <p>
-                                  Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
-                                </p>
-                                <p>
-                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
-                                </p>
-                              </div>
+<!--                              <div class="six_part">-->
+<!--                                <p>-->
+<!--                                  Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                                <p>-->
+<!--                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>-->
+<!--                                </p>-->
+<!--                              </div>-->
                               <br>
                               <div class="fourth_part">
                                 <p>Remarks and recommendations of superior</p>
@@ -200,14 +208,14 @@
                                   Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
                                 </p>
                               </div>
-                              <div class="third_part">
-                                <h4 style="font-width: bold;">Training & Development Policy</h4>
-                                <p>
-                                  Issued by: Ms. Sheema Abed Rahman, GM, CS
-                                  <br>
-                                  <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>
-                                </p>
-                              </div>
+<!--                              <div class="third_part">-->
+<!--                                <h4 style="font-width: bold;">Training & Development Policy</h4>-->
+<!--                                <p>-->
+<!--                                  Issued by: Ms. Sheema Abed Rahman, GM, CS-->
+<!--                                  <br>-->
+<!--                                  <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>-->
+<!--                                </p>-->
+<!--                              </div>-->
                             </div>
                         </div>
                     </div>
@@ -226,8 +234,7 @@ export default {
           mdplist: [],
           initiative: [],
           training: [],
-          AreaOne: [],
-          AreaTwo: [],
+          Area: [],
             pagination: {
                 current_page: 1
             },
@@ -263,8 +270,7 @@ export default {
       this.mdplist = response.data.data
       this.initiative = response.data.data.initiative
       this.training = response.data.data.training
-      this.AreaOne = response.data.data.AreaOne
-      this.AreaTwo = response.data.data.AreaTwo
+      this.Area = response.data.data.area
       setTimeout(function(){
         window.print()
       },2000)

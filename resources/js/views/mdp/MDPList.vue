@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="container-fluid">
-            <breadcrumb :options="['MDP List']"/>
+            <breadcrumb :options="['Management Development Plan']"/>
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
@@ -18,7 +18,7 @@
                                     <div class="card-tools">
                                       <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">
                                         <i class="fas fa-plus"></i>
-                                        Add MDP
+                                        Add Management Development Plan
                                       </router-link>
 <!--                                        <button type="button" class="btn btn-primary btn-sm" @click="exportGenerator">-->
 <!--                                            <i class="mdi mdi-database-export"></i>-->
@@ -40,6 +40,7 @@
                                               <th>Department</th>
                                               <th>OfficialEmail</th>
                                               <th>Mobile</th>
+                                              <th>Appraisal Period</th>
                                               <th>Action</th>
                                           </tr>
                                         </thead>
@@ -51,10 +52,11 @@
                                               <td>{{ mdp.Department }}</td>
                                               <td>{{ mdp.OfficialEmail }}</td>
                                               <td>{{ mdp.Mobile }}</td>
+                                              <td>{{ mdp.AppraisalPeriod }}</td>
                                               <td>
                                                 <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i></router-link>
-                                                <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i></router-link>
-                                                <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i></router-link>
+                                                <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> MDP</router-link>
+                                                <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> PTC</router-link>
 <!--                                                  <button @click="destroy(mdp.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->
                                               </td>
                                           </tr>

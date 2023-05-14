@@ -68,8 +68,11 @@
 
                                     <tr>
                                       <td>Knowledgge and skill will be Acquire at personal Initiative</td>
-                                      <td v-html="mdplist.AreaOneText"></td>
-                                      <td v-html="mdplist.AreaTwoText"></td>
+                                      <td>
+                                        <p v-for="(are, i) in area" :key="i" v-if="area.length">{{ are.AreaOneName }}</p>
+                                        <p v-for="(are, i) in area" :key="i" v-if="area.length">{{ are.AreaTwoName }}</p>
+                                      </td>
+                                      <td></td>
                                       <td></td>
                                     </tr>
                                   </tbody>
@@ -122,6 +125,7 @@ export default {
           mdplist: [],
           initiative: [],
           training: [],
+          area: [],
             pagination: {
                 current_page: 1
             },
@@ -148,9 +152,10 @@ export default {
       this.mdplist = response.data.data
       this.training = response.data.data.training
       this.initiative = response.data.data.initiative
-      setTimeout(function(){
-        window.print()
-      },2000)
+      this.area = response.data.data.area
+      // setTimeout(function(){
+      //   window.print()
+      // },2000)
     });
   },
 

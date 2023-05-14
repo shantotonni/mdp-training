@@ -101,14 +101,14 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Present Job Started On</label>
-                              <input type="text" name="PresentJobStartedOn" v-model="form.PresentJobStartedOn" readonly class="form-control" :class="{ 'is-invalid': form.errors.has('PresentJobStartedOn') }">
+                              <input type="text" name="PresentJobStartedOn" v-model="form.PresentJobStartedOn" class="form-control" :class="{ 'is-invalid': form.errors.has('PresentJobStartedOn') }">
                               <div class="error" v-if="form.errors.has('PresentJobStartedOn')" v-html="form.errors.get('PresentJobStartedOn')" />
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Qualification</label>
-                              <input type="text" name="Qualification" readonly v-model="form.Qualification" class="form-control" :class="{ 'is-invalid': form.errors.has('Qualification') }">
+                              <input type="text" name="Qualification" v-model="form.Qualification" class="form-control" :class="{ 'is-invalid': form.errors.has('Qualification') }">
                               <div class="error" v-if="form.errors.has('Qualification')" v-html="form.errors.get('Qualification')" />
                             </div>
                           </div>
@@ -194,7 +194,8 @@
                         </div>
 
 
-                        <h4>Training Request</h4>
+                        <h4>Required Training</h4>
+                        <p>Which will require in-house or external training that you think should be organized by the Company.</p>
                         <hr>
                         <div class="row" v-for="(train,index2) in form.training">
                           <div class="col-4 col-md-4">
@@ -232,28 +233,38 @@
 <!--                          </div>-->
                         </div>
 
+                        <hr>
+
                         <div class="row">
-                          <hr>
                           <p> B. For development to take future responsibilities
                             Other than those mentioned in A, list below two areas of personal development/training that you would like to see
                             happen in your case in the coming years and explain how those trainings will help the company</p>
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label>Area One</label>
-                              <vue-editor v-model="form.AreaOne"></vue-editor>
-                              <div class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label>Area Two</label>
-                              <vue-editor v-model="form.AreaTwo"></vue-editor>
-                              <div class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
+                          <div class="col-md-12">
+                            <div class="row" v-for="(are, index) in form.area" :key="index">
+                              <div class="col-4 col-md-4">
+                                <div class="form-group">
+                                  <label>Area One</label>
+                                  <input v-model="are.AreaOneName" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOneName') }" name="AreaOneName" placeholder="Title" required>
+                                  <div class="error" v-if="form.errors.has('AreaOneName')" v-html="form.errors.get('AreaOneName')" />
+                                </div>
+                              </div>
+                              <div class="col-4 col-md-4">
+                                <div class="form-group">
+                                  <label>Area Two</label>
+                                  <input v-model="are.AreaTwoName" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwoName') }" name="AreaTwoName" placeholder="Title" required>
+                                  <div class="error" v-if="form.errors.has('AreaTwoName')" v-html="form.errors.get('AreaTwoName')" />
+                                </div>
+                              </div>
+                              <div class="col-4" style="padding-top: 30px">
+                                <button type="button" class="btn btn-danger btn-sm" @click="AreadeleteFind(index)">x</button>&nbsp;
+                                <button type="button" class="btn btn-success btn-sm" @click="AreaaddFind">+</button>
+                              </div>
                             </div>
                           </div>
                         </div>
+
                           <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                           </div>
                         </div>
                       </div>
@@ -268,6 +279,7 @@
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
                       <div class="col-md-12">
+                        <p>Last Five Years Training History</p>
                         <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                           <thead>
                             <tr>
@@ -349,6 +361,7 @@ export default {
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
         ],
+        area: [{ AreaOneName: '', AreaTwoName: ''}],
       }),
       isLoading: false,
     }
@@ -418,17 +431,26 @@ export default {
     customFormatter(date) {
       return moment(date).format('YYYY-MM-DD');
     },
+    //for initiative
     addFind: function () {
       this.form.initiative.push({ Name: '' , Type: '', Date: ''});
     },
     deleteFind: function (index) {
       this.form.initiative.splice(index, 1);
     },
+    //for training
     Training_addFind: function () {
       this.form.training.push({ TrainingTitle: '' , TrainingType: '', TrainingDate: ''});
     },
     Training_deleteFind: function (index2) {
       this.form.training.splice(index2, 1);
+    },
+    //for Area_one
+    AreaaddFind: function () {
+      this.form.area.push({ AreaOneName: '', AreaTwoName: ''});
+    },
+    AreadeleteFind: function (index2) {
+      this.form.area.splice(index2, 1);
     },
   },
 }

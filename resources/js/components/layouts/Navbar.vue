@@ -2,8 +2,8 @@
   <div class="topbar">
     <!-- LOGO -->
     <div class="topbar-left">
-      <router-link :to="{name : 'Dashboard'}" class="logo" style="color: white!important;">
-       MDP
+      <router-link :to="{name : 'Dashboard'}" class="logo" style="color: white!important;font-size: 16px!important;">
+        Management Development Plan
       </router-link>
     </div>
     <nav class="navbar-custom">
@@ -15,10 +15,19 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown">
               <!-- item-->
-              <a class="dropdown-item" href="#"><i class="mdi mdi-account-circle m-r-5"></i> Profile</a>
+<!--              <a class="dropdown-item" href="#"><i class="mdi mdi-account-circle m-r-5"></i> Profile</a>-->
               <div class="dropdown-divider"></div>
               <a class="dropdown-item text-danger" href="javascript:void(0)" @click="logout"><i class="mdi mdi-power text-danger"></i> Logout</a>
             </div>
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-right list-inline float-right mb-0">
+        <li class="dropdown notification-list list-inline-item">
+          <div class="dropdown notification-list nav-pro-img">
+            <a class="dropdown-toggle nav-link arrow-none waves-effect nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+              {{ personal.Name ? personal.Name: 'Admin' }}
+            </a>
           </div>
         </li>
       </ul>
@@ -36,7 +45,8 @@ export default {
   mixins: [Common],
   data() {
     return {
-      image: ''
+      image: '',
+      personal: {}
     }
   },
   created() {
@@ -50,6 +60,7 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
         this.$store.commit('me', response);
+        this.personal = response.personal.email
       }, (error) => {
         this.errorNoti(error);
       });
@@ -69,3 +80,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.topbar .topbar-left .logo {
+   line-height: 30px;
+}
+</style>

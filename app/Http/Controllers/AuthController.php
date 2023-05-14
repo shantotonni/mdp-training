@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\jwt\JWT;
+use App\Models\Personal;
 use App\Models\User;
 use App\Models\UserLog;
 use App\Services\AccessLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -113,9 +116,16 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-       $token = $request->bearerToken();;
-       $payload = JWTAuth::setToken($token)->getPayload();
-        return response()->json($payload);
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $empcode = $payload['EmpCode'];
+
+       $personal = Employee::where('EmpCode',$empcode)->with('email')->first();
+
+       return response()->json([
+           'personal'=>$personal,
+           'payload'=>$payload,
+       ]);
 
     }
 

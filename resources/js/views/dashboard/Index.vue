@@ -6,98 +6,47 @@
           <div class="col-sm-6">
             <h4 class="page-title">Dashboard</h4>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item active">Welcome to MDP Dashboard</li>
+              <li class="breadcrumb-item active">Welcome to Management Development Plan for 2023-2024</li>
             </ol>
           </div>
           <div class="col-sm-6">
             <div class="float-right d-none d-md-block">
-              <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle arrow-none waves-effect waves-light" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="mdi mdi-settings mr-2"></i> Settings
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-              </div>
+              <router-link :to="{name: 'MDPCreate'}" class="btn btn-success" style="color: white">
+                <i class="fas fa-plus"></i>
+                Click To Fillup Management Development Plan
+              </router-link>
             </div>
           </div>
         </div>
       </div>
       <!-- end row -->
       <div class="row">
-        <div class="col-xl-3 col-md-6">
-          <div class="card mini-stat bg-primary text-white">
-            <div class="card-body">
-              <div class="mb-4">
-                <div class="float-left mini-stat-img mr-4"><img src="assets/images/services-icon/01.png" alt="" /></div>
-                <h5 class="font-16 text-uppercase mt-0 text-white-50">Orders</h5>
-                <h4 class="font-500">1,685 <i class="mdi mdi-arrow-up text-success ml-2"></i></h4>
-                <div class="mini-stat-label bg-success"><p class="mb-0">+ 12%</p></div>
-              </div>
-              <div class="pt-2">
-                <div class="float-right">
-                  <a href="#" class="text-white-50"><i class="mdi mdi-arrow-right h5"></i></a>
-                </div>
-                <p class="text-white-50 mb-0">Since last month</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-          <div class="card mini-stat bg-primary text-white">
-            <div class="card-body">
-              <div class="mb-4">
-                <div class="float-left mini-stat-img mr-4"><img src="assets/images/services-icon/02.png" alt="" /></div>
-                <h5 class="font-16 text-uppercase mt-0 text-white-50">Revenue</h5>
-                <h4 class="font-500">52,368 <i class="mdi mdi-arrow-down text-danger ml-2"></i></h4>
-                <div class="mini-stat-label bg-danger"><p class="mb-0">- 28%</p></div>
-              </div>
-              <div class="pt-2">
-                <div class="float-right">
-                  <a href="#" class="text-white-50"><i class="mdi mdi-arrow-right h5"></i></a>
-                </div>
-                <p class="text-white-50 mb-0">Since last month</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-          <div class="card mini-stat bg-primary text-white">
-            <div class="card-body">
-              <div class="mb-4">
-                <div class="float-left mini-stat-img mr-4"><img src="assets/images/services-icon/03.png" alt="" /></div>
-                <h5 class="font-16 text-uppercase mt-0 text-white-50">Average Price</h5>
-                <h4 class="font-500">15.8 <i class="mdi mdi-arrow-up text-success ml-2"></i></h4>
-                <div class="mini-stat-label bg-info"><p class="mb-0">00%</p></div>
-              </div>
-              <div class="pt-2">
-                <div class="float-right">
-                  <a href="#" class="text-white-50"><i class="mdi mdi-arrow-right h5"></i></a>
-                </div>
-                <p class="text-white-50 mb-0">Since last month</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-          <div class="card mini-stat bg-primary text-white">
-            <div class="card-body">
-              <div class="mb-4">
-                <div class="float-left mini-stat-img mr-4"><img src="assets/images/services-icon/04.png" alt="" /></div>
-                <h5 class="font-16 text-uppercase mt-0 text-white-50">Product Sold</h5>
-                <h4 class="font-500">2436 <i class="mdi mdi-arrow-up text-success ml-2"></i></h4>
-                <div class="mini-stat-label bg-warning"><p class="mb-0">+ 84%</p></div>
-              </div>
-              <div class="pt-2">
-                <div class="float-right">
-                  <a href="#" class="text-white-50"><i class="mdi mdi-arrow-right h5"></i></a>
-                </div>
-                <p class="text-white-50 mb-0">Since last month</p>
-              </div>
-            </div>
-          </div>
+        <div class="col-sm-10">
+          <h4>What is Management Development Plan (MDP)? </h4>
+          <p>Organizations employ a comprehensive framework called a management development plan (MDP) to improve the knowledge and skills of their managers.
+            It is a methodical way to enhancing people's leadership and management skills; it is frequently employed in succession planning and career advancement.</p>
+          <p>
+            An MDP often involves a determination of the person's development priorities as well as an evaluation of their strengths and limitations.
+            The plan includes a series of goals and objectives, as well as the particular activities and resources that will be employed to attain them, based on this assessment.
+            Timelines, milestones, and performance indicators may also be included in the plan to track development and success.
+          </p>
+          <p>
+            MDPs can contain a range of learning and growth opportunities, including coaching, mentoring, work shadowing and Training.
+          </p>
+          <br>
+          <h4>Why need MDP? </h4>
+          <p>Management Development Plans (MDPs) are necessary for organizations for a number of reasons:</p>
+          <p>
+            Improve the leadership and management capabilities of their managers with MDPs: Organizations can improve the skills and competences of their managers using MDPs.
+            This is especially crucial in the fast-paced business climate of today, when managers must be flexible and able to handle challenging circumstances.
+          </p>
+          <p>
+            personnel attraction and retention: Offering possibilities for both personal and professional growth through MDPs can be a key element in luring and keeping top personnel.
+            People are more likely to stick with a company that supports their growth and offers prospects for promotion.
+          </p>
+          <p>
+            Boost productivity and performance: Managers with access to MDPs are better prepared to handle the demands of their jobs and deliver top-tier performance.
+          </p>
         </div>
       </div>
     </div>

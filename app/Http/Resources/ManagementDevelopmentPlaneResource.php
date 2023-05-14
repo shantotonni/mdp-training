@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ManagementDevelopmentPlaneResource extends JsonResource
@@ -21,14 +22,16 @@ class ManagementDevelopmentPlaneResource extends JsonResource
         $area_two_chunk = chunk_split($area_two, 140,'*');
         $expload_areay_two = explode('*',$area_two_chunk);
 
+        $age = Carbon::parse($this->DateOfBirth)->age;
+
         return [
             'ID'=> $this->ID,
             'StaffID'=> $this->StaffID,
             'AppraisalPeriod'=> $this->AppraisalPeriod,
             'from_period'=> $from_period,
             'to_period'=>$to_period,
-            'AreaOne'=> $expload_areay_one,
-            'AreaTwo'=> $expload_areay_two,
+            //'Area'=> $expload_areay_one,
+            //'AreaTwo'=> $expload_areay_two,
             'CreatedDate'=> $this->CreatedDate,
             'CurrentPosition'=> $this->CurrentPosition,
             'Department'=> $this->Department,
@@ -37,6 +40,7 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'JoiningDate'=> date('Y-m-d',strtotime($this->JoiningDate)),
             'Mobile'=> $this->Mobile,
             'DateOfBirth'=> date('Y-m-d',strtotime($this->DateOfBirth)),
+            'Age'=> $age,
             'OfficialEmail'=> $this->OfficialEmail,
             'PresentJobStartedOn'=> date('Y-m-d',strtotime($this->PresentJobStartedOn)),
             'Qualification'=> $this->Qualification,
@@ -47,9 +51,10 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'SuppervisorStaffID'=> $this->SuppervisorStaffID,
             'initiative'=> $this->initiative,
             'training'=>$this->training,
+            'area'=>$this->area,
 
-            'AreaOneText'=> $this->AreaOne,
-            'AreaTwoText'=> $this->AreaTwo,
+            //'AreaOneText'=> $this->Area,
+            //'AreaTwoText'=> $this->AreaTwo,
         ];
     }
 }
