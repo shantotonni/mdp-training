@@ -371,8 +371,8 @@ export default {
       console.log(response)
       this.form.fill(response.data.data);
       this.form.fill(response.data.data);
-      this.getEmployeeByStaffID();
-      this.getSupervisorByStaffID();
+      // this.getEmployeeByStaffID();
+      // this.getSupervisorByStaffID();
       this.getAllEmployeeTrainingList();
       if (response.data.data.late_fee === 'Y'){
         this.late_fee_status = true;

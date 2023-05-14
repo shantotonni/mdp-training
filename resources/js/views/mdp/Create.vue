@@ -376,6 +376,7 @@ export default {
       this.form.post(baseurl + "api/mdp/store").then(response => {
         console.log(response)
         if (response.data.status === 'error'){
+          this.successNoti(response.data.message);
           this.errorNoti(response.data.message);
         }else {
           this.redirect(this.mainOrigin + 'mdp-list')
