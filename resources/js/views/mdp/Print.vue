@@ -40,30 +40,32 @@
                                   Which you will acquire at your personal initiative:
                                 </p>
 
-                                <p v-for="(number, i) in row_number" :key="i" v-if="initiative.length">
+                                <p v-for="(number, i) in row_number" :key="i">
                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ initiative[i] !== undefined ? initiative[i].Name: '' }}</span>
                                 </p>
+<!--                              <div v-else>-->
 <!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[1].Name }}</span>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
 <!--                                </p>-->
 <!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[2].Name }}</span>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
 <!--                                </p>-->
 <!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[3].Name }}</span>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
 <!--                                </p>-->
 <!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[4].Name }}</span>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
 <!--                                </p>-->
 <!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[5].Name }}</span>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
 <!--                                </p>-->
 <!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[6].Name }}</span>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
 <!--                                </p>-->
 <!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center" v-if="initiative.length">{{ mdplist.initiative[7].Name }}</span>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>-->
 <!--                                </p>-->
+<!--                              </div>-->
                               </div>
                               <br>
                               <div class="third_part">
@@ -71,7 +73,7 @@
 <!--                                <p>-->
 <!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
 <!--                                </p>-->
-                                <p v-for="(number, i) in row_number" :key="i" v-if="training.length">
+                                <p v-for="(number, i) in row_number" :key="i">
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ training[i] !== undefined ? training[i].TrainingTitle: '' }}</span>
                                 </p>
 <!--                                <p>-->
@@ -119,54 +121,54 @@
                                 <p>B. For development to take future responsibilities Other than those mentioned in A,
                                   list below two areas of personal development/training that you would like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
 
-                                1. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">
-                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaOneName: '' }}</span>
+<!--                                1. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">-->
+<!--                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaOneName: '' }}</span>-->
+<!--                                </p>-->
+                                1. <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ mdplist.AreaOne }}</span>
                                 </p>
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>-->
-<!--                                </p>-->
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
+                                </p>
                               </div>
                               <br>
                               <div class="fifth_part">
 <!--                                <p>-->
 <!--                                  2. <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
 <!--                                </p>-->
-                                2. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">
-                                <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaTwoName: '' }}</span>
-                              </p>
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>-->
-<!--                                </p>-->
+<!--                                2. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">-->
+<!--                                <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaTwoName: '' }}</span>-->
+<!--                              </p>-->
+                                2.<p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ mdplist.AreaTwo }}</span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>
+                                </p>
                               </div>
                               <br>
 <!--                              <div class="six_part">-->

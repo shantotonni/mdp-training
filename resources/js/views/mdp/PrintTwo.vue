@@ -69,8 +69,8 @@
                                     <tr>
                                       <td>Knowledgge and skill will be Acquire at personal Initiative</td>
                                       <td>
-                                        <p v-for="(are, i) in area" :key="i" v-if="area.length">{{ are.AreaOneName }}</p>
-                                        <p v-for="(are, i) in area" :key="i" v-if="area.length">{{ are.AreaTwoName }}</p>
+                                        <p>{{ mdplist.AreaOne }}</p>
+                                        <p>{{ mdplist.AreaTwo }}</p>
                                       </td>
                                       <td></td>
                                       <td></td>

@@ -22,7 +22,7 @@ class ManagementDevelopmentPlane extends Model
     public function training(){
         return $this->hasMany(MDPTraining::class,'MDPID','ID');
     }
-    public function area(){
-        return $this->hasMany(Area::class,'MDPID','ID');
-    }
+//    public function area(){
+//        return $this->hasMany(Area::class,'MDPID','ID');
+//    }
 }

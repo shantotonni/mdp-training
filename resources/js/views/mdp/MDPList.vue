@@ -54,7 +54,7 @@
                                               <td>{{ mdp.Mobile }}</td>
                                               <td>{{ mdp.AppraisalPeriod }}</td>
                                               <td>
-                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i></router-link>
+                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
                                                 <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> MDP</router-link>
                                                 <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> PTC</router-link>
 <!--                                                  <button @click="destroy(mdp.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->

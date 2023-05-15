@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <breadcrumb :options="['MDP Edit']">
+      <breadcrumb :options="['Edit Management Development Plan']">
         <div class="col-sm-6">
           <div class="float-right d-none d-md-block">
             <div class="card-tools">
@@ -236,24 +236,20 @@
                             Other than those mentioned in A, list below two areas of personal development/training that you would like to see
                             happen in your case in the coming years and explain how those trainings will help the company</p>
                           <div class="col-md-12">
-                            <div class="row" v-for="(are, index) in form.area" :key="index">
-                              <div class="col-4 col-md-4">
+                            <div class="row">
+                              <div class="col-6 col-md-6">
                                 <div class="form-group">
                                   <label>Area One</label>
-                                  <input v-model="are.AreaOneName" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOneName') }" name="AreaOneName" placeholder="Title" required>
-                                  <div class="error" v-if="form.errors.has('AreaOneName')" v-html="form.errors.get('AreaOneName')" />
+                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }" style="height: 90px" name="AreaOne" placeholder="Title" required>
+                                  <div class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
                                 </div>
                               </div>
-                              <div class="col-4 col-md-4">
+                              <div class="col-6 col-md-6">
                                 <div class="form-group">
                                   <label>Area Two</label>
-                                  <input v-model="are.AreaTwoName" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwoName') }" name="AreaTwoName" placeholder="Title" required>
-                                  <div class="error" v-if="form.errors.has('AreaTwoName')" v-html="form.errors.get('AreaTwoName')" />
+                                  <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }" style="height: 90px" name="AreaTwo" placeholder="Title" required>
+                                  <div class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
                                 </div>
-                              </div>
-                              <div class="col-4" style="padding-top: 30px">
-                                <button type="button" class="btn btn-danger btn-sm" @click="AreadeleteFind(index)">x</button>&nbsp;
-                                <button type="button" class="btn btn-success btn-sm" @click="AreaaddFind">+</button>
                               </div>
                             </div>
                           </div>
@@ -357,7 +353,7 @@ export default {
           { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
           { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
         ],
-        area: [{ AreaOneName: '', AreaTwoName: ''}],
+        //area: [{ AreaOneName: '', AreaTwoName: ''}],
       }),
       isLoading: false,
     }
@@ -457,12 +453,12 @@ export default {
       this.form.training.splice(index, 1);
     },
     //for Area_one
-    AreaaddFind: function () {
-      this.form.area.push({ AreaOneName: '', AreaTwoName: ''});
-    },
-    AreadeleteFind: function (index2) {
-      this.form.area.splice(index2, 1);
-    },
+    // AreaaddFind: function () {
+    //   this.form.area.push({ AreaOneName: '', AreaTwoName: ''});
+    // },
+    // AreadeleteFind: function (index2) {
+    //   this.form.area.splice(index2, 1);
+    // },
   },
 }
 </script>

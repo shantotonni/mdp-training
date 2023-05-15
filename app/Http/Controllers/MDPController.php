@@ -69,7 +69,7 @@ class MDPController extends Controller
 
             $initiative = $request->initiative;
             $training = $request->training;
-            $area = $request->area;
+            //$area = $request->area;
 
             $ManagementDevelopmentPlane = new ManagementDevelopmentPlane();
             $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;
@@ -111,13 +111,13 @@ class MDPController extends Controller
                     $MDPTraining->TrainingDate = $item['TrainingDate'];
                     $MDPTraining->save();
                 }
-                foreach ($area as $are){
-                    $areaone = new Area();
-                    $areaone->MDPID = $ManagementDevelopmentPlane->ID;
-                    $areaone->AreaOneName = $are['AreaOneName'];
-                    $areaone->AreaTwoName = $are['AreaTwoName'];
-                    $areaone->save();
-                }
+//                foreach ($area as $are){
+//                    $areaone = new Area();
+//                    $areaone->MDPID = $ManagementDevelopmentPlane->ID;
+//                    $areaone->AreaOneName = $are['AreaOneName'];
+//                    $areaone->AreaTwoName = $are['AreaTwoName'];
+//                    $areaone->save();
+//                }
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
@@ -143,12 +143,12 @@ class MDPController extends Controller
 
             $initiative = $request->initiative;
             $training = $request->training;
-            $area = $request->area;
+            //$area = $request->area;
 
             $ManagementDevelopmentPlane = ManagementDevelopmentPlane::where('ID',$request->ID)->first();
             MDPPersonalInitiative::where('MDPID',$request->ID)->delete();
             MDPTraining::where('MDPID',$request->ID)->delete();
-            Area::where('MDPID',$request->ID)->delete();
+            //Area::where('MDPID',$request->ID)->delete();
 
             $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;
             $ManagementDevelopmentPlane->StaffID = $request->StaffID;
@@ -168,8 +168,8 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->SuppervisorDesignation = $request->SuppervisorDesignation;
             $ManagementDevelopmentPlane->SuppervisorEmail = $request->SuppervisorEmail;
             $ManagementDevelopmentPlane->SuppervisorMobile = $request->SuppervisorMobile;
-//            $ManagementDevelopmentPlane->Area = $request->Area;
-//            $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
+            $ManagementDevelopmentPlane->AreaOne = $request->AreaOne;
+            $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             if ($ManagementDevelopmentPlane->save()){
                 foreach ($initiative as $value){
@@ -188,13 +188,13 @@ class MDPController extends Controller
                     $MDPTraining->TrainingDate = $item['TrainingDate'];
                     $MDPTraining->save();
                 }
-                foreach ($area as $are){
-                    $areaone = new Area();
-                    $areaone->MDPID = $ManagementDevelopmentPlane->ID;
-                    $areaone->AreaOneName = $are['AreaOneName'];
-                    $areaone->AreaTwoName = $are['AreaTwoName'];
-                    $areaone->save();
-                }
+//                foreach ($area as $are){
+//                    $areaone = new Area();
+//                    $areaone->MDPID = $ManagementDevelopmentPlane->ID;
+//                    $areaone->AreaOneName = $are['AreaOneName'];
+//                    $areaone->AreaTwoName = $are['AreaTwoName'];
+//                    $areaone->save();
+//                }
 
                 DB::commit();
                 return response()->json([
@@ -212,12 +212,12 @@ class MDPController extends Controller
     }
 
     public function edit($id){
-        $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training','area')->first();
+        $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
         return new ManagementDevelopmentPlaneResource($mdp);
     }
 
     public function print($id){
-        $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training','area')->first();
+        $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
         return new ManagementDevelopmentPlaneResource($mdp);
     }
 
