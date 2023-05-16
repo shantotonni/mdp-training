@@ -10,9 +10,9 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <div class="row">
-<!--                                            <div class="col-md-2">-->
-<!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search">-->
-<!--                                            </div>-->
+                                            <div class="col-md-2" v-if="personal===null">
+                                                <input v-model="query" type="text" class="form-control" placeholder="Search">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card-tools">
@@ -35,6 +35,7 @@
                                         <thead>
                                           <tr>
                                               <th>SN</th>
+                                              <th>Staff ID</th>
                                               <th>Employee Name</th>
                                               <th>Designation</th>
                                               <th>Department</th>
@@ -47,6 +48,7 @@
                                         <tbody>
                                           <tr v-for="(mdp, i) in mdplist" :key="mdp.ID" v-if="mdplist.length">
                                               <th>{{ ++i }}</th>
+                                              <td>{{ mdp.StaffID }}</td>
                                               <td>{{ mdp.EmployeeName }}</td>
                                               <td>{{ mdp.Designation }}</td>
                                               <td>{{ mdp.Department }}</td>
@@ -84,11 +86,14 @@
 
 <script>
 import {baseurl} from '../../base_url'
+import {Common} from "../../mixins/common";
 export default {
     name: "List",
+  mixins: [Common],
     data() {
         return {
           mdplist: [],
+          personal: {},
             pagination: {
                 current_page: 1
             },
@@ -121,15 +126,13 @@ export default {
     mounted() {
         document.title = 'MDP List | MDP';
         this.getAllMDPList();
+        this.getData();
     },
     methods: {
       getAllMDPList(){
-            this.isLoading = true;
             axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page).then((response)=>{
-                console.log(response)
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
-                this.isLoading = false;
             }).catch((error)=>{
 
             })
@@ -142,6 +145,18 @@ export default {
                 this.isLoading = false;
             });
         },
+      getData() {
+        this.axiosPost('me', {}, (response) => {
+          this.$store.commit('me', response);
+          this.personal = response.personal
+          console.log(response.personal)
+
+          console.log(val)
+
+        }, (error) => {
+          this.errorNoti(error);
+        });
+      },
         reload(){
             this.getAllMDPList();
             this.query = "";
