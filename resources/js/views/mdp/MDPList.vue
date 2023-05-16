@@ -10,9 +10,9 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <div class="row">
-                                            <div class="col-md-2">
-                                                <input v-model="query" type="text" class="form-control" placeholder="Search">
-                                            </div>
+<!--                                            <div class="col-md-2">-->
+<!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search">-->
+<!--                                            </div>-->
                                         </div>
                                     </div>
                                     <div class="card-tools">
@@ -38,7 +38,7 @@
                                               <th>Employee Name</th>
                                               <th>Designation</th>
                                               <th>Department</th>
-                                              <th>OfficialEmail</th>
+                                              <th>Official Email</th>
                                               <th>Mobile</th>
                                               <th>Appraisal Period</th>
                                               <th>Action</th>
@@ -145,7 +145,7 @@ export default {
         reload(){
             this.getAllMDPList();
             this.query = "";
-            this.$toaster.success('Data Successfully Refresh');
+            // this.$toaster.success('Data Successfully Refresh');
         },
         destroy(id){
             Swal.fire({

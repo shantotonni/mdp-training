@@ -9,12 +9,12 @@
           </li>
           <li>
             <a href="javascript:void(0);" class="waves-effect">
-              <i class="ti-package"></i>
+              <i class="mdi mdi-clipboard-arrow-up-outline"></i>
               <span>MDP<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
             </a>
             <ul class="submenu">
               <li>
-                <router-link :to="{name: 'MDPList'}" ><i class="ti-package"></i>MDP List</router-link>
+                <router-link :to="{name: 'MDPList'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP List</router-link>
               </li>
             </ul>
           </li>

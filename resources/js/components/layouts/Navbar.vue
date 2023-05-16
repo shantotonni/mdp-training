@@ -31,11 +31,11 @@
           </div>
         </li>
       </ul>
-      <ul class="list-inline menu-left mb-0">
-        <li class="float-left">
-          <button class="button-menu-mobile open-left waves-effect"><i class="mdi mdi-menu"></i></button>
-        </li>
-      </ul>
+<!--      <ul class="list-inline menu-left mb-0">-->
+<!--        <li class="float-left">-->
+<!--          <button class="button-menu-mobile open-left waves-effect"><i class="mdi mdi-menu"></i></button>-->
+<!--        </li>-->
+<!--      </ul>-->
     </nav>
   </div>
 </template>
@@ -69,7 +69,7 @@ export default {
       this.axiosPost("logout", {}, (response) => {
             localStorage.setItem("token", "");
             this.$router.push(this.mainOrigin + "login");
-            this.successNoti(response.message)
+            //this.successNoti(response.message)
           },
           (error) => {
             this.errorNoti(error);
