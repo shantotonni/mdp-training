@@ -153,9 +153,9 @@ export default {
       this.training = response.data.data.training
       this.initiative = response.data.data.initiative
       this.area = response.data.data.area
-      // setTimeout(function(){
-      //   window.print()
-      // },2000)
+      setTimeout(function(){
+        window.print()
+      },2000)
     });
   },
 
