@@ -14,33 +14,33 @@
                                 <h3>7.15.2. Management Development Plan</h3>
                                 <hr>
                                 <br>
-                                <p>
+                                <p style="font-size: 20px">
 <!--                                  Appraisal Period <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">{{ mdplist.AppraisalPeriod }}</span>-->
-                                  Training Period From July <span style="display: inline-block;border-bottom: 1px solid;width: 354px;text-align: center">{{ mdplist.from_period }}</span>
-                                  to June <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.to_period }}</span>
+                                  Training Period From July <span style="display: inline-block;border-bottom: 1px solid;width: 315px;text-align: center">{{ mdplist.from_period }}</span>
+                                  to June <span style="display: inline-block;border-bottom: 1px solid;width: 315px;text-align: center">{{ mdplist.to_period }}</span>
                                 </p>
-                                <p>
-                                  Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 820px;text-align: center">{{ mdplist.EmployeeName }}</span>
+                                <p style="font-size: 20px">
+                                  Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 765px;text-align: center">{{ mdplist.EmployeeName }}</span>
                                 </p>
-                                <p>
-                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 500px;text-align: center">{{ mdplist.EmployeeName }}</span>
-                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 280px;text-align: center">{{ mdplist.DateOfBirth }}</span>
+                                <p style="font-size: 20px">
+                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">{{ mdplist.EmployeeName }}</span>
+                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 306px;text-align: center">{{ mdplist.DateOfBirth }}</span>
                                 </p>
-                                <p>
-                                  Present Age <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">{{ mdplist.Age }}</span>
-                                  Date of joining company <span style="display: inline-block;border-bottom: 1px solid;width: 305px;text-align: center">{{ mdplist.JoiningDate }}</span>
+                                <p style="font-size: 20px">
+                                  Present Age <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Age }}</span>
+                                  Date of joining company <span style="display: inline-block;border-bottom: 1px solid;width: 250px;text-align: center">{{ mdplist.JoiningDate }}</span>
                                 </p>
-                                <p>
-                                  Present Job Started <span style="display: inline-block;border-bottom: 1px solid;width: 430px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>
-                                  Qualification <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">{{ mdplist.Qualification }}</span>
+                                <p style="font-size: 20px">
+                                  Present Job Started <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>
+                                  Qualification <span style="display: inline-block;border-bottom: 1px solid;width: 265px;text-align: center">{{ mdplist.Qualification }}</span>
                                 </p>
                               </div>
                               <br>
                               <div class="second_part">
-                                <p style="font-weight: bold;">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.</p>
-                                <p>Which you will acquire at your personal initiative:</p>
+                                <p style="font-weight: bold;font-size: 20px">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.</p>
+                                <p style="font-size: 20px">Which you will acquire at your personal initiative:</p>
 
-                                <p v-for="(number, i) in row_number" :key="i">
+                                <p v-for="(number, i) in row_number" :key="i" style="font-size: 20px">
                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ initiative[i] !== undefined ? initiative[i].Name: '' }}</span>
                                 </p>
 <!--                              <div v-else>-->
@@ -70,11 +70,11 @@
                               <br>
                               <br>
                               <div class="third_part">
-                                <p>Which will require in-house or external training that you think should be organized by the Company:</p>
+                                <p style="font-size: 20px">Which will require in-house or external training that you think should be organized by the Company:</p>
 <!--                                <p>-->
 <!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
 <!--                                </p>-->
-                                <p v-for="(number, i) in row_number" :key="i">
+                                <p v-for="(number, i) in row_number" :key="i" style="font-size: 20px">
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ training[i] !== undefined ? training[i].TrainingTitle: '' }}</span>
                                 </p>
 <!--                                <p>-->
@@ -96,19 +96,7 @@
 <!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>-->
 <!--                                </p>-->
                               </div>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
-                              <br>
+
                               <p>Form No.: TR-003-01/06</p>
 
 
@@ -122,13 +110,14 @@
 <!--                              </div>-->
                               <br>
                               <div class="fourth_part">
-                                <p style="font-weight: bold;">B. For development to take future responsibilities</p>
-                                <p>Other than those mentioned in A, list below two areas of personal development/training that you would like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
+                                <p style="font-weight: bold;font-size: 20px">B. For development to take future responsibilities</p>
+                                <p style="font-size: 18px">Other than those mentioned in A, list below two areas of personal development/training that you would like
+                                  to see happen in your case in the coming years and explain how those trainings will help the company.</p>
 
 <!--                                1. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">-->
 <!--                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaOneName: '' }}</span>-->
 <!--                                </p>-->
-                                1. <p>
+                                1. <p style="font-size: 20px">
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ mdplist.AreaOne }}</span>
                                 </p>
                                 <p>
@@ -156,7 +145,7 @@
 <!--                                <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaTwoName: '' }}</span>-->
 <!--                              </p>-->
                                 2.<p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ mdplist.AreaTwo }}</span>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;font-size: 20px">{{ mdplist.AreaTwo }}</span>
                                 </p>
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
@@ -176,16 +165,16 @@
                               </div>
                               <br>
                               <div class="six_part">
-                                <p>
+                                <p style="font-size: 20px">
                                   Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
                                 </p>
-                                <p>
+                                <p style="font-size: 20px">
                                   Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
                                 </p>
                               </div>
                               <br>
                               <div class="fourth_part">
-                                <p>Remarks and recommendations of superior</p>
+                                <p style="font-size: 20px">Remarks and recommendations of superior</p>
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
                                 </p>
@@ -207,10 +196,10 @@
                               </div>
                               <br>
                               <div class="six_part">
-                                <p>
+                                <p style="font-size: 20px">
                                   Signature <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
                                 </p>
-                                <p>
+                                <p style="font-size: 20px">
                                   Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
                                 </p>
                               </div>
@@ -222,7 +211,7 @@
 <!--                                  <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>-->
 <!--                                </p>-->
 <!--                              </div>-->
-                              <p style="padding-top: 280px">Form No.: TR-003-01/06</p>
+                              <p style="padding-top: 140px">Form No.: TR-003-01/06</p>
                             </div>
                         </div>
                     </div>
