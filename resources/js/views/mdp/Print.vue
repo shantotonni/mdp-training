@@ -15,9 +15,9 @@
                                 <hr>
                                 <br>
                                 <p>
-                                  Appraisal Period <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">{{ mdplist.AppraisalPeriod }}</span>
-                                  Training Period From July <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">{{ mdplist.from_period }}</span>
-                                  to June <span style="display: inline-block;border-bottom: 1px solid;width: 220px;text-align: center">{{ mdplist.to_period }}</span>
+<!--                                  Appraisal Period <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">{{ mdplist.AppraisalPeriod }}</span>-->
+                                  Training Period From July <span style="display: inline-block;border-bottom: 1px solid;width: 354px;text-align: center">{{ mdplist.from_period }}</span>
+                                  to June <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.to_period }}</span>
                                 </p>
                                 <p>
                                   Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 820px;text-align: center">{{ mdplist.EmployeeName }}</span>
@@ -37,9 +37,8 @@
                               </div>
                               <br>
                               <div class="second_part">
-                                <p style="font-width: bold;">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
-                                  Which you will acquire at your personal initiative:
-                                </p>
+                                <p style="font-weight: bold;">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.</p>
+                                <p>Which you will acquire at your personal initiative:</p>
 
                                 <p v-for="(number, i) in row_number" :key="i">
                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ initiative[i] !== undefined ? initiative[i].Name: '' }}</span>
@@ -123,8 +122,8 @@
 <!--                              </div>-->
                               <br>
                               <div class="fourth_part">
-                                <p>B. For development to take future responsibilities <br>
-                                  Other than those mentioned in A, list below two areas of personal development/training that you would like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
+                                <p style="font-weight: bold;">B. For development to take future responsibilities</p>
+                                <p>Other than those mentioned in A, list below two areas of personal development/training that you would like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
 
 <!--                                1. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">-->
 <!--                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaOneName: '' }}</span>-->
