@@ -7,8 +7,9 @@
                         <div class="datatable" v-if="!isLoading">
                             <div class="card-body">
                               <div>
-                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;margin-left: 879px" alt="user" class="rounded-circle" />
+                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
                               </div>
+                              <br>
                               <div class="first_part">
                                 <h3>7.15.2. Management Development Plan</h3>
                                 <hr>
@@ -68,6 +69,7 @@
 <!--                              </div>-->
                               </div>
                               <br>
+                              <br>
                               <div class="third_part">
                                 <p>Which will require in-house or external training that you think should be organized by the Company:</p>
 <!--                                <p>-->
@@ -104,6 +106,13 @@
                               <br>
                               <br>
                               <br>
+                              <br>
+                              <br>
+                              <br>
+                              <br>
+                              <p>Form No.: TR-003-01/06</p>
+
+
 <!--                              <div class="third_part">-->
 <!--                                <h4 style="font-width: bold;">Training & Development Policy</h4>-->
 <!--                                <p>-->
@@ -112,14 +121,10 @@
 <!--                                 <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>-->
 <!--                                </p>-->
 <!--                              </div>-->
-                              <br><br><br><br><br><br><br><br>
-                              <div>
-                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;margin-left: 879px" alt="user" class="rounded-circle" />
-                              </div>
                               <br>
                               <div class="fourth_part">
-                                <p>B. For development to take future responsibilities Other than those mentioned in A,
-                                  list below two areas of personal development/training that you would like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
+                                <p>B. For development to take future responsibilities <br>
+                                  Other than those mentioned in A, list below two areas of personal development/training that you would like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
 
 <!--                                1. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">-->
 <!--                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaOneName: '' }}</span>-->
@@ -171,14 +176,14 @@
                                 </p>
                               </div>
                               <br>
-<!--                              <div class="six_part">-->
-<!--                                <p>-->
-<!--                                  Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                              </div>-->
+                              <div class="six_part">
+                                <p>
+                                  Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                </p>
+                                <p>
+                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
+                                </p>
+                              </div>
                               <br>
                               <div class="fourth_part">
                                 <p>Remarks and recommendations of superior</p>
@@ -218,6 +223,7 @@
 <!--                                  <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>-->
 <!--                                </p>-->
 <!--                              </div>-->
+                              <p style="padding-top: 295px">Form No.: TR-003-01/06</p>
                             </div>
                         </div>
                     </div>
@@ -275,7 +281,7 @@ export default {
       this.Area = response.data.data.area
       setTimeout(function(){
         window.print()
-      },2000)
+      },1000)
     });
   },
 
