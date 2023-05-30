@@ -20,7 +20,8 @@
                                   to June <span style="display: inline-block;border-bottom: 1px solid;width: 315px;text-align: center">{{ mdplist.to_period }}</span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 765px;text-align: center">{{ mdplist.EmployeeName }}</span>
+                                  Staff Id <span style="display: inline-block;border-bottom: 1px solid;width: 290px;text-align: center">{{ mdplist.StaffID }}</span>
+                                  Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 390px;text-align: center">{{ mdplist.EmployeeName }}</span>
                                 </p>
                                 <p style="font-size: 20px">
                                   Designation <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">{{ mdplist.EmployeeName }}</span>
