@@ -60,7 +60,12 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
         this.$store.commit('me', response);
-        this.personal = response.personal.email
+        if (response.personal){
+          this.personal = response.personal.email
+        }else {
+          this.personal = ''
+        }
+
       }, (error) => {
         this.errorNoti(error);
       });

@@ -42,6 +42,7 @@ export const Common = {
                 .then((response) => {
                     success(response.data);
                 }).catch((err) => {
+                console.log(err)
                 if (err.response.status === 401) {
                     localStorage.setItem("token", "");
                     this.redirect(this.mainOrigin + 'login');

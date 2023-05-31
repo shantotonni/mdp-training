@@ -408,6 +408,7 @@ export default {
         this.form.CurrentPosition = response.data.employee.CurrentPosition;
         this.form.PresentJobStartedOn = response.data.employee.PresentJobStartedOn;
         this.form.Qualification = response.data.employee.Qualification;
+        this.form.StaffID = response.data.employee.StaffID;
       }).catch((error)=>{
 
       })
@@ -424,6 +425,7 @@ export default {
           this.form.SuppervisorDesignation = response.data.employee.SuppervisorDesignation;
           this.form.SuppervisorEmail = response.data.employee.SuppervisorEmail;
           this.form.SuppervisorMobile = response.data.employee.SuppervisorMobile;
+          this.form.SuppervisorStaffID = response.data.employee.SuppervisorStaffID;
         }
 
       }).catch((error)=>{
@@ -473,5 +475,11 @@ export default {
 }
 .side_note .form-group {
   margin-bottom: 0;
+}
+.form-group label{
+  font-size:12px!important
+}
+.form-control {
+  font-size: 12px!important;
 }
 </style>

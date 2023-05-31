@@ -43,7 +43,6 @@ import VueHtml2Canvas from 'vue-html2canvas';
 Vue.use(VueHtml2Canvas);
 
 Vue.prototype.moment = moment
-
 export const bus = new Vue();
 
 Vue.component('skeleton-loader', require('./components/loaders/Straight').default);

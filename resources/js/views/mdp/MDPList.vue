@@ -149,10 +149,6 @@ export default {
         this.axiosPost('me', {}, (response) => {
           this.$store.commit('me', response);
           this.personal = response.personal
-          console.log(response.personal)
-
-          console.log(val)
-
         }, (error) => {
           this.errorNoti(error);
         });
