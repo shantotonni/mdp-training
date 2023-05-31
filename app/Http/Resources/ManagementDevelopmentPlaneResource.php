@@ -7,7 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ManagementDevelopmentPlaneResource extends JsonResource
 {
-
     public function toArray($request)
     {
         $session = explode('-',$this->AppraisalPeriod);

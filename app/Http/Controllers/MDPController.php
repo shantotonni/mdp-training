@@ -31,7 +31,6 @@ class MDPController extends Controller
         }else{
             $mdp = ManagementDevelopmentPlane::orderBy('ID','desc')->where('StaffID',$empcode)->paginate(15);
         }
-
         return new ManagementDevelopmentPlaneCollection($mdp);
     }
 
@@ -228,6 +227,15 @@ class MDPController extends Controller
 
     public function getEmployeeByEmployeeCode(Request $request){
         $empcode = $request->EmpCode;
+        $empcodelength = strlen($empcode);
+        if ($empcodelength == 3){
+            $empcode = '00'.$empcode;
+        }elseif ($empcodelength == 4){
+            $empcode = '0'.$empcode;
+        }else{
+            $empcode = $empcode;
+        }
+
         if ($empcode){
             $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education','emphist')->first();
             $dateFrom =  Carbon::now()->year -5;
@@ -252,7 +260,17 @@ class MDPController extends Controller
                 'message' => 'Same Employee Code'
             ]);
         }
-        $employee = Employee::where('EmpCode', $request->SuperVisorEmpCode)->with('department','designation','email','personal','education')->first();
+        $empcode = $request->SuperVisorEmpCode;
+        $empcodelength = strlen($empcode);
+        if ($empcodelength == 3){
+            $empcode = '00'.$empcode;
+        }elseif ($empcodelength == 4){
+            $empcode = '0'.$empcode;
+        }else{
+            $empcode = $empcode;
+        }
+
+        $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education')->first();
         return response()->json([
             'employee'=>new SupervisorResource($employee),
         ]);

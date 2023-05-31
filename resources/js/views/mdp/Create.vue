@@ -36,7 +36,7 @@
                             <div class="form-group">
                               <div class="form-group">
                                 <label>Staff ID</label>
-                                <input type="text" name="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @keyup="getEmployeeByStaffID">
+                                <input type="text" name="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID">
                                 <div class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -121,7 +121,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor Staff ID</label>
-                              <input type="text" name="SuppervisorStaffID" v-model="form.SuppervisorStaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @keyup="getSupervisorByStaffID">
+                              <input type="text" name="SuppervisorStaffID" v-model="form.SuppervisorStaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @change="getSupervisorByStaffID">
                               <div class="error" v-if="form.errors.has('SuppervisorStaffID')" v-html="form.errors.get('SuppervisorStaffID')" />
                             </div>
                           </div>
@@ -154,11 +154,11 @@
                             </div>
                           </div>
                         </div>
-
-                        <h4>Personal Initiative</h4>
                         <hr>
-                        <p>A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
+                        <p style="font-size: 13px">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
                           Which you will acquire at your personal initiative:</p>
+                        <hr>
+                        <h4 style="font-size: 18px">Personal Initiative</h4>
                         <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
                           <div class="col-3 col-md-3">
                             <div class="form-group">
@@ -193,9 +193,8 @@
                           </div>
                         </div>
 
-
-                        <h4>Required Training</h4>
-                        <p>Which will require in-house or external training that you think should be organized by the Company.</p>
+                        <h4 style="font-size: 18px">Required Training</h4>
+                        <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
                         <hr>
                         <div class="row" v-for="(train,index2) in form.training">
                           <div class="col-4 col-md-4">
@@ -236,21 +235,22 @@
                         <hr>
 
                         <div class="row">
-                          <p> B. For development to take future responsibilities
+                          <p style="font-size: 13px"> B. For development to take future responsibilities
                             Other than those mentioned in A, list below two areas of personal development/training that you would like to see
-                            happen in your case in the coming years and explain how those trainings will help the company</p>
+                            happen in your case in the coming years and explain how those trainings will help the company
+                          </p>
                           <div class="col-md-12">
                             <div class="row">
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Area One</label>
+                                  <label>Training One</label>
                                   <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }" style="height: 90px" name="AreaOne" placeholder="Title" required>
                                   <div class="error" v-if="form.errors.has('AreaOneName')" v-html="form.errors.get('AreaOneName')" />
                                 </div>
                               </div>
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Area Two</label>
+                                  <label>Training Two</label>
                                   <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }" style="height: 90px" name="AreaTwo" placeholder="Title" required>
                                   <div class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
                                 </div>
@@ -385,6 +385,7 @@ export default {
       axios.post(baseurl +'api/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
       }).then((response)=>{
+        console.log(response)
         this.training_history = response.data.training_history;
         this.form.EmployeeName = response.data.employee.EmployeeName;
         this.form.Designation = response.data.employee.Designation;
@@ -396,6 +397,7 @@ export default {
         this.form.CurrentPosition = response.data.employee.CurrentPosition;
         this.form.PresentJobStartedOn = response.data.employee.PresentJobStartedOn;
         this.form.Qualification = response.data.employee.Qualification;
+        this.form.StaffID = response.data.employee.StaffID;
       }).catch((error)=>{
 
       })
@@ -413,6 +415,7 @@ export default {
           this.form.SuppervisorDesignation = response.data.employee.SuppervisorDesignation;
           this.form.SuppervisorEmail = response.data.employee.SuppervisorEmail;
           this.form.SuppervisorMobile = response.data.employee.SuppervisorMobile;
+          this.form.SuppervisorStaffID = response.data.employee.SuppervisorStaffID;
         }
       }).catch((error)=>{
 
@@ -463,5 +466,11 @@ export default {
 }
 .side_note .form-group {
   margin-bottom: 0;
+}
+.form-group label{
+  font-size:12px!important
+}
+.form-control {
+  font-size: 12px!important;
 }
 </style>
