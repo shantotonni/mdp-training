@@ -36,7 +36,7 @@
                             <div class="form-group">
                               <div class="form-group">
                                 <label>Staff ID</label>
-                                <input type="text" name="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @keyup="getEmployeeByStaffID">
+                                <input type="text" name="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID">
                                 <div class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -121,7 +121,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor StaffID</label>
-                              <input type="text" name="SuppervisorStaffID" v-model="form.SuppervisorStaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @keyup="getSupervisorByStaffID">
+                              <input type="text" name="SuppervisorStaffID" v-model="form.SuppervisorStaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @change="getSupervisorByStaffID">
                               <div class="error" v-if="form.errors.has('SuppervisorStaffID')" v-html="form.errors.get('SuppervisorStaffID')" />
                             </div>
                           </div>
@@ -154,10 +154,10 @@
                             </div>
                           </div>
                         </div>
-                        <h4>Personal Initiative</h4>
-                        <hr>
-                        <p>A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
+                        <p style="font-weight: bold;font-size: 13px;color:#0000B9">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
                           Which you will acquire at your personal initiative:</p>
+                        <hr>
+                        <h4>Personal Initiative</h4>
                         <div class="row" v-for="(initiat, index) in form.initiative">
                           <div class="col-3 col-md-3">
                             <div class="form-group">
@@ -232,21 +232,21 @@
 
                         <hr>
                         <div class="row">
-                          <p> B. For development to take future responsibilities
+                          <p style="font-weight: bold;font-size: 13px;color:#0000B9"> B. For development to take future responsibilities
                             Other than those mentioned in A, list below two areas of personal development/training that you would like to see
                             happen in your case in the coming years and explain how those trainings will help the company</p>
                           <div class="col-md-12">
                             <div class="row">
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Area One</label>
+                                  <label>Training One</label>
                                   <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }" style="height: 90px" name="AreaOne" placeholder="Title" required>
                                   <div class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
                                 </div>
                               </div>
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Area Two</label>
+                                  <label>Training Two</label>
                                   <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }" style="height: 90px" name="AreaTwo" placeholder="Title" required>
                                   <div class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
                                 </div>
@@ -367,7 +367,7 @@ export default {
       console.log(response)
       this.form.fill(response.data.data);
       this.form.fill(response.data.data);
-      // this.getEmployeeByStaffID();
+       this.getEmployeeByStaffID();
       // this.getSupervisorByStaffID();
       this.getAllEmployeeTrainingList();
       if (response.data.data.late_fee === 'Y'){

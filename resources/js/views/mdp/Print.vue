@@ -7,11 +7,11 @@
                         <div class="datatable" v-if="!isLoading">
                             <div class="card-body">
                               <div>
-                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
+                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;margin-left: 10px" alt="user" class="rounded-circle" />
+                                <p style="font-size:15px">ACI Limited</p>
                               </div>
-                              <br>
                               <div class="first_part">
-                                <h3>7.15.2. Management Development Plan</h3>
+                                <h3 style="text-align:center">Management Development Plan</h3>
                                 <hr>
                                 <br>
                                 <p style="font-size: 20px">
@@ -24,7 +24,7 @@
                                   Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 390px;text-align: center">{{ mdplist.EmployeeName }}</span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">{{ mdplist.EmployeeName }}</span>
+                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">{{ mdplist.Designation }}</span>
                                   Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 306px;text-align: center">{{ mdplist.DateOfBirth }}</span>
                                 </p>
                                 <p style="font-size: 20px">

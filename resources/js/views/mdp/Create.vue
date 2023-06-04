@@ -155,7 +155,7 @@
                           </div>
                         </div>
                         <hr>
-                        <p style="font-size: 13px">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
+                        <p style="font-size: 13px;font-weight:bold;color:#0000B9">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
                           Which you will acquire at your personal initiative:</p>
                         <hr>
                         <h4 style="font-size: 18px">Personal Initiative</h4>
@@ -235,7 +235,7 @@
                         <hr>
 
                         <div class="row">
-                          <p style="font-size: 13px"> B. For development to take future responsibilities
+                          <p style="font-size: 13px;font-weight: bold;color:#0000B9"> B. For development to take future responsibilities
                             Other than those mentioned in A, list below two areas of personal development/training that you would like to see
                             happen in your case in the coming years and explain how those trainings will help the company
                           </p>
