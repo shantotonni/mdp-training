@@ -38,4 +38,23 @@ class CommonController extends Controller
             'training_list' => $training_list
         ]);
     }
+
+    public function getAgreeBusinessUser(Request $request){
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $empcode = $payload['EmpCode'];
+        $staffCode = $payload['staffCode'];
+
+        $training_list = MDPEmployeeTrainingList::where('StaffID', $staffCode)->first();
+
+        if (!empty($training_list)){
+            $dropDown = 'YES';
+        }else{
+            $dropDown = 'NO';
+        }
+
+        return response()->json([
+            'dropDown' => $dropDown
+        ]);
+    }
 }

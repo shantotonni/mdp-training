@@ -36,7 +36,10 @@ class AuthController extends Controller
 //        return $admin_user_found;
 
         if ($request->EmpCode == '10259' && $request->Password == '10259'){
-            $user = ['EmpCode'=>'admin'];
+            $user = [
+                'EmpCode'=>'admin',
+                'staffCode'=>'10259',
+            ];
             return response()->json([
                 'status' => 'success',
                 'access_token' => $this->generateToken($user,'admin')
@@ -166,6 +169,7 @@ class AuthController extends Controller
             'iss' => $_SERVER['SERVER_NAME'],
             'exp' => time() + 12*30*(24*60*60),// 1 Month
             'EmpCode' => $user->EmpCode ?? $user['EmpCode'],
+            'staffCode' => $user->EmpCode ?? $user['staffCode'],
             'Type' => $type,
         ];
         try {

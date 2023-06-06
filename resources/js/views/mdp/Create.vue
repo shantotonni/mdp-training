@@ -192,12 +192,14 @@
                             <button type="button" class="btn btn-success btn-sm" @click="addFind">+</button>
                           </div>
                         </div>
-
+                        <hr>
+                        <button type="button" class="btn btn-success btn-sm float-right" @click="getSuggestiveList()"> Suggestive List</button>
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
                         <hr>
                         <div class="row" v-for="(train,index2) in form.training">
-                          <div class="col-4 col-md-4">
+
+                          <div class="col-4 col-md-4" v-if="dropDown==='YES'">
                             <div class="form-group">
                               <label>Select Training</label>
                               <select v-model="train.TrainingTitle" name="Type" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }">
@@ -207,6 +209,15 @@
                               <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
                             </div>
                           </div>
+
+                          <div class="col-4 col-md-4" v-else>
+                            <div class="form-group">
+                              <label>Select Training</label>
+                              <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Title">
+                              <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
+                            </div>
+                          </div>
+
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Type</label>
@@ -265,9 +276,6 @@
                         </div>
                       </div>
                   </div>
-                  <div v-else>
-                    <skeleton-loader :row="14"/>
-                  </div>
                 </div>
               </div>
               <div class="col-md-5">
@@ -295,9 +303,6 @@
                       </div>
                     </div>
                   </div>
-                  <div v-else>
-                    <skeleton-loader :row="14"/>
-                  </div>
                 </div>
               </div>
             </div>
@@ -305,6 +310,35 @@
         </div>
       </div>
     </div>
+<!--    modal-->
+
+    <div class="modal fade bs-example-modal-lg" id="suggestiveModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title mt-0" id="myLargeModalLabel">Suggestive Learning Offering List</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
+              <thead>
+              <tr>
+                <th>Learning Topic</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(suggestive, i) in suggestive_list" :key="i" v-if="suggestive_list.length">
+                <td>{{ suggestive.LearningTopics }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
   </div>
 </template>
 
@@ -328,6 +362,7 @@ export default {
       training_list: [],
       employee: [],
       supervisor: [],
+      suggestive_list: [],
       form: new Form({
         ID :'',
         AppraisalPeriod :'2023-2024',
@@ -360,11 +395,15 @@ export default {
         //area: [{ AreaOneName: '', AreaTwoName: ''}],
       }),
       isLoading: false,
+      dropDown:''
     }
   },
   mounted() {
     document.title = 'MDP Create | MDP';
     this.getAllEmployeeTrainingList()
+  },
+  created() {
+    this.getData()
   },
   methods: {
     store(){
@@ -424,6 +463,22 @@ export default {
     getAllEmployeeTrainingList(){
       axios.get(baseurl+'api/get-all-employee-training-list').then((response)=>{
         this.training_list = response.data.training_list;
+      }).catch((error)=>{
+
+      })
+    },
+    getSuggestiveList(){
+      axios.get(baseurl+'api/get-level-wise-suggestive-list/' + this.form.StaffID).then((response)=>{
+        this.suggestive_list = response.data.suggestive_list;
+        $("#suggestiveModal").modal("show");
+      }).catch((error)=>{
+
+      })
+    },
+    getData() {
+      axios.get(baseurl+'api/get-agree-business-user').then((response)=>{
+        console.log(response)
+        this.dropDown = response.data.dropDown
       }).catch((error)=>{
 
       })

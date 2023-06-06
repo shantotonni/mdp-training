@@ -195,7 +195,7 @@
                         <h4>Training Request</h4>
                         <hr>
                         <div class="row" v-for="(trainValue,index2) in form.training">
-                          <div class="col-4 col-md-4">
+                          <div class="col-4 col-md-4" v-if="dropDown==='YES'">
                             <div class="form-group">
                               <label>Select Training</label>
                               <select v-model="trainValue.TrainingTitle" name="TrainingTitle" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }">
@@ -205,6 +205,14 @@
                               <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
                             </div>
                           </div>
+                          <div class="col-4 col-md-4" v-else>
+                            <div class="form-group">
+                              <label>Select Training</label>
+                              <input v-model="trainValue.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Title">
+                              <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
+                            </div>
+                          </div>
+
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Type</label>
@@ -356,6 +364,7 @@ export default {
         //area: [{ AreaOneName: '', AreaTwoName: ''}],
       }),
       isLoading: false,
+      dropDown:''
     }
   },
   mounted() {
@@ -376,6 +385,7 @@ export default {
         this.late_fee_status = false;
       }
     });
+    this.getData();
   },
   methods: {
     update(){
@@ -435,6 +445,14 @@ export default {
     getAllEmployeeTrainingList(){
       axios.get(baseurl+'api/get-all-employee-training-list').then((response)=>{
         this.training_list = response.data.training_list;
+      }).catch((error)=>{
+
+      })
+    },
+    getData() {
+      axios.get(baseurl+'api/get-agree-business-user').then((response)=>{
+        console.log(response)
+        this.dropDown = response.data.dropDown
       }).catch((error)=>{
 
       })

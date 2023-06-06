@@ -10,6 +10,8 @@ use App\Http\Resources\SupervisorResource;
 use App\Models\Area;
 use App\Models\AreaTwo;
 use App\Models\Employee;
+use App\Models\EmployeeDepartment;
+use App\Models\LevelWiseLearningOfferingList;
 use App\Models\ManagementDevelopmentPlane;
 use App\Models\MDPPersonalInitiative;
 use App\Models\MDPTraining;
@@ -243,7 +245,7 @@ class MDPController extends Controller
             $training_history = DB::select("EXEC SP_TrainingUserReport '$empcode','$dateFrom','$dateTo' ");
             return response()->json([
                 'employee'=>new EmployeeResource($employee),
-                'training_history'=>$training_history
+                'training_history'=>$training_history,
             ]);
         }else{
             return response()->json([
@@ -273,6 +275,14 @@ class MDPController extends Controller
         $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education')->first();
         return response()->json([
             'employee'=>new SupervisorResource($employee),
+        ]);
+    }
+
+    public function getLevelWiseSuggestiveList($empcode){
+        $employee_level = EmployeeDepartment::where('EmpCode',$empcode)->first();
+        $suggestive_list = LevelWiseLearningOfferingList::where('Level',$employee_level->Level)->get();
+        return response()->json([
+            'suggestive_list'=>$suggestive_list,
         ]);
     }
 }
