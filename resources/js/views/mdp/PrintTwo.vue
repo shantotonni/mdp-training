@@ -38,11 +38,9 @@
                               </div>
 
                               <br>
-                              <br>
 
                               <div class="first_part">
-                                <p>Training Received so far: List Attached</p>
-                                <hr>
+<!--                                <p>Training Received so far: List Attached</p>-->
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                   <thead>
                                     <tr>
@@ -60,18 +58,18 @@
                                       <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingDate }}</p></td>
                                     </tr>
                                     <tr>
-                                      <td>Personal Development / Training to Deliver Futer Job Responsibilities</td>
-                                      <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Name }}</p></td>
+                                      <td>Personal Development / Training to Deliver Future Job Responsibilities</td>
+                                      <td>
+                                        <p>{{ mdplist.AreaOne }}</p>
+                                        <p>{{ mdplist.AreaTwo }}</p>
+                                      </td>
                                       <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Type }}</p></td>
                                       <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Date }}</p></td>
                                     </tr>
 
                                     <tr>
-                                      <td>Knowledgge and skill will be Acquire at personal Initiative</td>
-                                      <td>
-                                        <p>{{ mdplist.AreaOne }}</p>
-                                        <p>{{ mdplist.AreaTwo }}</p>
-                                      </td>
+                                      <td>Knowledge and skill will be Acquire at personal Initiative</td>
+                                      <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Name }}</p></td>
                                       <td></td>
                                       <td></td>
                                     </tr>
@@ -91,6 +89,7 @@
                                      <span style="display: inline-block;border-top: 1px solid;width: 160px;text-align: center"></span>
                                    </p>
                                    <p>Signature of the Incumbent</p>
+                                   <br>
                                    <p>Form No: TR-00301/06</p>
                                  </div>
                                  <div style="text-align: center;width: 33%">
@@ -153,6 +152,20 @@ export default {
       this.training = response.data.data.training
       this.initiative = response.data.data.initiative
       this.area = response.data.data.area
+
+      // let css = '@page { size: landscape; }',
+      //     head = document.getElementsByTagName('head')[0],
+      //     style = document.createElement('style');
+      // style.type = 'text/css';
+      // style.media = 'print';
+      //
+      // if (style.styleSheet){
+      //   style.styleSheet.cssText = css;
+      // } else {
+      //   style.appendChild(document.createTextNode(css));
+      // }
+      // head.appendChild(style);
+
       setTimeout(function(){
         window.print()
       },2000)
@@ -166,5 +179,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+p{
+  margin: 0;
+}
+@page {
+  size: landscape;
+  margin: 0mm;
+}
 </style>

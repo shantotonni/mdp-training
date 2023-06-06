@@ -149,7 +149,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor Mobile</label>
-                              <input type="text" name="SuppervisorMobile" readonly v-model="form.SuppervisorMobile" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorMobile') }">
+                              <input type="text" name="SuppervisorMobile" v-model="form.SuppervisorMobile" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorMobile') }">
                               <div class="error" v-if="form.errors.has('SuppervisorMobile')" v-html="form.errors.get('SuppervisorMobile')" />
                             </div>
                           </div>
@@ -181,7 +181,7 @@
                           </div>
                           <div class="col-3 col-md-3">
                             <div class="form-group">
-                              <label>Date</label>
+                              <label>Planned Date</label>
                               <datepicker v-model="initiat.Date" :format="customFormatter" placeholder="Enter Date" input-class="form-control"></datepicker>
                               <div class="error" v-if="form.errors.has('Date')" v-html="form.errors.get('Date')" />
                             </div>
@@ -219,7 +219,7 @@
                           </div>
                           <div class="col-3 col-md-3">
                             <div class="form-group">
-                              <label>Date</label>
+                              <label>Planned Date</label>
                               <datepicker v-model="trainValue.TrainingDate" :format="customFormatter" placeholder="Enter Date" input-class="form-control"></datepicker>
                               <div class="error" v-if="form.errors.has('TrainingDate')" v-html="form.errors.get('TrainingDate')" />
                             </div>

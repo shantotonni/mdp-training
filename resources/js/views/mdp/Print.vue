@@ -7,8 +7,8 @@
                         <div class="datatable" v-if="!isLoading">
                             <div class="card-body">
                               <div>
-                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;margin-left: 10px" alt="user" class="rounded-circle" />
-                                <p style="font-size:15px">ACI Limited</p>
+                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;margin-left: 106px" alt="user" class="rounded-circle" />
+                                <p style="font-size:15px">Advanced Chemical Industries (ACI) Limited</p>
                               </div>
                               <div class="first_part">
                                 <h3 style="text-align:center">Management Development Plan</h3>
