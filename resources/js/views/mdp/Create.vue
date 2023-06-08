@@ -193,11 +193,11 @@
                           </div>
                         </div>
                         <hr>
-                        <button type="button" class="btn btn-success btn-sm float-right" @click="getSuggestiveList()"> Suggestive List</button>
+                        <button type="button" class="btn btn-success btn-sm float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'"> Suggestive List</button>
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
                         <hr>
-                        <div class="row" v-for="(train,index2) in form.training">
+                        <div class="row" v-for="(train,index2) in form.training" v-if="dropDown">
 
                           <div class="col-4 col-md-4" v-if="dropDown==='YES'">
                             <div class="form-group">
@@ -328,7 +328,7 @@
               </thead>
               <tbody>
               <tr v-for="(suggestive, i) in suggestive_list" :key="i" v-if="suggestive_list.length">
-                <td>{{ suggestive.LearningTopics }}</td>
+                <td>{{ suggestive.TrainingTitle }}</td>
               </tr>
               </tbody>
             </table>
@@ -400,10 +400,10 @@ export default {
   },
   mounted() {
     document.title = 'MDP Create | MDP';
-    this.getAllEmployeeTrainingList()
+    //this.getAllEmployeeTrainingList()
   },
   created() {
-    this.getData()
+   // this.getData()
   },
   methods: {
     store(){
@@ -437,6 +437,8 @@ export default {
         this.form.PresentJobStartedOn = response.data.employee.PresentJobStartedOn;
         this.form.Qualification = response.data.employee.Qualification;
         this.form.StaffID = response.data.employee.StaffID;
+        this.dropDown = response.data.dropDown;
+        this.training_list = response.data.training_list;
       }).catch((error)=>{
 
       })

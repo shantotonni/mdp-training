@@ -153,19 +153,6 @@ export default {
       this.initiative = response.data.data.initiative
       this.area = response.data.data.area
 
-      // let css = '@page { size: landscape; }',
-      //     head = document.getElementsByTagName('head')[0],
-      //     style = document.createElement('style');
-      // style.type = 'text/css';
-      // style.media = 'print';
-      //
-      // if (style.styleSheet){
-      //   style.styleSheet.cssText = css;
-      // } else {
-      //   style.appendChild(document.createTextNode(css));
-      // }
-      // head.appendChild(style);
-
       setTimeout(function(){
         window.print()
       },2000)
@@ -178,12 +165,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-p{
-  margin: 0;
-}
-@page {
-  size: landscape;
-  margin: 0mm;
-}
+<style scoped>
+
 </style>

@@ -13,6 +13,7 @@ use App\Models\Employee;
 use App\Models\EmployeeDepartment;
 use App\Models\LevelWiseLearningOfferingList;
 use App\Models\ManagementDevelopmentPlane;
+use App\Models\MDPEmployeeTrainingList;
 use App\Models\MDPPersonalInitiative;
 use App\Models\MDPTraining;
 use Carbon\Carbon;
@@ -214,7 +215,22 @@ class MDPController extends Controller
 
     public function edit($id){
         $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
-        return new ManagementDevelopmentPlaneResource($mdp);
+
+        $training_list = MDPEmployeeTrainingList::where('StaffID', $mdp->StaffID)->where('isDropDown','Y')->first();
+
+        if (!empty($training_list)){
+            $dropDown = 'YES';
+        }else{
+            $dropDown = 'NO';
+        }
+
+        $training_list_by_empcode = MDPEmployeeTrainingList::where('StaffID', $mdp->StaffID)->get();
+
+        return response()->json([
+            'training_list'=>$training_list_by_empcode,
+            'dropDown'=>$dropDown,
+            'data'=>new ManagementDevelopmentPlaneResource($mdp)
+        ]);
     }
 
     public function print($id){
@@ -243,9 +259,22 @@ class MDPController extends Controller
             $dateFrom =  Carbon::now()->year -5;
             $dateTo =  Carbon::now()->year;
             $training_history = DB::select("EXEC SP_TrainingUserReport '$empcode','$dateFrom','$dateTo' ");
+
+            $training_list = MDPEmployeeTrainingList::where('StaffID', $empcode)->where('isDropDown','Y')->first();
+
+            if (!empty($training_list)){
+                $dropDown = 'YES';
+            }else{
+                $dropDown = 'NO';
+            }
+
+            $training_list_by_empcode = MDPEmployeeTrainingList::where('StaffID', $empcode)->get();
+
             return response()->json([
                 'employee'=>new EmployeeResource($employee),
                 'training_history'=>$training_history,
+                'training_list'=>$training_list_by_empcode,
+                'dropDown'=>$dropDown,
             ]);
         }else{
             return response()->json([
@@ -279,8 +308,9 @@ class MDPController extends Controller
     }
 
     public function getLevelWiseSuggestiveList($empcode){
-        $employee_level = EmployeeDepartment::where('EmpCode',$empcode)->first();
-        $suggestive_list = LevelWiseLearningOfferingList::where('Level',$employee_level->Level)->get();
+        //$employee_level = EmployeeDepartment::where('EmpCode',$empcode)->first();
+        $suggestive_list = DB::select("EXEC usp_doLoadBDPTrainingTitel '$empcode' ");
+       // $suggestive_list = LevelWiseLearningOfferingList::where('Level',$employee_level->Level)->get();
         return response()->json([
             'suggestive_list'=>$suggestive_list,
         ]);

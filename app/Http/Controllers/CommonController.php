@@ -33,7 +33,6 @@ class CommonController extends Controller
         }else{
             $training_list = MDPEmployeeTrainingList::where('StaffID', $empcode)->get();
         }
-
         return response()->json([
             'training_list' => $training_list
         ]);
@@ -45,7 +44,7 @@ class CommonController extends Controller
         $empcode = $payload['EmpCode'];
         $staffCode = $payload['staffCode'];
 
-        $training_list = MDPEmployeeTrainingList::where('StaffID', $staffCode)->first();
+        $training_list = MDPEmployeeTrainingList::where('StaffID', $staffCode)->where('isDropDown','Y')->first();
 
         if (!empty($training_list)){
             $dropDown = 'YES';

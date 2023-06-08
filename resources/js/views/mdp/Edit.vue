@@ -36,7 +36,7 @@
                             <div class="form-group">
                               <div class="form-group">
                                 <label>Staff ID</label>
-                                <input type="text" name="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID">
+                                <input type="text" name="StaffID" v-model="form.StaffID" readonly class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID">
                                 <div class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -369,23 +369,18 @@ export default {
   },
   mounted() {
     document.title = 'MDP Create | MDP';
-    this.getAllEmployeeTrainingList()
+    //this.getAllEmployeeTrainingList()
   },
   created() {
     axios.get(baseurl + `api/mdp/edit/${this.$route.params.ID}`).then((response)=>{
       console.log(response)
       this.form.fill(response.data.data);
-      this.form.fill(response.data.data);
-       this.getEmployeeByStaffID();
+       //this.getEmployeeByStaffID();
       // this.getSupervisorByStaffID();
-      this.getAllEmployeeTrainingList();
-      if (response.data.data.late_fee === 'Y'){
-        this.late_fee_status = true;
-      }else {
-        this.late_fee_status = false;
-      }
+      //this.getAllEmployeeTrainingList();
+      this.dropDown = response.data.dropDown;
+      this.training_list = response.data.training_list;
     });
-    this.getData();
   },
   methods: {
     update(){
@@ -419,6 +414,8 @@ export default {
         this.form.PresentJobStartedOn = response.data.employee.PresentJobStartedOn;
         this.form.Qualification = response.data.employee.Qualification;
         this.form.StaffID = response.data.employee.StaffID;
+        this.dropDown = response.data.dropDown;
+        this.training_list = response.data.training_list;
       }).catch((error)=>{
 
       })
