@@ -170,7 +170,7 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Type</label>
-                              <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }" required>
+                              <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }">
                                 <option value="">Select Type</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>

@@ -1,9 +1,9 @@
 <template>
-    <div class="content">
+    <div class="content" >
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-12">
-                    <div class="card">
+                    <div class="card" id="my-printable-content">
                         <div class="datatable" v-if="!isLoading">
                             <div class="card-body">
                               <div style="text-align: center">
@@ -15,7 +15,7 @@
                               <div class="first_part">
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                   <thead>
-                                  <tr>
+                                  <tr style="color:black">
                                     <th class="text-center">Staff ID</th>
                                     <th class="text-center">Employee Name</th>
                                     <th class="text-center">Designation</th>
@@ -43,7 +43,7 @@
 <!--                                <p>Training Received so far: List Attached</p>-->
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                   <thead>
-                                    <tr>
+                                    <tr style="color:black">
                                       <th>Area of Performance Improvement</th>
                                       <th>Required Training/Learning Topic</th>
                                       <th>Program Type</th>
@@ -117,10 +117,12 @@
 
 <script>
 import {baseurl} from '../../base_url'
+// import printJS from 'print-this'
 export default {
     name: "List",
     data() {
         return {
+          numPagesPrinted: 0,
           mdplist: [],
           initiative: [],
           training: [],
@@ -152,6 +154,11 @@ export default {
       this.training = response.data.data.training
       this.initiative = response.data.data.initiative
       this.area = response.data.data.area
+
+      // $('#my-printable-content').printThis({
+      //   importCSS: true,
+      //   loadCSS: "size: landscape;",
+      // });
 
       setTimeout(function(){
         window.print()

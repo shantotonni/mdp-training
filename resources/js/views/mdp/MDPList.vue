@@ -46,7 +46,7 @@
                                               <th>Official Email</th>
                                               <th>Mobile</th>
                                               <th>Appraisal Period</th>
-                                              <th>Action</th>
+                                              <th class="text-center">Action</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -59,11 +59,11 @@
                                               <td>{{ mdp.OfficialEmail }}</td>
                                               <td>{{ mdp.Mobile }}</td>
                                               <td>{{ mdp.AppraisalPeriod }}</td>
-                                              <td>
+                                              <td class="text-center">
                                                 <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
                                                 <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> MDP</router-link>
                                                 <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> PTC</router-link>
-<!--                                                  <button @click="destroy(mdp.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->
+                                                <button @click="destroy(mdp.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                               </td>
                                           </tr>
                                         </tbody>

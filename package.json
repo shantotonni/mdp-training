@@ -30,6 +30,7 @@
         "jspdf": "^2.5.1",
         "moment": "^2.27.0",
         "number-currency-format": "^1.0.10",
+        "print-js": "^1.6.0",
         "print-this": "^1.16.0",
         "read-excel-file": "^5.0.0",
         "sweetalert2": "^9.17.4",

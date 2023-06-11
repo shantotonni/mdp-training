@@ -233,6 +233,27 @@ class MDPController extends Controller
         ]);
     }
 
+    public function delete($id){
+        DB::beginTransaction();
+        try {
+            MDPTraining::where('MDPID',$id)->delete();
+            MDPPersonalInitiative::where('MDPID',$id)->delete();
+            ManagementDevelopmentPlane::where('ID',$id)->delete();
+
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully Deleted.'
+            ]);
+
+        } catch (\Exception $exception) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong! '.$exception->getMessage()
+            ],500);
+        }
+    }
+
     public function print($id){
         $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
         return new ManagementDevelopmentPlaneResource($mdp);

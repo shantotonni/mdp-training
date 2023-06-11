@@ -31,14 +31,13 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid'], 400);
         }
 
-//        $admin_user = ['23284','11936'];
-//        $admin_user_found = in_array($request->EmpCode, $admin_user);
-//        return $admin_user_found;
+        $admin_user = ['24464','18202','30494','22602','29993','02121','10259'];
+        $admin_user_found = in_array($request->EmpCode, $admin_user);
 
-        if ($request->EmpCode == '10259' && $request->Password == '10259'){
+        if ($admin_user_found){
             $user = [
                 'EmpCode'=>'admin',
-                'staffCode'=>'10259',
+                'staffCode'=>$request->EmpCode,
             ];
             return response()->json([
                 'status' => 'success',
@@ -46,7 +45,6 @@ class AuthController extends Controller
             ],200);
         }else{
             $user = User::where('EmpCode', $request->EmpCode)->where('Password',$request->Password)->first();
-
             if (!$user) {
                 return response()->json([
                     'status' => 'error',
