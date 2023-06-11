@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content" id="mdp">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-12">
@@ -109,6 +109,7 @@
 <!--                                 <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>-->
 <!--                                </p>-->
 <!--                              </div>-->
+                              <br>
                               <br>
                               <div class="fourth_part">
                                 <p style="font-weight: bold;font-size: 20px">B. For development to take future responsibilities</p>
@@ -224,6 +225,7 @@
 
 <script>
 import {baseurl} from '../../base_url'
+import printJS from 'print-this'
 export default {
     name: "List",
     data() {
@@ -268,9 +270,14 @@ export default {
       this.initiative = response.data.data.initiative
       this.training = response.data.data.training
       this.Area = response.data.data.area
-      setTimeout(function(){
-        window.print()
-      },1000)
+      // setTimeout(function(){
+      //   window.print()
+      // },1000)
+      $('#mdp').printThis({
+        importCSS: true,
+        loadCSS: "path/to/new/CSS/file",
+      });
+
     });
   },
 
@@ -279,5 +286,7 @@ export default {
     },
 }
 </script>
+<style scoped>
 
+</style>
 
