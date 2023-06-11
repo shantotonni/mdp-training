@@ -238,6 +238,11 @@ class MDPController extends Controller
         return new ManagementDevelopmentPlaneResource($mdp);
     }
 
+    public function mdpExport(){
+        $mdp_list = ManagementDevelopmentPlane::orderBy('ID','desc')->get();
+        return new ManagementDevelopmentPlaneCollection($mdp_list);
+    }
+
     public function search($query)
     {
         return new ManagementDevelopmentPlaneCollection(ManagementDevelopmentPlane::where('StaffID','LIKE',"%$query%")->latest()->paginate(10));

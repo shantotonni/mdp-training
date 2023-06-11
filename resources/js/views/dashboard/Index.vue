@@ -4,9 +4,9 @@
       <div class="page-title-box">
         <div class="row align-items-center">
           <div class="col-sm-6">
-            <h4 class="page-title">Dashboard</h4>
+            <h4 class="page-title" style="font-size: 22px">Dashboard</h4>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item active">Welcome to Management Development Plan for 2023-2024</li>
+              <li class="breadcrumb-item active" style="font-size: 18px">Welcome to Management Development Plan for 2023-2024</li>
             </ol>
           </div>
           <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 80px">
@@ -22,7 +22,7 @@
       <!-- end row -->
       <div class="row">
         <div class="col-sm-12">
-          <p style="text-align: center">
+          <p style="font-size:16px;color:#0a6aff">
             Management Development Plan (MDP) at ACI is an annual learning and development commitment made by each management staff, recommended and cross checked by the Supervisor.
             The plan will be executed during the particular fiscal year by means of formal training programs & several self-initiatives to enable the employee for improved performance in his present and future job responsibilities.
           </p>

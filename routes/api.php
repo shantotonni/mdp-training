@@ -34,6 +34,7 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::post('get-employee-by-employee-code', [MDPController::class,'getEmployeeByEmployeeCode']);
     Route::post('get-supervisor-by-employee-code', [MDPController::class,'getSupervisorByEmployeeCode']);
     Route::get('get-level-wise-suggestive-list/{StaffID}', [MDPController::class,'getLevelWiseSuggestiveList']);
+    Route::get('export-mdp-list', [MDPController::class,'mdpExport']);
 
 
     Route::get('get-all-employee-training-list', [CommonController::class,'getEmployeeTrainingList']);

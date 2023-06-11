@@ -24,7 +24,11 @@
 <!--                                            <i class="mdi mdi-database-export"></i>-->
 <!--                                            Export-->
 <!--                                        </button>-->
-                                        <button type="button" class="btn btn-primary btn-sm" @click="reload">
+                                        <button type="button" class="btn btn-info btn-sm" @click="exportMDPList">
+                                            <i class="fas fa-sync"></i>
+                                            Export
+                                        </button>
+                                      <button type="button" class="btn btn-primary btn-sm" @click="reload">
                                             <i class="fas fa-sync"></i>
                                             Reload
                                         </button>
@@ -77,6 +81,7 @@
                         <div v-else>
                             <skeleton-loader :row="14"/>
                         </div>
+                      <data-export/>
                     </div>
                 </div>
             </div>
@@ -87,6 +92,7 @@
 <script>
 import {baseurl} from '../../base_url'
 import {Common} from "../../mixins/common";
+import {bus} from "../../app";
 export default {
     name: "List",
   mixins: [Common],
@@ -158,6 +164,24 @@ export default {
             this.query = "";
             // this.$toaster.success('Data Successfully Refresh');
         },
+      exportMDPList(){
+        axios.get(baseurl + 'api/export-mdp-list')
+            .then((response)=>{
+              let dataSets = response.data.data;
+              if (dataSets.length > 0) {
+                let columns = Object.keys(dataSets[0]);
+                columns = columns.filter((item) => item !== 'row_num');
+                let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                columns = columns.map((item) => {
+                  let title = item.replace(rex, '$1$4 $2$3$5')
+                  return {title, key: item}
+                });
+                bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
+              }
+            }).catch((error)=>{
+          console.log(error)
+        })
+      },
         destroy(id){
             Swal.fire({
                 title: 'Are you sure?',

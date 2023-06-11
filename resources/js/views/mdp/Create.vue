@@ -193,7 +193,7 @@
                           </div>
                         </div>
                         <hr>
-                        <button type="button" class="btn btn-success btn-sm float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'"> Suggestive List</button>
+                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'" style="width: 230px;height: 45px"> Suggestive List</button>
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
                         <hr>
@@ -213,7 +213,7 @@
                           <div class="col-4 col-md-4" v-else>
                             <div class="form-group">
                               <label>Select Training</label>
-                              <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Title">
+                              <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Type Or Copy From Suggestive List">
                               <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
                             </div>
                           </div>
@@ -317,7 +317,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title mt-0" id="myLargeModalLabel">Suggestive Learning Offering List</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="modalHide()">×</button>
           </div>
           <div class="modal-body">
             <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
@@ -484,6 +484,9 @@ export default {
       }).catch((error)=>{
 
       })
+    },
+    modalHide(){
+      $("#suggestiveModal").modal("hide");
     },
     customFormatter(date) {
       return moment(date).format('YYYY-MM-DD');

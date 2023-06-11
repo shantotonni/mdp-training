@@ -454,6 +454,9 @@ export default {
 
       })
     },
+    modalHide(){
+      $("#suggestiveModal").modal("hide");
+    },
     customFormatter(date) {
       return moment(date).format('YYYY-MM-DD');
     },
