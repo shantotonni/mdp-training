@@ -226,8 +226,13 @@ class MDPController extends Controller
 
         $training_list_by_empcode = MDPEmployeeTrainingList::where('StaffID', $mdp->StaffID)->get();
 
+        $dateFrom =  Carbon::now()->year -5;
+        $dateTo =  Carbon::now()->year;
+        $training_history = DB::select("EXEC SP_TrainingUserReport '$mdp->StaffID','$dateFrom','$dateTo' ");
+
         return response()->json([
             'training_list'=>$training_list_by_empcode,
+            'training_history'=>$training_history,
             'dropDown'=>$dropDown,
             'data'=>new ManagementDevelopmentPlaneResource($mdp)
         ]);

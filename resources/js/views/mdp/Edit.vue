@@ -191,6 +191,8 @@
                             <button type="button" class="btn btn-success btn-sm" @click="addFind">+</button>
                           </div>
                         </div>
+                        <hr>
+                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'" style="width: 230px;height: 45px"> Suggestive List</button>
 
                         <h4>Training Request</h4>
                         <hr>
@@ -309,6 +311,35 @@
         </div>
       </div>
     </div>
+
+    <!--    modal-->
+    <div class="modal fade bs-example-modal-lg" id="suggestiveModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title mt-0" id="myLargeModalLabel">Suggestive Learning Offering List</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="modalHide()">×</button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
+              <thead>
+              <tr>
+                <th>Learning Topic</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(suggestive, i) in suggestive_list" :key="i" v-if="suggestive_list.length">
+                <td>{{ suggestive.TrainingTitle }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
   </div>
 </template>
 
@@ -332,6 +363,7 @@ export default {
       training_list: [],
       employee: [],
       supervisor: [],
+      suggestive_list: [],
       form: new Form({
         ID :'',
         AppraisalPeriod :'',
@@ -380,6 +412,7 @@ export default {
       //this.getAllEmployeeTrainingList();
       this.dropDown = response.data.dropDown;
       this.training_list = response.data.training_list;
+      this.training_history = response.data.training_history;
     });
   },
   methods: {
@@ -442,6 +475,14 @@ export default {
     getAllEmployeeTrainingList(){
       axios.get(baseurl+'api/get-all-employee-training-list').then((response)=>{
         this.training_list = response.data.training_list;
+      }).catch((error)=>{
+
+      })
+    },
+    getSuggestiveList(){
+      axios.get(baseurl+'api/get-level-wise-suggestive-list/' + this.form.StaffID).then((response)=>{
+        this.suggestive_list = response.data.suggestive_list;
+        $("#suggestiveModal").modal("show");
       }).catch((error)=>{
 
       })
