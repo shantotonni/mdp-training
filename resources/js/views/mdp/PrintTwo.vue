@@ -62,9 +62,8 @@
                                         <p>{{ mdplist.AreaTwo }}</p>
                                       </td>
                                       <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Type }}</p></td>
-                                      <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ customFormatter(init.Date) }}</p></td>
+                                      <td style="width: 8%"><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ customFormatter(init.Date) }}</p></td>
                                     </tr>
-
                                     <tr>
                                       <td>Knowledge and skill will be Acquire at personal Initiative</td>
                                       <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Name }}</p></td>
@@ -74,8 +73,6 @@
                                   </tbody>
                                 </table>
                               </div>
-                              <br>
-                              <br>
                               <hr>
                               <br>
                               <div class="first_part">
@@ -85,7 +82,6 @@
                                      <span style="display: inline-block;border-top: 1px solid;width: 160px;text-align: center"></span>
                                    </p>
                                    <p>Signature of the Incumbent</p>
-                                   <br>
                                    <p>Form No: TR-00301/06</p>
                                  </div>
                                  <div style="text-align: center;width: 33%">
