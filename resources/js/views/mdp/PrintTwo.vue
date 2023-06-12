@@ -10,12 +10,10 @@
                                 <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
                                 <h3>Personal Training Commitment 2023-2024</h3>
                               </div>
-                              <br>
-                              <br>
                               <div class="first_part">
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                   <thead>
-                                  <tr>
+                                  <tr style="color: black">
                                     <th class="text-center">Staff ID</th>
                                     <th class="text-center">Employee Name</th>
                                     <th class="text-center">Designation</th>
@@ -43,7 +41,7 @@
 <!--                                <p>Training Received so far: List Attached</p>-->
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                   <thead>
-                                    <tr>
+                                    <tr style="color: black">
                                       <th>Area of Performance Improvement</th>
                                       <th>Required Training/Learning Topic</th>
                                       <th>Program Type</th>
@@ -55,7 +53,7 @@
                                       <td>In-house or External Training By the Company for Delivering Present Job Responsibility</td>
                                       <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingTitle }}</p></td>
                                       <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingType }}</p></td>
-                                      <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingDate }}</p></td>
+                                      <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ customFormatter(train.TrainingDate) }}</p></td>
                                     </tr>
                                     <tr>
                                       <td>Personal Development / Training to Deliver Future Job Responsibilities</td>
@@ -64,7 +62,7 @@
                                         <p>{{ mdplist.AreaTwo }}</p>
                                       </td>
                                       <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Type }}</p></td>
-                                      <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Date }}</p></td>
+                                      <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ customFormatter(init.Date) }}</p></td>
                                     </tr>
 
                                     <tr>
@@ -115,6 +113,7 @@
 
 <script>
 import {baseurl} from '../../base_url'
+import moment from "moment/moment";
 
 export default {
     name: "List",
@@ -159,7 +158,9 @@ export default {
   },
 
     methods: {
-      //
+      customFormatter(date) {
+        return moment(date).format('YYYY-MM-DD');
+      },
     },
 }
 </script>
