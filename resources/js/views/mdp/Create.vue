@@ -36,7 +36,7 @@
                             <div class="form-group">
                               <div class="form-group">
                                 <label>Staff ID</label>
-                                <input type="text" name="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID">
+                                <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID">
                                 <div class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -403,7 +403,8 @@ export default {
     //this.getAllEmployeeTrainingList()
   },
   created() {
-   // this.getData()
+    this.getUserData()
+    //this.getData()
   },
   methods: {
     store(){
@@ -484,6 +485,20 @@ export default {
       }).catch((error)=>{
 
       })
+    },
+    getUserData() {
+      this.axiosPost('me', {}, (response) => {
+        this.image = `${this.mainOrigin}assets/images/avatar.png`;
+        this.$store.commit('me', response);
+        console.log(response)
+        if(response.payload.Type ==='employee'){
+          this.form.StaffID = response.payload.EmpCode;
+          this.getEmployeeByStaffID()
+          $('#StaffID').attr('readonly', true);
+        }
+      }, (error) => {
+        this.errorNoti(error);
+      });
     },
     modalHide(){
       $("#suggestiveModal").modal("hide");
