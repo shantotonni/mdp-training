@@ -31,7 +31,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid'], 400);
         }
 
-        $admin_user = ['24464','18202','30494','22602','29993','02121','10259'];
+        $admin_user = ['06865','23215','23401','24793','10259'];
         $admin_user_found = in_array($request->EmpCode, $admin_user);
 
         if ($admin_user_found){
