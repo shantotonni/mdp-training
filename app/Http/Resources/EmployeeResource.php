@@ -25,7 +25,8 @@ class EmployeeResource extends JsonResource
             'Mobile'=>isset($this->personal) ? $this->personal->MobileNo: '',
             'DateOfBirth'=>isset($this->personal) ? date('Y-m-d',strtotime($this->personal->BirthDate)): '',
             'CurrentPosition'=>isset($this->designation) ? $this->designation->DesgName: '',
-            'PresentJobStartedOn'=>isset($this->emphist) ? date('Y-m-d',strtotime($this->emphist->EffectiveDate)): '',
+            //'PresentJobStartedOn'=>isset($this->emphist) ? date('Y-m-d',strtotime($this->emphist->EffectiveDate)): '',
+            'PresentJobStartedOn'=>isset($this->LastPromoDate) ? date('Y-m-d',strtotime($this->LastPromoDate)): '',
             'Qualification'=> isset($this->education) ? $this->education->Degree: '',
             'JoiningDate'=>date('Y-m-d',strtotime($this->JoiningDate)),
         ];
