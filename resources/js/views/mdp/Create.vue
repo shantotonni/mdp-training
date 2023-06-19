@@ -101,7 +101,8 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Present Job Started On</label>
-                              <input type="text" name="PresentJobStartedOn" v-model="form.PresentJobStartedOn" class="form-control" :class="{ 'is-invalid': form.errors.has('PresentJobStartedOn') }">
+                              <datepicker v-model="form.PresentJobStartedOn" :format="customFormatter" input-class="form-control"></datepicker>
+<!--                              <input type="text" name="PresentJobStartedOn" v-model="form.PresentJobStartedOn" class="form-control" :class="{ 'is-invalid': form.errors.has('PresentJobStartedOn') }">-->
                               <div class="error" v-if="form.errors.has('PresentJobStartedOn')" v-html="form.errors.get('PresentJobStartedOn')" />
                             </div>
                           </div>

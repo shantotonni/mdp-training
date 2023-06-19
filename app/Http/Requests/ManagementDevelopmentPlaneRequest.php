@@ -29,7 +29,7 @@ class ManagementDevelopmentPlaneRequest extends FormRequest
             'EmployeeName'=>'required',
             'Designation'=>'required',
             'Department'=>'required',
-            'OfficialEmail'=>'required',
+            //'OfficialEmail'=>'required',
             'Mobile'=>'required|min:11|max:11',
             'JoiningDate'=>'required',
             'CurrentPosition'=>'required',
