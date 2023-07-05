@@ -24,7 +24,7 @@
 <!--                                            <i class="mdi mdi-database-export"></i>-->
 <!--                                            Export-->
 <!--                                        </button>-->
-                                        <button type="button" class="btn btn-info btn-sm" @click="exportMDPList">
+                                        <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="personal===null">
                                             <i class="fas fa-sync"></i>
                                             Export
                                         </button>
