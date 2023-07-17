@@ -14,6 +14,16 @@ class EmployeeResource extends JsonResource
      */
     public function toArray($request)
     {
+        if (isset($this->personal)){
+            $len = strlen($this->personal->MobileNo);
+            if ($len  < 11){
+                $mobile = '0'.$this->personal->MobileNo;
+            }else{
+                $mobile = $this->personal->MobileNo;
+            }
+        }else{
+            $mobile = '';
+        }
         return [
             'StaffID'=>$this->EmpCode,
             'EmployeeName'=>isset($this->personal) ? $this->personal->Name: '',
@@ -22,7 +32,7 @@ class EmployeeResource extends JsonResource
             'DesgCode'=>$this->DesgCode,
             'Designation'=>isset($this->designation) ? $this->designation->DesgName: '',
             'OfficialEmail'=>isset($this->email) ? $this->email->EmailID: '',
-            'Mobile'=>isset($this->personal) ? $this->personal->MobileNo: '',
+            'Mobile'=>$mobile,
             'DateOfBirth'=>isset($this->personal) ? date('Y-m-d',strtotime($this->personal->BirthDate)): '',
             'CurrentPosition'=>isset($this->designation) ? $this->designation->DesgName: '',
             //'PresentJobStartedOn'=>isset($this->emphist) ? date('Y-m-d',strtotime($this->emphist->EffectiveDate)): '',
