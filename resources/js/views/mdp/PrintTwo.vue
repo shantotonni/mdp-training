@@ -13,24 +13,24 @@
                               <div class="first_part">
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                   <thead>
-                                  <tr style="color: black">
-                                    <th class="text-center">Staff ID</th>
-                                    <th class="text-center">Employee Name</th>
-                                    <th class="text-center">Designation</th>
-                                    <th class="text-center">Joining Date</th>
-                                    <th class="text-center">Present Job Starte On</th>
-                                    <th class="text-center">Mobile</th>
-                                  </tr>
+                                    <tr style="background: white;color: black">
+                                      <th class="text-center">Staff ID</th>
+                                      <th class="text-center">Employee Name</th>
+                                      <th class="text-center">Designation</th>
+                                      <th class="text-center">Joining Date</th>
+                                      <th class="text-center">Present Job Starte On</th>
+                                      <th class="text-center">Mobile</th>
+                                    </tr>
                                   </thead>
                                   <tbody>
-                                  <tr>
-                                    <td class="text-center">{{ mdplist.StaffID }}</td>
-                                    <td class="text-center">{{ mdplist.EmployeeName }}</td>
-                                    <td class="text-center">{{ mdplist.Designation }}</td>
-                                    <td class="text-center">{{ mdplist.JoiningDate }}</td>
-                                    <td class="text-center">{{ mdplist.PresentJobStartedOn }}</td>
-                                    <td class="text-center">{{ mdplist.Mobile }}</td>
-                                  </tr>
+                                    <tr>
+                                      <td class="text-center">{{ mdplist.StaffID }}</td>
+                                      <td class="text-center">{{ mdplist.EmployeeName }}</td>
+                                      <td class="text-center">{{ mdplist.Designation }}</td>
+                                      <td class="text-center">{{ mdplist.JoiningDate }}</td>
+                                      <td class="text-center">{{ mdplist.PresentJobStartedOn }}</td>
+                                      <td class="text-center">{{ mdplist.Mobile }}</td>
+                                    </tr>
                                   </tbody>
                                 </table>
                               </div>
@@ -41,7 +41,7 @@
 <!--                                <p>Training Received so far: List Attached</p>-->
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                   <thead>
-                                    <tr style="color: black">
+                                    <tr style="background: white;color: black">
                                       <th>Area of Performance Improvement</th>
                                       <th>Required Training/Learning Topic</th>
                                       <th>Program Type</th>
