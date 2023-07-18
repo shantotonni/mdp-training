@@ -19,7 +19,12 @@ class EmployeeResource extends JsonResource
             if ($len  < 11){
                 $mobile = '0'.$this->personal->MobileNo;
             }else{
-                $mobile = $this->personal->MobileNo;
+                if ($len == 14){
+                    $mobile = substr($this->personal->MobileNo, 3);
+                }elseif ($len == 13){
+                    $mobile = substr($this->personal->MobileNo, 2);
+                } else
+                    $mobile = $this->personal->MobileNo;
             }
         }else{
             $mobile = '';
