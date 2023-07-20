@@ -265,7 +265,7 @@ class MDPController extends Controller
     }
 
     public function mdpExport(){
-        $mdp_list = ManagementDevelopmentPlane::orderBy('ID','desc')->get();
+        $mdp_list = ManagementDevelopmentPlane::orderBy('ID','desc')->with('initiative','training')->get();
         return new ManagementDevelopmentPlaneCollection($mdp_list);
     }
 
