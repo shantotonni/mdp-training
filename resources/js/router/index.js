@@ -9,6 +9,12 @@ import MDPEdit from '../views/mdp/Edit'
 import MDPPrint from '../views/mdp/Print'
 import MDPPrintTwo from '../views/mdp/PrintTwo'
 
+//ACTION PLAN
+import ActionPlanList from '../views/action_plan/ActionPlanList'
+import ActionPlanCreate from '../views/action_plan/Create'
+import ActionPlanEdit from '../views/action_plan/Edit'
+import ActionPlanPrint from '../views/action_plan/Print'
+
 import NotFound from '../views/404/Index';
 import {baseurl} from '../base_url'
 
@@ -65,6 +71,20 @@ const routes = [
             },
             {
                 path: baseurl + 'mdp-print_two/:ID', name: 'MDPPrintTwo', component: MDPPrintTwo
+            },
+
+            //Action Plan list
+            {
+                path: baseurl + 'action-plan-list', name: 'ActionPlanList', component: ActionPlanList
+            },
+            {
+                path: baseurl + 'action-plan-create', name: 'ActionPlanCreate', component: ActionPlanCreate
+            },
+            {
+                path: baseurl + 'action-plan-edit/:ID', name: 'ActionPlanEdit', component: ActionPlanEdit
+            },
+            {
+                path: baseurl + 'action-plan-print/:ID', name: 'ActionPlanPrint', component: ActionPlanPrint
             },
         ],
         beforeEnter(to, from, next) {

@@ -31,14 +31,28 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid'], 400);
         }
 
-        $admin_user = ['06865','23215','23401','24793','10259'];
-        $admin_user_found = in_array($request->EmpCode, $admin_user);
+        //$admin_user = ['06865','23215','23401','24793','10259','23283'];
+        $admin_dataset = [
+            ['EmpCode'=>'06865','Business'=>''],
+            ['EmpCode'=>'23215','Business'=>''],
+            ['EmpCode'=>'23401','Business'=>''],
+            ['EmpCode'=>'24793','Business'=>''],
+            ['EmpCode'=>'10259','Business'=>''],
+            ['EmpCode'=>'23283','Business'=>'MIS'],
+            ['EmpCode'=>'21005','Business'=>'Consumer Brands'],
+        ];
 
-        if ($admin_user_found){
+        //$admin_user_found = in_array($request->EmpCode, $admin_user);
+        $admin_dataset = collect($admin_dataset);
+        $is_admin = $admin_dataset->where('EmpCode',$request->EmpCode)->first();
+
+        if ($is_admin){
             $user = [
                 'EmpCode'=>'admin',
                 'staffCode'=>$request->EmpCode,
+                'Business'=>$is_admin['Business'],
             ];
+
             return response()->json([
                 'status' => 'success',
                 'access_token' => $this->generateToken($user,'admin')
@@ -121,12 +135,12 @@ class AuthController extends Controller
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
 
-       $personal = Employee::where('EmpCode',$empcode)->with('email')->first();
+        $personal = Employee::where('EmpCode',$empcode)->with('email')->first();
 
-       return response()->json([
+        return response()->json([
            'personal'=>$personal,
            'payload'=>$payload,
-       ]);
+        ]);
 
     }
 
@@ -168,6 +182,7 @@ class AuthController extends Controller
             'exp' => time() + 12*30*(24*60*60),// 1 Month
             'EmpCode' => $user->EmpCode ?? $user['EmpCode'],
             'staffCode' => $user->EmpCode ?? $user['staffCode'],
+            'Business' => $user->Business ?? $user['Business'],
             'Type' => $type,
         ];
         try {

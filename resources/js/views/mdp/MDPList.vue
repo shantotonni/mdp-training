@@ -107,17 +107,6 @@ export default {
             query: "",
             editMode: false,
             isLoading: false,
-            form: new Form({
-                id:'',
-                generator_name:'',
-                unique_generator_code: '',
-                generator_model: '',
-                brand_id:'',
-                rating: '',
-                generator_serial: '',
-                engine_brand: '',
-                engine_serial: '',
-            }),
         }
     },
     watch: {

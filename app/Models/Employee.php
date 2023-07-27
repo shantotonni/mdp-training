@@ -16,6 +16,9 @@ class Employee extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function division(){
+        return $this->belongsTo(Division::class,'DivCode','DivCode');
+    }
     public function department(){
         return $this->belongsTo(Department::class,'DeptCode','DeptCode');
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\MDPController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('mdp/list',[MDPController::class,'index']);
     Route::post('mdp/store',[MDPController::class,'store']);
     Route::get('mdp/edit/{ID}', [MDPController::class,'edit']);
-    Route::get('mdp/edit/{ID}', [MDPController::class,'edit']);
+    //Route::get('mdp/edit/{ID}', [MDPController::class,'edit']);
     Route::post('mdp/update', [MDPController::class,'update']);
     Route::get('mdp/print/{ID}', [MDPController::class,'print']);
     Route::get('search/mdp/list/{query}', [MDPController::class,'search']);
@@ -36,7 +37,20 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::post('get-supervisor-by-employee-code', [MDPController::class,'getSupervisorByEmployeeCode']);
     Route::get('get-level-wise-suggestive-list/{StaffID}', [MDPController::class,'getLevelWiseSuggestiveList']);
     Route::get('export-mdp-list', [MDPController::class,'mdpExport']);
+    //End
 
+    //Action Plan Route
+    Route::get('action-plane/list',[ActionPlanController::class,'index']);
+    Route::post('hr_action_plane_store',[ActionPlanController::class,'store']);
+    Route::get('action-plane-edit/{ID}', [ActionPlanController::class,'edit']);
+    Route::post('action_plane_update', [ActionPlanController::class,'update']);
+    Route::get('action_plane_print/{ID}', [ActionPlanController::class,'print']);
+    Route::get('action_plane_search/{query}', [ActionPlanController::class,'search']);
+    Route::delete('action_plane_delete/{ID}', [ActionPlanController::class,'delete']);
+
+    Route::post('action-plan/get-employee-by-employee-code', [ActionPlanController::class,'getEmployeeByEmployeeCode']);
+    Route::post('action-plan/get-supervisor-by-employee-code', [ActionPlanController::class,'getSupervisorByEmployeeCode']);
+    //End
 
     Route::get('get-all-employee-training-list', [CommonController::class,'getEmployeeTrainingList']);
     Route::get('get-agree-business-user', [CommonController::class,'getAgreeBusinessUser']);

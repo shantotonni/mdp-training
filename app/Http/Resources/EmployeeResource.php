@@ -32,6 +32,8 @@ class EmployeeResource extends JsonResource
         return [
             'StaffID'=>$this->EmpCode,
             'EmployeeName'=>isset($this->personal) ? $this->personal->Name: '',
+            'DivCode'=>$this->DivCode,
+            'Division'=>isset($this->division) ? $this->division->DivName: '',
             'DeptCode'=>$this->DeptCode,
             'Department'=>isset($this->department) ? $this->department->DeptName: '',
             'DesgCode'=>$this->DesgCode,
