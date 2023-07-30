@@ -151,13 +151,14 @@
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
                       <div class="col-md-12">
-                        <p style="font-size: 13px;font-weight:bold;color:#0000B9">Agreed Action Plan for the Period : {{ ActionPlanPeriod }}</p>
+                        <p style="font-size: 13px;font-weight:bold;color:#0000B9">Agreed Action Plan for the Period</p>
                         <hr>
                         <div class="row" v-for="(find, index) in form.finds" :key="index">
                           <div class="col-4 col-md-4">
                             <div class="form-group">
                               <label>Task (70% Quantitativ;  30% Qualitative)</label>
-                              <input v-model="find.TaskName" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('TaskName') }" name="TaskName" required>
+                              <textarea id="textarea" class="form-control" rows="2" v-model="find.TaskName" required></textarea>
+<!--                              <input v-model="find.TaskName" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('TaskName') }" name="TaskName" required>-->
                               <div class="error" v-if="form.errors.has('TaskName')" v-html="form.errors.get('TaskName')" />
                             </div>
                           </div>
@@ -251,12 +252,12 @@ export default {
       this.form.busy = true;
       this.form.post(baseurl + "api/hr_action_plane_store").then(response => {
         console.log(response)
-        if (response.data.status === 'error'){
-          this.errorNoti(response.data.message);
-        }else {
-          this.redirect(this.mainOrigin + 'action-plan-list')
-          this.successNoti(response.data.message);
-        }
+        // if (response.data.status === 'error'){
+        //   this.errorNoti(response.data.message);
+        // }else {
+        //   this.redirect(this.mainOrigin + 'action-plan-list')
+        //   this.successNoti(response.data.message);
+        // }
       }).catch(e => {
         this.isLoading = false;
       });

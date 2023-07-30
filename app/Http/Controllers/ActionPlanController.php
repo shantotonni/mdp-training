@@ -24,7 +24,7 @@ class ActionPlanController extends Controller
         $empcode = $payload['EmpCode'];
         $role = $payload['Type'];
 
-        if ($role == 'admin'){
+        if ($role == 'sadmin'){
             $action_plan = ActionPlan::orderBy('ID','desc')->paginate(15);
         }else{
             $action_plan = ActionPlan::where('StaffID',$empcode)->paginate(15);

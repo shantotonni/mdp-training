@@ -33,13 +33,14 @@ class AuthController extends Controller
 
         //$admin_user = ['06865','23215','23401','24793','10259','23283'];
         $admin_dataset = [
-            ['EmpCode'=>'06865','Business'=>''],
-            ['EmpCode'=>'23215','Business'=>''],
-            ['EmpCode'=>'23401','Business'=>''],
-            ['EmpCode'=>'24793','Business'=>''],
-            ['EmpCode'=>'10259','Business'=>''],
-            ['EmpCode'=>'23283','Business'=>'MIS'],
-            ['EmpCode'=>'21005','Business'=>'Consumer Brands'],
+            ['EmpCode'=>'06865','Business'=>'','type'=>'admin','password'=>'123123'],
+            ['EmpCode'=>'23215','Business'=>'','type'=>'admin','password'=>'123123'],
+            ['EmpCode'=>'23401','Business'=>'','type'=>'admin','password'=>'123123'],
+            ['EmpCode'=>'24793','Business'=>'','type'=>'admin','password'=>'123123'],
+            ['EmpCode'=>'10259','Business'=>'','type'=>'admin','password'=>'123123'],
+
+            ['EmpCode'=>'23283','Business'=>'MIS','type'=>'sadmin','password'=>'123123'],
+            ['EmpCode'=>'21005','Business'=>'Consumer Brands','type'=>'sadmin','password'=>'123123'],
         ];
 
         //$admin_user_found = in_array($request->EmpCode, $admin_user);
@@ -51,11 +52,12 @@ class AuthController extends Controller
                 'EmpCode'=>'admin',
                 'staffCode'=>$request->EmpCode,
                 'Business'=>$is_admin['Business'],
+                'type'=>$is_admin['type'],
             ];
 
             return response()->json([
                 'status' => 'success',
-                'access_token' => $this->generateToken($user,'admin')
+                'access_token' => $this->generateToken($user)
             ],200);
         }else{
             $user = User::where('EmpCode', $request->EmpCode)->where('Password',$request->Password)->first();
@@ -175,7 +177,7 @@ class AuthController extends Controller
         return Auth::guard('api');
     }
 
-    public function generateToken($user, $type) {
+    public function generateToken($user) {
         $payload = [
             'iat' => time(),
             'iss' => $_SERVER['SERVER_NAME'],
@@ -183,7 +185,7 @@ class AuthController extends Controller
             'EmpCode' => $user->EmpCode ?? $user['EmpCode'],
             'staffCode' => $user->EmpCode ?? $user['staffCode'],
             'Business' => $user->Business ?? $user['Business'],
-            'Type' => $type,
+            'Type' => $user->type ?? $user['type'],
         ];
         try {
             $privateKey = env("JWT_SECRET", "7p2hqLDNnDjWN5n8aAMC0XNVMB3LPU4otV9tV8zXYt2M7q9Z0hxCq2bCQP6ogIiF");

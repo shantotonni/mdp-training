@@ -157,7 +157,8 @@
                           <div class="col-4 col-md-4">
                             <div class="form-group">
                               <label>Task (70% Quantitativ;  30% Qualitative)</label>
-                              <input v-model="find.TaskName" type="text" raw="10" col="10" class="form-control" :class="{ 'is-invalid': form.errors.has('TaskName') }" name="TaskName" required>
+                              <textarea id="textarea" class="form-control" rows="2" v-model="find.TaskName" required></textarea>
+<!--                              <input v-model="find.TaskName" type="text" raw="10" col="10" class="form-control" :class="{ 'is-invalid': form.errors.has('TaskName') }" name="TaskName" required>-->
                               <div class="error" v-if="form.errors.has('TaskName')" v-html="form.errors.get('TaskName')" />
                             </div>
                           </div>
