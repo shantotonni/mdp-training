@@ -6,6 +6,7 @@ use App\Http\Requests\ActionPlanRequest;
 use App\Http\Resources\ActionPlanCollection;
 use App\Http\Resources\ActionPlanResource;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\ExportActionPlanCollection;
 use App\Http\Resources\SupervisorResource;
 use App\Models\ActionPlan;
 use App\Models\ActionPlanTask;
@@ -204,7 +205,13 @@ class ActionPlanController extends Controller
 
     public function search($query)
     {
-        return new ActionPlanCollection(ActionPlan::where('StaffID','LIKE',"%$query%")->latest()->paginate(10));
+        return new ActionPlanCollection(ActionPlan::where('StaffID','LIKE',"%$query%")
+            ->orWhere('EmployeeName','LIKE',"%$query%")
+            ->orWhere('OfficialEmail','LIKE',"%$query%")
+            ->orWhere('Mobile','LIKE',"%$query%")
+            ->orWhere('Department','LIKE',"%$query%")
+            ->orWhere('Division','LIKE',"%$query%")
+            ->latest()->paginate(10));
     }
 
     public function getEmployeeByEmployeeCode(Request $request){
@@ -253,5 +260,15 @@ class ActionPlanController extends Controller
             'employee'=>new SupervisorResource($employee),
         ]);
     }
-
+     public function exportActionPlan(Request $request)
+     {
+         $query = $request->param;
+         return new ExportActionPlanCollection(ActionPlan::where('StaffID','LIKE',"%$query%")
+             ->orWhere('EmployeeName','LIKE',"%$query%")
+             ->orWhere('OfficialEmail','LIKE',"%$query%")
+             ->orWhere('Mobile','LIKE',"%$query%")
+             ->orWhere('Department','LIKE',"%$query%")
+             ->orWhere('Division','LIKE',"%$query%")
+             ->latest()->get());
+     }
 }

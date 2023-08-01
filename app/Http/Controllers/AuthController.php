@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActionPlan;
 use App\Models\Employee;
 use App\Models\jwt\JWT;
 use App\Models\Personal;
@@ -33,44 +34,50 @@ class AuthController extends Controller
 
         //$admin_user = ['06865','23215','23401','24793','10259','23283'];
         $admin_dataset = [
-            ['EmpCode'=>'06865','Business'=>'','type'=>'admin','password'=>'123123'],
-            ['EmpCode'=>'23215','Business'=>'','type'=>'admin','password'=>'123123'],
-            ['EmpCode'=>'23401','Business'=>'','type'=>'admin','password'=>'123123'],
-            ['EmpCode'=>'24793','Business'=>'','type'=>'admin','password'=>'123123'],
-            ['EmpCode'=>'10259','Business'=>'','type'=>'admin','password'=>'123123'],
+            ['EmpCode' => '06865', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+            ['EmpCode' => '23215', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+            ['EmpCode' => '23401', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+            ['EmpCode' => '24793', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+            ['EmpCode' => '10259', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
 
-            ['EmpCode'=>'23283','Business'=>'MIS','type'=>'sadmin','password'=>'123123'],
-            ['EmpCode'=>'21005','Business'=>'Consumer Brands','type'=>'sadmin','password'=>'123123'],
+            ['EmpCode' => '23283', 'Business' => 'MIS', 'type' => 'sadmin', 'password' => '123123'],
+            ['EmpCode' => '21005', 'Business' => 'Consumer Brands', 'type' => 'sadmin', 'password' => '123123'],
         ];
 
         //$admin_user_found = in_array($request->EmpCode, $admin_user);
         $admin_dataset = collect($admin_dataset);
-        $is_admin = $admin_dataset->where('EmpCode',$request->EmpCode)->first();
+        $is_admin = $admin_dataset->where('EmpCode', $request->EmpCode)->first();
 
-        if ($is_admin){
+        if ($is_admin) {
             $user = [
-                'EmpCode'=>'admin',
-                'staffCode'=>$request->EmpCode,
-                'Business'=>$is_admin['Business'],
-                'type'=>$is_admin['type'],
+                'EmpCode' => 'admin',
+                'staffCode' => $request->EmpCode,
+                'Business' => $is_admin['Business'],
+                'type' => $is_admin['type'],
             ];
 
             return response()->json([
                 'status' => 'success',
                 'access_token' => $this->generateToken($user)
-            ],200);
-        }else{
-            $user = User::where('EmpCode', $request->EmpCode)->where('Password',$request->Password)->first();
+            ], 200);
+        } else {
+            $user = User::where('EmpCode', $request->EmpCode)->where('Password', $request->Password)->first();
             if (!$user) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'No user found '
-                ],404);
+                ], 404);
             }
+            $user = [
+                'EmpCode' => $user->EmpCode,
+                'staffCode' => $user->EmpCode,
+                'Business' => '',
+                'type' => 'employee',
+            ];
             return response()->json([
                 'status' => 'success',
-                'access_token' => $this->generateToken($user,'employee')
-            ],200);
+                'access_token' => $this->generateToken($user)
+            ], 200);
         }
     }
 
@@ -137,13 +144,20 @@ class AuthController extends Controller
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
 
-        $personal = Employee::where('EmpCode',$empcode)->with('email')->first();
+        $personal = Employee::where('EmpCode', $empcode)->with('email')->first();
 
+        $departments = [];
+        $divisions = [];
+        if (!$personal) {
+            $departments = ActionPlan::select('Department')->groupBy('Department')->get();
+            $divisions = ActionPlan::select('Division')->groupBy('Division')->get();
+        }
         return response()->json([
-           'personal'=>$personal,
-           'payload'=>$payload,
+            'personal' => $personal,
+            'payload' => $payload,
+            'departments' => $departments,
+            'divisions' => $divisions
         ]);
-
     }
 
     public function logout()
@@ -177,19 +191,20 @@ class AuthController extends Controller
         return Auth::guard('api');
     }
 
-    public function generateToken($user) {
+    public function generateToken($user)
+    {
         $payload = [
             'iat' => time(),
             'iss' => $_SERVER['SERVER_NAME'],
-            'exp' => time() + 12*30*(24*60*60),// 1 Month
-            'EmpCode' => $user->EmpCode ?? $user['EmpCode'],
-            'staffCode' => $user->EmpCode ?? $user['staffCode'],
-            'Business' => $user->Business ?? $user['Business'],
-            'Type' => $user->type ?? $user['type'],
+            'exp' => time() + 12 * 30 * (24 * 60 * 60),// 1 Month
+            'EmpCode' => $user['EmpCode'],
+            'staffCode' => $user['staffCode'],
+            'Business' => $user['Business'],
+            'Type' => $user['type'],
         ];
         try {
             $privateKey = env("JWT_SECRET", "7p2hqLDNnDjWN5n8aAMC0XNVMB3LPU4otV9tV8zXYt2M7q9Z0hxCq2bCQP6ogIiF");
-            $token = JWT::encode($payload,$privateKey);
+            $token = JWT::encode($payload, $privateKey);
             return $token;
         } catch (\Exception $ex) {
             $token = false;

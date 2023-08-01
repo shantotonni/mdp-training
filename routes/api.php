@@ -54,4 +54,7 @@ Route::group(['middleware' => ['jwt']], function () {
 
     Route::get('get-all-employee-training-list', [CommonController::class,'getEmployeeTrainingList']);
     Route::get('get-agree-business-user', [CommonController::class,'getAgreeBusinessUser']);
+
+    //Export
+    Route::post('export-action-plane-list',[ActionPlanController::class,'exportActionPlan']);
 });

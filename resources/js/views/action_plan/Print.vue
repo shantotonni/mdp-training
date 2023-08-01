@@ -8,7 +8,7 @@
                             <div class="card-body">
                               <div class="first_part">
                                 <h3 style="text-align:center">ACI Limited</h3>
-                                <p style="text-align:center;font-size: 18px;font-weight: bold;margin-left: 190px;">Management staff Action Plan and Performance Appraisal Form
+                                <p style="text-align:center;font-size: 18px;font-weight: bold;margin-left: 190px;">Management Staff Action Plan and Performance Appraisal Form
                                   <span style="font-weight: normal;border: 1px solid;padding: 15px;margin-left: 20px">Private & Confidential</span>
                                 </p>
                                 <hr>
@@ -28,7 +28,7 @@
                                 <p style="font-size: 20px">
                                   Agreed Action Plan for the Period : {{ action_plan.ActionPlanPeriod }}
                                 </p>
-                                <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
+                                <table class="table table-bordered" style="border: 1px solid #000000 !important">
                                   <thead>
                                     <tr style="background: white;color: black">
                                       <th class="text-center" rowspan="2" style="vertical-align: middle;">Task (70% Quantitativ;  30% Qualitative)</th>
@@ -43,7 +43,7 @@
                                   </thead>
                                   <tbody>
                                     <tr v-for="(item, i) in task" :key="item.ID" v-if="task.length">
-                                      <td class="text-center">{{ item.TaskName }}</td>
+                                      <td class="text-left">{{i+1}}. {{ item.TaskName }}</td>
                                       <td class="text-center">{{ customFormatter(item.TargetDateOfCompletion) }}</td>
                                       <td class="text-center">{{ item.CriterionOfMeasurement }}</td>
                                       <td style="background: #c1c1c1"></td>
@@ -56,37 +56,37 @@
 
                               <div class="third_part">
                                 <div style="display: flex">
-                                    <div class="col-md-3" style="text-align: center">
+                                    <div class="col-md-3" style="text-align: left">
                                       <p>Signature of Employee</p>
                                       <input type="text">
                                     </div>
-                                  <div class="col-md-3" style="text-align: center">
+                                  <div class="col-md-3">
                                     <p>Signature of Supervisor</p>
                                     <input type="text">
                                   </div>
-                                  <div class="col-md-3" style="text-align: center">
+                                  <div class="col-md-3">
                                     <p>Signature of Employee</p>
                                     <input type="text">
                                   </div>
-                                  <div class="col-md-3" style="text-align: center">
-                                    <p>Signature of Employee</p>
+                                  <div class="col-md-3">
+                                    <p>Signature of Supervisor</p>
                                     <input type="text">
                                   </div>
                                 </div>
                               </div>
                               <br>
-                              <div class="third_part">
+                              <div class="third_part" style="margin-top: 10px;">
                                 <div style="display: flex">
-                                  <div class="col-md-3" style="text-align: center">
-                                    <p>Preparation date of Action Plan</p>
+                                  <div class="col-md-3" style="text-align: left">
+                                    <p>Preparation Date of Action Plan</p>
                                   </div>
-                                  <div class="col-md-3" style="text-align: center">
+                                  <div class="col-md-3">
                                     <input type="text">
                                   </div>
-                                  <div class="col-md-3" style="text-align: center">
+                                  <div class="col-md-3">
                                     <p>Date of Appraisal Interview</p>
                                   </div>
-                                  <div class="col-md-3" style="text-align: center">
+                                  <div class="col-md-3">
                                     <input type="text">
                                   </div>
                                 </div>
@@ -123,7 +123,14 @@
                                   </thead>
                                 </table>
                               </div>
-
+                              <br>
+                              <div class="fourth_part">
+                                <div style="display: flex">
+                                  <div class="col-md-3">
+                                    <p>Average Rating <input type="text" style="margin-left: 20px"></p>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                         </div>
                     </div>
@@ -160,7 +167,7 @@ export default {
       // },1000)
       $('#mdp').printThis({
         importCSS: true,
-        loadCSS: "path/to/new/CSS/file",
+        loadCSS: baseurl+"css/app.css",
       });
 
     });
@@ -176,6 +183,19 @@ export default {
 <style scoped>
 .table thead th {
   vertical-align: middle;
+}
+#mdp {
+  font-family: 'Nunito', sans-serif;
+  color: #000000;
+}
+table tr th,table tr td {
+  color: #000000 !important;
+}
+.table-bordered {
+  border: 1px solid #000000 !important;
+}
+.table-bordered td, .table-bordered th {
+  border: 1px solid #000000 !important;
 }
 </style>
 

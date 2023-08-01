@@ -153,10 +153,20 @@
                       <div class="col-md-12">
                         <p style="font-size: 13px;font-weight:bold;color:#0000B9">Agreed Action Plan for the Period</p>
                         <hr>
+                        <div class="row">
+                          <div class="col-4 col-md-4">
+                            <label>Task (70% Quantitativ;  30% Qualitative)</label>
+                          </div>
+                          <div class="col-2 col-md-2">
+                            <label>Target Date Of Completion</label>
+                          </div>
+                          <div class="col-3 col-md-3">
+                            <label>Criterion Of Measurement</label>
+                          </div>
+                        </div>
                         <div class="row" v-for="(find, index) in form.finds" :key="index">
                           <div class="col-4 col-md-4">
                             <div class="form-group">
-                              <label>Task (70% Quantitativ;  30% Qualitative)</label>
                               <textarea id="textarea" class="form-control" rows="2" v-model="find.TaskName" required></textarea>
 <!--                              <input v-model="find.TaskName" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('TaskName') }" name="TaskName" required>-->
                               <div class="error" v-if="form.errors.has('TaskName')" v-html="form.errors.get('TaskName')" />
@@ -165,21 +175,19 @@
 
                           <div class="col-2 col-md-2">
                             <div class="form-group">
-                              <label>Target Date Of Completion</label>
-                              <datepicker v-model="find.TargetDateOfCompletion" :format="customFormatter" placeholder="Enter Date" input-class="form-control"></datepicker>
+                              <datepicker v-model="find.TargetDateOfCompletion" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required :typeable=true ></datepicker>
                               <div class="error" v-if="form.errors.has('TargetDateOfCompletion')" v-html="form.errors.get('TargetDateOfCompletion')" />
                             </div>
                           </div>
 
                           <div class="col-3 col-md-3">
                             <div class="form-group">
-                              <label>Criterion Of Measurement</label>
                               <input v-model="find.CriterionOfMeasurement" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('CriterionOfMeasurement') }" name="CriterionOfMeasurement" required>
                               <div class="error" v-if="form.errors.has('CriterionOfMeasurement')" v-html="form.errors.get('CriterionOfMeasurement')" />
                             </div>
                           </div>
 
-                          <div class="col-2" style="padding-top: 30px">
+                          <div class="col-2">
                             <button type="button" class="btn btn-danger btn-sm" @click="deleteFind(index)">x Delete</button>&nbsp;
                             <button type="button" class="btn btn-success btn-sm" @click="addFind">+ Add</button>
                           </div>
@@ -187,6 +195,13 @@
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
                       </div>
                     </div>
                   </div>
@@ -251,13 +266,12 @@ export default {
     store(){
       this.form.busy = true;
       this.form.post(baseurl + "api/hr_action_plane_store").then(response => {
-        console.log(response)
-        // if (response.data.status === 'error'){
-        //   this.errorNoti(response.data.message);
-        // }else {
-        //   this.redirect(this.mainOrigin + 'action-plan-list')
-        //   this.successNoti(response.data.message);
-        // }
+        if (response.data.status === 'error'){
+          this.errorNoti(response.data.message);
+        }else {
+          this.redirect(this.mainOrigin + 'action-plan-list')
+          this.successNoti(response.data.message);
+        }
       }).catch(e => {
         this.isLoading = false;
       });
@@ -266,7 +280,6 @@ export default {
       axios.post(baseurl +'api/action-plan/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
       }).then((response)=>{
-        console.log(response)
         this.training_history = response.data.training_history;
         this.form.EmployeeName = response.data.employee.EmployeeName;
         this.form.Designation = response.data.employee.Designation;
@@ -286,7 +299,6 @@ export default {
         EmpCode: this.form.StaffID,
         SuperVisorEmpCode: this.form.SuppervisorStaffID,
       }).then((response)=>{
-        console.log(response)
         if (response.data.status === 'error'){
           this.errorNoti(response.data.message);
         }else {
