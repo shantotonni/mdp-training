@@ -57,13 +57,6 @@
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label>Department</label>
-                              <input type="text" name="Department" readonly v-model="form.Department" class="form-control" :class="{ 'is-invalid': form.errors.has('Department') }">
-                              <div class="error" v-if="form.errors.has('Department')" v-html="form.errors.get('Department')" />
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="form-group">
                               <label>Official Email</label>
                               <input type="text" name="OfficialEmail" v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }">
                               <div class="error" v-if="form.errors.has('OfficialEmail')" v-html="form.errors.get('OfficialEmail')" />
@@ -83,20 +76,28 @@
                               <div class="error" v-if="form.errors.has('CurrentPosition')" v-html="form.errors.get('CurrentPosition')" />
                             </div>
                           </div>
-                          <div class="col-md-4" style="display: none">
-                            <div class="form-group">
-                              <label>Department</label>
-                              <input type="text" name="Department" v-model="form.Department" readonly class="form-control" :class="{ 'is-invalid': form.errors.has('Department') }">
-                              <div class="error" v-if="form.errors.has('Department')" v-html="form.errors.get('Department')" />
-                            </div>
-                          </div>
-                          <div class="col-md-4" style="display: none">
+
+                          <div class="col-4 col-md-4">
                             <div class="form-group">
                               <label>Division</label>
-                              <input type="text" name="Division" v-model="form.Division" readonly class="form-control" :class="{ 'is-invalid': form.errors.has('Division') }">
+                              <select v-model="form.Division" name="Division" id="Division" class="form-control" :class="{ 'is-invalid': form.errors.has('Division') }" @change="getAllDepartment()">
+                                <option value="">Select Division</option>
+                                <option :value="div.Division" v-for="(div,index) in divisions" :key="index">{{div.Division}}</option>
+                              </select>
                               <div class="error" v-if="form.errors.has('Division')" v-html="form.errors.get('Division')" />
                             </div>
                           </div>
+                          <div class="col-4 col-md-4">
+                            <div class="form-group">
+                              <label>Portfolio</label>
+                              <select v-model="form.Department" name="Department" id="Department" class="form-control" :class="{ 'is-invalid': form.errors.has('Department') }">
+                                <option value="">Select Portfolio</option>
+                                <option :value="dept.DeptName" v-for="(dept,index) in departments" :key="index">{{dept.DeptName}}</option>
+                              </select>
+                              <div class="error" v-if="form.errors.has('Department')" v-html="form.errors.get('Department')" />
+                            </div>
+                          </div>
+
                         </div>
                         <hr>
                       </div>
@@ -233,6 +234,8 @@ export default {
     return {
       employee: [],
       supervisor: [],
+      divisions: [],
+      departments: [],
       form: new Form({
         ID :'',
         ActionPlanPeriod :'',
@@ -240,7 +243,6 @@ export default {
         EmployeeName :'',
         Designation :'',
         Department: '',
-        Business: '',
         Division: '',
         OfficialEmail:'',
         Mobile:'',
@@ -258,14 +260,20 @@ export default {
   },
   mounted() {
     document.title = 'Action Plan Create | Action Plan';
+    this.getEditData();
   },
   created() {
-    axios.get(baseurl + `api/action-plane-edit/${this.$route.params.ID}`).then((response)=>{
-      console.log(response)
-      this.form.fill(response.data.action_plan);
-    });
+    //
   },
   methods: {
+    getEditData(){
+      axios.get(baseurl + `api/action-plane-edit/${this.$route.params.ID}`).then((response)=>{
+        console.log(response)
+        this.form.fill(response.data.action_plan);
+        this.getAllDivision();
+        this.getAllDepartment();
+      });
+    },
     update(){
       this.form.busy = true;
       this.form.post(baseurl + "api/action_plane_update").then(response => {
@@ -288,13 +296,11 @@ export default {
         this.training_history = response.data.training_history;
         this.form.EmployeeName = response.data.employee.EmployeeName;
         this.form.Designation = response.data.employee.Designation;
-        this.form.Department = response.data.employee.Department;
         this.form.OfficialEmail = response.data.employee.OfficialEmail;
         this.form.Mobile = response.data.employee.Mobile;
         this.form.Qualification = response.data.employee.Qualification;
         this.form.StaffID = response.data.employee.StaffID;
         this.form.CurrentPosition = response.data.employee.CurrentPosition;
-        this.form.Division = response.data.employee.Division;
       }).catch((error)=>{
 
       })
@@ -322,6 +328,24 @@ export default {
       axios.get(baseurl+'api/get-agree-business-user').then((response)=>{
         console.log(response)
         this.dropDown = response.data.dropDown
+      }).catch((error)=>{
+
+      })
+    },
+    getAllDivision(){
+      axios.get(baseurl + 'api/get-all-division/').then((response) => {
+        console.log(response)
+        this.divisions = response.data.divisions;
+      }).catch((error) => {
+
+      })
+    },
+    getAllDepartment(){
+      axios.post(baseurl +'api/get-all-department/', {
+        Division: this.form.Division,
+      }).then((response)=>{
+        console.log(response)
+        this.departments = response.data.departments;
       }).catch((error)=>{
 
       })

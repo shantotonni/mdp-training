@@ -10,6 +10,7 @@ use App\Http\Resources\ExportActionPlanCollection;
 use App\Http\Resources\SupervisorResource;
 use App\Models\ActionPlan;
 use App\Models\ActionPlanTask;
+use App\Models\Department;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -25,15 +26,28 @@ class ActionPlanController extends Controller
         $empcode = $payload['EmpCode'];
         $role = $payload['Type'];
 
-        if ($role == 'sadmin'){
-            $action_plan = ActionPlan::orderBy('ID','desc')->paginate(15);
-        }else{
-            $action_plan = ActionPlan::where('StaffID',$empcode)->paginate(15);
+        $Division = $request->Division;
+        $Department = $request->Department;
+
+        $action_plan = ActionPlan::query()->orderBy('ID','desc');
+        if (!empty($Division)){
+            $action_plan = $action_plan->where('Division', $Division);
         }
+        if (!empty($Department)){
+            $action_plan = $action_plan->where('Department',$Department);
+        }
+
+        if ($role == 'sadmin'){
+            $action_plan= $action_plan;
+        }else{
+            $action_plan = $action_plan->where('StaffID',$empcode);
+        }
+        $action_plan = $action_plan->paginate(15);
         return new ActionPlanCollection($action_plan);
     }
 
     public function store(ActionPlanRequest $request){
+
         DB::beginTransaction();
         try {
             $token = $request->bearerToken();
@@ -260,6 +274,29 @@ class ActionPlanController extends Controller
             'employee'=>new SupervisorResource($employee),
         ]);
     }
+
+    public function getAllDivision(){
+        $divisions = Department::select('DivCode','Division')
+            ->where('DivCode','!=','')
+            ->where('Division','!=','')
+            ->get()->unique('Division');
+        return response()->json([
+            'divisions' => $divisions
+        ]);
+    }
+
+    public function getAllDepartment(Request $request){
+        $Division = $request->Division;
+        $departments = Department::select('DeptName','DeptCode','Division','DivCode')
+            ->where('DeptCode','!=','')
+            ->where('DeptName','!=','')
+            ->where('Division','=',$Division)
+            ->get()->unique('DeptName');
+        return response()->json([
+            'departments' => $departments
+        ]);
+    }
+
      public function exportActionPlan(Request $request)
      {
          $query = $request->param;

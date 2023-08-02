@@ -9,21 +9,29 @@
               <div class="card-body">
                 <div class="d-flex">
                   <div class="flex-grow-1">
-                    <div class="row">
-                      <div class="col-md-2" v-if="personal===null">
+                    <div class="row" v-if="personal===null">
+                      <div class="col-md-2">
                         <input v-model="query" type="text" class="form-control" placeholder="Search">
                       </div>
-                      <div class="col-md-2" v-if="personal===null">
-                        <select id="departments" class="form-control" @change="changeDepartment">
-                          <option value="">All Department</option>
-                          <option v-for="(department,index) in departments" :value="department.Department" :key="index">{{department.Department}}</option>
-                        </select>
+
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <select id="Division" class="form-control" v-model="Division" @change="getAllDepartment()">
+                            <option value="">Select Division</option>
+                            <option v-for="(div,index) in divisions" :value="div.Division" :key="index">{{div.Division}}</option>
+                          </select>
+                        </div>
                       </div>
-                      <div class="col-md-2" v-if="personal===null">
-                        <select id="divisions" class="form-control" @change="changeDivision">
-                          <option value="">All Division</option>
-                          <option v-for="(division,index) in divisions" :value="division.Division" :key="index">{{division.Division}}</option>
-                        </select>
+                      <div class="col-md-2">
+                          <div class="form-group">
+                            <select id="Department" class="form-control" v-model="Department">
+                              <option value="">Select Department</option>
+                              <option v-for="(dept,index) in departments" :value="dept.DeptName" :key="index">{{dept.DeptName}}</option>
+                            </select>
+                        </div>
+                      </div>
+                      <div class="col-md-1">
+                        <button type="submit" @click="getAllActionPlanList" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                       </div>
                     </div>
                   </div>
@@ -32,10 +40,6 @@
                       <i class="fas fa-plus"></i>
                       Add Action Plan
                     </router-link>
-                    <!--                                        <button type="button" class="btn btn-info btn-sm" @click="exportActionPlanList">-->
-                    <!--                                            <i class="fas fa-sync"></i>-->
-                    <!--                                            Export-->
-                    <!--                                        </button>-->
                     <button type="button" class="btn btn-primary btn-sm" @click="reload">
                       <i class="fas fa-sync"></i>
                       Reload
@@ -126,10 +130,10 @@ export default {
       },
       isMessage: false,
       query: "",
+      Division: "",
+      Department: "",
       editMode: false,
       isLoading: false,
-      filteredDepartment: '',
-      filteredDivision: ''
     }
   },
   watch: {
@@ -145,10 +149,15 @@ export default {
     document.title = 'Action Plan List | Action Plan';
     this.getAllActionPlanList();
     this.getData();
+    this.getAllDivision();
   },
   methods: {
     getAllActionPlanList() {
-      axios.get(baseurl + 'api/action-plane/list?page=' + this.pagination.current_page).then((response) => {
+      axios.get(baseurl + 'api/action-plane/list?page=' + this.pagination.current_page
+          + "&query=" + this.query
+          + "&Division=" + this.Division
+          + "&Department=" + this.Department
+      ).then((response) => {
         this.action_plan = response.data.data;
         this.pagination = response.data.meta;
       }).catch((error) => {
@@ -167,11 +176,27 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.$store.commit('me', response);
         this.personal = response.personal
-        this.departments = response.departments
-        this.divisions = response.divisions
       }, (error) => {
         this.errorNoti(error);
       });
+    },
+    getAllDivision(){
+      axios.get(baseurl + 'api/get-all-division/').then((response) => {
+        console.log(response)
+        this.divisions = response.data.divisions;
+      }).catch((error) => {
+
+      })
+    },
+    getAllDepartment(){
+      axios.post(baseurl +'api/get-all-department/', {
+        Division: this.Division,
+      }).then((response)=>{
+        console.log(response)
+        this.departments = response.data.departments;
+      }).catch((error)=>{
+
+      })
     },
     reload() {
       this.query = "";
@@ -219,20 +244,6 @@ export default {
         }
       })
     },
-    changeDepartment(e) {
-      let value = e.target.value
-      this.query = value
-      this.filteredDepartment = value
-    },
-    changeDivision(e) {
-      let value = e.target.value
-      this.query = value
-      this.filteredDivision = value
-    },
-    exportExcel()
-    {
-
-    }
   },
 }
 </script>

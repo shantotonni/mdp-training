@@ -47,6 +47,8 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('action_plane_print/{ID}', [ActionPlanController::class,'print']);
     Route::get('action_plane_search/{query}', [ActionPlanController::class,'search']);
     Route::delete('action_plane_delete/{ID}', [ActionPlanController::class,'delete']);
+    Route::get('get-all-division', [ActionPlanController::class,'getAllDivision']);
+    Route::post('get-all-department', [ActionPlanController::class,'getAllDepartment']);
 
     Route::post('action-plan/get-employee-by-employee-code', [ActionPlanController::class,'getEmployeeByEmployeeCode']);
     Route::post('action-plan/get-supervisor-by-employee-code', [ActionPlanController::class,'getSupervisorByEmployeeCode']);

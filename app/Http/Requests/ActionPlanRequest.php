@@ -26,6 +26,7 @@ class ActionPlanRequest extends FormRequest
         return [
             'ActionPlanPeriod'=>'required',
             'StaffID'=>'required',
+            'Division'=>'required',
             'EmployeeName'=>'required',
             'Designation'=>'required',
             'Department'=>'required',

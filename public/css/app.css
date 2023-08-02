@@ -1,2 +1,68 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
-.error-message{color:#ec4561;font-size:12px;margin-top:5px}.error-border{border-color:#ec4561!important}.submit-button{height:38px!important}.router-link-exact-active{background-color:#383b4e;color:#b4c9de!important}a{color:#3490dc}.error{color:red}thead{background:#333547;color:#fff}.table thead th{vertical-align:middle}#mdp{color:#000;font-family:Nunito,sans-serif}#mdp table tr td,#mdp table tr th{color:#000!important}#mdp .table-bordered,#mdp .table-bordered td,#mdp .table-bordered th{border:1px solid #000!important}#mdp .third_part input{border:1px solid #000;height:55px;width:90%}#mdp .fourth_part input{border:1px solid #000;height:40px}
+.error-message {
+  font-size: 12px;
+  color: #ec4561;
+  margin-top: 5px;
+}
+
+.error-border {
+  border-color: #ec4561 !important;
+}
+
+.submit-button {
+  height: 38px !important;
+}
+
+.router-link-exact-active {
+  color: #b4c9de !important;
+  background-color: #383b4e;
+}
+
+a {
+  color: rgb(52, 144, 220);
+}
+
+.error {
+  color: red;
+}
+
+thead {
+  background: #333547;
+  color: white;
+}
+
+.table thead th {
+  vertical-align: middle;
+}
+
+#mdp {
+  font-family: "Nunito", sans-serif;
+  color: #000000;
+}
+#mdp table tr th, #mdp table tr td {
+  color: #000000 !important;
+}
+#mdp .table-bordered {
+  border: 1px solid #000000 !important;
+}
+#mdp .table-bordered td, #mdp .table-bordered th {
+  border: 1px solid #000000 !important;
+}
+#mdp .third_part input {
+  width: 90%;
+  height: 55px;
+  border: 1px solid #000000;
+}
+#mdp .fourth_part input {
+  height: 40px;
+  border: 1px solid #000000;
+}
+#mdp .table > tbody > tr > td, #mdp .table > tfoot > tr > td, #mdp .table > thead > tr > td {
+  padding: 5px 14px !important;
+}
+#mdp .table td, #mdp .table th {
+  padding: 4px !important;
+}
+#mdp .table th {
+  font-weight: bold;
+}
