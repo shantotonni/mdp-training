@@ -31,7 +31,7 @@
                                 <table class="table table-bordered" style="border: 1px solid #000000 !important">
                                   <thead>
                                     <tr style="background: white;color: black">
-                                      <th class="text-center" rowspan="2" style="vertical-align: middle;">Task (70% Quantitative;  30% Qualitative)</th>
+                                      <th class="text-center" rowspan="2" style="vertical-align: middle;">Task/Objective (70% Quantitative;  30% Qualitative)</th>
                                       <th class="text-center" rowspan="2" style="vertical-align: middle;">Target Date Of Completion</th>
                                       <th class="text-center" rowspan="2" style="vertical-align: middle;">Criterion Of Measurement</th>
                                       <th class="text-center" colspan="2"> Level of Achievement*</th>
@@ -43,9 +43,9 @@
                                   </thead>
                                   <tbody>
                                     <tr v-for="(item, i) in task" :key="item.ID" v-if="task.length">
-                                      <td class="text-left">{{i+1}}. {{ item.TaskName }}</td>
+                                      <td class="text-left" style="width: 50%;">{{i+1}}. {{ item.TaskName }}</td>
                                       <td class="text-center">{{ customFormatter(item.TargetDateOfCompletion) }}</td>
-                                      <td class="text-center">{{ item.CriterionOfMeasurement }}</td>
+                                      <td class="text-center" >{{ item.CriterionOfMeasurement }}</td>
                                       <td style="background: #c1c1c1"></td>
                                       <td style="background: #c1c1c1"></td>
                                     </tr>
@@ -123,7 +123,6 @@
                                   </thead>
                                 </table>
                               </div>
-                              <br>
                               <div class="fourth_part">
                                 <div style="display: flex">
                                   <div class="col-md-3">
@@ -172,7 +171,6 @@ export default {
 
     });
   },
-
     methods: {
       customFormatter(date) {
         return moment(date).format('MMMM YYYY');
@@ -200,6 +198,9 @@ table tr th,table tr td {
 .margin_p p{
   margin: 0;
   font-size: 18px;
+}
+.margin_p .table>tbody>tr>td, .table>tfoot>tr>td, .table>thead>tr>td {
+  /* padding: 15px 12px; */
 }
 </style>
 

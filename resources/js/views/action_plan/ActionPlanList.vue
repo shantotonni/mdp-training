@@ -44,7 +44,7 @@
                       <i class="fas fa-sync"></i>
                       Reload
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" @click="exportActionPlanList">
+                    <button type="button" class="btn btn-primary btn-sm" @click="exportActionPlanList" v-if="personal===null">
                       <i class="fa fa-file-excel"></i>
                       Export Excel
                     </button>
@@ -200,6 +200,8 @@ export default {
     },
     reload() {
       this.query = "";
+      this.Division = "";
+      this.Department = "";
       this.getAllActionPlanList();
     },
     exportActionPlanList() {

@@ -3,7 +3,7 @@
     <div class="wrapper-page">
       <div class="card overflow-hidden account-card mx-3">
         <div class="bg-primary p-4 text-white text-center position-relative">
-          <h4 class="font-20 m-b-5">Management Development Plan</h4>
+          <h4 class="font-20 m-b-5">Management Development Plan and Action Plan</h4>
           <p class="text-white-50 mb-4">Login Panel.</p>
         </div>
         <div class="account-card-content">

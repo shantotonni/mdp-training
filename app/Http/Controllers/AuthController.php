@@ -40,34 +40,16 @@ class AuthController extends Controller
             ['EmpCode' => '24793', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
             ['EmpCode' => '10259', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
 
-            ['EmpCode' => '23283', 'Business' => 'MIS', 'type' => 'sadmin', 'password' => '123123'],
-            ['EmpCode' => '21005', 'Business' => 'Consumer Brands', 'type' => 'sadmin', 'password' => '123123'],
+            ['EmpCode' => '23284', 'Business' => 'ALL', 'type' => 'Administrator', 'password' => '123123'],
+            ['EmpCode' => '25921', 'Business' => 'Consumer Brands', 'type' => 'sadmin', 'password' => '123123'],
+            ['EmpCode' => '00723', 'Business' => 'Support Division', 'type' => 'sadmin', 'password' => '123123'],
         ];
 
         //$admin_user_found = in_array($request->EmpCode, $admin_user);
         $admin_dataset = collect($admin_dataset);
-        $is_admin = $admin_dataset->where('EmpCode', $request->EmpCode)->first();
 
-        if ($is_admin) {
-            $user = [
-                'EmpCode' => 'admin',
-                'staffCode' => $request->EmpCode,
-                'Business' => $is_admin['Business'],
-                'type' => $is_admin['type'],
-            ];
-
-            return response()->json([
-                'status' => 'success',
-                'access_token' => $this->generateToken($user)
-            ], 200);
-        } else {
-            $user = User::where('EmpCode', $request->EmpCode)->where('Password', $request->Password)->first();
-            if (!$user) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'No user found '
-                ], 404);
-            }
+        $user = User::where('EmpCode', $request->EmpCode)->where('Password', $request->Password)->first();
+        if ($user) {
             $user = [
                 'EmpCode' => $user->EmpCode,
                 'staffCode' => $user->EmpCode,
@@ -78,6 +60,26 @@ class AuthController extends Controller
                 'status' => 'success',
                 'access_token' => $this->generateToken($user)
             ], 200);
+        }else{
+            $is_admin = $admin_dataset->where('EmpCode', $request->EmpCode)->first();
+
+            if ($is_admin) {
+                $user = [
+                    'EmpCode' => 'admin',
+                    'staffCode' => $request->EmpCode,
+                    'Business' => $is_admin['Business'],
+                    'type' => $is_admin['type'],
+                ];
+                return response()->json([
+                    'status' => 'success',
+                    'access_token' => $this->generateToken($user)
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No user found '
+                ], 404);
+            }
         }
     }
 

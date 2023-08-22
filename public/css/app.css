@@ -58,9 +58,9 @@ thead {
   border: 1px solid #000000;
 }
 #mdp .table > tbody > tr > td, #mdp .table > tfoot > tr > td, #mdp .table > thead > tr > td {
-  padding: 5px 14px !important;
+  padding: 2px 4px !important;
 }
-#mdp .table td, #mdp .table th {
+#mdp .table th {
   padding: 4px !important;
 }
 #mdp .table th {

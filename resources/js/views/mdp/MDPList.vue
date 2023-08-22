@@ -16,10 +16,10 @@
                                         </div>
                                     </div>
                                     <div class="card-tools">
-                                      <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">
-                                        <i class="fas fa-plus"></i>
-                                        Add Management Development Plan
-                                      </router-link>
+<!--                                      <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">-->
+<!--                                        <i class="fas fa-plus"></i>-->
+<!--                                        Add Management Development Plan-->
+<!--                                      </router-link>-->
 <!--                                        <button type="button" class="btn btn-primary btn-sm" @click="exportGenerator">-->
 <!--                                            <i class="mdi mdi-database-export"></i>-->
 <!--                                            Export-->
@@ -60,7 +60,7 @@
                                               <td>{{ mdp.Mobile }}</td>
                                               <td>{{ mdp.AppraisalPeriod }}</td>
                                               <td class="text-center">
-                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
+<!--                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>-->
                                                 <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> MDP</router-link>
                                                 <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> PTC</router-link>
                                                 <button @click="destroy(mdp.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>

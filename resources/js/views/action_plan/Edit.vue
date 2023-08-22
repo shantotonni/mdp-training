@@ -176,14 +176,14 @@
 
                           <div class="col-2 col-md-2">
                             <div class="form-group">
-                              <datepicker v-model="find.TargetDateOfCompletion" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required :typeable=true></datepicker>
+                              <datepicker v-model="find.TargetDateOfCompletion" :format="customFormatter" placeholder="Enter Date" input-class="form-control" :typeable=true></datepicker>
                               <div class="error" v-if="form.errors.has('TargetDateOfCompletion')" v-html="form.errors.get('TargetDateOfCompletion')" />
                             </div>
                           </div>
 
                           <div class="col-3 col-md-3">
                             <div class="form-group">
-                              <input v-model="find.CriterionOfMeasurement" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('CriterionOfMeasurement') }" name="CriterionOfMeasurement" required>
+                              <input v-model="find.CriterionOfMeasurement" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('CriterionOfMeasurement') }" name="CriterionOfMeasurement">
                               <div class="error" v-if="form.errors.has('CriterionOfMeasurement')" v-html="form.errors.get('CriterionOfMeasurement')" />
                             </div>
                           </div>

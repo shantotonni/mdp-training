@@ -25,6 +25,7 @@ class ActionPlanController extends Controller
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
         $role = $payload['Type'];
+        $Business = $payload['Business'];
 
         $Division = $request->Division;
         $Department = $request->Department;
@@ -37,9 +38,11 @@ class ActionPlanController extends Controller
             $action_plan = $action_plan->where('Department',$Department);
         }
 
-        if ($role == 'sadmin'){
+        if ($role == 'Administrator'){
             $action_plan= $action_plan;
-        }else{
+        }elseif ($role == 'sadmin'){
+            $action_plan= $action_plan->where('Division',$Business);
+        } else{
             $action_plan = $action_plan->where('StaffID',$empcode);
         }
         $action_plan = $action_plan->paginate(15);
@@ -105,8 +108,8 @@ class ActionPlanController extends Controller
                     $details                         = new ActionPlanTask();
                     $details->EmployeeActionPlanID   = $ActionPlane->ID;
                     $details->TaskName               = $value['TaskName'];
-                    $details->TargetDateOfCompletion = $value['TargetDateOfCompletion'];
-                    $details->CriterionOfMeasurement = $value['CriterionOfMeasurement'];
+                    $details->TargetDateOfCompletion = isset($value['TargetDateOfCompletion']) ? $value['TargetDateOfCompletion'] : '';
+                    $details->CriterionOfMeasurement = isset($value['CriterionOfMeasurement']) ? $value['CriterionOfMeasurement'] : '';
                     $details->save();
                 }
 
@@ -166,8 +169,8 @@ class ActionPlanController extends Controller
                     $details                         = new ActionPlanTask();
                     $details->EmployeeActionPlanID   = $ActionPlane->ID;
                     $details->TaskName               = $value['TaskName'];
-                    $details->TargetDateOfCompletion = $value['TargetDateOfCompletion'];
-                    $details->CriterionOfMeasurement = $value['CriterionOfMeasurement'];
+                    $details->TargetDateOfCompletion = isset($value['TargetDateOfCompletion']) ? $value['TargetDateOfCompletion'] : '';
+                    $details->CriterionOfMeasurement = isset($value['CriterionOfMeasurement']) ? $value['CriterionOfMeasurement'] : '';
                     $details->save();
                 }
 
@@ -219,13 +222,12 @@ class ActionPlanController extends Controller
 
     public function search($query)
     {
-        return new ActionPlanCollection(ActionPlan::where('StaffID','LIKE',"%$query%")
-            ->orWhere('EmployeeName','LIKE',"%$query%")
-            ->orWhere('OfficialEmail','LIKE',"%$query%")
-            ->orWhere('Mobile','LIKE',"%$query%")
-            ->orWhere('Department','LIKE',"%$query%")
-            ->orWhere('Division','LIKE',"%$query%")
-            ->latest()->paginate(10));
+        $ActionPlan = ActionPlan::where('StaffID','LIKE',"%$query%")->latest()
+        ->orWhere('EmployeeName','LIKE',"%$query%")
+        ->orWhere('Mobile','LIKE',"%$query%")
+        ->orWhere('Department','LIKE',"%$query%")
+        ->orWhere('Division','LIKE',"%$query%")->paginate(10);
+        return new ActionPlanCollection($ActionPlan);
     }
 
     public function getEmployeeByEmployeeCode(Request $request){

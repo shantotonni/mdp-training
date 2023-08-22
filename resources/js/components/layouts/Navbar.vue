@@ -2,8 +2,8 @@
   <div class="topbar">
     <!-- LOGO -->
     <div class="topbar-left">
-      <router-link :to="{name : 'Dashboard'}" class="logo" style="color: white!important;font-size: 16px!important;">
-        Management Development Plan
+      <router-link :to="{name : 'Dashboard'}" class="logo" style="color: white!important;font-size: 14px!important;">
+        Management Development Plan and Action Plan
       </router-link>
     </div>
     <nav class="navbar-custom">
