@@ -217,6 +217,7 @@
                               <p style="page-break-before: always"></p>
                               <p style="font-weight: bold;font-size: 20px">D. Taking into consideration your achievements under A, Observations under B & C on page No. 2 and keeping in view the broad objectives of your job,
                                 rate your overall performance on the basis of the definitions on the opposite page. You are allowed to rate up to one decimal point.</p>
+                              <br>
                               <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                 <thead>
                                 <tr style="background: white;color: black">
@@ -282,7 +283,7 @@
                                   </p>
                                 </div>
                               </div>
-
+                              <br>
                               <p style="font-weight: bold;font-size: 20px">In case the score by Appraiser is '9' or '0' or the difference in score between the Appraisee and the Appraiser is 3 points or more,
                                 it is mandatory for the Appraiser to prepare a report giving details to substantiate the rating or the reason for the difference.</p>
                               <div class="six_part">
@@ -290,6 +291,7 @@
                                   Appraisal Interview held on <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
                                 </p>
                               </div>
+                              <br>
                               <p style="font-weight: bold;font-size: 20px">General comment by the Appraiser after the Appraisal Interview,
                                 indicating major points discussed and if the Appraisee accepts the rating made by the Appraiser.</p>
                               <br>
@@ -297,6 +299,8 @@
                               <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
                               <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
                               <p><span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span></p>
+
+                              <br>
 
                               <p style="font-weight: bold;font-size: 20px">Remarks of Superior of Appraiser</p>
                               <p style="font-weight: bold;font-size: 20px">Indicate below if you agree or disagree with the assessment of the Appraiser.
