@@ -130,6 +130,202 @@
                                   </div>
                                 </div>
                               </div>
+
+                              <p style="page-break-before: always"></p>
+                              <div class="fourth_part">
+                                <p style="font-weight: bold;font-size: 20px">B. From your Job Description if you were to list three most significant achievements and contributions during the year,
+                                  which ones would you mention?</p>
+                                1. <p style="font-size: 20px"></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span></p>
+                                <br>
+                                2. <p style="font-size: 20px"></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span></p>
+                                <br>
+                                3. <p style="font-size: 20px"></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span></p>
+                                <br>
+                                <p style="font-weight: bold;font-size: 20px">Comment of appraiser </p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span></p>
+                                <br>
+                                <p style="font-weight: bold;font-size: 20px">C. If you were to identify one item from your Job Description that you did least well, which one would you mention?
+                                  What factor was responsible for it and what could have been done to avoid this lapse?</p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span></p>
+
+                                <p style="font-weight: bold;font-size: 20px">Comment of appraiser </p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                                <p><span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span></p>
+                              </div>
+
+                              <p style="page-break-before: always"></p>
+
+                              <div class="table_part">
+                                <table class="table table-bordered" style="border: 1px solid #000000 !important">
+                                  <thead>
+                                  <tr style="background: white;color: black">
+                                    <th class="text-center" colspan="2"> Definitions of Rating Standards</th>
+                                  </tr>
+                                  <tr style="background: white;color: black">
+                                    <th class="text-center"> Outstanding</th>
+                                    <th> Has far exceeded all performance objectives and standards.
+                                      Made unusually significant contribution resulting in major changes or significant improvements within own areas of responsibility.</th>
+                                  </tr>
+                                  <tr style="background: white;color: black">
+                                    <th class="text-center"> Very Good</th>
+                                    <th> Has exceeded overall performance objectives and standards.
+                                      Has skills to be consistently successful in meeting difficult challenges.</th>
+                                  </tr>
+                                  <tr style="background: white;color: black">
+                                    <th class="text-center"> Good</th>
+                                    <th>Has successfully achieved performance objectives. In few instances may have exceeded some objectives and missed some;
+                                      but on the balance has competently performed the duties of the job.</th>
+                                  </tr>
+                                  <tr style="background: white;color: black">
+                                    <th class="text-center"> Satisfactory</th>
+                                    <th>Has adequately performed most of the responsibilities.
+                                      Met a few objectives but has not met agreed standards of performance objectives in respect of quality or volume in several areas.</th>
+                                  </tr>
+                                  <tr style="background: white;color: black">
+                                    <th class="text-center"> Tolerable</th>
+                                    <th>Has somehow performed most of the responsibilities.
+                                      Met a few objectives but has not reached agreed standards of quality or quantity of performance objectives.</th>
+                                  </tr>
+                                  <tr style="background: white;color: black">
+                                    <th class="text-center"> Poor</th>
+                                    <th>Has not performed the tasks satisfactorily.
+                                      On the balance, has not achieved established performance objectives.</th>
+                                  </tr>
+                                  </thead>
+                                </table>
+                              </div>
+
+                              <p style="page-break-before: always"></p>
+                              <p style="font-weight: bold;font-size: 20px">D. Taking into consideration your achievements under A, Observations under B & C on page No. 2 and keeping in view the broad objectives of your job,
+                                rate your overall performance on the basis of the definitions on the opposite page. You are allowed to rate up to one decimal point.</p>
+                              <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
+                                <thead>
+                                <tr style="background: white;color: black">
+                                  <th class="text-center" style="vertical-align: middle;">Standard Rating Point</th>
+                                  <th class="text-center" style="vertical-align: middle;">Outstanding</th>
+                                  <th class="text-center" style="vertical-align: middle;">Very Good</th>
+                                  <th class="text-center" style="vertical-align: middle;">Good</th>
+                                  <th class="text-center" style="vertical-align: middle;">Satisfactory</th>
+                                  <th class="text-center" style="vertical-align: middle;">Tolerable</th>
+                                  <th class="text-center" style="vertical-align: middle;">Poor</th>
+                                </tr>
+                                <tr style="background: white;color: black">
+                                  <th class="text-center"> </th>
+                                  <th class="text-center"> 9</th>
+                                  <th class="text-center"> 7 to 8</th>
+                                  <th class="text-center"> 5 to 6</th>
+                                  <th class="text-center"> 3 to 4</th>
+                                  <th class="text-center"> 1 to 2</th>
+                                  <th class="text-center"> 0</th>
+                                </tr>
+                                <tr style="background: white;color: black">
+                                  <th class="text-center">Assessed by Appraisee</th>
+                                  <th class="text-center"> </th>
+                                  <th class="text-center"></th>
+                                  <th class="text-center"></th>
+                                  <th class="text-center"></th>
+                                  <th class="text-center"></th>
+                                  <th class="text-center"></th>
+                                </tr>
+                                <tr style="background: white;color: black">
+                                  <th class="text-center">Assessed by Appraiser</th>
+                                  <th class="text-center"> </th>
+                                  <th class="text-center"></th>
+                                  <th class="text-center"></th>
+                                  <th class="text-center"></th>
+                                  <th class="text-center"></th>
+                                  <th class="text-center"></th>
+                                </tr>
+                                </thead>
+                              </table>
+                              <br>
+                              <div style="display: flex">
+                                <div class="col-md-6" style="text-align: left">
+                                  <p>Signature of Appraisee
+                                    <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                  </p>
+                                </div>
+                                <div class="col-md-6">
+                                  <p>Signature of Appraiser
+                                    <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                  </p>
+                                </div>
+                              </div>
+                              <div style="display: flex">
+                                <div class="col-md-6" style="text-align: left">
+                                  <p>Date
+                                    <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                  </p>
+                                </div>
+                                <div class="col-md-6">
+                                  <p>Date
+                                    <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                  </p>
+                                </div>
+                              </div>
+
+                              <p style="font-weight: bold;font-size: 20px">In case the score by Appraiser is '9' or '0' or the difference in score between the Appraisee and the Appraiser is 3 points or more,
+                                it is mandatory for the Appraiser to prepare a report giving details to substantiate the rating or the reason for the difference.</p>
+                              <div class="six_part">
+                                <p style="font-size: 20px">
+                                  Appraisal Interview held on <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                </p>
+                              </div>
+                              <p style="font-weight: bold;font-size: 20px">General comment by the Appraiser after the Appraisal Interview,
+                                indicating major points discussed and if the Appraisee accepts the rating made by the Appraiser.</p>
+                              <br>
+                              <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                              <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                              <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                              <p><span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span></p>
+
+                              <p style="font-weight: bold;font-size: 20px">Remarks of Superior of Appraiser</p>
+                              <p style="font-weight: bold;font-size: 20px">Indicate below if you agree or disagree with the assessment of the Appraiser.
+                                Would you modify or add to the above assessment in any manner?</p>
+                              <br>
+                              <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                              <p><span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span></p>
+                              <p><span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span></p>
+
+                              <br>
+                              <div style="display: flex">
+                                <div class="col-md-6" style="text-align: left">
+                                  <p style="font-size: 20px">Signature
+                                    <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center;"></span>
+                                  </p>
+                                </div>
+                                <div class="col-md-6">
+                                  <p style="font-size: 20px">Date
+                                    <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div class="six_part">
+                                <p style="font-size: 20px">
+                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 500px;text-align: center"></span>
+                                </p>
+                              </div>
+
                             </div>
                         </div>
                     </div>
@@ -171,6 +367,7 @@ export default {
 
     });
   },
+
     methods: {
       customFormatter(date) {
         return moment(date).format('MMMM YYYY');
@@ -202,5 +399,6 @@ table tr th,table tr td {
 .margin_p .table>tbody>tr>td, .table>tfoot>tr>td, .table>thead>tr>td {
   /* padding: 15px 12px; */
 }
+
 </style>
 

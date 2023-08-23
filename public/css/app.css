@@ -66,3 +66,6 @@ thead {
 #mdp .table th {
   font-weight: bold;
 }
+#mdp .table_part .table th {
+  padding: 28px !important;
+}
