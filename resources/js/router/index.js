@@ -8,6 +8,7 @@ import MDPCreate from '../views/mdp/Create'
 import MDPEdit from '../views/mdp/Edit'
 import MDPPrint from '../views/mdp/Print'
 import MDPPrintTwo from '../views/mdp/PrintTwo'
+import TrainingFeedback from '../views/mdp/TrainingFeedback'
 
 //ACTION PLAN
 import ActionPlanList from '../views/action_plan/ActionPlanList'
@@ -71,6 +72,9 @@ const routes = [
             },
             {
                 path: baseurl + 'mdp-print_two/:ID', name: 'MDPPrintTwo', component: MDPPrintTwo
+            },
+            {
+                path: baseurl + 'mdp-training-feedback', name: 'TrainingFeedback', component: TrainingFeedback
             },
 
             //Action Plan list

@@ -69,3 +69,35 @@ thead {
 #mdp .table_part .table th {
   padding: 28px !important;
 }
+
+#action {
+  font-family: "Nunito", sans-serif;
+  color: #000000;
+}
+#action table tr th, #action table tr td {
+  color: #000000 !important;
+}
+#action .table-bordered {
+  border: 1px solid #000000 !important;
+}
+#action .table-bordered td, #action .table-bordered th {
+  border: 1px solid #000000 !important;
+}
+#action .third_part input {
+  width: 90%;
+  height: 55px;
+  border: 1px solid #000000;
+}
+#action .fourth_part input {
+  height: 40px;
+  border: 1px solid #000000;
+}
+#action .table > tbody > tr > td, #action .table > tfoot > tr > td, #action .table > thead > tr > td {
+  padding: 2px 4px !important;
+}
+#action .table th {
+  padding: 4px !important;
+}
+#action .table_part .table th {
+  padding: 28px !important;
+}

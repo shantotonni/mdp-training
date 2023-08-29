@@ -13,9 +13,8 @@
               <span>MDP<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
             </a>
             <ul class="submenu">
-              <li>
-                <router-link :to="{name: 'MDPList'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP List</router-link>
-              </li>
+              <li><router-link :to="{name: 'MDPList'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP List</router-link></li>
+              <li><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Training Feedback</router-link></li>
             </ul>
           </li>
           <li>

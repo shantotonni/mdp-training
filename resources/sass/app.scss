@@ -80,3 +80,44 @@ thead {
   }
 }
 
+#action {
+  font-family: 'Nunito', sans-serif;
+  color: #000000;
+
+  table tr th,table tr td {
+    color: #000000 !important;
+  }
+  .table-bordered {
+    border: 1px solid #000000 !important;
+  }
+  .table-bordered td, .table-bordered th {
+    border: 1px solid #000000 !important;
+  }
+  .third_part {
+    input {
+      width: 90%;
+      height: 55px;
+      border: 1px solid #000000;
+    }
+  }
+  .fourth_part {
+    input {
+      height: 40px;
+      border: 1px solid #000000;
+    }
+  }
+
+  .table>tbody>tr>td, .table>tfoot>tr>td, .table>thead>tr>td {
+    padding: 2px 4px!important;
+  }
+  .table th {
+    padding: 4px!important;
+  }
+  .table th {
+    //font-weight: bold;
+  }
+  .table_part .table th {
+    padding: 28px !important;
+  }
+}
+
