@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\MDPController;
+use App\Http\Controllers\MDPTrainigFeedbackController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
@@ -37,6 +38,10 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::post('get-supervisor-by-employee-code', [MDPController::class,'getSupervisorByEmployeeCode']);
     Route::get('get-level-wise-suggestive-list/{StaffID}', [MDPController::class,'getLevelWiseSuggestiveList']);
     Route::get('export-mdp-list', [MDPController::class,'mdpExport']);
+    Route::get('empcode-wise-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseTrainingList']);
+    Route::get('empcode-wise-single-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseSingleTrainingList']);
+    Route::post('training-feedback-submit', [MDPTrainigFeedbackController::class,'store']);
+    Route::post('additional-training-feedback-submit', [MDPTrainigFeedbackController::class,'additionalTrainingAddAndFeedback']);
     //End
 
     //Action Plan Route

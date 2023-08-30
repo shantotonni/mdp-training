@@ -15,4 +15,8 @@ class MDPTraining extends Model
 
     const CREATED_AT = 'CreatedDate';
     const UPDATED_AT = 'UpdatedDate';
+
+    public function feedback(){
+        return $this->hasOne(MDPTrainingFeedback::class,'TrainingID','ID');
+    }
 }

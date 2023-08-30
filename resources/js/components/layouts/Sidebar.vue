@@ -14,7 +14,8 @@
             </a>
             <ul class="submenu">
               <li><router-link :to="{name: 'MDPList'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP List</router-link></li>
-              <li><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Training Feedback</router-link></li>
+              <li><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP Training Status</router-link></li>
+              <li><router-link :to="{name: 'AdditionalTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Additional Training</router-link></li>
             </ul>
           </li>
           <li>
