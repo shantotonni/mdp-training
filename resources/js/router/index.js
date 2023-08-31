@@ -17,6 +17,12 @@ import ActionPlanCreate from '../views/action_plan/Create'
 import ActionPlanEdit from '../views/action_plan/Edit'
 import ActionPlanPrint from '../views/action_plan/Print'
 
+//job Description
+import JobDescriptionList from '../views/job_description/JobDescriptionList'
+import JobDescriptionCreate from '../views/job_description/Create'
+import JobDescriptionEdit from '../views/job_description/Edit'
+import JobDescriptionPrint from '../views/job_description/Print'
+
 import NotFound from '../views/404/Index';
 import {baseurl} from '../base_url'
 
@@ -93,6 +99,20 @@ const routes = [
             },
             {
                 path: baseurl + 'action-plan-print/:ID', name: 'ActionPlanPrint', component: ActionPlanPrint
+            },
+
+            //job Description list
+            {
+                path: baseurl + 'job-description-list', name: 'JobDescriptionList', component: JobDescriptionList
+            },
+            {
+                path: baseurl + 'job-description-create', name: 'JobDescriptionCreate', component: JobDescriptionCreate
+            },
+            {
+                path: baseurl + 'job-description-edit/:ID', name: 'JobDescriptionEdit', component: JobDescriptionEdit
+            },
+            {
+                path: baseurl + 'job-description-print/:ID', name: 'JobDescriptionPrint', component: JobDescriptionPrint
             },
         ],
         beforeEnter(to, from, next) {

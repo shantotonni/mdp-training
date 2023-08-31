@@ -19,8 +19,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ActionPlanController extends Controller
 {
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];

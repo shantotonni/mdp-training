@@ -29,6 +29,17 @@
               </li>
             </ul>
           </li>
+          <li>
+            <a href="javascript:void(0);" class="waves-effect">
+              <i class="mdi mdi-twitch"></i>
+              <span>Job Description<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
+            </a>
+            <ul class="submenu">
+              <li>
+                <router-link :to="{name: 'JobDescriptionList'}" ><i class="mdi mdi-floor-plan"></i>Job Description List</router-link>
+              </li>
+            </ul>
+          </li>
         </ul>
       </div>
       <div class="clearfix"></div>

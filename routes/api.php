@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActionPlanController;
+use App\Http\Controllers\JobDescriptionController;
 use App\Http\Controllers\MDPController;
 use App\Http\Controllers\MDPTrainigFeedbackController;
 use App\Http\Controllers\ReportController;
@@ -57,11 +58,31 @@ Route::group(['middleware' => ['jwt']], function () {
 
     Route::post('action-plan/get-employee-by-employee-code', [ActionPlanController::class,'getEmployeeByEmployeeCode']);
     Route::post('action-plan/get-supervisor-by-employee-code', [ActionPlanController::class,'getSupervisorByEmployeeCode']);
+
+    //Export
+    Route::post('export-action-plane-list',[ActionPlanController::class,'exportActionPlan']);
+    //End
+
+
+    //job description
+    Route::get('job-description/list',[JobDescriptionController::class,'index']);
+    Route::post('job-description-store',[JobDescriptionController::class,'store']);
+    Route::get('job-description-edit/{ID}', [JobDescriptionController::class,'edit']);
+    Route::post('job-description-update', [JobDescriptionController::class,'update']);
+    Route::get('job-description-print/{ID}', [JobDescriptionController::class,'print']);
+    Route::get('job-description-search/{query}', [JobDescriptionController::class,'search']);
+    Route::delete('job-description-delete/{ID}', [JobDescriptionController::class,'delete']);
+
+    Route::post('job-description/get-employee-by-employee-code', [JobDescriptionController::class,'getEmployeeByEmployeeCode']);
+    Route::post('job-description/get-supervisor-by-employee-code', [JobDescriptionController::class,'getSupervisorByEmployeeCode']);
+
+    //Export
+    Route::post('export-job-description-list',[JobDescriptionController::class,'exportActionPlan']);
+
     //End
 
     Route::get('get-all-employee-training-list', [CommonController::class,'getEmployeeTrainingList']);
     Route::get('get-agree-business-user', [CommonController::class,'getAgreeBusinessUser']);
 
-    //Export
-    Route::post('export-action-plane-list',[ActionPlanController::class,'exportActionPlan']);
+
 });
