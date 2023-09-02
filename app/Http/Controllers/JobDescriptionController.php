@@ -38,7 +38,8 @@ class JobDescriptionController extends Controller
         if ($role == 'Administrator'){
             $job_description= $job_description;
         }elseif ($role == 'jadmin'){
-            $job_description= $job_description->where('Division',$Business);
+            $job_description= $job_description;
+            //$job_description= $job_description->where('Division',$Business);
         } else{
             $job_description = $job_description->where('StaffID',$empcode);
         }

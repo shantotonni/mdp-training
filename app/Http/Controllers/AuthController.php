@@ -44,7 +44,7 @@ class AuthController extends Controller
             ['EmpCode' => '25921', 'Business' => 'Consumer Brands', 'type' => 'sadmin', 'password' => '123123'],
             ['EmpCode' => '00723', 'Business' => 'Support Division', 'type' => 'sadmin', 'password' => '123123'],
             //for jod description user
-            ['EmpCode' => '00723', 'Business' => 'All', 'type' => 'jadmin', 'password' => '123123'],
+            ['EmpCode' => 'admin', 'Business' => 'All', 'type' => 'jadmin', 'password' => '123123'],
         ];
 
         $admin_dataset = collect($admin_dataset);
