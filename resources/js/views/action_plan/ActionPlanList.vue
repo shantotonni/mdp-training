@@ -9,7 +9,7 @@
               <div class="card-body">
                 <div class="d-flex">
                   <div class="flex-grow-1">
-                    <div class="row" v-if="personal===null">
+                    <div class="row" v-if="type==='sadmin'">
                       <div class="col-md-2">
                         <input v-model="query" type="text" class="form-control" placeholder="Search">
                       </div>
@@ -125,6 +125,7 @@ export default {
       personal: {},
       departments: [],
       divisions: [],
+      type:'',
       pagination: {
         current_page: 1
       },
@@ -176,6 +177,7 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.$store.commit('me', response);
         this.personal = response.personal
+        this.type = response.payload.Type
       }, (error) => {
         this.errorNoti(error);
       });

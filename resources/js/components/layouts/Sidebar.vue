@@ -14,8 +14,8 @@
             </a>
             <ul class="submenu">
               <li><router-link :to="{name: 'MDPList'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP List</router-link></li>
-              <li><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP Training Status</router-link></li>
-              <li><router-link :to="{name: 'AdditionalTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Additional Training</router-link></li>
+              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP Training Status</router-link></li>
+              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'AdditionalTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Additional Training</router-link></li>
             </ul>
           </li>
           <li>
@@ -47,19 +47,36 @@
   </div>
 </template>
 <script>
+import {Common} from "../../mixins/common";
 export default {
+  mixins: [Common],
   data(){
     return {
-      user_menu:[]
+      user_menu:[],
+      EmpCode: '',
     }
   },
   mounted() {
     setTimeout(()=>{
       $("#side-menu").metisMenu();
-    },1000)
+    },1000);
+    this.getData();
   },
   methods:{
-    //
+    getData() {
+      this.axiosPost('me', {}, (response) => {
+        if (response.payload){
+          console.log(response)
+           this.EmpCode = response.payload.EmpCode;
+        }else {
+          this.EmpCode ='';
+        }
+        this.$store.commit('me', response);
+        //this.personal = response.personal
+      }, (error) => {
+        this.errorNoti(error);
+      });
+    },
   }
 }
 </script>

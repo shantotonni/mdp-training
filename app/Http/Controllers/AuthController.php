@@ -39,12 +39,13 @@ class AuthController extends Controller
             ['EmpCode' => '23401', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
             ['EmpCode' => '24793', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
             ['EmpCode' => '10259', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+            ['EmpCode' => 'admin', 'Business' => 'All', 'type' => 'admin', 'password' => '123123'],
             //for action plan user
             ['EmpCode' => '23284', 'Business' => 'ALL', 'type' => 'Administrator', 'password' => '123123'],
             ['EmpCode' => '25921', 'Business' => 'Consumer Brands', 'type' => 'sadmin', 'password' => '123123'],
             ['EmpCode' => '00723', 'Business' => 'Support Division', 'type' => 'sadmin', 'password' => '123123'],
             //for jod description user
-            ['EmpCode' => 'admin', 'Business' => 'All', 'type' => 'jadmin', 'password' => '123123'],
+            ['EmpCode' => '15227', 'Business' => 'All', 'type' => 'jadmin', 'password' => '123123'],
         ];
 
         $admin_dataset = collect($admin_dataset);
@@ -66,7 +67,7 @@ class AuthController extends Controller
 
             if ($is_admin) {
                 $user = [
-                    'EmpCode' => 'admin',
+                    'EmpCode' => $request->EmpCode,
                     'staffCode' => $request->EmpCode,
                     'Business' => $is_admin['Business'],
                     'type' => $is_admin['type'],

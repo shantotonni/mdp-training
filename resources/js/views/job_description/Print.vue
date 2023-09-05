@@ -10,27 +10,26 @@
                                 <h2 style="text-align:center">ACI Limited</h2>
                                 <p style="text-align:center;font-size: 22px;font-weight: bold;">Job Description</p>
                                 <hr>
-                                <p style="font-size: 20px">Job Title <span style="margin-left: 190px">: {{ job_description.JobTitle }}</span></p>
-                                <p style="font-size: 20px">Division Name <span style="margin-left: 136px">: {{ job_description.Division }}</span></p>
-                                <p style="font-size: 20px">Business Name <span style="margin-left: 127px">: {{ job_description.Business }}</span></p>
-                                <p style="font-size: 20px">Department Name <span style="margin-left: 99px">: {{ job_description.Department }}</span></p>
-                                <p style="font-size: 20px">Reporting To <span style="margin-left: 150px">: {{ job_description.SuppervisorName }}</span></p>
-                                <p style="font-size: 20px">Purpose of the Job <span style="margin-left: 100px">: {{ job_description.PurposeOfJob }}</span></p>
-                                <p style="font-size: 20px">Job Customer
+                                <p style="font-size: 16px">Job Title <span style="margin-left: 190px">: {{ job_description.JobTitle }}</span></p>
+                                <p style="font-size: 16px">Division Name <span style="margin-left: 136px">: {{ job_description.Division }}</span></p>
+                                <p style="font-size: 16px">Business Name <span style="margin-left: 127px">: {{ job_description.Business }}</span></p>
+                                <p style="font-size: 16px">Department Name <span style="margin-left: 99px">: {{ job_description.Department }}</span></p>
+                                <p style="font-size: 16px">Reporting To <span style="margin-left: 150px">: {{ job_description.SuppervisorName }}</span></p>
+                                <p style="font-size: 16px">Purpose of the Job <span style="margin-left: 100px">: {{ job_description.PurposeOfJob }}</span></p>
+                                <p style="font-size: 16px">Job Customer
                                   <span style="margin-left: 144px">: Internal - {{ job_description.JobCustomerInternal }}</span>
                                   <br>
                                   <span style="margin-left: 270px">: External - {{ job_description.JobCustomerExternal }}</span>
                                 </p>
-                                <p style="font-size: 20px">Major Job Responsibilities <span style="margin-left: 33px">:</span> </p>
-                                <p style="font-size: 20px" v-for="(detail, i) in details" :key="detail.ID" v-if="details.length">{{ ++i }}. {{ detail.JobResponsibilities }}</p>
+                                <p style="font-size: 16px">Major Job Responsibilities <span style="margin-left: 33px">:</span> </p>
+                                <p style="font-size: 16px" v-for="(detail, i) in details" :key="detail.ID" v-if="details.length">{{ ++i }}. {{ detail.JobResponsibilities }}</p>
 
                                 <br>
-                                <br>
-                                <p style="font-size: 20px">Signature of the Incumbent <span style="margin-left: 32px">: </span></p>
-                                <p style="font-size: 20px">Name of Incumbent <span style="margin-left: 100px">: {{ job_description.EmployeeName }}</span></p>
-                                <p style="font-size: 20px">Staff ID <span style="margin-left: 208px">: {{ job_description.StaffID }}</span></p>
-                                <p style="font-size: 20px">Signature of Supervisor <span style="margin-left: 65px">: </span></p>
-                                <p style="font-size: 20px">Date of Preparation <span style="margin-left: 100px">: </span></p>
+                                <p style="font-size: 16px">Signature of the Incumbent <span style="margin-left: 32px">: </span></p>
+                                <p style="font-size: 16px">Name of Incumbent <span style="margin-left: 100px">: {{ job_description.EmployeeName }}</span></p>
+                                <p style="font-size: 16px">Staff ID <span style="margin-left: 208px">: {{ job_description.StaffID }}</span></p>
+                                <p style="font-size: 16px">Signature of Supervisor <span style="margin-left: 65px">: </span></p>
+                                <p style="font-size: 16px">Date of Preparation <span style="margin-left: 100px">: </span></p>
                               </div>
 
                             </div>

@@ -10,7 +10,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <div class="row">
-                                            <div class="col-md-2" v-if="personal===null">
+                                            <div class="col-md-2" v-if="type === 'admin'">
                                                 <input v-model="query" type="text" class="form-control" placeholder="Search">
                                             </div>
                                         </div>
@@ -24,7 +24,7 @@
 <!--                                            <i class="mdi mdi-database-export"></i>-->
 <!--                                            Export-->
 <!--                                        </button>-->
-                                        <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="personal===null">
+                                        <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
                                             <i class="fas fa-sync"></i>
                                             Export
                                         </button>
@@ -99,7 +99,7 @@ export default {
     data() {
         return {
           mdplist: [],
-          personal: {},
+          type: '',
             pagination: {
                 current_page: 1
             },
@@ -143,7 +143,7 @@ export default {
       getData() {
         this.axiosPost('me', {}, (response) => {
           this.$store.commit('me', response);
-          this.personal = response.personal
+          this.type = response.payload.Type
         }, (error) => {
           this.errorNoti(error);
         });
