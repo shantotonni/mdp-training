@@ -102,6 +102,7 @@ class JobDescriptionController extends Controller
             $JobDescription->SuppervisorMobile         = $request->SuppervisorMobile;
 
             $JobDescription->JobTitle                   = $request->JobTitle;
+            $JobDescription->Portfolio                   = $request->Portfolio;
             $JobDescription->PurposeOfJob               = $request->PurposeOfJob;
             $JobDescription->JobCustomerInternal        = $request->JobCustomerInternal;
             $JobDescription->JobCustomerExternal        = $request->JobCustomerExternal;
@@ -165,6 +166,7 @@ class JobDescriptionController extends Controller
             $JobDescription->SuppervisorMobile         = $request->SuppervisorMobile;
 
             $JobDescription->JobTitle                   = $request->JobTitle;
+            $JobDescription->Portfolio                   = $request->Portfolio;
             $JobDescription->PurposeOfJob               = $request->PurposeOfJob;
             $JobDescription->JobCustomerInternal        = $request->JobCustomerInternal;
             $JobDescription->JobCustomerExternal        = $request->JobCustomerExternal;

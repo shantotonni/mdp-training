@@ -33,6 +33,7 @@ class JobDescriptionCollection extends ResourceCollection
                     'Business'=>$job_description->Business,
                     'JobDescriptionPeriod'=>$job_description->JobDescriptionPeriod,
                     'JobTitle'=>$job_description->JobTitle,
+                    'Portfolio'=>$job_description->Portfolio,
                     'PurposeOfJob'=>$job_description->PurposeOfJob,
                     'JobCustomerExternal'=>$job_description->JobCustomerExternal,
                     'JobCustomerInternal'=>$job_description->JobCustomerInternal,

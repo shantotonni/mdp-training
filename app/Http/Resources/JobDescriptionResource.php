@@ -33,6 +33,7 @@ class JobDescriptionResource extends JsonResource
             'ActionPlanPeriod'=>$this->ActionPlanPeriod,
             'JobDescriptionPeriod'=>$this->JobDescriptionPeriod,
             'JobTitle'=>$this->JobTitle,
+            'Portfolio'=>$this->Portfolio,
             'PurposeOfJob'=>$this->PurposeOfJob,
             'JobCustomerExternal'=>$this->JobCustomerExternal,
             'JobCustomerInternal'=>$this->JobCustomerInternal,

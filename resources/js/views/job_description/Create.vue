@@ -278,6 +278,7 @@ export default {
         SuppervisorMobile:'',
 
         JobTitle:'',
+        Portfolio:'',
         PurposeOfJob: '',
         JobCustomerInternal: '',
         JobCustomerExternal: '',
