@@ -112,13 +112,21 @@
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label>Purpose Of Job</label>
-                              <input type="text" name="PurposeOfJob" v-model="form.PurposeOfJob" class="form-control" :class="{ 'is-invalid': form.errors.has('PurposeOfJob') }">
-                              <div class="error" v-if="form.errors.has('PurposeOfJob')" v-html="form.errors.get('PurposeOfJob')" />
+                              <label>Portfolio</label>
+                              <input type="text" name="PurposeOfJob" v-model="form.Portfolio" class="form-control" :class="{ 'is-invalid': form.errors.has('Portfolio') }">
+                              <div class="error" v-if="form.errors.has('Portfolio')" v-html="form.errors.get('Portfolio')" />
                             </div>
                           </div>
 
-                          <div class="col-md-6">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Purpose Of Job</label>
+                              <textarea id="textarea" class="form-control" rows="2" v-model="form.PurposeOfJob"></textarea>
+                              <!--                              <input type="text" name="JobCustomerInternal" v-model="form.JobCustomerInternal" class="form-control" :class="{ 'is-invalid': form.errors.has('JobCustomerInternal') }">-->
+                              <div class="error" v-if="form.errors.has('PurposeOfJob')" v-html="form.errors.get('PurposeOfJob')" />
+                            </div>
+                          </div>
+                          <div class="col-md-4">
                             <div class="form-group">
                               <label>Job Customer Internal</label>
                               <textarea id="textarea" class="form-control" rows="2" v-model="form.JobCustomerInternal"></textarea>
@@ -126,7 +134,7 @@
                               <div class="error" v-if="form.errors.has('JobCustomerInternal')" v-html="form.errors.get('JobCustomerInternal')" />
                             </div>
                           </div>
-                          <div class="col-md-6">
+                          <div class="col-md-4">
                             <div class="form-group">
                               <label>Job Customer External</label>
                               <textarea id="textarea" class="form-control" rows="2" v-model="form.JobCustomerExternal" required></textarea>
