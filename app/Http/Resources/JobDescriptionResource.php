@@ -37,6 +37,7 @@ class JobDescriptionResource extends JsonResource
             'PurposeOfJob'=>$this->PurposeOfJob,
             'JobCustomerExternal'=>$this->JobCustomerExternal,
             'JobCustomerInternal'=>$this->JobCustomerInternal,
+            'DateOfPreparation'=>date('Y-m-d',strtotime($this->CreatedDate)),
             'finds'=>$this->details,
         ];
     }

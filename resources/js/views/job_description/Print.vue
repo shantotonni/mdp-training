@@ -9,19 +9,18 @@
                               <div class="first_part">
                                 <div style="text-align:center"><img :src="`${mainOrigin}assets/images/logo-svg.png`" alt="user" class="rounded-circle" /></div>
                                 <h2 style="text-align:center">ACI Limited</h2>
-                              <p style="text-align:center;font-size: 22px;font-weight: bold;">Job Description</p>
+                                <p style="text-align:center;font-size: 22px;font-weight: bold;">Job Description</p>
                                 <hr>
-                                <p style="font-size: 16px">Job Title <span style="margin-left: 200px">: {{ job_description.JobTitle }}</span></p>
                                 <p style="font-size: 16px">Division Name <span style="margin-left: 157px">: {{ job_description.Division }}</span></p>
                                 <p style="font-size: 16px">Business Name <span style="margin-left: 150px">: {{ job_description.Business }}</span></p>
                                 <p style="font-size: 16px">Department Name <span style="margin-left: 128px">: {{ job_description.Department }}</span></p>
                                 <p style="font-size: 16px">Reporting To <span style="margin-left: 169px">: {{ job_description.SuppervisorName }}</span></p>
                                 <p style="font-size: 16px">Purpose of the Job <span style="margin-left: 130px">: {{ job_description.PurposeOfJob }}</span></p>
-                                <p style="font-size: 16px">Job Customer
-                                  <span style="margin-left: 165px">: Internal - {{ job_description.JobCustomerInternal }}</span>
-                                  <br>
-                                  <span style="margin-left: 267px">: External - {{ job_description.JobCustomerExternal }}</span>
-                                </p>
+                                <p style="font-size: 16px">Assigned Portfolio/ Brand <span style="margin-left: 77px">: {{ job_description.Portfolio }}</span></p>
+                                <p style="font-size: 16px">Job Customer<span style="margin-left: 169px">: </span></p>
+                                <p>Internal - {{ job_description.JobCustomerInternal }}</p>
+                                <p>External - {{ job_description.JobCustomerExternal }}</p>
+
                                 <p style="font-size: 16px">Major Job Responsibilities <span style="margin-left: 79px">:</span> </p>
                                 <p style="font-size: 16px" v-for="(detail, i) in details" :key="detail.ID" v-if="details.length">{{ ++i }}. {{ detail.JobResponsibilities }}</p>
 
@@ -30,7 +29,7 @@
                                 <p style="font-size: 16px">Name of Incumbent <span style="margin-left: 87px">: {{ job_description.EmployeeName }}</span></p>
                                 <p style="font-size: 16px">Staff ID <span style="margin-left: 173px">: {{ job_description.StaffID }}</span></p>
                                 <p style="font-size: 16px">Signature of Supervisor <span style="margin-left: 58px">: </span></p>
-                                <p style="font-size: 16px">Date of Preparation <span style="margin-left: 87px">: </span></p>
+                                <p style="font-size: 16px">Date of Preparation <span style="margin-left: 87px">: {{ job_description.DateOfPreparation }}</span></p>
                               </div>
 
                             </div>

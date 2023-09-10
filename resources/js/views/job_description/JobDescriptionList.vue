@@ -84,7 +84,7 @@
                       <td>{{ job.JobTitle }}</td>
                       <td>{{ job.PurposeOfJob }}</td>
 
-                      <td class="text-center">
+                      <td class="text-center" width="10%">
                         <router-link :to="`job-description-edit/${job.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
                         <router-link :to="`job-description-print/${job.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> Print</router-link>
                         <!--<button @click="destroy(plan.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->
