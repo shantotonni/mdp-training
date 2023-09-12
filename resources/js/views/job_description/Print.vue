@@ -2,7 +2,7 @@
     <div class="content" id="action">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-12">
+                <div class="col-m-12">
                     <div class="card">
                         <div class="datatable" v-if="!isLoading">
                             <div class="card-body margin_p">
@@ -11,17 +11,23 @@
                                 <h2 style="text-align:center">ACI Limited</h2>
                                 <p style="text-align:center;font-size: 22px;font-weight: bold;">Job Description</p>
                                 <hr>
+                                <p style="font-size: 16px">Job Title <span style="margin-left: 200px">: {{ job_description.JobTitle }}</span></p>
                                 <p style="font-size: 16px">Division Name <span style="margin-left: 157px">: {{ job_description.Division }}</span></p>
                                 <p style="font-size: 16px">Business Name <span style="margin-left: 150px">: {{ job_description.Business }}</span></p>
                                 <p style="font-size: 16px">Department Name <span style="margin-left: 128px">: {{ job_description.Department }}</span></p>
                                 <p style="font-size: 16px">Reporting To <span style="margin-left: 169px">: {{ job_description.SuppervisorName }}</span></p>
-                                <p style="font-size: 16px">Purpose of the Job <span style="margin-left: 130px">: {{ job_description.PurposeOfJob }}</span></p>
+
+                                <div style="display:flex;">
+                                  <p style="width: 36%;font-size: 16px">Purpose of the Job</p>
+                                  <p style="font-size: 16px">: {{ job_description.PurposeOfJob }}</p>
+                                </div>
+                                
                                 <p style="font-size: 16px">Assigned Portfolio/ Brand <span style="margin-left: 77px">: {{ job_description.Portfolio }}</span></p>
                                 <p style="font-size: 16px">Job Customer<span style="margin-left: 169px">: </span></p>
                                 <p>Internal - {{ job_description.JobCustomerInternal }}</p>
                                 <p>External - {{ job_description.JobCustomerExternal }}</p>
 
-                                <p style="font-size: 16px">Major Job Responsibilities <span style="margin-left: 79px">:</span> </p>
+                                <p style="font-size: 16px;font-weight: bold;text-decoration: underline">Major Job Responsibilities <span style="margin-left: 79px">:</span> </p>
                                 <p style="font-size: 16px" v-for="(detail, i) in details" :key="detail.ID" v-if="details.length">{{ ++i }}. {{ detail.JobResponsibilities }}</p>
 
                                 <br>
