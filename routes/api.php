@@ -39,6 +39,10 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::post('get-supervisor-by-employee-code', [MDPController::class,'getSupervisorByEmployeeCode']);
     Route::get('get-level-wise-suggestive-list/{StaffID}', [MDPController::class,'getLevelWiseSuggestiveList']);
     Route::get('export-mdp-list', [MDPController::class,'mdpExport']);
+    Route::get('mdp/get-top-ranked-training', [MDPController::class,'getTopRankedTraining']);
+    Route::get('mdp/get-all-mdp-department', [MDPController::class,'getAllMDPDepartment']);
+
+    //feedback
     Route::get('empcode-wise-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseTrainingList']);
     Route::get('empcode-wise-single-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseSingleTrainingList']);
     Route::post('training-feedback-submit', [MDPTrainigFeedbackController::class,'store']);
@@ -83,6 +87,7 @@ Route::group(['middleware' => ['jwt']], function () {
 
     Route::get('get-all-employee-training-list', [CommonController::class,'getEmployeeTrainingList']);
     Route::get('get-agree-business-user', [CommonController::class,'getAgreeBusinessUser']);
+    Route::get('get-all-session', [CommonController::class,'getAllSession']);
 
 
 });

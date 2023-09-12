@@ -13,6 +13,17 @@
                                             <div class="col-md-2" v-if="type === 'admin'">
                                                 <input v-model="query" type="text" class="form-control" placeholder="Search">
                                             </div>
+                                          <div class="col-md-2">
+                                            <div class="form-group">
+                                              <select id="Department" class="form-control" v-model="Department">
+                                                <option value="">Select Department</option>
+                                                <option v-for="(dept,index) in departments" :value="dept.DeptName" :key="index">{{dept.DeptName}}</option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                          <div class="col-md-1">
+                                            <button type="submit" @click="getAllMDPList" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
+                                          </div>
                                         </div>
                                     </div>
                                     <div class="card-tools">
@@ -100,13 +111,15 @@ export default {
         return {
           mdplist: [],
           type: '',
-            pagination: {
-                current_page: 1
-            },
-            isMessage : false,
-            query: "",
-            editMode: false,
-            isLoading: false,
+          departments: '',
+          pagination: {
+              current_page: 1
+          },
+          isMessage : false,
+          query: "",
+          Department: "",
+          editMode: false,
+          isLoading: false,
         }
     },
     watch: {
@@ -121,11 +134,15 @@ export default {
     mounted() {
         document.title = 'MDP List | MDP';
         this.getAllMDPList();
+        this.getAllDepartment();
         this.getData();
     },
     methods: {
-      getAllMDPList(){
-            axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page).then((response)=>{
+        getAllMDPList(){
+            axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
+                + "&query=" + this.query
+                + "&Department=" + this.Department
+            ).then((response)=>{
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
             }).catch((error)=>{
@@ -140,59 +157,68 @@ export default {
                 this.isLoading = false;
             });
         },
-      getData() {
-        this.axiosPost('me', {}, (response) => {
-          this.$store.commit('me', response);
-          this.type = response.payload.Type
-        }, (error) => {
-          this.errorNoti(error);
-        });
-      },
+        getData() {
+          this.axiosPost('me', {}, (response) => {
+            this.$store.commit('me', response);
+            this.type = response.payload.Type
+          }, (error) => {
+            this.errorNoti(error);
+          });
+        },
+        getAllDepartment(){
+          axios.get(baseurl + 'api/mdp/get-all-mdp-department').then((response)=>{
+            this.departments = response.data.departments;
+          }).catch((error)=>{
+
+          })
+        },
         reload(){
             this.getAllMDPList();
             this.query = "";
             // this.$toaster.success('Data Successfully Refresh');
         },
-      exportMDPList(){
-        axios.get(baseurl + 'api/export-mdp-list')
-            .then((response)=>{
-              let dataSets = response.data.data;
-              if (dataSets.length > 0) {
-                let columns = Object.keys(dataSets[0]);
-                columns = columns.filter((item) => item !== 'row_num');
-                let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-                columns = columns.map((item) => {
-                  let title = item.replace(rex, '$1$4 $2$3$5')
-                  return {title, key: item}
-                });
-                bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
-              }
-            }).catch((error)=>{
-          console.log(error)
-        })
-      },
-        destroy(id){
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios.delete(baseurl + 'api/mdp/delete/'+ id).then((response)=>{
-                        this.getAllMDPList();
-                        Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                        )
-                    })
+        exportMDPList(){
+          axios.get(baseurl + 'api/export-mdp-list?query=' +  this.query
+              + "&Department=" + this.Department
+          )
+              .then((response)=>{
+                let dataSets = response.data.data;
+                if (dataSets.length > 0) {
+                  let columns = Object.keys(dataSets[0]);
+                  columns = columns.filter((item) => item !== 'row_num');
+                  let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                  columns = columns.map((item) => {
+                    let title = item.replace(rex, '$1$4 $2$3$5')
+                    return {title, key: item}
+                  });
+                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
                 }
-            })
+              }).catch((error)=>{
+            console.log(error)
+          })
         },
+        destroy(id){
+          Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  axios.delete(baseurl + 'api/mdp/delete/'+ id).then((response)=>{
+                      this.getAllMDPList();
+                      Swal.fire(
+                          'Deleted!',
+                          'Your file has been deleted.',
+                          'success'
+                      )
+                  })
+              }
+          })
+      },
     },
 }
 </script>

@@ -19,6 +19,7 @@ use App\Services\BusinessService;
 use App\Services\DepartmentService;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CommonController extends Controller
@@ -54,6 +55,13 @@ class CommonController extends Controller
 
         return response()->json([
             'dropDown' => $dropDown
+        ]);
+    }
+
+    public function getAllSession(){
+        $sessions = DB::select('select distinct AppraisalPeriod as Name from ManagementDevelopmentPlane');
+        return response()->json([
+            'sessions'=>$sessions
         ]);
     }
 }

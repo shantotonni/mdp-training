@@ -29,8 +29,14 @@ class MDPController extends Controller
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
         $role = $payload['Type'];
+        $Department = $request->Department;
+
         if ($role == 'admin'){
-            $mdp = ManagementDevelopmentPlane::orderBy('ID','desc')->paginate(15);
+            $mdp = ManagementDevelopmentPlane::query();
+            if ($Department){
+                $mdp = $mdp->where('Department',$Department);
+            }
+            $mdp = $mdp->orderBy('ID','desc')->paginate(15);
         }else{
             $mdp = ManagementDevelopmentPlane::orderBy('ID','desc')->where('StaffID',$empcode)->paginate(15);
         }
@@ -264,14 +270,35 @@ class MDPController extends Controller
         return new ManagementDevelopmentPlaneResource($mdp);
     }
 
-    public function mdpExport(){
-        $mdp_list = ManagementDevelopmentPlane::orderBy('ID','desc')->with('initiative','training','training.feedback')->get();
+    public function mdpExport(Request $request){
+        $Department = $request->Department;
+        $mdp_list = ManagementDevelopmentPlane::query()->with('initiative','training','training.feedback');
+        if ($Department){
+            $mdp_list = $mdp_list->where('Department',$Department);
+        }
+        $mdp_list = $mdp_list->orderBy('ID','desc')->get();
         return new ManagementDevelopmentPlaneCollection($mdp_list);
     }
 
     public function search($query)
     {
         return new ManagementDevelopmentPlaneCollection(ManagementDevelopmentPlane::where('StaffID','LIKE',"%$query%")->latest()->paginate(10));
+    }
+
+    public function getTopRankedTraining(Request $request){
+        $session = $request->sessionP;
+        $top = $request->top;
+        $top_training = DB::select("EXEC MDPTopRankTrainingList '$session','$top' ");
+        return response()->json([
+           'top_training' => $top_training
+        ]);
+    }
+
+    public function getAllMDPDepartment(){
+        $departments = DB::select('select distinct Department as DeptName from ManagementDevelopmentPlane');
+        return response()->json([
+            'departments'=>$departments
+        ]);
     }
 
     public function getEmployeeByEmployeeCode(Request $request){

@@ -11,6 +11,7 @@ const state = {
     status:[],
     me: {},
     eStatement: [],
+    allTopRankedTrainingValue: [],
 }
 
 export default new Vuex.Store({

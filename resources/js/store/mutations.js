@@ -10,4 +10,7 @@ export const mutations = {
     eStatement(state, payload) {
         state.eStatement = payload
     },
+    topTraining(state, data){
+        return state.allTopRankedTrainingValue = data;
+    },
 }

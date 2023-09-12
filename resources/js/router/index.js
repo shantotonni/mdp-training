@@ -10,6 +10,8 @@ import MDPPrint from '../views/mdp/Print'
 import MDPPrintTwo from '../views/mdp/PrintTwo'
 import TrainingFeedback from '../views/mdp/TrainingFeedback'
 import AdditionalTraining from '../views/mdp/AdditionalTraining'
+import TopRankedTraining from '../views/mdp/TopRankedTraining'
+import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 
 //ACTION PLAN
 import ActionPlanList from '../views/action_plan/ActionPlanList'
@@ -85,6 +87,12 @@ const routes = [
             },
             {
                 path: baseurl + 'add-additional-training', name: 'AdditionalTraining', component: AdditionalTraining
+            },
+            {
+                path: baseurl + 'top-ranked-training', name: 'TopRankedTraining', component: TopRankedTraining
+            },
+            {
+                path: baseurl + 'top-ranked-training-print', name: 'TopTrainingPrint', component: TopTrainingPrint
             },
 
             //Action Plan list

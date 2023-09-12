@@ -209,8 +209,7 @@ export default {
     exportActionPlanList() {
       axios.post(baseurl + 'api/export-action-plane-list',{
         param: this.query
-      })
-          .then((response) => {
+      }).then((response) => {
             let dataSets = response.data.data;
             if (dataSets.length > 0) {
               let columns = Object.keys(dataSets[0]);
