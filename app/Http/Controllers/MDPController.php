@@ -30,11 +30,15 @@ class MDPController extends Controller
         $empcode = $payload['EmpCode'];
         $role = $payload['Type'];
         $Department = $request->Department;
+        $session = $request->sessionP;
 
         if ($role == 'admin'){
             $mdp = ManagementDevelopmentPlane::query();
             if ($Department){
                 $mdp = $mdp->where('Department',$Department);
+            }
+            if ($session){
+                $mdp = $mdp->where('AppraisalPeriod',$session);
             }
             $mdp = $mdp->orderBy('ID','desc')->paginate(15);
         }else{

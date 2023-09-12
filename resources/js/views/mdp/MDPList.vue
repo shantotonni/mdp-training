@@ -15,6 +15,14 @@
                                             </div>
                                           <div class="col-md-2">
                                             <div class="form-group">
+                                              <select id="sessionP" class="form-control" v-model="sessionP">
+                                                <option value="">Select Session</option>
+                                                <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                            <div class="form-group">
                                               <select id="Department" class="form-control" v-model="Department">
                                                 <option value="">Select Department</option>
                                                 <option v-for="(dept,index) in departments" :value="dept.DeptName" :key="index">{{dept.DeptName}}</option>
@@ -112,12 +120,14 @@ export default {
           mdplist: [],
           type: '',
           departments: '',
+          sessions: '',
           pagination: {
               current_page: 1
           },
           isMessage : false,
           query: "",
           Department: "",
+          sessionP: "",
           editMode: false,
           isLoading: false,
         }
@@ -135,6 +145,7 @@ export default {
         document.title = 'MDP List | MDP';
         this.getAllMDPList();
         this.getAllDepartment();
+        this.getAllSession();
         this.getData();
     },
     methods: {
@@ -142,6 +153,7 @@ export default {
             axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
                 + "&query=" + this.query
                 + "&Department=" + this.Department
+                + "&sessionP=" + this.sessionP
             ).then((response)=>{
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
@@ -172,6 +184,13 @@ export default {
 
           })
         },
+      getAllSession(){
+        axios.get(baseurl + 'api/get-all-session/').then((response) => {
+          this.sessions = response.data.sessions;
+        }).catch((error) => {
+
+        })
+      },
         reload(){
             this.getAllMDPList();
             this.query = "";
@@ -180,8 +199,8 @@ export default {
         exportMDPList(){
           axios.get(baseurl + 'api/export-mdp-list?query=' +  this.query
               + "&Department=" + this.Department
-          )
-              .then((response)=>{
+              + "&sessionP=" + this.sessionP
+          ).then((response)=>{
                 let dataSets = response.data.data;
                 if (dataSets.length > 0) {
                   let columns = Object.keys(dataSets[0]);
