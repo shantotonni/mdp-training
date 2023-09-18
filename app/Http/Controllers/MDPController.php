@@ -298,6 +298,15 @@ class MDPController extends Controller
         ]);
     }
 
+    public function getEmployeeIndividualTraining(Request $request){
+        $session = $request->sessionP;
+        $EmpCode = $request->EmpCode;
+        $individual_training = DB::select("EXEC EmployeeIndividualTraining '$session','$EmpCode' ");
+        return response()->json([
+           'individual_training' => $individual_training
+        ]);
+    }
+
     public function getAllMDPDepartment(){
         $departments = DB::select('select distinct Department as DeptName from ManagementDevelopmentPlane');
         return response()->json([

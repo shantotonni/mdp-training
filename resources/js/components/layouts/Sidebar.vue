@@ -17,6 +17,7 @@
               <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP Training Status</router-link></li>
               <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'AdditionalTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Additional Training</router-link></li>
               <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'TopRankedTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Top Ranked Training</router-link></li>
+              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'EmployeeIndividualTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Employee Individual Training</router-link></li>
             </ul>
           </li>
           <li>

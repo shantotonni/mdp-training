@@ -12,6 +12,8 @@ import TrainingFeedback from '../views/mdp/TrainingFeedback'
 import AdditionalTraining from '../views/mdp/AdditionalTraining'
 import TopRankedTraining from '../views/mdp/TopRankedTraining'
 import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
+import EmployeeIndividualTraining from '../views/mdp/EmployeeIndividualTraining'
+//import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 
 //ACTION PLAN
 import ActionPlanList from '../views/action_plan/ActionPlanList'
@@ -93,6 +95,9 @@ const routes = [
             },
             {
                 path: baseurl + 'top-ranked-training-print', name: 'TopTrainingPrint', component: TopTrainingPrint
+            },
+            {
+                path: baseurl + 'employee-individual-training', name: 'EmployeeIndividualTraining', component: EmployeeIndividualTraining
             },
 
             //Action Plan list

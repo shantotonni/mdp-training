@@ -19,4 +19,7 @@ class MDPTraining extends Model
     public function feedback(){
         return $this->hasOne(MDPTrainingFeedback::class,'TrainingID','ID');
     }
+    public function mdp(){
+        return $this->belongsTo(ManagementDevelopmentPlane::class,'MDPID','ID');
+    }
 }

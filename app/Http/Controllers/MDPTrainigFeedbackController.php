@@ -22,77 +22,75 @@ class MDPTrainigFeedbackController extends Controller
             $EmpCode = $request->empcode;
         }
         $mdp = ManagementDevelopmentPlane::where('StaffID',$EmpCode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
-        $training_list = MDPTraining::where('MDPID',$mdp->ID)->whereNotNull('TrainingTitle')->get();
-        return response()->json([
-            'training_list'=>$training_list
-        ]);
-        //return new MDPTrainigFeedbackCollection($training_list);
+        $training_list = MDPTraining::where('MDPID',$mdp->ID)->whereNotNull('TrainingTitle')->with('feedback','mdp')->get();
+        return new MDPTrainigFeedbackCollection($training_list);
     }
 
-    public function empCodeWiseSingleTrainingList(Request $request){
-        $len = strlen($request->empcode);
-        if ($len == 4){
-            $EmpCode = '0'.$request->empcode;
-        }elseif ($len == 3){
-            $EmpCode = '00'.$request->empcode;
-        }else{
-            $EmpCode = $request->empcode;
-        }
-
-        $mdp = ManagementDevelopmentPlane::where('StaffID',$EmpCode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
-        $training_list = MDPTraining::where('MDPID',$mdp->ID)->where('TrainingTitle',$request->TrainingTitle)->with('feedback')->whereNotNull('TrainingTitle')->first();
-        return new MDPTrainigFeedbackResource($training_list);
-    }
+//    public function empCodeWiseSingleTrainingList(Request $request){
+//        $len = strlen($request->empcode);
+//        if ($len == 4){
+//            $EmpCode = '0'.$request->empcode;
+//        }elseif ($len == 3){
+//            $EmpCode = '00'.$request->empcode;
+//        }else{
+//            $EmpCode = $request->empcode;
+//        }
+//
+//        $mdp = ManagementDevelopmentPlane::where('StaffID',$EmpCode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
+//        $training_list = MDPTraining::where('MDPID',$mdp->ID)->where('TrainingTitle',$request->TrainingTitle)->with('feedback')->whereNotNull('TrainingTitle')->first();
+//        return new MDPTrainigFeedbackResource($training_list);
+//    }
 
     public function store(Request $request){
 
-        $mdp = ManagementDevelopmentPlane::where('StaffID',$request->empcode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
-        $training_list = MDPTraining::where('MDPID',$mdp->ID)->where('TrainingTitle',$request->TrainingTitle)->whereNotNull('TrainingTitle')->first();
-        $MDPTrainingFeedback = MDPTrainingFeedback::where('TrainingID',$training_list->ID)->first();
+        $data                   = (object)$request->row_data;
+        $mdp                    = ManagementDevelopmentPlane::where('StaffID',$data->EmpCode)->where('AppraisalPeriod',$data->AppraisalPeriod)->first();
+        $training_list          = MDPTraining::where('MDPID',$mdp->ID)->where('TrainingTitle',$data->TrainingTitle)->whereNotNull('TrainingTitle')->first();
+        $MDPTrainingFeedback    = MDPTrainingFeedback::where('TrainingID',$training_list->ID)->first();
 
         if (!$MDPTrainingFeedback){
             $MDPTrainingFeedback = new MDPTrainingFeedback();
         }
-        if ($request->Status == 'offered'){
-            $DoneDate = '';
-            $Feedback = '';
-            $LearningTransfer = '';
+        if ($data->Status == 'offered'){
+            $DoneDate           = '';
+            $Feedback           = '';
+            $LearningTransfer   = '';
         }else{
-            $DoneDate = date('Y-m-d',strtotime($request->DoneDate));
-            $Feedback = $request->Feedback;
-            $LearningTransfer = $request->LearningTransfer;
+            $DoneDate = date('Y-m-d',strtotime($data->DoneDate));
+            $Feedback           = $data->Feedback;
+            $LearningTransfer   = $data->LearningTransfer;
         }
 
-        if ($request->OfferDateOne)
-            $OfferDateOne = date('Y-m-d',strtotime($request->OfferDateOne));
-            else $OfferDateOne = '';
+        if ($data->OfferDateOne)
+            $OfferDateOne       = date('Y-m-d',strtotime($data->OfferDateOne));
+            else $OfferDateOne  = '';
 
-        if ($request->OfferDateTwo)
-            $OfferDateTwo = date('Y-m-d',strtotime($request->OfferDateTwo));
+        if ($data->OfferDateTwo)
+            $OfferDateTwo  = date('Y-m-d',strtotime($data->OfferDateTwo));
         else $OfferDateTwo = '';
 
-        if ($request->OfferDateThree)
-            $OfferDateThree = date('Y-m-d',strtotime($request->OfferDateThree));
+        if ($data->OfferDateThree)
+            $OfferDateThree  = date('Y-m-d',strtotime($data->OfferDateThree));
         else $OfferDateThree = '';
 
-        if ($request->OfferDateFour)
-            $OfferDateFour = date('Y-m-d',strtotime($request->OfferDateFour));
+        if ($data->OfferDateFour)
+            $OfferDateFour  = date('Y-m-d',strtotime($data->OfferDateFour));
         else $OfferDateFour = '';
 
-        if ($request->OfferDateFive)
-            $OfferDateFive = date('Y-m-d',strtotime($request->OfferDateFive));
+        if ($data->OfferDateFive)
+            $OfferDateFive  = date('Y-m-d',strtotime($data->OfferDateFive));
         else $OfferDateFive = '';
 
-        $MDPTrainingFeedback->TrainingID = $training_list->ID;
-        $MDPTrainingFeedback->Status = $request->Status;
-        $MDPTrainingFeedback->DoneDate = $DoneDate;
-        $MDPTrainingFeedback->Feedback = $Feedback;
-        $MDPTrainingFeedback->LearningTransfer = $LearningTransfer;
-        $MDPTrainingFeedback->OfferDateOne = $OfferDateOne;
-        $MDPTrainingFeedback->OfferDateTwo = $OfferDateTwo;
-        $MDPTrainingFeedback->OfferDateThree = $OfferDateThree;
-        $MDPTrainingFeedback->OfferDateFour = $OfferDateFour;
-        $MDPTrainingFeedback->OfferDateFive = $OfferDateFive;
+        $MDPTrainingFeedback->TrainingID        = $training_list->ID;
+        $MDPTrainingFeedback->Status            = $data->Status;
+        $MDPTrainingFeedback->DoneDate          = $DoneDate;
+        $MDPTrainingFeedback->Feedback          = $Feedback;
+        $MDPTrainingFeedback->LearningTransfer  = $LearningTransfer;
+        $MDPTrainingFeedback->OfferDateOne      = $OfferDateOne;
+        $MDPTrainingFeedback->OfferDateTwo      = $OfferDateTwo;
+        $MDPTrainingFeedback->OfferDateThree    = $OfferDateThree;
+        $MDPTrainingFeedback->OfferDateFour     = $OfferDateFour;
+        $MDPTrainingFeedback->OfferDateFive     = $OfferDateFive;
         $MDPTrainingFeedback->save();
         return response()->json([
            'status'=>200,

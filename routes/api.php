@@ -42,6 +42,9 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('mdp/get-top-ranked-training', [MDPController::class,'getTopRankedTraining']);
     Route::get('mdp/get-all-mdp-department', [MDPController::class,'getAllMDPDepartment']);
 
+    //individual tarining
+    Route::get('mdp/get-employee-individual-training', [MDPController::class,'getEmployeeIndividualTraining']);
+
     //feedback
     Route::get('empcode-wise-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseTrainingList']);
     Route::get('empcode-wise-single-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseSingleTrainingList']);
