@@ -13,7 +13,6 @@
                       <div class="col-md-2">
                         <input v-model="query" type="text" class="form-control" placeholder="Search">
                       </div>
-
                       <div class="col-md-2">
                         <div class="form-group">
                           <select id="Division" class="form-control" v-model="Division" @change="getAllDepartment()">
@@ -66,6 +65,7 @@
                       <th>Mobile</th>
                       <th>Job Title</th>
                       <th>Purpose Of Job</th>
+                      <th>Job Status</th>
 
                       <th class="text-center">Action</th>
                     </tr>
@@ -83,11 +83,17 @@
                       <td>{{ job.Mobile }}</td>
                       <td>{{ job.JobTitle }}</td>
                       <td>{{ job.PurposeOfJob }}</td>
-
-                      <td class="text-center" width="10%">
+                      <td>
+                        <span v-if="job.JobStatus === 'pending' " class="badge badge-danger"> Pending</span>
+                        <span v-if="job.JobStatus === 'approved' " class="badge badge-success"> Approved</span>
+                      </td>
+                      <td class="text-center" width="15%">
                         <router-link :to="`job-description-edit/${job.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
                         <router-link :to="`job-description-print/${job.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> Print</router-link>
-                        <!--<button @click="destroy(plan.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->
+                        <button v-if="(job.Supervisor === 'Y' || payload.Type === 'jadmin') && job.JobStatus === 'pending'" :to="`job-description-print/${job.ID}`"
+                                @click="approvedJobDescription(job.ID)" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> Approved</button>
+                        <button v-if="(job.Supervisor === 'Y' || payload.Type === 'jadmin') && job.JobStatus === 'approved'" :to="`job-description-print/${job.ID}`"
+                                @click="approvedJobDescription(job.ID)" class="btn btn-warning btn-sm"><i class="mdi mdi-printer"></i> Disapproved</button>
                       </td>
                     </tr>
                     </tbody>
@@ -125,6 +131,7 @@ export default {
     return {
       job_description: [],
       personal: {},
+      payload: {},
       departments: [],
       divisions: [],
       pagination: {
@@ -178,6 +185,8 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.$store.commit('me', response);
         this.personal = response.personal
+        this.payload = response.payload
+        console.log(response)
       }, (error) => {
         this.errorNoti(error);
       });
@@ -248,6 +257,30 @@ export default {
         }
       })
     },
+
+    approvedJobDescription(JobID) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Approved it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.get(baseurl + 'api/approved-job-description?JobID=' + JobID).then((response) => {
+            this.getAllJobDescriptionList();
+            Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+            )
+          })
+        }
+      })
+    },
+
   },
 }
 </script>

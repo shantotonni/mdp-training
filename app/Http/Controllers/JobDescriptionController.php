@@ -7,12 +7,14 @@ use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\JobDescriptionCollection;
 use App\Http\Resources\JobDescriptionResource;
 use App\Http\Resources\SupervisorResource;
+use App\Mail\JOBDescriptionMail;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\JobDescription;
 use App\Models\JobResponsibilities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JobDescriptionController extends Controller
@@ -41,7 +43,7 @@ class JobDescriptionController extends Controller
             $job_description= $job_description;
             //$job_description= $job_description->where('Division',$Business);
         } else{
-            $job_description = $job_description->where('StaffID',$empcode);
+            $job_description = $job_description->where('StaffID',$empcode)->orWhere('SuppervisorStaffID',$empcode);
         }
         $job_description = $job_description->paginate(15);
         return new JobDescriptionCollection($job_description);
@@ -85,7 +87,7 @@ class JobDescriptionController extends Controller
             $finds = $request->finds;
 
             $JobDescription                            = new JobDescription();
-            $JobDescription->JobDescriptionPeriod          = $request->JobDescriptionPeriod;
+            $JobDescription->JobDescriptionPeriod      = $request->JobDescriptionPeriod;
             $JobDescription->StaffID                   = $request->StaffID;
             $JobDescription->EmployeeName              = $request->EmployeeName;
             $JobDescription->Designation               = $request->Designation;
@@ -102,13 +104,15 @@ class JobDescriptionController extends Controller
             $JobDescription->SuppervisorMobile         = $request->SuppervisorMobile;
 
             $JobDescription->JobTitle                   = $request->JobTitle;
-            $JobDescription->Portfolio                   = $request->Portfolio;
+            $JobDescription->Portfolio                  = $request->Portfolio;
             $JobDescription->PurposeOfJob               = $request->PurposeOfJob;
             $JobDescription->JobCustomerInternal        = $request->JobCustomerInternal;
             $JobDescription->JobCustomerExternal        = $request->JobCustomerExternal;
+            $JobDescription->JobStatus                  = 'pending';
 
             $JobDescription->CreatedBy                 = $empcode;
             $JobDescription->UpdatedBy                 = $empcode;
+
             if ($JobDescription->save()){
                 foreach ($finds as $value){
                     $details                         = new JobResponsibilities();
@@ -116,6 +120,9 @@ class JobDescriptionController extends Controller
                     $details->JobResponsibilities    = $value['JobResponsibilities'];
                     $details->save();
                 }
+                $email = $request->SuppervisorEmail;
+                $data = 'Job Description Submitted Mail';
+                Mail::to($email)->send(new JOBDescriptionMail($data, $request->EmployeeName, $request->Designation ));
 
                 DB::commit();
                 return response()->json([
@@ -246,6 +253,22 @@ class JobDescriptionController extends Controller
         $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education')->first();
         return response()->json([
             'employee'=>new SupervisorResource($employee),
+        ]);
+    }
+
+    public function approvedJobDescription(Request $request){
+        $JobID = $request->JobID;
+        $job_Description = JobDescription::where('ID',$JobID)->first();
+        if ($job_Description->JobStatus == 'approved'){
+            $status = 'pending';
+        }else{
+            $status = 'approved';
+        }
+        $job_Description->JobStatus = $status;
+        $job_Description->save();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully Deleted.'
         ]);
     }
 }

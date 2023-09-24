@@ -15,6 +15,9 @@ import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 import EmployeeIndividualTraining from '../views/mdp/EmployeeIndividualTraining'
 //import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 
+//user
+import UserList from '../views/users/Index'
+
 //ACTION PLAN
 import ActionPlanList from '../views/action_plan/ActionPlanList'
 import ActionPlanCreate from '../views/action_plan/Create'
@@ -68,6 +71,7 @@ const routes = [
                 name: 'Dashboard',
                 component: Dashboard
             },
+            {path: baseurl + 'user-list', name: 'UserList', component: UserList},
             //mdp list
             {
                 path: baseurl + 'mdp-list', name: 'MDPList', component: MDPList

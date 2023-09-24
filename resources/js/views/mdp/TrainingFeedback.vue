@@ -25,6 +25,23 @@
                     </div>
                   </div>
                 </div>
+                <div class="row" v-if="tableDataVisible">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <input type="text" readonly v-model="EmployeeName" class="form-control" name="EmployeeName">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <input type="text" readonly v-model="Designation" class="form-control" name="Designation">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <input type="text" readonly v-model="Department" class="form-control" name="Department">
+                    </div>
+                  </div>
+                </div>
                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                   <thead>
                   <tr>
@@ -38,6 +55,7 @@
                     <th>Offer Date Five</th>
                     <th>Feedback</th>
                     <th>Learning Transfer</th>
+                    <th>Trainer Name</th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -58,6 +76,7 @@
                       <td><datepicker v-model="training.OfferDateFive" :format="customFormatter" :typeable=true input-class="form-control"></datepicker></td>
                       <td><input type="number" class="form-control" name="Feedback" v-model="training.Feedback"></td>
                       <td><input type="number" class="form-control" name="learning_transfer" v-model="training.LearningTransfer"></td>
+                      <td><input type="text" class="form-control" name="TrainerName" v-model="training.TrainerName"></td>
                       <td>
                         <button type="button" @click="trainingFeedbackSubmit(i)" class="btn btn-info btn-sm">Update</button>
                       </td>
@@ -92,13 +111,16 @@ export default {
       AppraisalPeriod: '2023-2024',
       isLoading: false,
       tableDataVisible: false,
+      EmployeeName: '',
+      Designation: '',
+      Department: '',
       form: new Form({
         id:'',
         empcode: '',
         AppraisalPeriod: '',
         training_list: [
           { TrainingTitle: '' , Status: '', DoneDate: '', Feedback:'',LearningTransfer:'',OfferDateOne:'',OfferDateTwo:'',
-            OfferDateThree:'',OfferDateFour:'',OfferDateFive:'',EmpCode: '',AppraisalPeriod:''
+            OfferDateThree:'',OfferDateFour:'',OfferDateFive:'',EmpCode: '',AppraisalPeriod:'',TrainerName: ''
           },
         ],
       }),
@@ -114,8 +136,12 @@ export default {
       axios.get(baseurl + 'api/empcode-wise-training-list?empcode=' + this.empcode
           + "&AppraisalPeriod="+ this.AppraisalPeriod
       ).then((response) => {
+        console.log(response)
         this.tableDataVisible = true;
-        this.form.fill(response.data.data);
+        this.form.fill(response.data.training_list);
+        this.EmployeeName = response.data.EmpInfo.EmployeeName
+        this.Designation = response.data.EmpInfo.Designation
+        this.Department = response.data.EmpInfo.Department
       }).catch((error) => {
 
       })
@@ -123,10 +149,8 @@ export default {
     trainingFeedbackSubmit(i){
       let row_data = this.form.training_list[i];
       this.form.busy = true;
-
       axios.post(baseurl + "api/training-feedback-submit",{row_data: row_data}).then(response => {
-        console.log(response)
-        //this.$toaster.success('Data Successfully Updated');
+        this.$toaster.success('Data Successfully Updated');
       }).catch(e => {
         this.isLoading = false;
       });

@@ -21,8 +21,8 @@ Route::group(['middleware' => 'jwt'], function () {
 Route::group(['middleware' => ['jwt']], function () {
 
     Route::group(['prefix' => 'report'],function () {
-         Route::get('student-payment',[ReportController::class,'studentPayment']);
-         Route::get('export-student-payment-report',[ReportController::class,'studentPaymentReport']);
+        // Route::get('student-payment',[ReportController::class,'studentPayment']);
+        // Route::get('export-student-payment-report',[ReportController::class,'studentPaymentReport']);
     });
 
     //mdp route
@@ -50,6 +50,7 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('empcode-wise-single-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseSingleTrainingList']);
     Route::post('training-feedback-submit', [MDPTrainigFeedbackController::class,'store']);
     Route::post('additional-training-feedback-submit', [MDPTrainigFeedbackController::class,'additionalTrainingAddAndFeedback']);
+    Route::get('get-employee-info', [MDPTrainigFeedbackController::class,'getEmployeeInfo']);
     //End
 
     //Action Plan Route
@@ -79,6 +80,7 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('job-description-print/{ID}', [JobDescriptionController::class,'print']);
     Route::get('job-description-search/{query}', [JobDescriptionController::class,'search']);
     Route::delete('job-description-delete/{ID}', [JobDescriptionController::class,'delete']);
+    Route::get('approved-job-description', [JobDescriptionController::class,'approvedJobDescription']);
 
     Route::post('job-description/get-employee-by-employee-code', [JobDescriptionController::class,'getEmployeeByEmployeeCode']);
     Route::post('job-description/get-supervisor-by-employee-code', [JobDescriptionController::class,'getSupervisorByEmployeeCode']);

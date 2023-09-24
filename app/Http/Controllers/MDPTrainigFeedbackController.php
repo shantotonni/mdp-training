@@ -23,7 +23,10 @@ class MDPTrainigFeedbackController extends Controller
         }
         $mdp = ManagementDevelopmentPlane::where('StaffID',$EmpCode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
         $training_list = MDPTraining::where('MDPID',$mdp->ID)->whereNotNull('TrainingTitle')->with('feedback','mdp')->get();
-        return new MDPTrainigFeedbackCollection($training_list);
+        return response()->json([
+            'EmpInfo' => $mdp,
+            'training_list' =>new MDPTrainigFeedbackCollection($training_list)
+        ]);
     }
 
 //    public function empCodeWiseSingleTrainingList(Request $request){
@@ -91,6 +94,7 @@ class MDPTrainigFeedbackController extends Controller
         $MDPTrainingFeedback->OfferDateThree    = $OfferDateThree;
         $MDPTrainingFeedback->OfferDateFour     = $OfferDateFour;
         $MDPTrainingFeedback->OfferDateFive     = $OfferDateFive;
+        $MDPTrainingFeedback->TrainerName       = $data->TrainerName;
         $MDPTrainingFeedback->save();
         return response()->json([
            'status'=>200,
@@ -102,7 +106,7 @@ class MDPTrainigFeedbackController extends Controller
 
         DB::beginTransaction();
         try {
-            $mdp = ManagementDevelopmentPlane::where('StaffID',$request->empcode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
+            $mdp = ManagementDevelopmentPlane::where('StaffID',$request->EmpCode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
             $training_list = MDPTraining::query()->where('MDPID',$mdp->ID)->with('feedback')->whereNotNull('TrainingTitle');
             if (!empty($request->TrainingTitle)){
                 $training_list = $training_list->where('TrainingTitle',$request->TrainingTitle);
@@ -119,7 +123,7 @@ class MDPTrainigFeedbackController extends Controller
                 $training->MDPID = $mdp->ID;
                 $training->TrainingTitle = $request->TrainingTitle;
                 $training->TrainingType = $request->TrainingType;
-                $training->TrainingDate = $request->TrainingDate;
+                //$training->TrainingDate = $request->TrainingDate;
                 $training->TrainingTypeStatus = 'additional';
                 if ($training->save()){
                     if ($request->Status == 'offered'){
@@ -178,5 +182,32 @@ class MDPTrainigFeedbackController extends Controller
                 'message' => 'Something went wrong! '.$exception->getMessage()
             ],500);
         }
+    }
+
+    public function getEmployeeInfo(Request $request){
+        $len = strlen($request->EmpCode);
+        if ($len == 4){
+            $EmpCode = '0'.$request->EmpCode;
+        }elseif ($len == 3){
+            $EmpCode = '00'.$request->EmpCode;
+        }else{
+            $EmpCode = $request->EmpCode;
+        }
+
+        $mdp = ManagementDevelopmentPlane::where('StaffID',$EmpCode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
+        if ($mdp){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Yes! You have filled out MDP Form',
+                'EmpInfo' => $mdp,
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You havent filled out yet MDP Form',
+                'EmpInfo' => [],
+            ]);
+        }
+
     }
 }

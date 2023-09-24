@@ -586,10 +586,10 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailtrap.io',
-        'port' => '2525',
-        'username' => 'dd637d12597fe8',
-        'password' => '954a98bc93f48a',
+        'host' => 'mail.aci-bd.com',
+        'port' => '25',
+        'username' => NULL,
+        'password' => NULL,
         'timeout' => NULL,
         'auth_mode' => NULL,
       ),

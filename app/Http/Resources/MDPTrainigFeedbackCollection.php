@@ -31,6 +31,7 @@ class MDPTrainigFeedbackCollection extends ResourceCollection
                     'OfferDateThree'   => isset($feedback->feedback) ? $feedback->feedback->OfferDateThree: '',
                     'OfferDateFour'    => isset($feedback->feedback) ? $feedback->feedback->OfferDateFour: '',
                     'OfferDateFive'    => isset($feedback->feedback) ? $feedback->feedback->OfferDateFive: '',
+                    'TrainerName'      => isset($feedback->feedback) ? $feedback->feedback->TrainerName: '',
                 ];
             })
         ];

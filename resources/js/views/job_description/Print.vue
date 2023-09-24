@@ -2,7 +2,7 @@
     <div class="content" id="action">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-m-12">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="datatable" v-if="!isLoading">
                             <div class="card-body margin_p">
@@ -11,31 +11,31 @@
                                 <h2 style="text-align:center">ACI Limited</h2>
                                 <p style="text-align:center;font-size: 22px;font-weight: bold;">Job Description</p>
                                 <hr>
-                                <p style="font-size: 16px">Job Title <span style="margin-left: 200px">: {{ job_description.JobTitle }}</span></p>
-                                <p style="font-size: 16px">Division Name <span style="margin-left: 157px">: {{ job_description.Division }}</span></p>
-                                <p style="font-size: 16px">Business Name <span style="margin-left: 150px">: {{ job_description.Business }}</span></p>
-                                <p style="font-size: 16px">Department Name <span style="margin-left: 128px">: {{ job_description.Department }}</span></p>
-                                <p style="font-size: 16px">Reporting To <span style="margin-left: 169px">: {{ job_description.SuppervisorName }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Job Title</span> <span style="margin-left: 200px">: {{ job_description.JobTitle }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Division Name</span> <span style="margin-left: 157px">: {{ job_description.Division }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Business Name</span> <span style="margin-left: 150px">: {{ job_description.Business }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Department Name</span> <span style="margin-left: 128px">: {{ job_description.Department }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Reporting To</span> <span style="margin-left: 169px">: {{ job_description.SuppervisorName }}</span></p>
 
                                 <div style="display:flex;">
-                                  <p style="width: 36%;font-size: 16px">Purpose of the Job</p>
+                                  <p style="width: 44%;font-size: 16px"><span style="font-weight: bold">Purpose of the Job</span></p>
                                   <p style="font-size: 16px">: {{ job_description.PurposeOfJob }}</p>
                                 </div>
                                 
-                                <p style="font-size: 16px">Assigned Portfolio/ Brand <span style="margin-left: 77px">: {{ job_description.Portfolio }}</span></p>
-                                <p style="font-size: 16px">Job Customer<span style="margin-left: 169px">: </span></p>
-                                <p>Internal - {{ job_description.JobCustomerInternal }}</p>
-                                <p>External - {{ job_description.JobCustomerExternal }}</p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Assigned Portfolio/ Brand</span> <span style="margin-left: 77px">: {{ job_description.Portfolio }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Job Customer</span><span style="margin-left: 169px">: </span></p>
+                                <p><span style="font-weight: bold">Internal -</span> {{ job_description.JobCustomerInternal }}</p>
+                                <p><span style="font-weight: bold">External -</span> {{ job_description.JobCustomerExternal }}</p>
 
                                 <p style="font-size: 16px;font-weight: bold;text-decoration: underline">Major Job Responsibilities <span style="margin-left: 79px">:</span> </p>
                                 <p style="font-size: 16px" v-for="(detail, i) in details" :key="detail.ID" v-if="details.length">{{ ++i }}. {{ detail.JobResponsibilities }}</p>
 
                                 <br>
-                                <p style="font-size: 16px">Signature of the Incumbent <span style="margin-left: 32px">: </span></p>
-                                <p style="font-size: 16px">Name of Incumbent <span style="margin-left: 87px">: {{ job_description.EmployeeName }}</span></p>
-                                <p style="font-size: 16px">Staff ID <span style="margin-left: 173px">: {{ job_description.StaffID }}</span></p>
-                                <p style="font-size: 16px">Signature of Supervisor <span style="margin-left: 58px">: </span></p>
-                                <p style="font-size: 16px">Date of Preparation <span style="margin-left: 87px">: {{ job_description.DateOfPreparation }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Signature of the Incumbent</span> <span style="margin-left: 32px">: </span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Name of Incumbent</span> <span style="margin-left: 87px">: {{ job_description.EmployeeName }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Staff ID</span> <span style="margin-left: 173px">: {{ job_description.StaffID }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Signature of Supervisor</span> <span style="margin-left: 58px">: </span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Date of Preparation</span> <span style="margin-left: 87px">: {{ job_description.DateOfPreparation }}</span></p>
                               </div>
 
                             </div>

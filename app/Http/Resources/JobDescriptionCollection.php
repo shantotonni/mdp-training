@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\JobDescription;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JobDescriptionCollection extends ResourceCollection
 {
@@ -14,8 +16,18 @@ class JobDescriptionCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $empcode = $payload['EmpCode'];
+
         return [
-            'data'=>$this->collection->transform(function ($job_description){
+            'data'=>$this->collection->transform(function ($job_description)use($empcode){
+                $job_desc = JobDescription::where('SuppervisorStaffID', $empcode)->first();
+                if ($job_desc){
+                    $superVisor  = 'Y';
+                }else{
+                    $superVisor  = 'N';
+                }
                 return [
                     'ID'=>$job_description->ID,
                     'StaffID'=>$job_description->StaffID,
@@ -38,6 +50,8 @@ class JobDescriptionCollection extends ResourceCollection
                     'JobCustomerExternal'=>$job_description->JobCustomerExternal,
                     'JobCustomerInternal'=>$job_description->JobCustomerInternal,
                     'DateOfPreparation'=>date('Y-m-d',strtotime($job_description->CreatedDate)),
+                    'JobStatus'=>$job_description->JobStatus,
+                    'Supervisor'=>$superVisor,
                 ];
             })
         ];

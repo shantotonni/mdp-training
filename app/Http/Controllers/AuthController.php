@@ -52,7 +52,7 @@ class AuthController extends Controller
 
         $user = User::where('EmpCode', $request->EmpCode)->where('Password', $request->Password)->first();
         if ($user) {
-            $user = [
+            $userInfo = [
                 'EmpCode' => $user->EmpCode,
                 'staffCode' => $user->EmpCode,
                 'Business' => '',
@@ -60,7 +60,7 @@ class AuthController extends Controller
             ];
             return response()->json([
                 'status' => 'success',
-                'access_token' => $this->generateToken($user)
+                'access_token' => $this->generateToken($userInfo)
             ], 200);
         }else{
             $is_admin = $admin_dataset->where('EmpCode', $request->EmpCode)->first();
