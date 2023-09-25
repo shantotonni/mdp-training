@@ -65,8 +65,8 @@
                       <th>Mobile</th>
                       <th>Job Title</th>
                       <th>Purpose Of Job</th>
+                      <th>JD Type</th>
                       <th>Job Status</th>
-
                       <th class="text-center">Action</th>
                     </tr>
                     </thead>
@@ -83,6 +83,10 @@
                       <td>{{ job.Mobile }}</td>
                       <td>{{ job.JobTitle }}</td>
                       <td>{{ job.PurposeOfJob }}</td>
+                      <td>
+                        <span v-if="job.Supervisor === 'Y'" class="badge badge-success">Self</span>
+                        <span v-if="job.Supervisor === 'N'" class="badge badge-info">Supervisee</span>
+                      </td>
                       <td>
                         <span v-if="job.JobStatus === 'pending' " class="badge badge-danger"> Pending</span>
                         <span v-if="job.JobStatus === 'approved' " class="badge badge-success"> Approved</span>

@@ -8,12 +8,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JobDescriptionCollection extends ResourceCollection
 {
-    /**
-     * Transform the resource collection into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
     public function toArray($request)
     {
         $token = $request->bearerToken();
@@ -22,8 +16,8 @@ class JobDescriptionCollection extends ResourceCollection
 
         return [
             'data'=>$this->collection->transform(function ($job_description)use($empcode){
-                $job_desc = JobDescription::where('SuppervisorStaffID', $empcode)->first();
-                if ($job_desc){
+
+                if ($job_description->SuppervisorStaffID == $empcode){
                     $superVisor  = 'Y';
                 }else{
                     $superVisor  = 'N';

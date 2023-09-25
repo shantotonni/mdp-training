@@ -18,8 +18,8 @@
                                 <p style="font-size: 16px"><span style="font-weight: bold">Reporting To</span> <span style="margin-left: 169px">: {{ job_description.SuppervisorName }}</span></p>
 
                                 <div style="display:flex;">
-                                  <p style="width: 44%;font-size: 16px"><span style="font-weight: bold">Purpose of the Job</span></p>
-                                  <p style="font-size: 16px">: {{ job_description.PurposeOfJob }}</p>
+                                  <p style="width: 35%;font-size: 16px"><span style="font-weight: bold">Purpose of the Job</span></p>
+                                  <p style="width: 90%;font-size: 16px">: {{ job_description.PurposeOfJob }}</p>
                                 </div>
                                 
                                 <p style="font-size: 16px"><span style="font-weight: bold">Assigned Portfolio/ Brand</span> <span style="margin-left: 77px">: {{ job_description.Portfolio }}</span></p>

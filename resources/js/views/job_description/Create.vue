@@ -322,6 +322,7 @@ export default {
         this.form.Qualification = response.data.employee.Qualification;
         this.form.StaffID = response.data.employee.StaffID;
         this.form.CurrentPosition = response.data.employee.CurrentPosition;
+        this.form.JobTitle = response.data.employee.CurrentPosition;
         //this.form.Division = response.data.employee.Division;
       }).catch((error)=>{
 

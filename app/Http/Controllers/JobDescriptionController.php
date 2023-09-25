@@ -41,7 +41,6 @@ class JobDescriptionController extends Controller
             $job_description= $job_description;
         }elseif ($role == 'jadmin'){
             $job_description= $job_description;
-            //$job_description= $job_description->where('Division',$Business);
         } else{
             $job_description = $job_description->where('StaffID',$empcode)->orWhere('SuppervisorStaffID',$empcode);
         }
@@ -189,7 +188,11 @@ class JobDescriptionController extends Controller
                     $details->save();
                 }
 
+                $email = $request->SuppervisorEmail;
+                $data = 'Job Description Submitted Mail';
+                Mail::to($email)->send(new JOBDescriptionMail($data, $request->EmployeeName, $request->Designation ));
                 DB::commit();
+
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Successfully Updated.'
