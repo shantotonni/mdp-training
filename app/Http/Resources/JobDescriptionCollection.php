@@ -43,7 +43,7 @@ class JobDescriptionCollection extends ResourceCollection
                     'PurposeOfJob'=>$job_description->PurposeOfJob,
                     'JobCustomerExternal'=>$job_description->JobCustomerExternal,
                     'JobCustomerInternal'=>$job_description->JobCustomerInternal,
-                    'DateOfPreparation'=>date('Y-m-d',strtotime($job_description->CreatedDate)),
+                    'DateOfPreparation'=>date('Y-m-d',strtotime($job_description->UpdatedBy)),
                     'JobStatus'=>$job_description->JobStatus,
                     'Supervisor'=>$superVisor,
                 ];

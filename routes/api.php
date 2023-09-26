@@ -5,6 +5,7 @@ use App\Http\Controllers\JobDescriptionController;
 use App\Http\Controllers\MDPController;
 use App\Http\Controllers\MDPTrainigFeedbackController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\CommonController;
@@ -24,6 +25,10 @@ Route::group(['middleware' => ['jwt']], function () {
         // Route::get('student-payment',[ReportController::class,'studentPayment']);
         // Route::get('export-student-payment-report',[ReportController::class,'studentPaymentReport']);
     });
+
+    // ADMIN USERS
+    Route::apiResource('users',UserController::class);
+    Route::get('search/users/{query}', [UserController::class,'search']);
 
     //mdp route
     Route::get('mdp/list',[MDPController::class,'index']);

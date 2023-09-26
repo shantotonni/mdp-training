@@ -31,28 +31,21 @@
                     <thead>
                     <tr>
                       <th class="text-center">SN</th>
-                      <th class="text-center">Name</th>
-                      <th class="text-center">Email</th>
-                      <th class="text-center">Mobile</th>
-                      <th class="text-center">Role</th>
-                      <th class="text-center">Status</th>
+                      <th class="text-center">EmpCode</th>
+                      <th class="text-center">Business</th>
+                      <th class="text-center">Type</th>
                       <th class="text-center">Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(user, i) in users" :key="user.student_id" v-if="users.length">
                       <th scope="row">{{ ++i }}</th>
-                      <td>{{ user.name }}</td>
-                      <td>{{ user.email }}</td>
-                      <td>{{ user.mobile }}</td>
-                      <td>{{ user.role }}</td>
-                      <td>
-                        <span class="badge badge-success" v-if="user.status==='Y'">Active</span>
-                        <span class="badge badge-danger" v-else>Inactive</span>
-                      </td>
+                      <td>{{ user.EmpCode }}</td>
+                      <td>{{ user.Business }}</td>
+                      <td>{{ user.type }}</td>
                       <td class="text-center">
                         <button @click="edit(user)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
-                        <!--                                                    <button @click="destroy(service_category.id)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->
+                        <!--<button @click="destroy(service_category.id)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->
                       </td>
                     </tr>
                     </tbody>
@@ -88,50 +81,31 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Name</label>
-                      <input type="text" name="name" v-model="form.name" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-                      <div class="error" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
+                      <label>EmpCode</label>
+                      <input type="text" name="EmpCode" v-model="form.EmpCode" class="form-control" :class="{ 'is-invalid': form.errors.has('EmpCode') }">
+                      <div class="error" v-if="form.errors.has('EmpCode')" v-html="form.errors.get('EmpCode')" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Email</label>
-                      <input type="text" name="email" v-model="form.email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                      <div class="error" v-if="form.errors.has('email')" v-html="form.errors.get('email')" />
+                      <label>Business</label>
+                      <input type="text" name="Business" v-model="form.Business" class="form-control" :class="{ 'is-invalid': form.errors.has('Business') }">
+                      <div class="error" v-if="form.errors.has('Business')" v-html="form.errors.get('Business')" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Mobile</label>
-                      <input type="text" name="mobile" v-model="form.mobile" class="form-control" :class="{ 'is-invalid': form.errors.has('mobile') }">
-                      <div class="error" v-if="form.errors.has('mobile')" v-html="form.errors.get('mobile')" />
+                      <label>Admin Type</label>
+                      <input type="text" name="type" v-model="form.type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
+                      <div class="error" v-if="form.errors.has('type')" v-html="form.errors.get('type')" />
                     </div>
                   </div>
+
                   <div class="col-md-6" v-if="!editMode">
                     <div class="form-group">
                       <label>Password</label>
-                      <input type="password" name="password" v-model="form.password" class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                      <div class="error" v-if="form.errors.has('password')" v-html="form.errors.get('password')" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Select Role</label>
-                      <select name="role_id" id="role_id" class="form-control" v-model="form.role_id" :class="{ 'is-invalid': form.errors.has('role_id') }">
-                        <option disabled value="">Select Role</option>
-                        <option :value="role.id" v-for="(role , index) in roles" :key="index">{{ role.name }}</option>
-                      </select>
-                      <div class="error" v-if="form.errors.has('role_id')" v-html="form.errors.get('role_id')" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Select Status</label>
-                      <select name="status" id="status" class="form-control" v-model="form.status" :class="{ 'is-invalid': form.errors.has('status') }">
-                        <option value="Y">Active</option>
-                        <option value="N">InActive</option>
-                      </select>
-                      <div class="error" v-if="form.errors.has('status')" v-html="form.errors.get('status')" />
+                      <input type="password" name="Password" v-model="form.Password" class="form-control" :class="{ 'is-invalid': form.errors.has('Password') }">
+                      <div class="error" v-if="form.errors.has('Password')" v-html="form.errors.get('Password')" />
                     </div>
                   </div>
                 </div>
@@ -160,7 +134,6 @@ export default {
   data() {
     return {
       users: [],
-      roles: [],
       pagination: {
         current_page: 1
       },
@@ -168,12 +141,11 @@ export default {
       editMode: false,
       isLoading: false,
       form: new Form({
-        user_id :'',
-        name:'',
-        email:'',
-        mobile:'',
-        role_id:'',
-        status:'',
+        ID :'',
+        EmpCode:'',
+        Business:'',
+        type:'',
+        Password:'',
       }),
     }
   },
@@ -218,7 +190,6 @@ export default {
       $("#StudentModelModal").modal("hide");
     },
     createUserModel(){
-      this.getAllRole();
       this.editMode = false;
       this.form.reset();
       this.form.clear();
@@ -234,7 +205,6 @@ export default {
       });
     },
     edit(role) {
-      this.getAllRole();
       this.editMode = true;
       this.form.reset();
       this.form.clear();
@@ -270,13 +240,6 @@ export default {
             )
           })
         }
-      })
-    },
-    getAllRole(){
-      axios.get(baseurl+'api/get-all-role').then((response)=>{
-        this.roles = response.data.roles;
-      }).catch((error)=>{
-
       })
     },
     customFormatter(date) {

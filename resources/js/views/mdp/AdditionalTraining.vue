@@ -157,43 +157,6 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label>Supervisor Staff ID</label>
-                            <input type="text" name="SuppervisorStaffID" v-model="form.SuppervisorStaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @change="getSupervisorByStaffID">
-                            <div class="error" v-if="form.errors.has('SuppervisorStaffID')" v-html="form.errors.get('SuppervisorStaffID')" />
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label>Supervisor Name</label>
-                            <input type="text" name="SuppervisorName" readonly v-model="form.SuppervisorName" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorName') }">
-                            <div class="error" v-if="form.errors.has('SuppervisorName')" v-html="form.errors.get('SuppervisorName')" />
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label>Supervisor Designation</label>
-                            <input type="text" name="SuppervisorDesignation" readonly v-model="form.SuppervisorDesignation" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorDesignation') }">
-                            <div class="error" v-if="form.errors.has('SuppervisorDesignation')" v-html="form.errors.get('SuppervisorDesignation')" />
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label>Supervisor Email</label>
-                            <input type="text" name="SuppervisorEmail" readonly v-model="form.SuppervisorEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorEmail') }">
-                            <div class="error" v-if="form.errors.has('SuppervisorEmail')" v-html="form.errors.get('SuppervisorEmail')" />
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label>Supervisor Mobile</label>
-                            <input type="text" name="SuppervisorMobile" v-model="form.SuppervisorMobile" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorMobile') }">
-                            <div class="error" v-if="form.errors.has('SuppervisorMobile')" v-html="form.errors.get('SuppervisorMobile')" />
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -210,6 +173,7 @@
                     <th>Offer Date Five</th>
                     <th>Feedback</th>
                     <th>Learning Transfer</th>
+                    <th>Trainer Name</th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -230,6 +194,7 @@
                     <td><datepicker v-model="form.OfferDateFive" :format="customFormatter" :typeable=true input-class="form-control"></datepicker></td>
                     <td><input type="number" class="form-control" name="Feedback" v-model="form.Feedback"></td>
                     <td><input type="number" class="form-control" name="learning_transfer" v-model="form.LearningTransfer"></td>
+                    <td><input type="text" class="form-control" name="TrainerName" v-model="form.TrainerName"></td>
                     <td>
                       <button type="button" @click="additionalTrainingFeedbackSubmit()" class="btn btn-info btn-sm">Submit</button>
                     </td>
@@ -284,7 +249,7 @@ export default {
         AppraisalPeriod: '2023-2024',
         TrainingTitle: '',
         TrainingType: '',
-        //TrainingDate: '',
+        TrainerName: '',
 
         EmployeeName :'',
         Designation :'',
@@ -296,12 +261,6 @@ export default {
         CurrentPosition:'',
         PresentJobStartedOn:'',
         Qualification:'',
-        SuppervisorStaffID:'',
-        SuppervisorName:'',
-        SuppervisorDesignation:'',
-        SuppervisorEmail:'',
-        SuppervisorMobile:'',
-
       }),
       EmpFound: false
     }

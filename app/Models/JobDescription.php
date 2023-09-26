@@ -13,6 +13,7 @@ class JobDescription extends Model
 
     public $primaryKey = 'ID';
     protected $guarded = [];
+    public $timestamps = true;
 
     const CREATED_AT = 'CreatedDate';
     const UPDATED_AT = 'UpdatedDate';

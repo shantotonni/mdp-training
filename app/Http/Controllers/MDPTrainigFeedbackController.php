@@ -29,21 +29,6 @@ class MDPTrainigFeedbackController extends Controller
         ]);
     }
 
-//    public function empCodeWiseSingleTrainingList(Request $request){
-//        $len = strlen($request->empcode);
-//        if ($len == 4){
-//            $EmpCode = '0'.$request->empcode;
-//        }elseif ($len == 3){
-//            $EmpCode = '00'.$request->empcode;
-//        }else{
-//            $EmpCode = $request->empcode;
-//        }
-//
-//        $mdp = ManagementDevelopmentPlane::where('StaffID',$EmpCode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
-//        $training_list = MDPTraining::where('MDPID',$mdp->ID)->where('TrainingTitle',$request->TrainingTitle)->with('feedback')->whereNotNull('TrainingTitle')->first();
-//        return new MDPTrainigFeedbackResource($training_list);
-//    }
-
     public function store(Request $request){
 
         $data                   = (object)$request->row_data;
@@ -107,11 +92,15 @@ class MDPTrainigFeedbackController extends Controller
         DB::beginTransaction();
         try {
             $mdp = ManagementDevelopmentPlane::where('StaffID',$request->EmpCode)->where('AppraisalPeriod',$request->AppraisalPeriod)->first();
-            $training_list = MDPTraining::query()->where('MDPID',$mdp->ID)->with('feedback')->whereNotNull('TrainingTitle');
-            if (!empty($request->TrainingTitle)){
-                $training_list = $training_list->where('TrainingTitle',$request->TrainingTitle);
+            if ($mdp){
+                $training_list = MDPTraining::query()->where('MDPID',$mdp->ID)->with('feedback')->whereNotNull('TrainingTitle');
+                if (!empty($request->TrainingTitle)){
+                    $training_list = $training_list->where('TrainingTitle',$request->TrainingTitle);
+                }
+                $training_list = $training_list->first();
+            }else{
+                $training_list = [];
             }
-            $training_list = $training_list->first();
 
             if ($training_list){
                 return response()->json([
@@ -119,11 +108,32 @@ class MDPTrainigFeedbackController extends Controller
                     'message' => 'Already Exist'
                 ]);
             }else{
+
+                if ($mdp){
+                    $mdpID = $mdp->ID;
+                }else{
+                    $ManagementDevelopmentPlane = new ManagementDevelopmentPlane();
+                    $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;
+                    $ManagementDevelopmentPlane->StaffID = $request->StaffID;
+                    $ManagementDevelopmentPlane->EmployeeName = $request->EmployeeName;
+                    $ManagementDevelopmentPlane->Designation = $request->Designation;
+                    $ManagementDevelopmentPlane->Department = $request->Department;
+                    $ManagementDevelopmentPlane->OfficialEmail = $request->OfficialEmail;
+                    $ManagementDevelopmentPlane->Mobile = $request->Mobile;
+                    $ManagementDevelopmentPlane->DateOfBirth = $request->DateOfBirth;
+                    $ManagementDevelopmentPlane->JoiningDate = $request->JoiningDate;
+                    $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
+                    $ManagementDevelopmentPlane->PresentJobStartedOn = $request->PresentJobStartedOn;
+                    $ManagementDevelopmentPlane->Qualification = $request->Qualification;
+                    $ManagementDevelopmentPlane->save();
+
+                    $mdpID = $ManagementDevelopmentPlane->ID;
+                }
+
                 $training = new MDPTraining();
-                $training->MDPID = $mdp->ID;
+                $training->MDPID = $mdpID;
                 $training->TrainingTitle = $request->TrainingTitle;
                 $training->TrainingType = $request->TrainingType;
-                //$training->TrainingDate = $request->TrainingDate;
                 $training->TrainingTypeStatus = 'additional';
                 if ($training->save()){
                     if ($request->Status == 'offered'){
@@ -168,6 +178,7 @@ class MDPTrainigFeedbackController extends Controller
                     $MDPTrainingFeedback->OfferDateFour = $OfferDateFour;
                     $MDPTrainingFeedback->OfferDateFive = $OfferDateFive;
                     $MDPTrainingFeedback->save();
+
                     DB::commit();
 
                     return response()->json([

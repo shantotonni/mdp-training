@@ -12,6 +12,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\JobDescription;
 use App\Models\JobResponsibilities;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -172,12 +173,13 @@ class JobDescriptionController extends Controller
             $JobDescription->SuppervisorMobile         = $request->SuppervisorMobile;
 
             $JobDescription->JobTitle                   = $request->JobTitle;
-            $JobDescription->Portfolio                   = $request->Portfolio;
+            $JobDescription->Portfolio                  = $request->Portfolio;
             $JobDescription->PurposeOfJob               = $request->PurposeOfJob;
             $JobDescription->JobCustomerInternal        = $request->JobCustomerInternal;
             $JobDescription->JobCustomerExternal        = $request->JobCustomerExternal;
 
             $JobDescription->UpdatedBy                 = $empcode;
+            $JobDescription->UpdatedDate               = Carbon::now()->format('Y-m-d');
 
             if ($JobDescription->save()){
                 JobResponsibilities::where('JDID',$request->ID)->delete();
@@ -264,14 +266,19 @@ class JobDescriptionController extends Controller
         $job_Description = JobDescription::where('ID',$JobID)->first();
         if ($job_Description->JobStatus == 'approved'){
             $status = 'pending';
+            $message = 'Successfully Disapproved';
+            $title = 'Disapproved';
         }else{
             $status = 'approved';
+            $message = 'Successfully Approved';
+            $title = 'Approved';
         }
         $job_Description->JobStatus = $status;
         $job_Description->save();
         return response()->json([
             'status' => 'success',
-            'message' => 'Successfully Deleted.'
+            'message' => $message,
+            'title' => $title,
         ]);
     }
 }

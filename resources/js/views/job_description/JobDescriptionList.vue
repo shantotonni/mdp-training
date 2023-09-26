@@ -84,8 +84,8 @@
                       <td>{{ job.JobTitle }}</td>
                       <td>{{ job.PurposeOfJob }}</td>
                       <td>
-                        <span v-if="job.Supervisor === 'Y'" class="badge badge-success">Self</span>
-                        <span v-if="job.Supervisor === 'N'" class="badge badge-info">Supervisee</span>
+                        <span v-if="job.Supervisor === 'Y'" class="badge badge-success">Supervisee</span>
+                        <span v-if="job.Supervisor === 'N'" class="badge badge-info">Self</span>
                       </td>
                       <td>
                         <span v-if="job.JobStatus === 'pending' " class="badge badge-danger"> Pending</span>
@@ -270,14 +270,14 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Approved it!'
+        confirmButtonText: 'Yes'
       }).then((result) => {
         if (result.isConfirmed) {
           axios.get(baseurl + 'api/approved-job-description?JobID=' + JobID).then((response) => {
             this.getAllJobDescriptionList();
             Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
+                response.data.title +'!',
+                response.data.message,
                 'success'
             )
           })

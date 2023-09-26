@@ -11,13 +11,10 @@ class UserCollection extends ResourceCollection
         return [
             'data'=>$this->collection->transform(function ($user){
                 return [
-                    'user_id'=>$user->user_id,
-                    'role_id'=>$user->role_id,
-                    'name'=>$user->name,
-                    'email'=>$user->email,
-                    'mobile'=>$user->mobile,
-                    'status'=>$user->status,
-                    'role'=>isset($user->role) ? $user->role->name:'',
+                    'ID'=>$user->ID,
+                    'EmpCode'=>$user->EmpCode,
+                    'Business'=>$user->Business,
+                    'type'=>$user->type,
                 ];
             })
         ];

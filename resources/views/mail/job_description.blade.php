@@ -75,7 +75,7 @@
                                                                     style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                                                     valign="top"
                                                             >
-                                                                One of your associates, {{ $name }}, {{ $Designation }}, HR has updated Job Description for your kind perusal.
+                                                                One of your associates, {{ $name }}, {{ $Designation }} has updated Job Description for your kind perusal.
                                                             </td>
                                                         </tr>
                                                         <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -84,7 +84,7 @@
                                                                     style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                                                     valign="top"
                                                             >
-                                                                Please click below for more details & approval :
+                                                                Please click below for Review & approval :
                                                             </td>
                                                         </tr>
 

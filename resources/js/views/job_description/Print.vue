@@ -15,7 +15,7 @@
                                 <p style="font-size: 16px"><span style="font-weight: bold">Division Name</span> <span style="margin-left: 157px">: {{ job_description.Division }}</span></p>
                                 <p style="font-size: 16px"><span style="font-weight: bold">Business Name</span> <span style="margin-left: 150px">: {{ job_description.Business }}</span></p>
                                 <p style="font-size: 16px"><span style="font-weight: bold">Department Name</span> <span style="margin-left: 128px">: {{ job_description.Department }}</span></p>
-                                <p style="font-size: 16px"><span style="font-weight: bold">Reporting To</span> <span style="margin-left: 169px">: {{ job_description.SuppervisorName }}</span></p>
+                                <p style="font-size: 16px"><span style="font-weight: bold">Reporting To</span> <span style="margin-left: 169px">: {{ job_description.SuppervisorName }}, {{ job_description.Designation }}</span></p>
 
                                 <div style="display:flex;">
                                   <p style="width: 35%;font-size: 16px"><span style="font-weight: bold">Purpose of the Job</span></p>

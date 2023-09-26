@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActionPlan;
+use App\Models\Admin;
 use App\Models\Employee;
 use App\Models\jwt\JWT;
 use App\Models\Personal;
@@ -32,23 +33,23 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid'], 400);
         }
 
-        $admin_dataset = [
-            //for mdp user
-            ['EmpCode' => '06865', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
-            ['EmpCode' => '23215', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
-            ['EmpCode' => '23401', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
-            ['EmpCode' => '24793', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
-            ['EmpCode' => '10259', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
-            ['EmpCode' => 'admin', 'Business' => 'All', 'type' => 'admin', 'password' => '123123'],
-            //for action plan user
-            ['EmpCode' => '23284', 'Business' => 'ALL', 'type' => 'Administrator', 'password' => '123123'],
-            ['EmpCode' => '25921', 'Business' => 'Consumer Brands', 'type' => 'sadmin', 'password' => '123123'],
-            ['EmpCode' => '00723', 'Business' => 'Support Division', 'type' => 'sadmin', 'password' => '123123'],
-            //for jod description user
-            ['EmpCode' => '15227', 'Business' => 'All', 'type' => 'jadmin', 'password' => '123123'],
-        ];
-
-        $admin_dataset = collect($admin_dataset);
+//        $admin_dataset = [
+//            //for mdp user
+//            ['EmpCode' => '06865', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+//            ['EmpCode' => '23215', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+//            ['EmpCode' => '23401', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+//            ['EmpCode' => '24793', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+//            ['EmpCode' => '10259', 'Business' => '', 'type' => 'admin', 'password' => '123123'],
+//            ['EmpCode' => 'admin', 'Business' => 'All', 'type' => 'admin', 'password' => '123123'],
+//            //for action plan user
+//            ['EmpCode' => '23284', 'Business' => 'ALL', 'type' => 'Administrator', 'password' => '123123'],
+//            ['EmpCode' => '25921', 'Business' => 'Consumer Brands', 'type' => 'sadmin', 'password' => '123123'],
+//            ['EmpCode' => '00723', 'Business' => 'Support Division', 'type' => 'sadmin', 'password' => '123123'],
+//            //for jod description user
+//            ['EmpCode' => '15227', 'Business' => 'All', 'type' => 'jadmin', 'password' => '123123'],
+//        ];
+//
+//        $admin_dataset = collect($admin_dataset);
 
         $user = User::where('EmpCode', $request->EmpCode)->where('Password', $request->Password)->first();
         if ($user) {
@@ -63,14 +64,14 @@ class AuthController extends Controller
                 'access_token' => $this->generateToken($userInfo)
             ], 200);
         }else{
-            $is_admin = $admin_dataset->where('EmpCode', $request->EmpCode)->first();
+            $is_admin = Admin::where('EmpCode', $request->EmpCode)->where('Password', $request->Password)->first();
 
             if ($is_admin) {
                 $user = [
                     'EmpCode' => $request->EmpCode,
                     'staffCode' => $request->EmpCode,
-                    'Business' => $is_admin['Business'],
-                    'type' => $is_admin['type'],
+                    'Business' => $is_admin->Business,
+                    'type' => $is_admin->type,
                 ];
                 return response()->json([
                     'status' => 'success',
