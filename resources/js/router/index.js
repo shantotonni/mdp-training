@@ -43,7 +43,8 @@ const config = () => {
 }
 const checkToken = (to, from, next) => {
     let token = localStorage.getItem('token');
-    if (token === 'undefined' || token === null || token === '') {
+    console.log(token)
+    if (token === undefined || token === null || token === '') {
         next(baseurl + 'login');
     } else {
         next();
@@ -52,7 +53,7 @@ const checkToken = (to, from, next) => {
 
 const activeToken = (to, from, next) => {
     let token = localStorage.getItem('token');
-    if (token === 'undefined' || token === null || token === '') {
+    if (token === undefined || token === null || token === '') {
         next();
     } else {
         next(baseurl);

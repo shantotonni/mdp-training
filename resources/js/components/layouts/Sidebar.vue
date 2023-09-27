@@ -86,7 +86,9 @@ export default {
         }
         this.$store.commit('me', response);
       }, (error) => {
-        this.errorNoti(error);
+        localStorage.removeItem('token');
+        this.redirect(this.mainOrigin + 'login')
+        //this.errorNoti(error);
       });
     },
   }
