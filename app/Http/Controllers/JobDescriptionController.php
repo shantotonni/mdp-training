@@ -179,7 +179,7 @@ class JobDescriptionController extends Controller
             $JobDescription->JobCustomerExternal        = $request->JobCustomerExternal;
 
             $JobDescription->UpdatedBy                 = $empcode;
-            $JobDescription->UpdatedDate               = Carbon::now()->format('Y-m-d');
+            $JobDescription->UpdatedDate               = Carbon::now();
 
             if ($JobDescription->save()){
                 JobResponsibilities::where('JDID',$request->ID)->delete();

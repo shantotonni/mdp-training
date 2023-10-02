@@ -6,12 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobDescriptionResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
+
     public function toArray($request)
     {
         return [
@@ -37,7 +32,7 @@ class JobDescriptionResource extends JsonResource
             'PurposeOfJob'=>$this->PurposeOfJob,
             'JobCustomerExternal'=>$this->JobCustomerExternal,
             'JobCustomerInternal'=>$this->JobCustomerInternal,
-            'DateOfPreparation'=>date('Y-m-d',strtotime($this->CreatedDate)),
+            'DateOfPreparation'=> date('Y-m-d',strtotime($this->UpdatedDate)),
             'JobStatus'=>$this->JobStatus,
             'finds'=>$this->details,
         ];
