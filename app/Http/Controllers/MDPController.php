@@ -29,18 +29,21 @@ class MDPController extends Controller
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
         $role = $payload['Type'];
-        $Department = $request->Department;
+
         $session = $request->sessionP;
 
         if ($role == 'admin'){
             $mdp = ManagementDevelopmentPlane::query();
-            if ($Department){
-                $mdp = $mdp->where('Department',$Department);
+            $Department = json_decode($request->Department);
+            if (!empty($Department) && isset($Department)){
+                $Department = collect($Department);
+                $DeptName = $Department->pluck('DeptName');
+                $mdp = $mdp->whereIn('Department',$DeptName);
             }
             if ($session){
                 $mdp = $mdp->where('AppraisalPeriod',$session);
             }
-            $mdp = $mdp->orderBy('ID','desc')->paginate(15);
+            $mdp = $mdp->orderBy('Department','asc')->paginate(15);
         }else{
             $mdp = ManagementDevelopmentPlane::orderBy('ID','desc')->where('StaffID',$empcode)->paginate(15);
         }
@@ -275,12 +278,15 @@ class MDPController extends Controller
     }
 
     public function mdpExport(Request $request){
-        $Department = $request->Department;
+
+        $Department = json_decode($request->Department);
         $mdp_list = ManagementDevelopmentPlane::query()->with('initiative','training','training.feedback');
-        if ($Department){
-            $mdp_list = $mdp_list->where('Department',$Department);
+        if (!empty($Department) && isset($Department)){
+            $Department = collect($Department);
+            $DeptName = $Department->pluck('DeptName');
+            $mdp_list = $mdp_list->whereIn('Department',$DeptName);
         }
-        $mdp_list = $mdp_list->orderBy('ID','desc')->get();
+        $mdp_list = $mdp_list->orderBy('Department','asc')->get();
         return new ManagementDevelopmentPlaneCollection($mdp_list);
     }
 

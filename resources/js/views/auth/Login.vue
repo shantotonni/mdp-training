@@ -57,7 +57,6 @@ export default {
         EmpCode: this.EmpCode,
         Password: this.Password
       }, (response) => {
-        console.log(response)
         localStorage.setItem("token", response.access_token);
         this.successNoti('Successfully logged in.');
         this.$store.commit('submitButtonLoadingStatus', false);

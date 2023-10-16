@@ -38,6 +38,8 @@
                       <th>SN</th>
                       <th>Appraisal Period</th>
                       <th>Training Title</th>
+                      <th>Area Of Improvement</th>
+                      <th>Action Plan</th>
                       <th>Ranked</th>
                       <th>No. of Requirement</th>
                     </tr>
@@ -47,6 +49,8 @@
                       <th>{{ ++i }}</th>
                       <td>{{ training.AppraisalPeriod }}</td>
                       <td>{{ training.TrainingTitle }}</td>
+                      <td>{{ training.TrainingType }}</td>
+                      <td>{{ training.Action }}</td>
                       <td class="text-right">{{ training.ranking }}</td>
                       <td class="text-right">{{ training.Total }}</td>
                     </tr>

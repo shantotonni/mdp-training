@@ -21,12 +21,22 @@
                                               </select>
                                             </div>
                                           </div>
-                                          <div class="col-md-2">
+                                          <div class="col-md-4">
                                             <div class="form-group">
-                                              <select id="Department" class="form-control" v-model="Department">
-                                                <option value="">Select Department</option>
-                                                <option v-for="(dept,index) in departments" :value="dept.DeptName" :key="index">{{dept.DeptName}}</option>
-                                              </select>
+<!--                                              <select id="Department" class="form-control" v-model="Department">-->
+<!--                                                <option value="">Select Department</option>-->
+<!--                                                <option v-for="(dept,index) in departments" :value="dept.DeptName" :key="index">{{dept.DeptName}}</option>-->
+<!--                                              </select>-->
+                                              <multiselect
+                                                  v-model="Department"
+                                                  :options="departments"
+                                                  :multiple="true"
+                                                  :searchable="true"
+                                                  :close-on-select="true"
+                                                  :show-labels="true"
+                                                  label="DeptName"
+                                                  track-by="DeptName"
+                                                  placeholder="Pick a value"></multiselect>
                                             </div>
                                           </div>
                                           <div class="col-md-1">
@@ -35,10 +45,10 @@
                                         </div>
                                     </div>
                                     <div class="card-tools">
-<!--                                      <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">-->
-<!--                                        <i class="fas fa-plus"></i>-->
-<!--                                        Add Management Development Plan-->
-<!--                                      </router-link>-->
+                                      <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">
+                                        <i class="fas fa-plus"></i>
+                                        Add Management Development Plan
+                                      </router-link>
 <!--                                        <button type="button" class="btn btn-primary btn-sm" @click="exportGenerator">-->
 <!--                                            <i class="mdi mdi-database-export"></i>-->
 <!--                                            Export-->
@@ -79,7 +89,7 @@
                                               <td>{{ mdp.Mobile }}</td>
                                               <td>{{ mdp.AppraisalPeriod }}</td>
                                               <td class="text-center">
-<!--                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>-->
+                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
                                                 <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> MDP</router-link>
                                                 <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> PTC</router-link>
                                                 <button @click="destroy(mdp.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
@@ -112,21 +122,23 @@
 import {baseurl} from '../../base_url'
 import {Common} from "../../mixins/common";
 import {bus} from "../../app";
+import Multiselect from 'vue-multiselect'
 export default {
     name: "List",
-  mixins: [Common],
+    components: { Multiselect },
+    mixins: [Common],
     data() {
         return {
           mdplist: [],
           type: '',
-          departments: '',
+          departments: [],
           sessions: '',
           pagination: {
               current_page: 1
           },
           isMessage : false,
           query: "",
-          Department: "",
+          Department: [],
           sessionP: "",
           editMode: false,
           isLoading: false,
@@ -152,9 +164,10 @@ export default {
         getAllMDPList(){
             axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
                 + "&query=" + this.query
-                + "&Department=" + this.Department
+                + "&Department=" + JSON.stringify(this.Department)
                 + "&sessionP=" + this.sessionP
             ).then((response)=>{
+              console.log(response)
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
             }).catch((error)=>{
@@ -198,7 +211,7 @@ export default {
         },
         exportMDPList(){
           axios.get(baseurl + 'api/export-mdp-list?query=' +  this.query
-              + "&Department=" + this.Department
+              + "&Department=" + JSON.stringify(this.Department)
               + "&sessionP=" + this.sessionP
           ).then((response)=>{
                 let dataSets = response.data.data;

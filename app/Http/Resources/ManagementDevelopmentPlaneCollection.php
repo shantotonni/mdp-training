@@ -20,6 +20,8 @@ class ManagementDevelopmentPlaneCollection extends ResourceCollection
                     'OfficialEmail'=>$mdp->OfficialEmail,
                     'Contact Number'=>$mdp->Mobile,
                     'SupervisorEmail'=>$mdp->SuppervisorEmail,
+                    'AppraisalPeriod'=>$mdp->AppraisalPeriod,
+                    'Mobile'=>$mdp->Mobile,
                     'P1'=>isset($mdp->initiative[0]) ? $mdp->initiative[0]->Name: '',
                     'P2'=>isset($mdp->initiative[1]) ? $mdp->initiative[1]->Name: '',
                     'P3'=>isset($mdp->initiative[2]) ? $mdp->initiative[2]->Name: '',

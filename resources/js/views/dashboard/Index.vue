@@ -9,14 +9,14 @@
               <li class="breadcrumb-item active" style="font-size: 26px;color:rgb(10, 106, 255)">Welcome to Management Development Plan and Action Plan for 2023-2024</li>
             </ol>
           </div>
-<!--          <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 80px">-->
-<!--            <div class="d-none d-md-block" style="margin: 0 auto">-->
-<!--              <router-link :to="{name: 'MDPCreate'}" class="btn btn-success" style="color: white;padding: 22px">-->
-<!--                <i class="fas fa-plus"></i>-->
-<!--                Click To Fillup The Management Development Plan-->
-<!--              </router-link>-->
-<!--            </div>-->
-<!--          </div>-->
+          <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 80px">
+            <div class="d-none d-md-block" style="margin: 0 auto">
+              <router-link :to="{name: 'MDPCreate'}" class="btn btn-success" style="color: white;padding: 22px">
+                <i class="fas fa-plus"></i>
+                Click To Fillup The Management Development Plan
+              </router-link>
+            </div>
+          </div>
         </div>
       </div>
       <!-- end row -->
