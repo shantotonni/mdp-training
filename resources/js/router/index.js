@@ -9,10 +9,12 @@ import MDPEdit from '../views/mdp/Edit'
 import MDPPrint from '../views/mdp/Print'
 import MDPPrintTwo from '../views/mdp/PrintTwo'
 import TrainingFeedback from '../views/mdp/TrainingFeedback'
+import TrainingFeedback2nd from '../views/mdp/TrainingFeedback2nd'
 import AdditionalTraining from '../views/mdp/AdditionalTraining'
 import TopRankedTraining from '../views/mdp/TopRankedTraining'
 import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 import EmployeeIndividualTraining from '../views/mdp/EmployeeIndividualTraining'
+import employeeWiseReport from '../views/mdp/employeeWiseReport'
 //import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 
 //user
@@ -93,6 +95,9 @@ const routes = [
                 path: baseurl + 'mdp-training-feedback', name: 'TrainingFeedback', component: TrainingFeedback
             },
             {
+                path: baseurl + 'mdp-training-feedback-2nd', name: 'TrainingFeedback2nd', component: TrainingFeedback2nd
+            },
+            {
                 path: baseurl + 'add-additional-training', name: 'AdditionalTraining', component: AdditionalTraining
             },
             {
@@ -103,6 +108,10 @@ const routes = [
             },
             {
                 path: baseurl + 'employee-individual-training', name: 'EmployeeIndividualTraining', component: EmployeeIndividualTraining
+            },
+            {
+                path: baseurl + 'employee-wise-report', name: 'employeeWiseReport', 
+                    component: employeeWiseReport
             },
 
             //Action Plan list

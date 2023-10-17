@@ -377,7 +377,7 @@
     array (
       'font_dir' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\fonts',
       'font_cache' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\fonts',
-      'temp_dir' => 'C:\\Users\\shojibul\\AppData\\Local\\Temp',
+      'temp_dir' => 'C:\\Users\\zillurr\\AppData\\Local\\Temp',
       'chroot' => 'D:\\xampp\\htdocs\\mdp-training',
       'allowed_protocols' => 
       array (

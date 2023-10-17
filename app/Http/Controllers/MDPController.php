@@ -303,6 +303,20 @@ class MDPController extends Controller
            'top_training' => $top_training
         ]);
     }
+    
+    public function getEmployeeWiseReport(Request $request){
+        $session = $request->sessionP;
+        $EmpCode = $request->EmpCode;
+        if(!empty(json_decode($request->TrainingTitle)->TrainingTitle)){
+            $TrainingTitle = json_decode($request->TrainingTitle)->TrainingTitle;
+        }else{
+            $TrainingTitle = "";
+        }
+        $individual_training = DB::select("EXEC doLoadEmployeeWiseReport '$session','$EmpCode','$TrainingTitle' ");
+        return response()->json([
+           'individual_training' => $individual_training
+        ]);
+    }
 
     public function getEmployeeIndividualTraining(Request $request){
         $session = $request->sessionP;
@@ -317,6 +331,19 @@ class MDPController extends Controller
         $departments = DB::select('select distinct Department as DeptName from ManagementDevelopmentPlane');
         return response()->json([
             'departments'=>$departments
+        ]);
+    }
+
+    public function getAllTrainingTitle(){
+        $departments = DB::select('
+            SELECT 
+                DISTINCT TrainingTitle 
+            From MDPTraining 
+            WHERE TrainingTitle IS NOT NULL
+            ORDER BY 1
+        ');
+        return response()->json([
+            'trainingtitle'=>$departments
         ]);
     }
 

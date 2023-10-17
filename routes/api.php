@@ -46,6 +46,8 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('export-mdp-list', [MDPController::class,'mdpExport']);
     Route::get('mdp/get-top-ranked-training', [MDPController::class,'getTopRankedTraining']);
     Route::get('mdp/get-all-mdp-department', [MDPController::class,'getAllMDPDepartment']);
+    Route::get('mdp/get-all-training-title', [MDPController::class,'getAllTrainingTitle']);
+    Route::get('mdp/get-employee-wise-report', [MDPController::class,'getEmployeeWiseReport']);
 
     //individual tarining
     Route::get('mdp/get-employee-individual-training', [MDPController::class,'getEmployeeIndividualTraining']);
@@ -54,8 +56,12 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('empcode-wise-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseTrainingList']);
     Route::get('empcode-wise-single-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseSingleTrainingList']);
     Route::post('training-feedback-submit', [MDPTrainigFeedbackController::class,'store']);
+    Route::post('training-feedback-submit-2nd', [MDPTrainigFeedbackController::class,'store2nd']);
     Route::post('additional-training-feedback-submit', [MDPTrainigFeedbackController::class,'additionalTrainingAddAndFeedback']);
     Route::get('get-employee-info', [MDPTrainigFeedbackController::class,'getEmployeeInfo']);
+    Route::get('load-date-wise-title', [MDPTrainigFeedbackController::class,'getDateWiseTitle']);
+    Route::get('load-date-wise-training-wise-list', [MDPTrainigFeedbackController::class,
+        'getDateWiseTrainingWiseList']);
     //End
 
     //Action Plan Route

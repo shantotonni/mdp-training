@@ -29,6 +29,19 @@ class MDPTrainigFeedbackController extends Controller
         ]);
     }
 
+    public function store2nd(Request $request){
+        $Data =         (object)$request->row_data;
+        $Feedback =     $request->Feedback;
+        //return $Data;
+        foreach($Data as $row){
+            MDPTrainingFeedback::where('TrainingFeedbackID', $row['TrainingFeedbackID'])
+                ->update(['Feedback'=> $Feedback,'LearningTransfer'=>$row['LearningTransfer']]);
+        }
+        return response()->json([
+            'status'=>200,
+            'message'=>'Feedback Submitted Successfully'
+        ]);
+    }
     public function store(Request $request){
 
         $data                   = (object)$request->row_data;
@@ -41,12 +54,12 @@ class MDPTrainigFeedbackController extends Controller
         }
         if ($data->Status == 'offered'){
             $DoneDate           = '';
-            $Feedback           = '';
-            $LearningTransfer   = '';
+            //$Feedback           = '';
+            //$LearningTransfer   = '';
         }else{
             $DoneDate = date('Y-m-d',strtotime($data->DoneDate));
-            $Feedback           = $data->Feedback;
-            $LearningTransfer   = $data->LearningTransfer;
+            //$Feedback           = $data->Feedback;
+            //$LearningTransfer   = $data->LearningTransfer;
         }
 
         if ($data->OfferDateOne)
@@ -72,8 +85,8 @@ class MDPTrainigFeedbackController extends Controller
         $MDPTrainingFeedback->TrainingID        = $training_list->ID;
         $MDPTrainingFeedback->Status            = $data->Status;
         $MDPTrainingFeedback->DoneDate          = $DoneDate;
-        $MDPTrainingFeedback->Feedback          = $Feedback;
-        $MDPTrainingFeedback->LearningTransfer  = $LearningTransfer;
+        // $MDPTrainingFeedback->Feedback          = $Feedback;
+        // $MDPTrainingFeedback->LearningTransfer  = $LearningTransfer;
         $MDPTrainingFeedback->OfferDateOne      = $OfferDateOne;
         $MDPTrainingFeedback->OfferDateTwo      = $OfferDateTwo;
         $MDPTrainingFeedback->OfferDateThree    = $OfferDateThree;
@@ -220,5 +233,64 @@ class MDPTrainigFeedbackController extends Controller
             ]);
         }
 
+    }
+
+    public function getDateWiseTitle(Request $request){
+        $TrainingDate = $request->TrainingDate;
+        $AppraisalPeriod = $request->AppraisalPeriod;
+
+        $individual_training = DB::select("
+            SELECT 
+                DISTINCT MM.TrainingTitle
+            FROM MDPTrainingFeedback M
+                INNER JOIN MDPTraining MM
+                    ON M.TrainingID = MM.ID
+                INNER JOIN ManagementDevelopmentPlane MMM
+                    ON MMM.ID = MM.MDPID
+            WHERE DoneDate = '$TrainingDate'
+            and MMM.AppraisalPeriod = '$AppraisalPeriod'
+        ");
+        return response()->json([
+           'training_title' => $individual_training
+        ]);
+
+    }
+
+    public function getDateWiseTrainingWiseList(Request $request){
+        $TrainingDate = $request->TrainingDate;
+        $AppraisalPeriod = $request->AppraisalPeriod;
+        if(!empty(json_decode($request->TrainingTitle)->TrainingTitle)){
+            $TrainingTitle = json_decode($request->TrainingTitle)->TrainingTitle;
+        }else{
+            $TrainingTitle = "";
+        }
+
+        $individual_training = DB::select("
+            SELECT 
+                M.TrainingFeedbackID AS TrainingFeedbackID, P.Name,
+                MMM.StaffID, D.DesgName, DP.DeptName, TrainingTitle,
+                ISNULL(m.Feedback,'') as Feedback, ISNULL(m.LearningTransfer,'') as LearningTransfer,
+                P.EmpCode
+            FROM MDPTrainingFeedback M
+                INNER JOIN MDPTraining MM
+                    ON M.TrainingID = MM.ID
+                INNER JOIN ManagementDevelopmentPlane MMM
+                    ON MMM.ID = MM.MDPID
+                INNER JOIN Personal P
+                    ON MMM.StaffID = P.EmpCode
+                INNER JOIN Employer E
+                    ON P.EmpCode = E.Empcode
+                INNER JOIN Designation D
+                    ON E.DesgCode = D.DesgCode
+                INNER JOIN Department DP
+                    ON E.DeptCode = DP.DeptCode
+            WHERE DoneDate = '$TrainingDate'
+            and MMM.AppraisalPeriod = '$AppraisalPeriod'
+            and MM.TrainingTitle = '$TrainingTitle'
+            ORDER BY P.Name
+        ");
+        return response()->json([
+           'training_list' => $individual_training
+        ]);
     }
 }
