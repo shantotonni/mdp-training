@@ -307,12 +307,19 @@ class MDPController extends Controller
     public function getEmployeeWiseReport(Request $request){
         $session = $request->sessionP;
         $EmpCode = $request->EmpCode;
-        if(!empty(json_decode($request->TrainingTitle)->TrainingTitle)){
-            $TrainingTitle = json_decode($request->TrainingTitle)->TrainingTitle;
-        }else{
-            $TrainingTitle = "";
+        $TrainingTitle = json_decode($request->TrainingTitle);
+        $TrainingTitleString = "";
+        foreach($TrainingTitle as $row){
+            $TrainingTitleString = $TrainingTitleString . $row->TrainingTitle . '##';
         }
-        $individual_training = DB::select("EXEC doLoadEmployeeWiseReport '$session','$EmpCode','$TrainingTitle' ");
+        $TrainingTitleString = substr($TrainingTitleString,0,strlen($TrainingTitleString) - 2);
+        //return $TrainingTitleString;
+        // if(!empty(json_decode($request->TrainingTitle)->TrainingTitle)){
+        //     $TrainingTitle = json_decode($request->TrainingTitle)->TrainingTitle;
+        // }else{
+        //     $TrainingTitle = "";
+        // }
+        $individual_training = DB::select("EXEC doLoadEmployeeWiseReport '$session','$EmpCode','$TrainingTitleString' ");
         return response()->json([
            'individual_training' => $individual_training
         ]);

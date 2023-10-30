@@ -19,12 +19,12 @@
                         </div>
                       </div>
 
-                      <div class="col-md-2">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <multiselect
                               v-model="TrainingTitle"
                               :options="trainingTitlesList"
-                              :multiple="false"
+                              :multiple="true"
                               :searchable="true"
                               :close-on-select="true"
                               :show-labels="true"
@@ -107,7 +107,7 @@ export default {
       isLoading: false,
       sessionP: '',
       EmpCode: '',
-      TrainingTitle: '',
+      TrainingTitle: [],
       trainingTitlesList: [],
     }
   },
