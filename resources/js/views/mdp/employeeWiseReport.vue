@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <breadcrumb :options="['Training Title Wise Employee Wise Report']"/>
+      <breadcrumb :options="['Training Title Wise Employee List']"/>
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
@@ -36,7 +36,7 @@
 
                       <div class="col-md-2">
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Enter EmpCode" 
+                          <input type="text" class="form-control" placeholder="Enter EmpCode"
                             v-model="EmpCode">
                         </div>
                       </div>
@@ -64,7 +64,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(training, i) in individual_training" :key="training.TrainingTitle" v-if="individual_training.length">
+                    <tr v-for="(training, i) in individual_training" :key="training.StaffID" v-if="individual_training.length">
                       <th>{{ ++i }}</th>
                       <td>{{ training.StaffID }}</td>
                       <td>{{ training.Name }}</td>
@@ -96,10 +96,12 @@
 import {baseurl} from "../../base_url";
 import {Common} from "../../mixins/common";
 import {bus} from "../../app";
+import Multiselect from "vue-multiselect";
 
 export default {
   name: "TopRankedTraining",
   mixins: [Common],
+  components: { Multiselect },
   data() {
     return {
       individual_training: [],
@@ -112,7 +114,7 @@ export default {
     }
   },
   mounted() {
-    document.title = 'Training Title Wise Employee Wise Report | MDP';
+    document.title = 'Training Title Wise Employee List | MDP,Action Plan,JD';
     this.getAllSession(); 
     this.getAllTrainingTitle();   
   },
@@ -133,19 +135,16 @@ export default {
       })
     },
     getEmployeeIndividualTraining(){
-      axios.get(baseurl + 'api/mdp/get-employee-wise-report?sessionP='+ this.sessionP
-          + "&EmpCode=" + this.EmpCode + "&TrainingTitle=" + JSON.stringify(this.TrainingTitle)
-      ).then((response)=>{
-        this.individual_training = response.data.individual_training;        
+      axios.post(baseurl + 'api/mdp/get-employee-wise-report',{sessionP: this.sessionP,EmpCode: this.EmpCode,TrainingTitle: this.TrainingTitle}).then((response)=>{
+        console.log(response)
+        this.individual_training = response.data.individual_training;
       }).catch((error)=>{
 
       })
     },
     
     getEmployeeIndividualTrainingExport(){
-      axios.get(baseurl + 'api/mdp/get-employee-wise-report?sessionP='+ this.sessionP
-          + "&EmpCode=" + this.EmpCode+ "&TrainingTitle=" + JSON.stringify(this.TrainingTitle)
-      ).then((response)=>{
+      axios.post(baseurl + 'api/mdp/get-employee-wise-report',{sessionP: this.sessionP,EmpCode: this.EmpCode,TrainingTitle: this.TrainingTitle}).then((response)=>{
         let dataSets = response.data.individual_training;
         if (dataSets.length > 0) {
           let columns = Object.keys(dataSets[0]);

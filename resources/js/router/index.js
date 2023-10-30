@@ -110,8 +110,7 @@ const routes = [
                 path: baseurl + 'employee-individual-training', name: 'EmployeeIndividualTraining', component: EmployeeIndividualTraining
             },
             {
-                path: baseurl + 'employee-wise-report', name: 'employeeWiseReport', 
-                    component: employeeWiseReport
+                path: baseurl + 'employee-wise-report', name: 'employeeWiseReport', component: employeeWiseReport
             },
 
             //Action Plan list

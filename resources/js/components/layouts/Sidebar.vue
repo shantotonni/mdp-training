@@ -19,7 +19,7 @@
               <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'AdditionalTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Additional Training</router-link></li>
               <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'TopRankedTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Top Ranked Training</router-link></li>
               <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'EmployeeIndividualTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Employee Individual Training</router-link></li>
-              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'employeeWiseReport'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Training Title Wise Employee Wise Report</router-link></li>
+              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'employeeWiseReport'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Training Title Wise Employee List</router-link></li>
             </ul>
           </li>
           <li>
