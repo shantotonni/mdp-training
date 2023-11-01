@@ -214,19 +214,19 @@ export default {
               + "&Department=" + JSON.stringify(this.Department)
               + "&sessionP=" + this.sessionP
           ).then((response)=>{
-                let dataSets = response.data.data;
-                if (dataSets.length > 0) {
-                  let columns = Object.keys(dataSets[0]);
-                  columns = columns.filter((item) => item !== 'row_num');
-                  let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-                  columns = columns.map((item) => {
-                    let title = item.replace(rex, '$1$4 $2$3$5')
-                    return {title, key: item}
-                  });
-                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
-                }
-              }).catch((error)=>{
-            console.log(error)
+              //   let dataSets = response.data.data;
+              //   if (dataSets.length > 0) {
+              //     let columns = Object.keys(dataSets[0]);
+              //     columns = columns.filter((item) => item !== 'row_num');
+              //     let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+              //     columns = columns.map((item) => {
+              //       let title = item.replace(rex, '$1$4 $2$3$5')
+              //       return {title, key: item}
+              //     });
+              //     bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
+              //   }
+              // }).catch((error)=>{
+            console.log(response)
           })
         },
         destroy(id){

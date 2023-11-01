@@ -151,12 +151,8 @@ class MDPTrainigFeedbackController extends Controller
                 if ($training->save()){
                     if ($request->Status == 'offered'){
                         $DoneDate = '';
-                        $Feedback = '';
-                        $LearningTransfer = '';
                     }else{
                         $DoneDate = date('Y-m-d',strtotime($request->DoneDate));
-                        $Feedback = $request->Feedback;
-                        $LearningTransfer = $request->LearningTransfer;
                     }
 
                     if ($request->OfferDateOne)
@@ -183,8 +179,6 @@ class MDPTrainigFeedbackController extends Controller
                     $MDPTrainingFeedback->TrainingID = $training->ID;
                     $MDPTrainingFeedback->Status = $request->Status;
                     $MDPTrainingFeedback->DoneDate = $DoneDate;
-                    $MDPTrainingFeedback->Feedback = $Feedback;
-                    $MDPTrainingFeedback->LearningTransfer = $LearningTransfer;
                     $MDPTrainingFeedback->OfferDateOne = $OfferDateOne;
                     $MDPTrainingFeedback->OfferDateTwo = $OfferDateTwo;
                     $MDPTrainingFeedback->OfferDateThree = $OfferDateThree;

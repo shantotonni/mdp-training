@@ -171,8 +171,8 @@
                     <th>Offer Date Three</th>
                     <th>Offer Date Four</th>
                     <th>Offer Date Five</th>
-                    <th>Feedback</th>
-                    <th>Learning Transfer</th>
+<!--                    <th>Feedback</th>-->
+<!--                    <th>Learning Transfer</th>-->
                     <th>Trainer Name</th>
                     <th>Action</th>
                   </tr>
@@ -192,8 +192,8 @@
                     <td><datepicker v-model="form.OfferDateThree" :format="customFormatter" :typeable=true input-class="form-control"></datepicker></td>
                     <td><datepicker v-model="form.OfferDateFour" :format="customFormatter" :typeable=true input-class="form-control"></datepicker></td>
                     <td><datepicker v-model="form.OfferDateFive" :format="customFormatter" :typeable=true input-class="form-control"></datepicker></td>
-                    <td><input type="number" class="form-control" name="Feedback" v-model="form.Feedback"></td>
-                    <td><input type="number" class="form-control" name="learning_transfer" v-model="form.LearningTransfer"></td>
+<!--                    <td><input type="number" class="form-control" name="Feedback" v-model="form.Feedback"></td>-->
+<!--                    <td><input type="number" class="form-control" name="learning_transfer" v-model="form.LearningTransfer"></td>-->
                     <td><input type="text" class="form-control" name="TrainerName" v-model="form.TrainerName"></td>
                     <td>
                       <button type="button" @click="additionalTrainingFeedbackSubmit()" class="btn btn-info btn-sm">Submit</button>
@@ -294,6 +294,7 @@ export default {
           this.EmployeeName = response.data.EmpInfo.EmployeeName
           this.Designation = response.data.EmpInfo.Designation
           this.Department = response.data.EmpInfo.Department
+          this.form.EmpCode = response.data.EmpInfo.StaffID
         }else {
           this.EmpFound = false
         }

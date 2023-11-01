@@ -43,7 +43,7 @@ class MDPController extends Controller
             if ($session){
                 $mdp = $mdp->where('AppraisalPeriod',$session);
             }
-            $mdp = $mdp->orderBy('Department','asc')->paginate(15);
+            $mdp = $mdp->orderBy('ID','desc')->paginate(15);
         }else{
             $mdp = ManagementDevelopmentPlane::orderBy('ID','desc')->where('StaffID',$empcode)->paginate(15);
         }
@@ -287,6 +287,7 @@ class MDPController extends Controller
             $mdp_list = $mdp_list->whereIn('Department',$DeptName);
         }
         $mdp_list = $mdp_list->orderBy('Department','asc')->get();
+        return $mdp_list;
         return new ManagementDevelopmentPlaneCollection($mdp_list);
     }
 
@@ -307,10 +308,10 @@ class MDPController extends Controller
     public function getEmployeeWiseReport(Request $request){
         $session = $request->sessionP;
         $EmpCode = $request->EmpCode;
-        $TrainingTitle = json_decode($request->TrainingTitle);
+        $TrainingTitle = collect($request->TrainingTitle);
         $TrainingTitleString = "";
         foreach($TrainingTitle as $row){
-            $TrainingTitleString = $TrainingTitleString . $row->TrainingTitle . '##';
+            $TrainingTitleString = $TrainingTitleString . $row['TrainingTitle'] . '##';
         }
         $TrainingTitleString = substr($TrainingTitleString,0,strlen($TrainingTitleString) - 2);
         //return $TrainingTitleString;
