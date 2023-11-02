@@ -7,18 +7,16 @@ use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\ManagementDevelopmentPlaneCollection;
 use App\Http\Resources\ManagementDevelopmentPlaneResource;
 use App\Http\Resources\SupervisorResource;
-use App\Models\Area;
-use App\Models\AreaTwo;
 use App\Models\Employee;
-use App\Models\EmployeeDepartment;
-use App\Models\LevelWiseLearningOfferingList;
 use App\Models\ManagementDevelopmentPlane;
 use App\Models\MDPEmployeeTrainingList;
 use App\Models\MDPPersonalInitiative;
 use App\Models\MDPTraining;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Input\Input;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class MDPController extends Controller
@@ -287,8 +285,24 @@ class MDPController extends Controller
             $mdp_list = $mdp_list->whereIn('Department',$DeptName);
         }
         $mdp_list = $mdp_list->orderBy('Department','asc')->get();
-        return $mdp_list;
         return new ManagementDevelopmentPlaneCollection($mdp_list);
+    }
+
+    public function mdpFeedbackExport(Request $request){
+        $feedback = DB::select(" SELECT MDP.AppraisalPeriod,MDP.StaffID,MDP.EmployeeName,MDP.Designation,MDP.Department, t.TrainingTitle,T.TrainingType,
+                            ISNULL(F.DoneDate,'') AS DoneDate, ISNULL(F.Feedback, 0) AS Feedback,ISNULL(F.LearningTransfer,0) AS LearningTransfer,
+                            ISNULL(F.OfferDateOne,'') AS OfferDateOne,ISNULL(F.OfferDateTwo,'') AS OfferDateTwo,
+                            ISNULL(F.OfferDateThree,'') AS OfferDateThree,ISNULL(F.OfferDateFour,'') AS OfferDateFour,ISNULL(F.OfferDateFive,'') AS OfferDateFive FROM MDPTraining T
+                          JOIN ManagementDevelopmentPlane MDP
+                            ON MDP.ID=T.MDPID
+                          LEFT JOIN MDPTrainingFeedback F
+                            ON F.TrainingID = T.ID
+                          WHERE TrainingTitle IS NOT NULL");
+        $feedbackCollection = collect($feedback);
+        return response()->json([
+            'data' => $feedbackCollection
+        ]);
+
     }
 
     public function search($query)

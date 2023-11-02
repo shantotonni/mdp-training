@@ -49,10 +49,10 @@
                                         <i class="fas fa-plus"></i>
                                         Add Management Development Plan
                                       </router-link>
-<!--                                        <button type="button" class="btn btn-primary btn-sm" @click="exportGenerator">-->
-<!--                                            <i class="mdi mdi-database-export"></i>-->
-<!--                                            Export-->
-<!--                                        </button>-->
+                                        <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">
+                                            <i class="mdi mdi-database-export"></i>
+                                            Feedback Export
+                                        </button>
                                         <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
                                             <i class="fas fa-sync"></i>
                                             Export
@@ -197,13 +197,13 @@ export default {
 
           })
         },
-      getAllSession(){
-        axios.get(baseurl + 'api/get-all-session/').then((response) => {
-          this.sessions = response.data.sessions;
-        }).catch((error) => {
+        getAllSession(){
+          axios.get(baseurl + 'api/get-all-session/').then((response) => {
+            this.sessions = response.data.sessions;
+          }).catch((error) => {
 
-        })
-      },
+          })
+        },
         reload(){
             this.getAllMDPList();
             this.query = "";
@@ -214,21 +214,42 @@ export default {
               + "&Department=" + JSON.stringify(this.Department)
               + "&sessionP=" + this.sessionP
           ).then((response)=>{
-              //   let dataSets = response.data.data;
-              //   if (dataSets.length > 0) {
-              //     let columns = Object.keys(dataSets[0]);
-              //     columns = columns.filter((item) => item !== 'row_num');
-              //     let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-              //     columns = columns.map((item) => {
-              //       let title = item.replace(rex, '$1$4 $2$3$5')
-              //       return {title, key: item}
-              //     });
-              //     bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
-              //   }
-              // }).catch((error)=>{
+                let dataSets = response.data.data;
+                if (dataSets.length > 0) {
+                  let columns = Object.keys(dataSets[0]);
+                  columns = columns.filter((item) => item !== 'row_num');
+                  let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                  columns = columns.map((item) => {
+                    let title = item.replace(rex, '$1$4 $2$3$5')
+                    return {title, key: item}
+                  });
+                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
+                }
+              }).catch((error)=>{
             console.log(response)
           })
         },
+        exportFeedback(){
+            axios.get(baseurl + 'api/export-mdp-feedback?query=' +  this.query
+                + "&Department=" + JSON.stringify(this.Department)
+                + "&sessionP=" + this.sessionP
+            ).then((response)=>{
+              console.log(response)
+                  let dataSets = response.data.data;
+                  if (dataSets.length > 0) {
+                    let columns = Object.keys(dataSets[0]);
+                    columns = columns.filter((item) => item !== 'row_num');
+                    let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                    columns = columns.map((item) => {
+                      let title = item.replace(rex, '$1$4 $2$3$5')
+                      return {title, key: item}
+                    });
+                    bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
+                  }
+                }).catch((error)=>{
+              console.log(response)
+            })
+          },
         destroy(id){
           Swal.fire({
               title: 'Are you sure?',
