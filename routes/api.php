@@ -61,8 +61,7 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::post('additional-training-feedback-submit', [MDPTrainigFeedbackController::class,'additionalTrainingAddAndFeedback']);
     Route::get('get-employee-info', [MDPTrainigFeedbackController::class,'getEmployeeInfo']);
     Route::get('load-date-wise-title', [MDPTrainigFeedbackController::class,'getDateWiseTitle']);
-    Route::get('load-date-wise-training-wise-list', [MDPTrainigFeedbackController::class,
-        'getDateWiseTrainingWiseList']);
+    Route::post('load-date-wise-training-wise-list', [MDPTrainigFeedbackController::class, 'getDateWiseTrainingWiseList']);
     //End
 
     //Action Plan Route

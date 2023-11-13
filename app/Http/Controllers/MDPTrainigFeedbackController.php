@@ -253,17 +253,19 @@ class MDPTrainigFeedbackController extends Controller
     public function getDateWiseTrainingWiseList(Request $request){
         $TrainingDate = $request->TrainingDate;
         $AppraisalPeriod = $request->AppraisalPeriod;
-        if(!empty(json_decode($request->TrainingTitle)->TrainingTitle)){
-            $TrainingTitle = json_decode($request->TrainingTitle)->TrainingTitle;
-        }else{
-            $TrainingTitle = "";
-        }
+
+        $TrainingTitle = $request->TrainingTitle;
+        $TrainingTitle = collect($TrainingTitle);
+        $TrainingTitle = $TrainingTitle->pluck('TrainingTitle');
+        $TrainingTitle = $TrainingTitle->toArray();
+        $TrainingTitle = implode("','",$TrainingTitle);
+        $TrainingTitle = "'".$TrainingTitle."'";
 
         $individual_training = DB::select("
             SELECT 
                 M.TrainingFeedbackID AS TrainingFeedbackID, P.Name,
                 MMM.StaffID, D.DesgName, DP.DeptName, TrainingTitle,
-                ISNULL(m.Feedback,'') as Feedback, ISNULL(m.LearningTransfer,'') as LearningTransfer,
+                ISNULL(m.Feedback,0) as Feedback, ISNULL(m.LearningTransfer,0) as LearningTransfer,
                 P.EmpCode
             FROM MDPTrainingFeedback M
                 INNER JOIN MDPTraining MM
@@ -278,9 +280,9 @@ class MDPTrainigFeedbackController extends Controller
                     ON E.DesgCode = D.DesgCode
                 INNER JOIN Department DP
                     ON E.DeptCode = DP.DeptCode
-            WHERE DoneDate = '$TrainingDate'
+            WHERE M.DoneDate = '$TrainingDate'
             and MMM.AppraisalPeriod = '$AppraisalPeriod'
-            and MM.TrainingTitle = '$TrainingTitle'
+            and MM.TrainingTitle in ($TrainingTitle)
             ORDER BY P.Name
         ");
         return response()->json([

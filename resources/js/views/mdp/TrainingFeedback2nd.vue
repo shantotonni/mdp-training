@@ -27,12 +27,12 @@
                         </div>
                       </div>
 
-                      <div class="col-md-2">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <multiselect
                               v-model="TrainingTitle"
                               :options="trainingTitlesList"
-                              :multiple="false"
+                              :multiple="true"
                               :searchable="true"
                               :close-on-select="true"
                               :show-labels="true"
@@ -42,10 +42,8 @@
                         </div>
                       </div>
 
-                      <div class="col-md-3">
-                        <button type="submit" 
-                            @click="getEmployeeIndividualTraining" 
-                            class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
+                      <div class="col-md-2">
+                        <button type="submit" @click="getEmployeeIndividualTraining" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                       </div>
 
                     </div>
@@ -124,7 +122,7 @@ export default {
       sessions: '',
       isLoading: false,
       tableDataVisible: false,
-      TrainingTitle: '',
+      TrainingTitle: [],
       trainingTitlesList: [],
       TrainingDate:'',
       AppraisalPeriod:'',
@@ -160,9 +158,9 @@ export default {
     },
     getEmployeeIndividualTraining(){
         if(this.TrainingDate != '' && this.AppraisalPeriod != '' && this.TrainingTitle != ''){
-        axios.get(baseurl + 'api/load-date-wise-training-wise-list?TrainingDate=' + this.TrainingDate
-            + "&AppraisalPeriod="+ this.AppraisalPeriod + "&TrainingTitle="+ JSON.stringify(this.TrainingTitle)
-            ).then((response) => {
+        axios.post(baseurl + 'api/load-date-wise-training-wise-list' ,{TrainingDate:this.TrainingDate,AppraisalPeriod:this.AppraisalPeriod,TrainingTitle:this.TrainingTitle})
+            .then((response) => {
+              console.log(response)
                 this.tableDataVisible = true;
                 this.form.training_list = response.data.training_list;
                 this.Feedback = response.data.training_list[0]['Feedback'];

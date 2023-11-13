@@ -1,7 +1,30 @@
 <template>
     <div class="content">
         <div class="container-fluid">
-            <breadcrumb :options="['Management Development Plan']"/>
+            <breadcrumb :options="['Management Development Plan']">
+                <div class="col-sm-6">
+                  <div class="float-right d-none d-md-block">
+                    <div class="card-tools">
+                      <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">
+                        <i class="fas fa-plus"></i>
+                        Add Management Development Plan
+                      </router-link>
+                      <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">
+                        <i class="mdi mdi-database-export"></i>
+                        Feedback Export
+                      </button>
+                      <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
+                        <i class="fas fa-sync"></i>
+                        Export
+                      </button>
+                      <button type="button" class="btn btn-primary btn-sm" @click="reload">
+                        <i class="fas fa-sync"></i>
+                        Reload
+                      </button>
+                    </div>
+                  </div>
+                </div>
+            </breadcrumb>
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
@@ -39,28 +62,10 @@
                                                   placeholder="Pick a value"></multiselect>
                                             </div>
                                           </div>
-                                          <div class="col-md-1">
+                                          <div class="col-md-2">
                                             <button type="submit" @click="getAllMDPList" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                                           </div>
                                         </div>
-                                    </div>
-                                    <div class="card-tools">
-                                      <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">
-                                        <i class="fas fa-plus"></i>
-                                        Add Management Development Plan
-                                      </router-link>
-                                        <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">
-                                            <i class="mdi mdi-database-export"></i>
-                                            Feedback Export
-                                        </button>
-                                        <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
-                                            <i class="fas fa-sync"></i>
-                                            Export
-                                        </button>
-                                      <button type="button" class="btn btn-primary btn-sm" @click="reload">
-                                            <i class="fas fa-sync"></i>
-                                            Reload
-                                        </button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
