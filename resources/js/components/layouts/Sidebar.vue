@@ -44,6 +44,17 @@
               </li>
             </ul>
           </li>
+          <li>
+            <a href="javascript:void(0);" class="waves-effect">
+              <i class="mdi mdi-twitch"></i>
+              <span>SEP Automation<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
+            </a>
+            <ul class="submenu">
+              <li>
+                <router-link :to="{name: 'SEPAutomation'}" ><i class="mdi mdi-floor-plan"></i>SEP Automation List</router-link>
+              </li>
+            </ul>
+          </li>
           <li >
             <a href="javascript:void(0);" class="waves-effect">
               <i class="mdi mdi-clipboard-arrow-up-outline"></i>

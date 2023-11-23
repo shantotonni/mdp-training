@@ -5,6 +5,7 @@ use App\Http\Controllers\JobDescriptionController;
 use App\Http\Controllers\MDPController;
 use App\Http\Controllers\MDPTrainigFeedbackController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SEPAutomationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
@@ -73,7 +74,7 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('action_plane_search/{query}', [ActionPlanController::class,'search']);
     Route::delete('action_plane_delete/{ID}', [ActionPlanController::class,'delete']);
     Route::get('get-all-division', [ActionPlanController::class,'getAllDivision']);
-    Route::post('get-all-department', [ActionPlanController::class,'getAllDepartment']);
+    Route::get('get-all-department', [ActionPlanController::class,'getAllDepartment']);
 
     Route::post('action-plan/get-employee-by-employee-code', [ActionPlanController::class,'getEmployeeByEmployeeCode']);
     Route::post('action-plan/get-supervisor-by-employee-code', [ActionPlanController::class,'getSupervisorByEmployeeCode']);
@@ -81,8 +82,12 @@ Route::group(['middleware' => ['jwt']], function () {
     //Export
     Route::post('export-action-plane-list',[ActionPlanController::class,'exportActionPlan']);
     //End
-
-
+//SEP Automation
+    Route::apiResource('sep-automation',SEPAutomationController::class);
+    Route::get('search/sep-automation/{query}', [SEPAutomationController::class,'search']);
+    Route::get('all-division', [SEPAutomationController::class,'allDivision']);
+    Route::get('all-designation', [SEPAutomationController::class,'allDesignation']);
+    Route::post('all-department', [SEPAutomationController::class,'allDepartment']);
     //job description
     Route::get('job-description/list',[JobDescriptionController::class,'index']);
     Route::post('job-description-store',[JobDescriptionController::class,'store']);
@@ -100,7 +105,6 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::post('export-job-description-list',[JobDescriptionController::class,'exportActionPlan']);
 
     //End
-
     Route::get('get-all-employee-training-list', [CommonController::class,'getEmployeeTrainingList']);
     Route::get('get-agree-business-user', [CommonController::class,'getAgreeBusinessUser']);
     Route::get('get-all-session', [CommonController::class,'getAllSession']);

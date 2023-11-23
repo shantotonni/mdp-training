@@ -15,6 +15,8 @@ import TopRankedTraining from '../views/mdp/TopRankedTraining'
 import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 import EmployeeIndividualTraining from '../views/mdp/EmployeeIndividualTraining'
 import employeeWiseReport from '../views/mdp/employeeWiseReport'
+import SEPAutomation from '../views/sep/SEPList.vue'
+
 //import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 
 //user
@@ -125,6 +127,10 @@ const routes = [
             },
             {
                 path: baseurl + 'action-plan-print/:ID', name: 'ActionPlanPrint', component: ActionPlanPrint
+            },
+            //SEP Automation List
+             {
+                path: baseurl + 'sep-automation-list', name: 'SEPAutomation', component: SEPAutomation
             },
 
             //job Description list
