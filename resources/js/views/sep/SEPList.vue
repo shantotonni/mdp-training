@@ -305,10 +305,9 @@ export default {
       }
     },
     tableImage2(sep) {
-      console.log('2',sep)
-      if(sep){
-        return window.location.origin + "/mdp-training/public/file/SEP/" + sep.SepFile;
-      }
+      console.log(sep)
+        return window.location.origin + "/mdp-training/public/file/SEP/" + sep;
+
     },
     tableImage(SepFile) {
       return window.location.origin + "/mdp-training/public/file/SEP/" + SepFile;
