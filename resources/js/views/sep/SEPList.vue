@@ -24,38 +24,41 @@
               <div class="card-body">
                 <div class="d-flex">
                   <div class="flex-grow-1">
+<!--                     v-if="type ==='admin'"-->
+
                     <div class="row">
-                      <div class="col-md-2"  v-if="type ==='admin'">
-                        <input v-model="query" type="text" class="form-control" placeholder="Search">
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <select id="DivCode" class="form-control" v-model="DivCode" @change="getAllDepartment()">
+                            <option value="">Select Division</option>
+                            <option :value="div.Deptunit" v-for="(div,index) in divisions" :key="index">{{div.Deptunit}}</option>
+                          </select>
+                        </div>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
-                          <select id="DivCode" class="form-control" v-model="form.DivCode">
-                            <option value="">Select Division</option>
-                            <option v-for="(div,index) in divisions" :key="index">{{div.Deptunit}}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <select id="DeptCode" class="form-control" v-model="form.DeptCode">
+                          <select id="DeptCode" class="form-control" v-model="DeptCode">
                             <option value="">Select Departments</option>
-                            <option v-for="(div,index) in departments" :key="index">{{div.ShortName}}</option>
+                            <option :value="div.DeptCode" v-for="(div,index) in departments" :key="index">{{div.ShortName}}</option>
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-2">
                         <div class="form-group">
-                          <select id="DesgCode" class="form-control" v-model="form.DesgCode">
+                          <select id="DesgCode" class="form-control" v-model="DesgCode">
                             <option value="">Select Designation</option>
-                            <option  v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>
+                            <option :value="div.DesgCode" v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>
                           </select>
                         </div>
                       </div>
                       <div class="col-md-2">
                         <button type="submit" @click="getAllSEP" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                       </div>
+                      <div class="col-md-3" >
+                        <input v-model="query" type="text" class="form-control" placeholder="Search by Division">
+                      </div>
                     </div>
+
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -74,11 +77,19 @@
                     <tr v-for="(sep, i) in seps" :key="sep.SEPID" v-if="seps.length">
                       <th scope="row">{{ ++i }}</th>
                       <td>{{ sep.DivCode }}</td>
-                      <td>{{ sep.Department }}</td>
+                      <td>{{ sep.ShortName }}</td>
                       <td>{{ sep.Designation }}</td>
                       <td class="text-left">
-                        <img v-if="sep.SepFile" height="40" width="40"
-                             :src="tableImage(sep.SepFile)" alt="">
+                            <img v-if="sep.SepFile" height="40" width="40"
+                                 :src="tableImage(sep.SepFile)" alt="" @click="toggleDialog(sep.SepFile)" >{{sep.SepFile}}
+
+                      <div class="dialog" v-if="dialog" >
+                        <div class="dialog-content">
+                          <button @click="toggleDialog()" class="close-icon" >x</button>
+                          <img :src="tableImage2()">
+                        </div>
+                      </div>
+
                       </td>
                       <td class="text-center">
                         <button @click="edit(sep)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
@@ -193,8 +204,12 @@ export default {
       query: "",
       type: '',
       Deptunit: "",
+      DivCode:'',
+      DeptCode:'',
+      DesgCode:'',
       editMode: false,
       isLoading: false,
+      dialog: false,
       form: new Form({
         SEPID :'',
         DivCode:'',
@@ -226,8 +241,8 @@ export default {
       axios.get(baseurl+ 'api/sep-automation?page='+ this.pagination.current_page
           + "&query=" + this.query
           + "&DivCode=" + this.DivCode
-          // + "&DesgCode=" + this.DesgCode
-          // + "&DeptCode=" + this.DeptCode
+          + "&DesgCode=" + this.DesgCode
+          + "&DeptCode=" + this.DeptCode
       ).then((response)=>{
         this.seps = response.data.data;
         this.pagination = response.data.meta;
@@ -259,8 +274,10 @@ export default {
       })
     },
     getAllDepartment(){
+      console.log(this.DivCode)
       axios.post(baseurl +'api/all-department/', {
         DivCode: this.form.DivCode,
+        DivCode2: this.DivCode
       }).then((response)=>{
         this.departments = response.data.data;
       }).catch((error)=>{
@@ -275,12 +292,22 @@ export default {
       };
       reader.readAsDataURL(file);
     },
+    toggleDialog(sep) {
+      this.dialog = !this.dialog;
+      this.tableImage2(sep);
+    },
     showImage() {
       let img = this.form.SepFile;
       if (img.length > 100) {
         return this.form.SepFile;
       } else {
         return window.location.origin + "/mdp-training/public/file/SEP/" + this.form.SepFile;
+      }
+    },
+    tableImage2(sep) {
+      console.log('2',sep)
+      if(sep){
+        return window.location.origin + "/mdp-training/public/file/SEP/" + sep.SepFile;
       }
     },
     tableImage(SepFile) {
@@ -309,11 +336,14 @@ export default {
         this.isLoading = false;
       });
     },
-    edit(SEPID) {
+    edit(sep) {
       this.editMode = true;
       this.form.reset();
       this.form.clear();
-      this.form.fill(SEPID);
+      this.form.fill(sep);
+      this.getAllDivision();
+      this.getAllDepartment();
+      this.getAllDesignation();
       $("#StudentModelModal").modal("show");
     },
     update(){
@@ -336,7 +366,7 @@ export default {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.delete(baseurl+'api/sep-automation/'+ id).then((response)=>{
+          axios.delete(baseurl+'api/sep-automation/'+ SEPID).then((response)=>{
             this.getAllSEP();
             Swal.fire(
                 'Deleted!',
@@ -355,5 +385,30 @@ export default {
 </script>
 
 <style scoped>
-
+.dialog {
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  padding: 80px 40px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #999;
+  text-align: center;
+}
+.dialog-content {
+  width: 400px;
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+  margin-top: 20px;
+}
+.dialog-content img {
+  width: 100%;
+  height: auto;
+}
+.close-icon {
+  float: right;
+}
 </style>

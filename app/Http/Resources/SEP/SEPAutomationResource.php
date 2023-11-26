@@ -18,9 +18,9 @@ class SEPAutomationResource extends JsonResource
             'SEPID'=>$this->SEPID,
             'DivCode'=>$this->DivCode,
             'DeptCode'=>$this->DeptCode,
-            'DeptName'=>isset($this->department)?$this->department->DeptName:'',
+            'ShortName'=>isset($this->department)?$this->department->ShortName:'',
             'DesgCode'=>$this->DesgCode,
-            'DesgtName'=>isset($this->designation)?$this->designation->DesgtName:'',
+            'Designation'=>isset($this->designation)?$this->designation->DesgtName:'',
             'SepFile'=>$this->SepFile,
         ];
     }
