@@ -23,40 +23,40 @@
             <div class="datatable" v-if="!isLoading">
               <div class="card-body">
                 <div class="d-flex">
-<!--                  <div class="flex-grow-1">-->
-<!--                    <div class="row">-->
-<!--                      <div class="col-md-2"  v-if="type ==='admin'">-->
-<!--                        <input v-model="query" type="text" class="form-control" placeholder="Search">-->
-<!--                      </div>-->
-<!--                      <div class="col-md-2">-->
-<!--                        <div class="form-group">-->
-<!--                          <select id="DivCode" class="form-control" v-model="form.DivCode">-->
-<!--                            <option value="">Select Division</option>-->
-<!--                            <option v-for="(div,index) in divisions" :key="index">{{div.Deptunit}}</option>-->
-<!--                          </select>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <select id="DeptCode" class="form-control" v-model="form.DeptCode">-->
-<!--                            <option value="">Select Departments</option>-->
-<!--                            <option v-for="(div,index) in departments" :key="index">{{div.ShortName}}</option>-->
-<!--                          </select>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-4">-->
-<!--                        <div class="form-group">-->
-<!--                          <select id="DesgCode" class="form-control" v-model="form.DesgCode">-->
-<!--                            <option value="">Select Designation</option>-->
-<!--                            <option  v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>-->
-<!--                          </select>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-2">-->
-<!--                        <button type="submit" @click="getAllSEP" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
+                  <div class="flex-grow-1">
+                    <div class="row">
+                      <div class="col-md-2"  v-if="type ==='admin'">
+                        <input v-model="query" type="text" class="form-control" placeholder="Search">
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <select id="DivCode" class="form-control" v-model="form.DivCode">
+                            <option value="">Select Division</option>
+                            <option v-for="(div,index) in divisions" :key="index">{{div.Deptunit}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <select id="DeptCode" class="form-control" v-model="form.DeptCode">
+                            <option value="">Select Departments</option>
+                            <option v-for="(div,index) in departments" :key="index">{{div.ShortName}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <select id="DesgCode" class="form-control" v-model="form.DesgCode">
+                            <option value="">Select Designation</option>
+                            <option  v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <button type="submit" @click="getAllSEP" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="table-responsive">
                   <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
@@ -224,8 +224,8 @@ export default {
     getAllSEP(){
       this.isLoading = true;
       axios.get(baseurl+ 'api/sep-automation?page='+ this.pagination.current_page
-          // + "&query=" + this.query
-          // + "&DivCode=" + this.DivCode
+          + "&query=" + this.query
+          + "&DivCode=" + this.DivCode
           // + "&DesgCode=" + this.DesgCode
           // + "&DeptCode=" + this.DeptCode
       ).then((response)=>{

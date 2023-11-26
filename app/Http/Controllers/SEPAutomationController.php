@@ -16,26 +16,28 @@ class SEPAutomationController extends Controller
 {
     public function index(Request $request)
     {
-//        $token = $request->bearerToken();
-//        $payload = JWTAuth::setToken($token)->getPayload();
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
 //        $empcode = $payload['EmpCode'];
-//        $role = $payload['Type'];
-//
-//        $DivCode = $request->DivCode;
-//        $DeptCode = $request->DeptCode;
-//        $DesgCode= $request->DesgCode;
-//
-//        if ($role == 'admin'){
-//            $sep = SEPAutomation::query();
-//            if ($DivCode||$DeptCode||$DesgCode){
-//                $sep = $sep->where('DivCode',$DivCode);
-//                $sep = $sep->where('DeptCode',$DeptCode);
-//                $sep = $sep->where('DesgCode',$DesgCode);
-//            }
-//            $sep = $sep->orderBy('SEPID','desc')->paginate(15);
-//        }else{
-//            $sep = SEPAutomation::orderBy('SEPID','desc')->where('StaffID',$empcode)->paginate(15);
-//        }
+        $role = $payload['Type'];
+
+        $DivCode = $request->DivCode;
+        $DeptCode = $request->DeptCode;
+        $DesgCode= $request->DesgCode;
+//        $DivCode||$DeptCode||$DesgCode
+//        $sep = $sep->where('DeptCode',$DeptCode);
+//        $sep = $sep->where('DesgCode',$DesgCode);
+
+        if ($role == 'admin'){
+            $sep = SEPAutomation::query();
+            if ($DivCode){
+                $sep = $sep->where('DivCode',$DivCode);
+
+            }
+            $sep = $sep->orderBy('SEPID','desc')->paginate(15);
+        }else{
+            $sep = SEPAutomation::orderBy('SEPID','desc')->paginate(15);
+        }
         $sep = SEPAutomation::with('department','designation','division')->orderBy('SEPID','desc')->paginate(15);
         return new SEPAutomationCollection($sep);
     }
