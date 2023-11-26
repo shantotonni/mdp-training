@@ -80,15 +80,14 @@
                       <td>{{ sep.ShortName }}</td>
                       <td>{{ sep.Designation }}</td>
                       <td class="text-left">
-                            <img v-if="sep.SepFile" height="40" width="40"
-                                 :src="tableImage(sep.SepFile)" alt="" @click="toggleDialog(sep.SepFile)" >{{sep.SepFile}}
+                            <img v-if="sep.SepFile" height="40" width="40" :src="tableImage(sep.SepFile)" alt="" @click="modalImageShow(sep)" >{{sep.SepFile}}
 
-                      <div class="dialog" v-if="dialog" >
-                        <div class="dialog-content">
-                          <button @click="toggleDialog()" class="close-icon" >x</button>
-                          <img :src="tableImage2()">
-                        </div>
-                      </div>
+<!--                      <div class="dialog" v-if="dialog" >-->
+<!--                        <div class="dialog-content">-->
+<!--                          <button @click="toggleDialog()" class="close-icon" >x</button>-->
+<!--                          <img :src="tableImage2(sep.SepFile)">-->
+<!--                        </div>-->
+<!--                      </div>-->
 
                       </td>
                       <td class="text-center">
@@ -180,6 +179,22 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade bs-example-modal-center" id="showImageModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body">
+<!--            <img :src="showImage(form.SepFile)" alt="" height="40px" width="40px">-->
+            <img :src="tableImage2(form.SepFile)" alt="" v-model="form.ModalImage" height="500" width="450">
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
   </div>
 </template>
 
@@ -216,6 +231,7 @@ export default {
         DeptCode:'',
         DesgCode:'',
         SepFile:'',
+        ModalImage:'',
       }),
     }
   },
@@ -292,9 +308,18 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-    toggleDialog(sep) {
-      this.dialog = !this.dialog;
-      this.tableImage2(sep);
+    // toggleDialog(sep) {
+    //   this.dialog = !this.dialog;
+    //   setTimeout(()=>{
+    //     this.tableImage2(sep);
+    //   },1000)
+    // },
+    modalImageShow(sep){
+      // this.tableImage2(image)
+      this.form.fill(sep);
+      setTimeout(()=>{
+        $("#showImageModal").modal("show");
+      },300)
     },
     showImage() {
       let img = this.form.SepFile;
@@ -307,7 +332,6 @@ export default {
     tableImage2(sep) {
       console.log(sep)
         return window.location.origin + "/mdp-training/public/file/SEP/" + sep;
-
     },
     tableImage(SepFile) {
       return window.location.origin + "/mdp-training/public/file/SEP/" + SepFile;
