@@ -184,7 +184,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="closeModal">×</button>
           </div>
           <div class="modal-body">
 <!--            <img :src="showImage(form.SepFile)" alt="" height="40px" width="40px">-->
@@ -343,6 +343,7 @@ export default {
     },
     closeModal(){
       $("#StudentModelModal").modal("hide");
+      $("#showImageModal").modal("hide");
     },
     createSEPModel(){
       this.editMode = false;
