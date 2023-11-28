@@ -55,7 +55,18 @@
               </li>
             </ul>
           </li>
-          <li >
+          <li>
+            <a href="javascript:void(0);" class="waves-effect">
+              <i class="mdi mdi-twitch"></i>
+              <span>Echart Report<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
+            </a>
+            <ul class="submenu">
+              <li>
+                <router-link :to="{name: 'MDPChartReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Report</router-link>
+              </li>
+            </ul>
+          </li>
+          <li>
             <a href="javascript:void(0);" class="waves-effect">
               <i class="mdi mdi-clipboard-arrow-up-outline"></i>
               <span>Admin User<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>

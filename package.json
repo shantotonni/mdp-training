@@ -27,6 +27,7 @@
         "@livelybone/vue-datepicker": "^4.1.2",
         "chart.js": "^2.9.3",
         "compress.js": "^1.2.2",
+        "echarts": "^5.4.3",
         "jspdf": "^2.5.1",
         "moment": "^2.27.0",
         "number-currency-format": "^1.0.10",

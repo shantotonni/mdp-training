@@ -34,6 +34,11 @@ import JobDescriptionCreate from '../views/job_description/Create'
 import JobDescriptionEdit from '../views/job_description/Edit'
 import JobDescriptionPrint from '../views/job_description/Print'
 
+import MDPChartReport from '../views/chart/MDPChartReport'
+import MDPOrganizedPendingPTCReport from '../views/chart/MDPOrganizedPendingPTCReport'
+import MDPOrganizedPendingPTCReportDetails from '../views/chart/MDPOrganizedPendingPTCReportDetails'
+import MDPOrganizedPendingPTCTitleWiseEmployee from '../views/chart/MDPOrganizedPendingPTCTitleWiseEmployee'
+
 import NotFound from '../views/404/Index';
 import {baseurl} from '../base_url'
 
@@ -71,81 +76,39 @@ const routes = [
         redirect: {name: 'Dashboard'},
         children: [
             //DASHBAORD
-            {
-                path: baseurl + 'dashboard',
-                name: 'Dashboard',
-                component: Dashboard
-            },
+            {path: baseurl + 'dashboard', name: 'Dashboard', component: Dashboard},
             {path: baseurl + 'user-list', name: 'UserList', component: UserList},
             //mdp list
-            {
-                path: baseurl + 'mdp-list', name: 'MDPList', component: MDPList
-            },
-            {
-                path: baseurl + 'mdp-create', name: 'MDPCreate', component: MDPCreate
-            },
-            {
-                path: baseurl + 'mdp-edit/:ID', name: 'MDPEdit', component: MDPEdit
-            },
-            {
-                path: baseurl + 'mdp-print/:ID', name: 'MDPPrint', component: MDPPrint
-            },
-            {
-                path: baseurl + 'mdp-print_two/:ID', name: 'MDPPrintTwo', component: MDPPrintTwo
-            },
-            {
-                path: baseurl + 'mdp-training-feedback', name: 'TrainingFeedback', component: TrainingFeedback
-            },
-            {
-                path: baseurl + 'mdp-training-feedback-2nd', name: 'TrainingFeedback2nd', component: TrainingFeedback2nd
-            },
-            {
-                path: baseurl + 'add-additional-training', name: 'AdditionalTraining', component: AdditionalTraining
-            },
-            {
-                path: baseurl + 'top-ranked-training', name: 'TopRankedTraining', component: TopRankedTraining
-            },
-            {
-                path: baseurl + 'top-ranked-training-print', name: 'TopTrainingPrint', component: TopTrainingPrint
-            },
-            {
-                path: baseurl + 'employee-individual-training', name: 'EmployeeIndividualTraining', component: EmployeeIndividualTraining
-            },
-            {
-                path: baseurl + 'employee-wise-report', name: 'employeeWiseReport', component: employeeWiseReport
-            },
+            {path: baseurl + 'mdp-list', name: 'MDPList', component: MDPList},
+            {path: baseurl + 'mdp-create', name: 'MDPCreate', component: MDPCreate},
+            {path: baseurl + 'mdp-edit/:ID', name: 'MDPEdit', component: MDPEdit},
+            {path: baseurl + 'mdp-print/:ID', name: 'MDPPrint', component: MDPPrint},
+            {path: baseurl + 'mdp-print_two/:ID', name: 'MDPPrintTwo', component: MDPPrintTwo},
+            {path: baseurl + 'mdp-training-feedback', name: 'TrainingFeedback', component: TrainingFeedback},
+            {path: baseurl + 'mdp-training-feedback-2nd', name: 'TrainingFeedback2nd', component: TrainingFeedback2nd},
+            {path: baseurl + 'add-additional-training', name: 'AdditionalTraining', component: AdditionalTraining},
+            {path: baseurl + 'top-ranked-training', name: 'TopRankedTraining', component: TopRankedTraining},
+            {path: baseurl + 'top-ranked-training-print', name: 'TopTrainingPrint', component: TopTrainingPrint},
+            {path: baseurl + 'employee-individual-training', name: 'EmployeeIndividualTraining', component: EmployeeIndividualTraining},
+            {path: baseurl + 'employee-wise-report', name: 'employeeWiseReport', component: employeeWiseReport},
 
             //Action Plan list
-            {
-                path: baseurl + 'action-plan-list', name: 'ActionPlanList', component: ActionPlanList
-            },
-            {
-                path: baseurl + 'action-plan-create', name: 'ActionPlanCreate', component: ActionPlanCreate
-            },
-            {
-                path: baseurl + 'action-plan-edit/:ID', name: 'ActionPlanEdit', component: ActionPlanEdit
-            },
-            {
-                path: baseurl + 'action-plan-print/:ID', name: 'ActionPlanPrint', component: ActionPlanPrint
-            },
+            {path: baseurl + 'action-plan-list', name: 'ActionPlanList', component: ActionPlanList},
+            {path: baseurl + 'action-plan-create', name: 'ActionPlanCreate', component: ActionPlanCreate},
+            {path: baseurl + 'action-plan-edit/:ID', name: 'ActionPlanEdit', component: ActionPlanEdit},
+            {path: baseurl + 'action-plan-print/:ID', name: 'ActionPlanPrint', component: ActionPlanPrint},
             //SEP Automation List
-             {
-                path: baseurl + 'sep-automation-list', name: 'SEPAutomation', component: SEPAutomation
-            },
+             {path: baseurl + 'sep-automation-list', name: 'SEPAutomation', component: SEPAutomation},
 
             //job Description list
-            {
-                path: baseurl + 'job-description-list', name: 'JobDescriptionList', component: JobDescriptionList
-            },
-            {
-                path: baseurl + 'job-description-create', name: 'JobDescriptionCreate', component: JobDescriptionCreate
-            },
-            {
-                path: baseurl + 'job-description-edit/:ID', name: 'JobDescriptionEdit', component: JobDescriptionEdit
-            },
-            {
-                path: baseurl + 'job-description-print/:ID', name: 'JobDescriptionPrint', component: JobDescriptionPrint
-            },
+            {path: baseurl + 'job-description-list', name: 'JobDescriptionList', component: JobDescriptionList},
+            {path: baseurl + 'job-description-create', name: 'JobDescriptionCreate', component: JobDescriptionCreate},
+            {path: baseurl + 'job-description-edit/:ID', name: 'JobDescriptionEdit', component: JobDescriptionEdit},
+            {path: baseurl + 'job-description-print/:ID', name: 'JobDescriptionPrint', component: JobDescriptionPrint},
+            {path: baseurl + 'mdp-chart-report', name: 'MDPChartReport', component: MDPChartReport},
+            {path: baseurl + 'mdp-organized-pending-ptc/:Period', name: 'MDPOrganizedPendingPTCReport', component: MDPOrganizedPendingPTCReport},
+            {path: baseurl + 'mdp-organized-pending-ptc-details/:Period/:Status', name: 'MDPOrganizedPendingPTCReportDetails', component: MDPOrganizedPendingPTCReportDetails},
+            {path: baseurl + 'mdp-organized-pending-ptc-title-wise-employee', name: 'MDPOrganizedPendingPTCTitleWiseEmployee', component: MDPOrganizedPendingPTCTitleWiseEmployee},
         ],
         beforeEnter(to, from, next) {
             checkToken(to, from, next);

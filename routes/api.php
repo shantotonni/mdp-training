@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\JobDescriptionController;
+use App\Http\Controllers\MDPChartController;
 use App\Http\Controllers\MDPController;
 use App\Http\Controllers\MDPTrainigFeedbackController;
 use App\Http\Controllers\ReportController;
@@ -109,5 +110,9 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('get-agree-business-user', [CommonController::class,'getAgreeBusinessUser']);
     Route::get('get-all-session', [CommonController::class,'getAllSession']);
 
+    //chart report mdp-organized-pending-ptc
+    Route::get('mdp-organized-pending-ptc/{Period}', [MDPChartController::class,'getOrganizedPendingPTC']);
+    Route::get('mdp-organized-pending-ptc-details/{Period}/{Status}', [MDPChartController::class,'getOrganizedPendingPTCDetails']);
+    Route::post('mdp-organized-pending-ptc-title-wise-employee', [MDPChartController::class,'getOrganizedPendingPTCTitleWiseEmployee']);
 
 });
