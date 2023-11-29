@@ -25,36 +25,46 @@
                 <div class="d-flex">
                   <div class="flex-grow-1">
 <!--                     v-if="type ==='admin'"-->
-
                     <div class="row">
                       <div class="col-md-2">
                         <div class="form-group">
-                          <select id="DivCode" class="form-control" v-model="DivCode" @change="getAllDepartment()">
+                          <select id="DivCode" class="form-control" v-model="DivCode" @change="getAllDepartment()"  >
                             <option value="">Select Division</option>
-                            <option :value="div.Deptunit" v-for="(div,index) in divisions" :key="index">{{div.Deptunit}}</option>
+                            <option :value="div.Deptunit" v-for="(div,index) in divisions" :key="index" >{{div.Deptunit}}</option>
                           </select>
                         </div>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
+
                           <select id="DeptCode" class="form-control" v-model="DeptCode">
                             <option value="">Select Departments</option>
                             <option :value="div.DeptCode" v-for="(div,index) in departments" :key="index">{{div.ShortName}}</option>
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <div class="form-group">
-                          <select id="DesgCode" class="form-control" v-model="DesgCode">
-                            <option value="">Select Designation</option>
-                            <option :value="div.DesgCode" v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>
-                          </select>
+                          <multiselect
+                              v-model="DesgCode"
+                              :options="designations"
+                              :multiple="false"
+                              :searchable="true"
+                              :close-on-select="true"
+                              :show-labels="true"
+                              label="DesgName"
+                              track-by="DesgCode"
+                              placeholder="Pick a Designation"></multiselect>
+<!--                          <select id="DesgCode" class="form-control" v-model="DesgCode">-->
+<!--                            <option value="">Select Designation</option>-->
+<!--                            <option :value="div.DesgCode" v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>-->
+<!--                          </select>-->
                         </div>
                       </div>
                       <div class="col-md-2">
                         <button type="submit" @click="getAllSEP" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                       </div>
-                      <div class="col-md-3" >
+                      <div class="col-md-2" >
                         <input v-model="query" type="text" class="form-control" placeholder="Search by Division">
                       </div>
                     </div>
@@ -78,7 +88,7 @@
                       <th scope="row">{{ ++i }}</th>
                       <td>{{ sep.DivCode }}</td>
                       <td>{{ sep.ShortName }}</td>
-                      <td>{{ sep.Designation }}</td>
+                      <td>{{ sep.DesgName }}</td>
                       <td class="text-left">
                             <img v-if="sep.SepFile" height="40" width="40" :src="tableImage(sep.SepFile)" alt="" @click="modalImageShow(sep)" >{{sep.SepFile}}
 
@@ -149,10 +159,20 @@
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Designation</label>
-                      <select v-model="form.DesgCode" name="Designation" id="Designation" class="form-control" :class="{ 'is-invalid': form.errors.has('Designation') }" >
-                        <option value="">Select Designation</option>
-                        <option :value="div.DesgCode" v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>
-                      </select>
+                      <multiselect
+                          v-model="form.DesgCode"
+                          :options="designations"
+                          :multiple="false"
+                          :searchable="true"
+                          :close-on-select="true"
+                          :show-labels="true"
+                          label="DesgName"
+                          track-by="DesgCode"
+                          placeholder="Pick a Designation"></multiselect>
+<!--                      <select v-model="form.DesgCode" name="Designation" id="Designation" class="form-control" :class="{ 'is-invalid': form.errors.has('Designation') }" >-->
+<!--                        <option value="">Select Designation</option>-->
+<!--                        <option :value="div.DesgCode" v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>-->
+<!--                      </select>-->
                       <div class="error" v-if="form.errors.has('Designation')" v-html="form.errors.get('Designation')" />
                     </div>
                   </div>
@@ -179,7 +199,6 @@
         </div>
       </div>
     </div>
-
     <div class="modal fade bs-example-modal-center" id="showImageModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -202,9 +221,11 @@
 import Datepicker from 'vuejs-datepicker';
 import moment from "moment";
 import {baseurl} from '../../base_url'
+import Multiselect from "vue-multiselect";
 export default {
   name: "List",
   components: {
+    Multiselect ,
     Datepicker
   },
   data() {
@@ -226,12 +247,11 @@ export default {
       isLoading: false,
       dialog: false,
       form: new Form({
-        SEPID :'',
+        SEPID:'',
         DivCode:'',
         DeptCode:'',
         DesgCode:'',
         SepFile:'',
-        ModalImage:'',
       }),
     }
   },
@@ -253,16 +273,16 @@ export default {
   },
   methods: {
     getAllSEP(){
-      this.isLoading = true;
+      //this.isLoading = true;
       axios.get(baseurl+ 'api/sep-automation?page='+ this.pagination.current_page
           + "&query=" + this.query
-          + "&DivCode=" + this.DivCode
-          + "&DesgCode=" + this.DesgCode
+          + "&DivCode=" +this.DivCode
+          + "&DesigCode=" +JSON.stringify(this.DesgCode)
           + "&DeptCode=" + this.DeptCode
       ).then((response)=>{
         this.seps = response.data.data;
         this.pagination = response.data.meta;
-        this.isLoading = false;
+        //this.isLoading = false;
       }).catch((error)=>{
 
       })
@@ -290,7 +310,6 @@ export default {
       })
     },
     getAllDepartment(){
-      console.log(this.DivCode)
       axios.post(baseurl +'api/all-department/', {
         DivCode: this.form.DivCode,
         DivCode2: this.DivCode
@@ -330,7 +349,6 @@ export default {
       }
     },
     tableImage2(sep) {
-      console.log(sep)
         return window.location.origin + "/mdp-training/public/file/SEP/" + sep;
     },
     tableImage(SepFile) {
@@ -361,6 +379,7 @@ export default {
       });
     },
     edit(sep) {
+      console.log(sep)
       this.editMode = true;
       this.form.reset();
       this.form.clear();

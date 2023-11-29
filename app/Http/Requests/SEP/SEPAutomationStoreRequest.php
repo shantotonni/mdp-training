@@ -26,7 +26,8 @@ class SEPAutomationStoreRequest extends FormRequest
         return [
             'DivCode'=>'required',
             'DeptCode'=>'required',
-            'DesgCode'=>'required'
+            'DesgCode'=>'required',
+
         ];
     }
 }

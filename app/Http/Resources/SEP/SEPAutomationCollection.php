@@ -22,7 +22,7 @@ class SEPAutomationCollection extends ResourceCollection
               'DeptCode'=>$sep->DeptCode,
               'ShortName'=>isset($sep->department) ? $sep->department->ShortName: '',
               'DesgCode'=>$sep->DesgCode,
-              'Designation'=>isset($sep->designation) ? $sep->designation->DesgName: '',
+              'DesgName'=>isset($sep->designation) ? $sep->designation->DesgName: '',
               'SepFile'=>$sep->SepFile,
           ];
         }),

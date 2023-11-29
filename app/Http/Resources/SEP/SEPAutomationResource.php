@@ -20,7 +20,7 @@ class SEPAutomationResource extends JsonResource
             'DeptCode'=>$this->DeptCode,
             'ShortName'=>isset($this->department)?$this->department->ShortName:'',
             'DesgCode'=>$this->DesgCode,
-            'Designation'=>isset($this->designation)?$this->designation->DesgtName:'',
+            'DesgName'=>isset($this->designation)?$this->designation->DesgtName:'',
             'SepFile'=>$this->SepFile,
         ];
     }

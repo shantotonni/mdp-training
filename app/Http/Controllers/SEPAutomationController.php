@@ -25,16 +25,11 @@ class SEPAutomationController extends Controller
 
         $DivCode = $request->DivCode;
         $DeptCode = $request->DeptCode;
-        $DesgCode= $request->DesgCode;
-
-
-//        $DivCode||$DeptCode||$DesgCode
-//        $sep = $sep->where('DeptCode',$DeptCode);
-//        $sep = $sep->where('DesgCode',$DesgCode);
-
+        $DesigCode = json_decode($request->DesigCode);
         if ($role == 'admin'){
             $sep = SEPAutomation::query();
-            if ($DivCode||$DeptCode||$DesgCode){
+            if ($DivCode || $DeptCode||$DesigCode){
+                $DesgCode = $DesigCode->DesgCode;
                 $sep = $sep->where('DivCode',$DivCode)
                     ->orwhere('DeptCode',$DeptCode)
                     ->orwhere('DesgCode',$DesgCode);
@@ -48,6 +43,7 @@ class SEPAutomationController extends Controller
         return new SEPAutomationCollection($sep);
     }
     public function store(SEPAutomationStoreRequest $request){
+        $DesgCode=$request->DesgCode;
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
@@ -63,7 +59,8 @@ class SEPAutomationController extends Controller
             $sep->CreatedBy= $empcode;
             $sep->DivCode= $request->DivCode ;
             $sep->DeptCode= $request->DeptCode ;
-            $sep->DesgCode= $request->DesgCode ;
+            //dd(json_decode($DesgCode['DesgCode']));
+            $sep->DesgCode= json_decode($DesgCode['DesgCode']);
             $sep->SepFile= $name ;
             $sep->CreatedDate= Carbon::now() ;
             $sep->save() ;
@@ -76,6 +73,7 @@ class SEPAutomationController extends Controller
     }
 
     public function update(SEPAutomationStoreRequest $request, $SEPID){
+        $DesgCode=$request->DesgCode;
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
@@ -83,23 +81,22 @@ class SEPAutomationController extends Controller
             $sep = SEPAutomation::where('SEPID', $SEPID)->first();
         $SepFile = $request->SepFile;
         if ($request->has('SepFile')) {
-            //code for remove old file
-            if ($sep->SepFile != '' && $sep->SepFile != null) {
-                $destinationPath = 'file/SEP/';
-                $file_old = public_path('/') . $destinationPath . $sep->SepFile;
-                if (file_exists($file_old)) {
-                    unlink($file_old);
-                }
+            $destinationPath = '/file/SEP/';
+            $file_old = public_path() . $destinationPath . $sep->SepFile;
+            if (file_exists($file_old)) {
+                unlink($file_old);
             }
+            //code for remove old file
             $name = uniqid() . time() . '.' . explode('/', explode(':', substr($SepFile, 0, strpos($SepFile, ';')))[1])[1];
             Image::make($SepFile)->save(public_path('file/SEP/') . $name);
+
         } else {
             $name = $sep->SepFile;
         }
 
             $sep->DivCode= $request->DivCode ;
             $sep->DeptCode= $request->DeptCode ;
-            $sep->DesgCode= $request->DesgCode ;
+            $sep->DesgCode= json_decode($DesgCode['DesgCode']);
             $sep->SepFile= $name ;
             $sep->UpdatedDate= Carbon::now() ;
             $sep->EditBy= $empcode ;
