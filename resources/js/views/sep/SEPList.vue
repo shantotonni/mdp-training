@@ -28,7 +28,7 @@
                     <div class="row">
                       <div class="col-md-2">
                         <div class="form-group">
-                          <select id="DivCode" class="form-control" v-model="DivCode" @change="getAllDepartment()"  >
+                          <select id="DivisionID" class="form-control" v-model="DivisionID" @change="getAllPortfolio()"  >
                             <option value="">Select Division</option>
                             <option :value="div.Deptunit" v-for="(div,index) in divisions" :key="index" >{{div.Deptunit}}</option>
                           </select>
@@ -36,29 +36,32 @@
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
-
-                          <select id="DeptCode" class="form-control" v-model="DeptCode">
-                            <option value="">Select Departments</option>
-                            <option :value="div.DeptCode" v-for="(div,index) in departments" :key="index">{{div.ShortName}}</option>
+                          <select id="PortfolioID" class="form-control" v-model="PortfolioID" @change="getAllDepartment()"  >
+                            <option value="">Select Portfolio</option>
+                            <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index" >{{div.PortfolioName}}</option>
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <select id="DepartmentID" class="form-control" v-model="DepartmentID"  @change="getAllDesignation()">
+                            <option value="">Select Departments</option>
+                            <option :value="div.DepartmentID" v-for="(div,index) in departments" :key="index">{{div.DepartmentName}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
                         <div class="form-group">
                           <multiselect
-                              v-model="DesgCode"
+                              v-model="DesignationID"
                               :options="designations"
                               :multiple="false"
                               :searchable="true"
                               :close-on-select="true"
                               :show-labels="true"
-                              label="DesgName"
-                              track-by="DesgCode"
+                              label="DesignationName"
+                              track-by="DesignationID"
                               placeholder="Pick a Designation"></multiselect>
-<!--                          <select id="DesgCode" class="form-control" v-model="DesgCode">-->
-<!--                            <option value="">Select Designation</option>-->
-<!--                            <option :value="div.DesgCode" v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>-->
-<!--                          </select>-->
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -77,6 +80,7 @@
                     <tr>
                       <th class="text-center">SN</th>
                       <th class="text-center">Division</th>
+                      <th class="text-center">Portfolio</th>
                       <th class="text-center">Department</th>
                       <th class="text-center">Designation</th>
                       <th class="text-center">SepFile</th>
@@ -86,23 +90,17 @@
                     <tbody>
                     <tr v-for="(sep, i) in seps" :key="sep.SEPID" v-if="seps.length">
                       <th scope="row">{{ ++i }}</th>
-                      <td>{{ sep.DivCode }}</td>
-                      <td>{{ sep.ShortName }}</td>
-                      <td>{{ sep.DesgName }}</td>
+                      <td>{{ sep.DivisionID }}</td>
+                      <td>{{ sep.PortfolioName}}</td>
+                      <td>{{ sep.DepartmentName}}</td>
+                      <td>{{ sep.DesignationName}}</td>
                       <td class="text-left">
-                            <img v-if="sep.SepFile" height="40" width="40" :src="tableImage(sep.SepFile)" alt="" @click="modalImageShow(sep)" >{{sep.SepFile}}
 
-<!--                      <div class="dialog" v-if="dialog" >-->
-<!--                        <div class="dialog-content">-->
-<!--                          <button @click="toggleDialog()" class="close-icon" >x</button>-->
-<!--                          <img :src="tableImage2(sep.SepFile)">-->
-<!--                        </div>-->
-<!--                      </div>-->
+                        <a :href="'public/file/SEP/'+sep.SepFile" download>{{sep.SepFile}}</a>
 
                       </td>
                       <td class="text-center">
                         <button @click="edit(sep)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
-                        <!--<button @click="destroy(service_category.id)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->
                       </td>
                     </tr>
                     </tbody>
@@ -132,14 +130,14 @@
             <h5 class="modal-title mt-0" id="myLargeModalLabel">{{ editMode ? "Edit" : "Add" }} SEP</h5>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="closeModal">×</button>
           </div>
-          <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)">
+          <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)" enctype="multipart/form-data">
             <div class="modal-body">
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Division</label>
-                      <select v-model="form.DivCode" name="Division" id="Division" class="form-control" :class="{ 'is-invalid': form.errors.has('Division') }" @change="getAllDepartment()">
+                      <select v-model="form.DivisionID" name="Division" id="Division" class="form-control" :class="{ 'is-invalid': form.errors.has('Division') }" @change="getAllPortfolio()">
                         <option value="">Select Division</option>
                         <option :value="div.Deptunit" v-for="(div,index) in divisions" :key="index">{{div.Deptunit}}</option>
                       </select>
@@ -148,10 +146,20 @@
                   </div>
                   <div class="col-6 col-md-6">
                     <div class="form-group">
+                      <label>Portfolio</label>
+                      <select v-model="form.PortfolioID" name="Division" id="Division" class="form-control" :class="{ 'is-invalid': form.errors.has('Division') }" @change="getAllDepartment()">
+                        <option value="">Select Division</option>
+                        <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index">{{div.PortfolioName}}</option>
+                      </select>
+                      <div class="error" v-if="form.errors.has('Portfolio')" v-html="form.errors.get('Portfolio')" />
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <div class="form-group">
                       <label>Department</label>
-                      <select v-model="form.DeptCode" name="department" id="department" class="form-control" :class="{ 'is-invalid': form.errors.has('department') }" >
+                      <select v-model="form.DepartmentID" name="department" id="department" class="form-control" :class="{ 'is-invalid': form.errors.has('department') }"  @change="getAllDesignation()">
                         <option value="">Select Department</option>
-                        <option :value="div.DeptCode" v-for="(div,index) in departments" :key="index">{{div.ShortName}}</option>
+                        <option :value="div.DepartmentID" v-for="(div,index) in departments" :key="index">{{div.DepartmentName}}</option>
                       </select>
                       <div class="error" v-if="form.errors.has('Department')" v-html="form.errors.get('Department')" />
                     </div>
@@ -160,32 +168,28 @@
                     <div class="form-group">
                       <label>Designation</label>
                       <multiselect
-                          v-model="form.DesgCode"
+                          v-model="form.DesignationID"
                           :options="designations"
                           :multiple="false"
                           :searchable="true"
                           :close-on-select="true"
                           :show-labels="true"
-                          label="DesgName"
-                          track-by="DesgCode"
+                          label="DesignationName"
+                          track-by="DesignationID"
                           placeholder="Pick a Designation"></multiselect>
-<!--                      <select v-model="form.DesgCode" name="Designation" id="Designation" class="form-control" :class="{ 'is-invalid': form.errors.has('Designation') }" >-->
-<!--                        <option value="">Select Designation</option>-->
-<!--                        <option :value="div.DesgCode" v-for="(div,index) in designations" :key="index">{{div.DesgName}}</option>-->
-<!--                      </select>-->
+
                       <div class="error" v-if="form.errors.has('Designation')" v-html="form.errors.get('Designation')" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Sep File <small>(Image type:jpeg,jpg,png,svg)</small></label>
-                      <input @change="changeImage($event)" type="file" name="SepFile"
+                      <label>Sep File</label>
+                      <input @change="imgUpload($event)" type="file" name="SepFile"
                              class="form-control"
-                             :class="{ 'is-invalid': form.errors.has('SepFile') }">
+                             :class="{ 'is-invalid': form.errors.has('SepFile') }"  >
                       <div class="error" v-if="form.errors.has('SepFile')"
                            v-html="form.errors.get('SepFile')"/>
-                      <img v-if="form.SepFile" :src="showImage(form.SepFile)" alt="" height="40px"
-                           width="40px">
+
                     </div>
                   </div>
                 </div>
@@ -198,21 +202,6 @@
           </form>
         </div>
       </div>
-    </div>
-    <div class="modal fade bs-example-modal-center" id="showImageModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="closeModal">×</button>
-          </div>
-          <div class="modal-body">
-<!--            <img :src="showImage(form.SepFile)" alt="" height="40px" width="40px">-->
-            <img :src="tableImage2(form.SepFile)" alt="" v-model="form.ModalImage" height="500" width="450">
-          </div>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
     </div>
   </div>
 </template>
@@ -231,6 +220,7 @@ export default {
   data() {
     return {
       seps: [],
+      portfolios: [],
       divisions: [],
       departments: [],
       designations: [],
@@ -239,19 +229,23 @@ export default {
       },
       query: "",
       type: '',
-      Deptunit: "",
-      DivCode:'',
-      DeptCode:'',
-      DesgCode:'',
+      Deptunit:'',
+      DivisionID:'',
+      PortfolioID:'',
+      DepartmentID:'',
+      DesignationID:'',
       editMode: false,
       isLoading: false,
       dialog: false,
+      SepFileUpdate:'',
       form: new Form({
         SEPID:'',
-        DivCode:'',
-        DeptCode:'',
-        DesgCode:'',
+        DivisionID:'',
+        PortfolioID:'',
+        DepartmentID:'',
+        DesignationID:'',
         SepFile:'',
+        ModalImage:'',
       }),
     }
   },
@@ -268,21 +262,24 @@ export default {
     document.title = 'SEP Automation List';
     this.getAllSEP();
     this.getAllDivision();
+    this.getAllPortfolio();
     this.getAllDepartment();
     this.getAllDesignation();
   },
   methods: {
     getAllSEP(){
+
       //this.isLoading = true;
       axios.get(baseurl+ 'api/sep-automation?page='+ this.pagination.current_page
           + "&query=" + this.query
-          + "&DivCode=" +this.DivCode
-          + "&DesigCode=" +JSON.stringify(this.DesgCode)
-          + "&DeptCode=" + this.DeptCode
+          + "&DivisionID=" +this.DivisionID
+          + "&DesignationID=" +JSON.stringify(this.DesignationID)
+          + "&DepartmentID=" + this.DepartmentID
+          + "&PortfolioID=" + this.PortfolioID
+          // + "&DesignationID=" + this.DesignationID
       ).then((response)=>{
         this.seps = response.data.data;
         this.pagination = response.data.meta;
-        //this.isLoading = false;
       }).catch((error)=>{
 
       })
@@ -302,57 +299,52 @@ export default {
 
       })
     },
-    getAllDesignation(){
-      axios.get(baseurl + 'api/all-designation').then((response) => {
-        this.designations = response.data.data;
-      }).catch((error) => {
+    getAllPortfolio(){
+      axios.post(baseurl +'api/all-portfolio/', {
+        DivisionID: this.form.DivisionID,
+        DivisionID2: this.DivisionID
+      }).then((response)=>{
+        this.portfolios = response.data.data;
+      }).catch((error)=>{
 
       })
     },
     getAllDepartment(){
       axios.post(baseurl +'api/all-department/', {
-        DivCode: this.form.DivCode,
-        DivCode2: this.DivCode
+        PortfolioID: this.form.PortfolioID,
+        PortfolioID2: this.PortfolioID
       }).then((response)=>{
         this.departments = response.data.data;
       }).catch((error)=>{
 
       })
     },
-    changeImage(event) {
-      let file = event.target.files[0];
-      let reader = new FileReader();
-      reader.onload = event => {
-        this.form.SepFile = event.target.result;
-      };
+    getAllDesignation(){
+      axios.post(baseurl +'api/all-designation/', {
+        DepartmentID: this.form.DepartmentID,
+        DepartmentID2: this.DepartmentID
+      }).then((response)=>{
+        this.designations = response.data.data;
+
+      }).catch((error)=>{
+
+      })
+    },
+    imgUpload(e) {
+      var input = e.target
+      var file = input.files[0]
+      this.processImage(file)
+    },
+    processImage(file) {
+      let instance = this
+      var reader = new FileReader();
       reader.readAsDataURL(file);
-    },
-    // toggleDialog(sep) {
-    //   this.dialog = !this.dialog;
-    //   setTimeout(()=>{
-    //     this.tableImage2(sep);
-    //   },1000)
-    // },
-    modalImageShow(sep){
-      // this.tableImage2(image)
-      this.form.fill(sep);
-      setTimeout(()=>{
-        $("#showImageModal").modal("show");
-      },300)
-    },
-    showImage() {
-      let img = this.form.SepFile;
-      if (img.length > 100) {
-        return this.form.SepFile;
-      } else {
-        return window.location.origin + "/mdp-training/public/file/SEP/" + this.form.SepFile;
-      }
-    },
-    tableImage2(sep) {
-        return window.location.origin + "/mdp-training/public/file/SEP/" + sep;
-    },
-    tableImage(SepFile) {
-      return window.location.origin + "/mdp-training/public/file/SEP/" + SepFile;
+      reader.onload = function () {
+        instance.form.SepFile = reader.result
+      };
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      };
     },
     reload(){
       this.getAllSEP();
@@ -385,6 +377,7 @@ export default {
       this.form.clear();
       this.form.fill(sep);
       this.getAllDivision();
+      this.getAllPortfolio();
       this.getAllDepartment();
       this.getAllDesignation();
       $("#StudentModelModal").modal("show");

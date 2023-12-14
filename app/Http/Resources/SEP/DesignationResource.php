@@ -17,6 +17,7 @@ class DesignationResource extends JsonResource
         return[
             'DesignationID'=>$this->DesignationID,
             'DesignationName'=>$this->DesignationName,
+            'DesignationCode'=>$this->DesignationCode,
             'DepartmentID'=>$this->DepartmentID,
             'DepartmentName'=>isset($this->department)? $this->department->DepartmentName:'',
         ];

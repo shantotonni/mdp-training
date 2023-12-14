@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\JobDescriptionController;
 use App\Http\Controllers\MDPChartController;
 use App\Http\Controllers\MDPController;
@@ -94,14 +95,19 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('search/sep-department/{query}', [DepartmentController::class,'search']);
     Route::get('all-portfolio', [DepartmentController::class,'allPortfolio']);
 
+    Route::apiResource('sep-designation',DesignationController::class);
+    Route::get('search/sep-designation/{query}', [DesignationController::class,'search']);
+    Route::get('all-department', [DesignationController::class,'allDepartment']);
+
     Route::apiResource('sep-portfolio',PortfolioController::class);
     Route::get('search/sep-portfolio/{query}', [PortfolioController::class,'search']);
 
 
 
     Route::get('all-division', [SEPAutomationController::class,'allDivision']);
-    Route::get('all-designation', [SEPAutomationController::class,'allDesignation']);
+    Route::post('all-designation', [SEPAutomationController::class,'allDesignation']);
     Route::post('all-department', [SEPAutomationController::class,'allDepartment']);
+    Route::post('all-portfolio', [SEPAutomationController::class,'allPortfolio']);
 
 
 

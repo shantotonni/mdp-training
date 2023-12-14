@@ -56,7 +56,7 @@
                       <th class="text-center">SN</th>
                       <th class="text-center">Portfolio</th>
                       <th class="text-center">Department Name</th>
-                      <th class="text-center">Portfolio Code</th>
+                      <th class="text-center">Department Code</th>
                       <th class="text-center">Action</th>
                     </tr>
                     </thead>

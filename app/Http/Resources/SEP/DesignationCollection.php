@@ -20,6 +20,7 @@ class DesignationCollection extends ResourceCollection
                 return[
                   'DesignationID'=>$desig->DesignationID,
                   'DesignationName'=>$desig->DesignationName,
+                  'DesignationCode'=>$desig->DesignationCode,
                   'DepartmentID'=>$desig->DepartmentID,
                   'DepartmentName'=>isset($desig->department)? $desig->department->DepartmentName:'',
                 ];

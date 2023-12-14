@@ -57,6 +57,9 @@
                 <router-link :to="{name: 'SEPDepartment'}" ><i class="mdi mdi-floor-plan"></i>SEP Department List</router-link>
               </li>
               <li>
+                <router-link :to="{name: 'SEPDesignation'}" ><i class="mdi mdi-floor-plan"></i>SEP Designation List</router-link>
+              </li>
+              <li>
                 <router-link :to="{name: 'SEPAutomation'}" ><i class="mdi mdi-floor-plan"></i>SEP Automation List</router-link>
               </li>
             </ul>

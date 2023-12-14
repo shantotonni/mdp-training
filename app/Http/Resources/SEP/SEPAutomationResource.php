@@ -16,11 +16,13 @@ class SEPAutomationResource extends JsonResource
     {
         return[
             'SEPID'=>$this->SEPID,
-            'DivCode'=>$this->DivCode,
-            'DeptCode'=>$this->DeptCode,
-            'ShortName'=>isset($this->department)?$this->department->ShortName:'',
-            'DesgCode'=>$this->DesgCode,
-            'DesgName'=>isset($this->designation)?$this->designation->DesgtName:'',
+            'DivisionID'=>$this->DivisionID,
+            'PortfolioID'=>$this->PortfolioID,
+            'PortfolioName'=>isset($this->portfolio) ? $this->portfolio->PortfolioName: '',
+            'DepartmentID'=>$this->DepartmentID,
+            'DepartmentName'=>isset($this->department) ? $this->department->DepartmentName: '',
+            'DesignationID'=>$this->DesignationID,
+            'DesignationName'=>isset($this->designation) ? $this->designation->DesignationName: '',
             'SepFile'=>$this->SepFile,
         ];
     }

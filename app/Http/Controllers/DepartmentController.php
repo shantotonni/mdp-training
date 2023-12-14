@@ -35,6 +35,10 @@ class DepartmentController extends Controller
         $Portfolio = Portfolio::orderBy('PortfolioID', 'desc')->get();
         return new PortfolioCollection($Portfolio);
     }
+    public function search($query)
+    {
+        return new DepartmentCollection(SEPDepartment::where('DepartmentName','LIKE',"%$query%")->paginate(10));
+    }
 
     public function store(DepartmentStoreRequest $request){
 

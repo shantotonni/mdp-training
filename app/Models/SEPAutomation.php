@@ -14,12 +14,15 @@ class SEPAutomation extends Model
     public $timestamps = false;
 
     public function division(){
-        return $this->belongsTo(Division::class,'DivCode','DivCode');
+        return $this->belongsTo(Division::class,'DivisionID','DivCode');
     }
     public function department(){
-        return $this->belongsTo(Department::class,'DeptCode','DeptCode');
+        return $this->belongsTo(SEPDepartment::class,'DepartmentID','DepartmentID');
     }
     public function designation(){
-        return $this->belongsTo(Designation::class,'DesgCode','DesgCode');
+        return $this->belongsTo(SEPDesignation::class,'DesignationID','DesignationID');
+    }
+    public function portfolio(){
+        return $this->belongsTo(Portfolio::class,'PortfolioID','PortfolioID');
     }
 }
