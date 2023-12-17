@@ -51,7 +51,7 @@ export default {
         },
         tooltip: {},
         xAxis: {
-          data: ['2021-2022', '2022-2023','2023-2024']
+          data: ['2023-2024']
         },
         yAxis: {
           type: 'value',
@@ -62,11 +62,12 @@ export default {
           {
             name: 'sales',
             type: 'bar',
-            data: [100, 100,100]
+            data: [100]
           }
         ]
       });
       myChartOne.on('click', (params) =>{
+        // console.log(params)
         this.$router.push(baseurl + 'mdp-organized-pending-ptc/' + params.name)
       });
     },
