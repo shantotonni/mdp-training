@@ -56,9 +56,7 @@ export default {
   },
   methods: {
     loadChart(){
-      // Create the echarts instance
       let myChart = echarts.init(document.getElementById('main'));
-      // Draw the chart
       myChart.setOption({
         title: {
           text: 'Organized vs Pending PTC'
