@@ -17,6 +17,33 @@
             <data-export/>
           </div>
         </div>
+
+        <div class="col-xl-6">
+          <div class="card">
+            <div class="datatable" v-if="!isLoading">
+              <div class="card-body">
+                <div id="Two" style="height:500px;"></div>
+              </div>
+            </div>
+            <div v-else>
+              <skeleton-loader :row="14"/>
+            </div>
+            <data-export/>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="card">
+            <div class="datatable" v-if="!isLoading">
+              <div class="card-body">
+                <div id="Three" style="height:500px;"></div>
+              </div>
+            </div>
+            <div v-else>
+              <skeleton-loader :row="14"/>
+            </div>
+            <data-export/>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -44,6 +71,8 @@ export default {
     loadChart(){
       // Create the echarts instance
       let myChartOne = echarts.init(document.getElementById('main'));
+      let myChartTwo = echarts.init(document.getElementById('Two'));
+      let myChartThree = echarts.init(document.getElementById('Three'));
       // Draw the chart
       myChartOne.setOption({
         title: {
@@ -70,23 +99,60 @@ export default {
         // console.log(params)
         this.$router.push(baseurl + 'mdp-organized-pending-ptc/' + params.name)
       });
+      myChartTwo.setOption({
+        title: {
+          text: 'Learning Transfer Report'
+        },
+        tooltip: {},
+        xAxis: {
+          data: ['2023-2024']
+        },
+        yAxis: {
+          type: 'value',
+          min: 0,
+          max: 100
+        },
+        series: [
+          {
+            name: 'sales',
+            type: 'bar',
+            data: [100]
+          }
+        ]
+      });
+      myChartTwo.on('click', (params) =>{
+        // console.log(params)
+        this.$router.push(baseurl + 'mdp-organized-pending-ptc/' + params.name)
+      });
+      myChartThree.setOption({
+        title: {
+          text: 'Training Feedback'
+        },
+        tooltip: {},
+        xAxis: {
+          data: ['2023-2024']
+        },
+        yAxis: {
+          type: 'value',
+          min: 0,
+          max: 100
+        },
+        series: [
+          {
+            name: 'sales',
+            type: 'bar',
+            data: [100]
+          }
+        ]
+      });
+      myChartOne.on('click', (params) =>{
+        // console.log(params)
+        this.$router.push(baseurl + 'mdp-organized-pending-ptc/' + params.name)
+      });
+
+
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
-.document-upload-modal {
-  .delete {
-    color: red;
-    position: absolute;
-    right: 25px;
-    display: none;
-    top: 10px;
-  }
-
-  .title:hover .delete {
-    display: block
-  }
-}
-</style>
