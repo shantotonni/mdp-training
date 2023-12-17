@@ -150,11 +150,17 @@ class SEPAutomationController extends Controller
         $deptunit2=$request->DepartmentID2;
         if ($deptunit ||$deptunit2 ){
             $designations = DB::select("SELECT DesignationID, DesignationName FROM SEPDesignation where DepartmentID in('$deptunit','$deptunit2' )");
-            return response()->json([
-                'data'=>$designations
-            ]);
-        }
+            if ($designations){
+                return response()->json([
+                    'data'=>$designations
+                ]);
+            }else{
+                return response()->json([
+                    'data'=>[]
+                ]);
+            }
 
+        }
     }
 
     public function search($query)

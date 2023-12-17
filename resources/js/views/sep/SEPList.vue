@@ -324,8 +324,8 @@ export default {
         DepartmentID: this.form.DepartmentID,
         DepartmentID2: this.DepartmentID
       }).then((response)=>{
+        console.log(response)
         this.designations = response.data.data;
-
       }).catch((error)=>{
 
       })
