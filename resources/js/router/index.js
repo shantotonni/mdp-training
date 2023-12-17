@@ -16,6 +16,9 @@ import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 import EmployeeIndividualTraining from '../views/mdp/EmployeeIndividualTraining'
 import employeeWiseReport from '../views/mdp/employeeWiseReport'
 import SEPAutomation from '../views/sep/SEPList.vue'
+import SEPPortfolio from '../views/sep/SEPPortfolio.vue'
+import SEPDepartment from '../views/sep/SEPDepartment.vue'
+import SEPDesignation from '../views/sep/SEPDesignation.vue'
 
 //import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 
@@ -99,6 +102,9 @@ const routes = [
             {path: baseurl + 'action-plan-print/:ID', name: 'ActionPlanPrint', component: ActionPlanPrint},
             //SEP Automation List
              {path: baseurl + 'sep-automation-list', name: 'SEPAutomation', component: SEPAutomation},
+             {path: baseurl + 'sep-portfolio-list', name: 'SEPPortfolio', component: SEPPortfolio},
+             {path: baseurl + 'sep-department-list', name: 'SEPDepartment', component: SEPDepartment},
+             {path: baseurl + 'sep-designation-list', name: 'SEPDesignation', component: SEPDesignation},
 
             //job Description list
             {path: baseurl + 'job-description-list', name: 'JobDescriptionList', component: JobDescriptionList},

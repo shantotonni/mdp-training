@@ -24,9 +24,10 @@ class SEPAutomationStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'DivCode'=>'required',
-            'DeptCode'=>'required',
-            'DesgCode'=>'required'
+            'DivisionID'=>'required',
+            'DepartmentID'=>'required',
+            'DesignationID'=>'required',
+
         ];
     }
 }

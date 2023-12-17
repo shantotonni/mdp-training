@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SEP\SEPAutomationStoreRequest;
 use App\Http\Resources\SEP\SEPAutomationCollection;
-use App\Http\Resources\SEP\SEPAutomationResource;
 use App\Models\SEPAutomation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -18,53 +16,60 @@ class SEPAutomationController extends Controller
 {
     public function index(Request $request)
     {
+
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
         $role = $payload['Type'];
 
-        $DivCode = $request->DivCode;
-        $DeptCode = $request->DeptCode;
-        $DesgCode= $request->DesgCode;
-
-
-//        $DivCode||$DeptCode||$DesgCode
-//        $sep = $sep->where('DeptCode',$DeptCode);
-//        $sep = $sep->where('DesgCode',$DesgCode);
-
+        $DivisionID = $request->DivisionID;
+        $PortfolioID = $request->PortfolioID;
+        $DepartmentID = $request->DepartmentID;
+        $Designation = $request->DesignationID;
+        $DesignationID = json_decode($request->DesignationID);
         if ($role == 'admin'){
             $sep = SEPAutomation::query();
-            if ($DivCode||$DeptCode||$DesgCode){
-                $sep = $sep->where('DivCode',$DivCode)
-                    ->orwhere('DeptCode',$DeptCode)
-                    ->orwhere('DesgCode',$DesgCode);
+            if ($DivisionID ||$PortfolioID || $DepartmentID||$DesignationID){
+                $DesignationID = $DesignationID->DesignationID;
+                $sep = $sep->where('DivisionID',$DivisionID)
+                    ->orwhere('PortfolioID',$PortfolioID)
+                    ->orwhere('DepartmentID',$DepartmentID)
+                    ->orwhere('DesignationID',$DesignationID);
             }
             $sep = $sep->orderBy('SEPID','desc')->where('CreatedBy',$empcode)->paginate(15);
 
         }else{
-            $sep = SEPAutomation::with('department','designation','division')->orderBy('SEPID','desc')->where('CreatedBy',$empcode)->paginate(15);
+            $sep = SEPAutomation::with('department','designation','division','portfolio')->orderBy('SEPID','desc')->where('CreatedBy',$empcode)->paginate(15);
         }
 
         return new SEPAutomationCollection($sep);
     }
     public function store(SEPAutomationStoreRequest $request){
+        $DesignationID=$request->DesignationID;
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
-        if ($request->has('SepFile')) {
-            $SepFile = $request->SepFile;
-            $name = uniqid() . time() . '.' . explode('/', explode(':', substr($SepFile, 0, strpos($SepFile, ';')))[1])[1];
-            Image::make($SepFile)->save(public_path('file/SEP/') . $name);
-        } else {
-            $name = 'not_found.jpg';
-        }
+
+
+        $requestFile = $request->SepFile;
+        $destination =public_path('file/SEP/');
+        list($type, $file) = explode(';', $requestFile);
+        list(, $extension) = explode('/', $type);
+        list(, $file) = explode(',', $file);
+        $fileNameToStore = time() . rand(1, 100000000) . '.' . $extension;
+        $source = fopen($requestFile, 'r');
+        $destination = fopen($destination . $fileNameToStore, 'w');
+        stream_copy_to_stream($source, $destination);
+        fclose($source);
+        fclose($destination);
         try {
             $sep= new SEPAutomation();
             $sep->CreatedBy= $empcode;
-            $sep->DivCode= $request->DivCode ;
-            $sep->DeptCode= $request->DeptCode ;
-            $sep->DesgCode= $request->DesgCode ;
-            $sep->SepFile= $name ;
+            $sep->DivisionID= $request->DivisionID ;
+            $sep->DepartmentID= $request->DepartmentID ;
+            $sep->PortfolioID= $request->PortfolioID ;
+            $sep->DesignationID= json_decode($DesignationID['DesignationID']);
+            $sep->SepFile= $fileNameToStore ;
             $sep->CreatedDate= Carbon::now() ;
             $sep->save() ;
         } catch (\Exception $exception) {
@@ -76,31 +81,29 @@ class SEPAutomationController extends Controller
     }
 
     public function update(SEPAutomationStoreRequest $request, $SEPID){
+        $DesignationID=$request->DesignationID;
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
         try {
             $sep = SEPAutomation::where('SEPID', $SEPID)->first();
-        $SepFile = $request->SepFile;
-        if ($request->has('SepFile')) {
-            //code for remove old file
-            if ($sep->SepFile != '' && $sep->SepFile != null) {
-                $destinationPath = 'file/SEP/';
-                $file_old = public_path('/') . $destinationPath . $sep->SepFile;
-                if (file_exists($file_old)) {
-                    unlink($file_old);
-                }
-            }
-            $name = uniqid() . time() . '.' . explode('/', explode(':', substr($SepFile, 0, strpos($SepFile, ';')))[1])[1];
-            Image::make($SepFile)->save(public_path('file/SEP/') . $name);
-        } else {
-            $name = $sep->SepFile;
-        }
+            $requestFile = $request->SepFile;
+            $destination =public_path('file/SEP/');
+            list($type, $file) = explode(';', $requestFile);
+            list(, $extension) = explode('/', $type);
+            list(, $file) = explode(',', $file);
+            $fileNameToStore = time() . rand(1, 100000000) . '.' . $extension;
+            $source = fopen($requestFile, 'r');
+            $destination = fopen($destination . $fileNameToStore, 'w');
+            stream_copy_to_stream($source, $destination);
+            fclose($source);
+            fclose($destination);
 
-            $sep->DivCode= $request->DivCode ;
-            $sep->DeptCode= $request->DeptCode ;
-            $sep->DesgCode= $request->DesgCode ;
-            $sep->SepFile= $name ;
+            $sep->DivisionID= $request->DivisionID ;
+            $sep->DepartmentID= $request->DepartmentID ;
+            $sep->PortfolioID= $request->PortfolioID ;
+            $sep->DesignationID= json_decode($DesignationID['DesignationID']);
+            $sep->SepFile= $fileNameToStore ;
             $sep->UpdatedDate= Carbon::now() ;
             $sep->EditBy= $empcode ;
 
@@ -118,25 +121,44 @@ class SEPAutomationController extends Controller
            'data'=>$deptunit
         ]);
     }
-    public function allDepartment(Request $request){
-        $deptunit=$request->DivCode;
-        $deptunit2=$request->DivCode2;
+    public function allPortfolio(Request $request){
+
+        $deptunit=$request->DivisionID;
+        $deptunit2=$request->DivisionID2;
         if ($deptunit ||$deptunit2 ){
-            $departments = DB::select("SELECT DeptCode, ShortName FROM Department where Active = 'Y' and DeptUnit in('$deptunit','$deptunit2' )");
+            $portfolio = DB::select("SELECT PortfolioID, PortfolioName FROM SEPPortfolio where DivisionID in('$deptunit','$deptunit2' )");
+
+            return response()->json([
+                'data'=>$portfolio
+            ]);
+        }
+
+    }
+    public function allDepartment(Request $request){
+        $deptunit=$request->PortfolioID;
+        $deptunit2=$request->PortfolioID2;
+        if ($deptunit ||$deptunit2 ){
+            $departments = DB::select("SELECT DepartmentID, DepartmentName FROM SEPDepartment where PortfolioID in('$deptunit','$deptunit2' )");
             return response()->json([
                 'data'=>$departments
             ]);
         }
 
     }
-    public function allDesignation(){
-        $designation = DB::select("SELECT DesgCode, DesgName FROM Designation WHERE Active = 'Y'");
-        return response()->json([
-            'data'=>$designation
-        ]);
+    public function allDesignation(Request $request){
+        $deptunit=$request->DepartmentID;
+        $deptunit2=$request->DepartmentID2;
+        if ($deptunit ||$deptunit2 ){
+            $designations = DB::select("SELECT DesignationID, DesignationName FROM SEPDesignation where DepartmentID in('$deptunit','$deptunit2' )");
+            return response()->json([
+                'data'=>$designations
+            ]);
+        }
+
     }
+
     public function search($query)
     {
-        return new SEPAutomationCollection(SEPAutomation::where('DivCode','LIKE',"%$query%")->paginate(10));
+        return new SEPAutomationCollection(SEPAutomation::where('DivisionID','LIKE',"%$query%")->paginate(10));
     }
 }

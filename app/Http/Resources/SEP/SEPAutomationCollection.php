@@ -18,11 +18,13 @@ class SEPAutomationCollection extends ResourceCollection
         'data'=>$this->collection->transform(function ($sep){
           return[
               'SEPID'=>$sep->SEPID,
-              'DivCode'=>$sep->DivCode,
-              'DeptCode'=>$sep->DeptCode,
-              'ShortName'=>isset($sep->department) ? $sep->department->ShortName: '',
-              'DesgCode'=>$sep->DesgCode,
-              'Designation'=>isset($sep->designation) ? $sep->designation->DesgName: '',
+              'DivisionID'=>$sep->DivisionID,
+              'PortfolioID'=>$sep->PortfolioID,
+              'PortfolioName'=>isset($sep->portfolio) ? $sep->portfolio->PortfolioName: '',
+              'DepartmentID'=>$sep->DepartmentID,
+              'DepartmentName'=>isset($sep->department) ? $sep->department->DepartmentName: '',
+              'DesignationID'=>$sep->DesignationID,
+              'DesignationName'=>isset($sep->designation) ? $sep->designation->DesignationName: '',
               'SepFile'=>$sep->SepFile,
           ];
         }),
