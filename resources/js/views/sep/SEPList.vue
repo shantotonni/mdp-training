@@ -83,6 +83,9 @@
                       <th class="text-center">Portfolio</th>
                       <th class="text-center">Department</th>
                       <th class="text-center">Designation</th>
+                      <th class="text-center">Submitted Date</th>
+                      <th class="text-center">Approval</th>
+                      <th class="text-center">HeadCount</th>
                       <th class="text-center">SepFile</th>
                       <th class="text-center">Action</th>
                     </tr>
@@ -94,6 +97,9 @@
                       <td>{{ sep.PortfolioName}}</td>
                       <td>{{ sep.DepartmentName}}</td>
                       <td>{{ sep.DesignationName}}</td>
+                      <td>{{ sep.SubmittedDate}}</td>
+                      <td>{{ sep.Approval}}</td>
+                      <td>{{ sep.HeadCount}}</td>
                       <td class="text-left">
 
                         <a :href="'public/file/SEP/'+sep.SepFile" download>{{sep.SepFile}}</a>
@@ -171,31 +177,78 @@
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Designation</label>
-                      <multiselect
-                          v-model="form.DesignationID"
-                          :options="designations"
-                          :multiple="false"
-                          :searchable="true"
-                          :close-on-select="true"
-                          :show-labels="true"
-                          label="DesignationName"
-                          track-by="DesignationID"
-                          placeholder="Pick a Designation"></multiselect>
-
+                      <select v-model="form.DesignationID" name="Designation" id="Designation" class="form-control" :class="{ 'is-invalid': form.errors.has('Designation') }">
+                        <option value="">Select Designation</option>
+                        <option :value="div.DesignationID" v-for="(div,index) in designations" :key="index">{{div.DesignationName}}</option>
+                      </select>
                       <div class="error" v-if="form.errors.has('Designation')" v-html="form.errors.get('Designation')" />
                     </div>
                   </div>
+
+<!--                  <div class="col-6 col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Designation</label>-->
+<!--                      <multiselect-->
+<!--                          v-model="form.DesignationID"-->
+<!--                          :options="designations"-->
+<!--                          :multiple="false"-->
+<!--                          :searchable="true"-->
+<!--                          :close-on-select="true"-->
+<!--                          :show-labels="true"-->
+<!--                          label="DesignationName"-->
+<!--                          track-by="DesignationID"-->
+<!--                          placeholder="Pick a Designation"></multiselect>-->
+
+<!--                      <div class="error" v-if="form.errors.has('Designation')" v-html="form.errors.get('Designation')" />-->
+<!--                    </div>-->
+<!--                  </div>-->
+
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Sep File</label>
-                      <input @change="imgUpload($event)" type="file" name="SepFile"
+                      <input  @change="imgUpload($event)" type="file" name="SepFile"
                              class="form-control"
-                             :class="{ 'is-invalid': form.errors.has('SepFile') }"  >
+                             :class="{ 'is-invalid': form.errors.has('SepFile') }">
                       <div class="error" v-if="form.errors.has('SepFile')"
                            v-html="form.errors.get('SepFile')"/>
 
                     </div>
                   </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Total Approval</label>
+                      <input  type="text" name="Approval"
+                             class="form-control" v-model="form.Approval"
+                             :class="{ 'is-invalid': form.errors.has('Approval') }"  >
+                      <div class="error" v-if="form.errors.has('Approval')"
+                           v-html="form.errors.get('Approval')"/>
+
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Total HeadCount</label>
+                      <input  type="number" name="HeadCount"
+                             class="form-control" v-model="form.HeadCount"
+                             :class="{ 'is-invalid': form.errors.has('HeadCount') }"  >
+                      <div class="error" v-if="form.errors.has('HeadCount')"
+                           v-html="form.errors.get('HeadCount')"/>
+
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Submitted Date</label>
+                    <datepicker name="Submitted Date"
+                                placeholder="Enter To Date"
+                                :format="customFormatter"
+                                v-model="form.SubmittedDate"
+                                :class="{ 'is-invalid': form.errors.has('SubmittedDate') }"> </datepicker>
+
+                    <div class="error" v-if="form.errors.has('SubmittedDate')"
+                         v-html="form.errors.get('SubmittedDate')"/>
+                  </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -265,6 +318,9 @@ export default {
         DesignationID:'',
         SepFile:'',
         ModalImage:'',
+        SubmittedDate:'',
+        Approval:'',
+        HeadCount:'',
       }),
     }
   },
@@ -419,7 +475,7 @@ export default {
       });
     },
     edit(sep) {
-      console.log(sep)
+      console.log('edit',sep)
       this.editMode = true;
       this.form.reset();
       this.form.clear();
