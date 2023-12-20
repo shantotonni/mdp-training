@@ -24,6 +24,9 @@ class SEPAutomationResource extends JsonResource
             'DesignationID'=>$this->DesignationID,
             'DesignationName'=>isset($this->designation) ? $this->designation->DesignationName: '',
             'SepFile'=>$this->SepFile,
+            'SubmittedDate'=>$this->SubmittedDate,
+            'Approval'=>$this->Approval,
+            'HeadCount'=>$this->HeadCount,
         ];
     }
 }

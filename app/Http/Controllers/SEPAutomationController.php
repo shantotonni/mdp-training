@@ -68,7 +68,11 @@ class SEPAutomationController extends Controller
             $sep->DivisionID= $request->DivisionID ;
             $sep->DepartmentID= $request->DepartmentID ;
             $sep->PortfolioID= $request->PortfolioID ;
-            $sep->DesignationID= json_decode($DesignationID['DesignationID']);
+            $sep->SubmittedDate= $request->SubmittedDate ;
+            $sep->Approval= $request->Approval ;
+            $sep->HeadCount= $request->HeadCount ;
+            $sep->DesignationID= $request->DesignationID ;
+//            $sep->DesignationID= json_decode($DesignationID['DesignationID']);
             $sep->SepFile= $fileNameToStore ;
             $sep->CreatedDate= Carbon::now() ;
             $sep->save() ;
@@ -82,28 +86,38 @@ class SEPAutomationController extends Controller
 
     public function update(SEPAutomationStoreRequest $request, $SEPID){
         $DesignationID=$request->DesignationID;
+//        dd($DesignationID);
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
         try {
             $sep = SEPAutomation::where('SEPID', $SEPID)->first();
             $requestFile = $request->SepFile;
-            $destination =public_path('file/SEP/');
-            list($type, $file) = explode(';', $requestFile);
-            list(, $extension) = explode('/', $type);
-            list(, $file) = explode(',', $file);
-            $fileNameToStore = time() . rand(1, 100000000) . '.' . $extension;
-            $source = fopen($requestFile, 'r');
-            $destination = fopen($destination . $fileNameToStore, 'w');
-            stream_copy_to_stream($source, $destination);
-            fclose($source);
-            fclose($destination);
+            if($request->has('SEPFile')){
+                $destination =public_path('file/SEP/');
+                list($type, $file) = explode(';', $requestFile);
+                list(, $extension) = explode('/', $type);
+                list(, $file) = explode(',', $file);
+                $fileNameToStore = time() . rand(1, 100000000) . '.' . $extension;
+                $source = fopen($requestFile, 'r');
+                $destination = fopen($destination . $fileNameToStore, 'w');
+                stream_copy_to_stream($source, $destination);
+                fclose($source);
+                fclose($destination);
+            }else{
+                $fileNameToStore = $sep->SepFile;
+            }
+
 
             $sep->DivisionID= $request->DivisionID ;
             $sep->DepartmentID= $request->DepartmentID ;
             $sep->PortfolioID= $request->PortfolioID ;
-            $sep->DesignationID= json_decode($DesignationID['DesignationID']);
+            $sep->PortfolioID= $request->DesignationID ;
+//            $sep->DesignationID= json_decode($DesignationID['DesignationID']);
             $sep->SepFile= $fileNameToStore ;
+            $sep->SubmittedDate= $request->SubmittedDate ;
+            $sep->Approval= $request->Approval ;
+            $sep->HeadCount= $request->HeadCount ;
             $sep->UpdatedDate= Carbon::now() ;
             $sep->EditBy= $empcode ;
 

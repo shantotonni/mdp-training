@@ -26,6 +26,9 @@ class SEPAutomationCollection extends ResourceCollection
               'DesignationID'=>$sep->DesignationID,
               'DesignationName'=>isset($sep->designation) ? $sep->designation->DesignationName: '',
               'SepFile'=>$sep->SepFile,
+              'SubmittedDate'=>$sep->SubmittedDate,
+              'Approval'=>$sep->Approval,
+              'HeadCount'=>$sep->HeadCount,
           ];
         }),
     ];
