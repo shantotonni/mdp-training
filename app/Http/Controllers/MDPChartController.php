@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class MDPChartController extends Controller
 {
     public function getOrganizedPendingPTC($Period){
-        $sql = " SELECT MDPF.Status,
+        $sql = "SELECT MDPF.Status,
                   CASE
                     WHEN MDPF.Status='done' THEN COUNT(MDPF.Status)
                     ELSE COUNT(MDPF.Status)
@@ -97,5 +97,9 @@ class MDPChartController extends Controller
         return response()->json([
            'ptc' => $ptc ,
         ]);
+    }
+
+    public function MDPPeriodWiseTraining(Request $request){
+
     }
 }

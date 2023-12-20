@@ -41,6 +41,8 @@ import MDPChartReport from '../views/chart/MDPChartReport'
 import MDPOrganizedPendingPTCReport from '../views/chart/MDPOrganizedPendingPTCReport'
 import MDPOrganizedPendingPTCReportDetails from '../views/chart/MDPOrganizedPendingPTCReportDetails'
 import MDPOrganizedPendingPTCTitleWiseEmployee from '../views/chart/MDPOrganizedPendingPTCTitleWiseEmployee'
+//Learning Transfer
+import MDPPeriodWiseTraining from '../views/chart/learning_transfer/MDPPeriodWiseTraining'
 
 import NotFound from '../views/404/Index';
 import {baseurl} from '../base_url'
@@ -115,6 +117,8 @@ const routes = [
             {path: baseurl + 'mdp-organized-pending-ptc/:Period', name: 'MDPOrganizedPendingPTCReport', component: MDPOrganizedPendingPTCReport},
             {path: baseurl + 'mdp-organized-pending-ptc-details/:Period/:Status', name: 'MDPOrganizedPendingPTCReportDetails', component: MDPOrganizedPendingPTCReportDetails},
             {path: baseurl + 'mdp-organized-pending-ptc-title-wise-employee', name: 'MDPOrganizedPendingPTCTitleWiseEmployee', component: MDPOrganizedPendingPTCTitleWiseEmployee},
+            //Learning Transfer
+            {path: baseurl + 'mdp-period-wise-training/:Period', name: 'MDPPeriodWiseTraining', component: MDPPeriodWiseTraining},
         ],
         beforeEnter(to, from, next) {
             checkToken(to, from, next);
