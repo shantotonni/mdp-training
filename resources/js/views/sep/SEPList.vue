@@ -99,6 +99,10 @@
                         <a :href="'public/file/SEP/'+sep.SepFile" download>{{sep.SepFile}}</a>
 
                       </td>
+
+<!--                      <td class="text-left">-->
+<!--                        <img v-if="sep.SepFile" height="40" width="40" :src="tableImage(sep.SepFile)" alt="" @click="modalImageShow(sep)" >{{sep.SepFile}}-->
+<!--                      </td>-->
                       <td class="text-center">
                         <button @click="edit(sep)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
                       </td>
@@ -203,6 +207,21 @@
         </div>
       </div>
     </div>
+<!--    <div class="modal fade bs-example-modal-center" id="showImageModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
+<!--      <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--          <div class="modal-header">-->
+<!--            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="closeModal">×</button>-->
+<!--          </div>-->
+<!--          <div class="modal-body">-->
+<!--            &lt;!&ndash;            <img :src="showImage(form.SepFile)" alt="" height="40px" width="40px">&ndash;&gt;-->
+<!--            <img :src="tableImage2(form.SepFile)" alt="" v-model="form.ModalImage" height="500" width="450">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; /.modal-content &ndash;&gt;-->
+<!--       </div>-->
+<!--      </div>-->
+      <!-- /.modal-dialog -->
   </div>
 </template>
 
@@ -330,6 +349,35 @@ export default {
 
       })
     },
+    // tableImage(SepFile) {
+    //   return window.location.origin + "/mdp-training/public/file/SEP/" + SepFile;
+    // },
+
+    // modalImageShow(sep){
+    //   // this.tableImage2(image)
+    //   this.form.fill(sep);
+    //   setTimeout(()=>{
+    //     $("#showImageModal").modal("show");
+    //   },300)
+    // },
+    // showImage() {
+    //   let img = this.form.SepFile;
+    //   if (img.length > 100) {
+    //     return this.form.SepFile;
+    //   } else {
+    //     return window.location.origin + "/mdp-training/public/file/SEP/" + this.form.SepFile;
+    //   }
+    // },
+    // tableImage2(sep) {
+    //   console.log(sep)
+    //   return window.location.origin + "/mdp-training/public/file/SEP/" + sep;
+    // },
+    //
+
+    // closeModal(){
+    //   $("#StudentModelModal").modal("hide");
+    //   $("#showImageModal").modal("hide");
+    // },
     imgUpload(e) {
       var input = e.target
       var file = input.files[0]
