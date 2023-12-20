@@ -42,6 +42,7 @@ class MDPTrainigFeedbackController extends Controller
             'message'=>'Feedback Submitted Successfully'
         ]);
     }
+
     public function store(Request $request){
 
         $data                   = (object)$request->row_data;
