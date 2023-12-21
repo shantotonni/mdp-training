@@ -85,7 +85,7 @@
                         <router-link :to="`action-plan-print/${plan.ID}`" class="btn btn-info btn-sm"><i
                             class="mdi mdi-printer"></i> Print
                         </router-link>
-                        <!--                                                <button @click="destroy(plan.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->
+                        <!-- <button @click="destroy(plan.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>-->
                       </td>
                     </tr>
                     </tbody>

@@ -30,19 +30,19 @@
                                 </p>
                                 <table class="table table-bordered" style="border: 1px solid #000000 !important">
                                   <thead>
-                                    <tr style="background: white;color: black">
+                                    <tr style="background: white;color: black;font-size: 18px">
                                       <th class="text-center" rowspan="2" style="vertical-align: middle;">Task/Objective (70% Quantitative;  30% Qualitative)</th>
                                       <th class="text-center" rowspan="2" style="vertical-align: middle;">Target Date Of Completion</th>
                                       <th class="text-center" rowspan="2" style="vertical-align: middle;">Criterion Of Measurement</th>
                                       <th class="text-center" colspan="2"> Level of Achievement*</th>
                                     </tr>
-                                    <tr style="background: white;color: black">
+                                    <tr style="background: white;color: black;font-size: 18px">
                                       <th class="text-center"> Rating by Employee</th>
                                       <th class="text-center"> Rating by Supervisor</th>
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr v-for="(item, i) in task" :key="item.ID" v-if="task.length">
+                                    <tr v-for="(item, i) in task" :key="item.ID" v-if="task.length" style="font-size: 17px">
                                       <td class="text-left" style="width: 50%;">{{i+1}}. {{ item.TaskName }}</td>
                                       <td class="text-center">{{ customFormatter(item.TargetDateOfCompletion) }}</td>
                                       <td class="text-center" >{{ item.CriterionOfMeasurement }}</td>
@@ -57,19 +57,19 @@
                               <div class="third_part">
                                 <div style="display: flex">
                                     <div class="col-md-3" style="text-align: left">
-                                      <p>Signature of Employee</p>
+                                      <p style="font-size: 18px">Signature of Employee</p>
                                       <input type="text">
                                     </div>
                                   <div class="col-md-3">
-                                    <p>Signature of Supervisor</p>
+                                    <p style="font-size: 18px">Signature of Supervisor</p>
                                     <input type="text">
                                   </div>
                                   <div class="col-md-3">
-                                    <p>Signature of Employee</p>
+                                    <p style="font-size: 18px">Signature of Employee</p>
                                     <input type="text">
                                   </div>
                                   <div class="col-md-3">
-                                    <p>Signature of Supervisor</p>
+                                    <p style="font-size: 18px">Signature of Supervisor</p>
                                     <input type="text">
                                   </div>
                                 </div>
@@ -78,13 +78,13 @@
                               <div class="third_part" style="margin-top: 10px;">
                                 <div style="display: flex">
                                   <div class="col-md-3" style="text-align: left">
-                                    <p>Preparation Date of Action Plan</p>
+                                    <p style="font-size: 18px">Preparation Date of Action Plan</p>
                                   </div>
                                   <div class="col-md-3">
                                     <input type="text" style="height: 40px">
                                   </div>
                                   <div class="col-md-3">
-                                    <p>Date of Appraisal Interview</p>
+                                    <p style="font-size: 18px">Date of Appraisal Interview</p>
                                   </div>
                                   <div class="col-md-3">
                                     <input type="text" style="height: 40px">
@@ -92,10 +92,10 @@
                                 </div>
                               </div>
                               <div>
-                                <p>*Rating Scale</p>
+                                <p style="font-size: 18px">*Rating Scale</p>
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                   <thead>
-                                  <tr style="background: white;color: black">
+                                  <tr style="background: white;color: black;font-size: 18px">
                                     <th class="text-center" style="vertical-align: middle;">Outstanding</th>
                                     <th class="text-center" colspan="2" style="vertical-align: middle;">Very Good</th>
                                     <th class="text-center" colspan="2" style="vertical-align: middle;">Good</th>
@@ -103,7 +103,7 @@
                                     <th class="text-center" colspan="2" style="vertical-align: middle;">Tolerable</th>
                                     <th class="text-center" style="vertical-align: middle;">Poor</th>
                                   </tr>
-                                  <tr style="background: white;color: black">
+                                  <tr style="background: white;color: black;font-size: 18px">
                                     <th class="text-center"> 9</th>
 
                                     <th class="text-center"> 8</th>
@@ -126,7 +126,7 @@
                               <div class="fourth_part">
                                 <div style="display: flex">
                                   <div class="col-md-3">
-                                    <p>Average Rating <input type="text" style="margin-left: 20px"></p>
+                                    <p>Average Rating <input type="text" style="margin-left: 20px;font-size: 18px"></p>
                                   </div>
                                 </div>
                               </div>
