@@ -96,7 +96,7 @@ export default {
         ]
       });
       myChartOne.on('click', (params) =>{
-        // console.log(params)
+        // console.log(params.name)
         this.$router.push(baseurl + 'mdp-organized-pending-ptc/' + params.name)
       });
 
@@ -126,31 +126,31 @@ export default {
         this.$router.push(baseurl + 'mdp-period-wise-training/' + params.name)
       });
 
-      // myChartThree.setOption({
-      //   title: {
-      //     text: 'Training Feedback'
-      //   },
-      //   tooltip: {},
-      //   xAxis: {
-      //     data: ['2023-2024']
-      //   },
-      //   yAxis: {
-      //     type: 'value',
-      //     min: 0,
-      //     max: 100
-      //   },
-      //   series: [
-      //     {
-      //       name: 'sales',
-      //       type: 'bar',
-      //       data: [100]
-      //     }
-      //   ]
-      // });
-      // myChartOne.on('click', (params) =>{
-      //   // console.log(params)
-      //   this.$router.push(baseurl + 'mdp-organized-pending-ptc/' + params.name)
-      // });
+      myChartThree.setOption({
+        title: {
+          text: 'Training Feedback'
+        },
+        tooltip: {},
+        xAxis: {
+          data: ['2023-2024']
+        },
+        yAxis: {
+          type: 'value',
+          min: 0,
+          max: 100
+        },
+        series: [
+          {
+            name: 'sales',
+            type: 'bar',
+            data: [100]
+          }
+        ]
+      });
+      myChartThree.on('click', (params) =>{
+        // console.log(params)
+        this.$router.push(baseurl + 'mdp-period-wise-feedback/' + params.name)
+      });
 
 
     },

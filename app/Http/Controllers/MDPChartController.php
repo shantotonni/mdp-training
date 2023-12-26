@@ -99,7 +99,29 @@ class MDPChartController extends Controller
         ]);
     }
 
-    public function MDPPeriodWiseTraining(Request $request){
+    public function MDPPeriodWiseTraining($Period){
+        $list = DB::select("select MDPT.TrainingTitle,MDPT.TrainingType,MDPT.TrainingDate from MDPTrainingFeedback as MDPF
+	join MDPTraining MDPT
+		on MDPT.ID = MDPF.TrainingID
+	JOIN ManagementDevelopmentPlane AS MDP
+		ON MDP.ID = MDPT.MDPID
+	 where MDPF.LearningTransfer is not null and MDPF.LearningTransfer > 0
+        AND MDP.AppraisalPeriod = '$Period'");
+        return response()->json([
+           'data'=>$list
+        ]);
+    }
+    public function MDPPeriodWiseFeedback($Period){
 
+        $list = DB::select("select MDPT.TrainingTitle,MDPT.TrainingType,MDPT.TrainingDate from MDPTrainingFeedback as MDPF
+	join MDPTraining MDPT
+		on MDPT.ID = MDPF.TrainingID
+	JOIN ManagementDevelopmentPlane AS MDP
+		ON MDP.ID = MDPT.MDPID
+	 where MDPF.Feedback is not null and MDPF.Feedback > 0
+	 AND MDP.AppraisalPeriod = '$Period'");
+        return response()->json([
+           'data'=>$list
+        ]);
     }
 }

@@ -83,11 +83,6 @@ export default {
           },
         ]
       });
-      myChart.on('click', (params) =>{
-        // Print name in console
-        console.log(params.name);
-        this.$router.push(baseurl + 'mdp-organized-pending-ptc-details/' + this.$route.params.Period + '/' + params.name)
-      });
     },
   },
 }
