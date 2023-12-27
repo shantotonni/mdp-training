@@ -16,6 +16,7 @@
                       <th>Training Title </th>
                       <th>Training Type</th>
                       <th>Training Date</th>
+                      <th>Learning Transfer</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -24,8 +25,7 @@
                       <td>{{ list.TrainingTitle }}</td>
                       <td>{{ list.TrainingType }}</td>
                       <td>{{ list.TrainingDate }}</td>
-
-
+                      <td>{{ list.LearningTransfer }}</td>
                     </tr>
                     </tbody>
                   </table>

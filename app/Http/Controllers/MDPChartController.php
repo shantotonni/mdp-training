@@ -100,7 +100,7 @@ class MDPChartController extends Controller
     }
 
     public function MDPPeriodWiseTraining($Period){
-        $list = DB::select("select MDPT.TrainingTitle,MDPT.TrainingType,MDPT.TrainingDate from MDPTrainingFeedback as MDPF
+        $list = DB::select("select MDPT.TrainingTitle,MDPT.TrainingType,MDPT.TrainingDate,MDPF.LearningTransfer from MDPTrainingFeedback as MDPF
 	join MDPTraining MDPT
 		on MDPT.ID = MDPF.TrainingID
 	JOIN ManagementDevelopmentPlane AS MDP
@@ -113,7 +113,7 @@ class MDPChartController extends Controller
     }
     public function MDPPeriodWiseFeedback($Period){
 
-        $list = DB::select("select MDPT.TrainingTitle,MDPT.TrainingType,MDPT.TrainingDate from MDPTrainingFeedback as MDPF
+        $list = DB::select("select MDPT.TrainingTitle,MDPT.TrainingType,MDPT.TrainingDate,MDPF.Feedback from MDPTrainingFeedback as MDPF
 	join MDPTraining MDPT
 		on MDPT.ID = MDPF.TrainingID
 	JOIN ManagementDevelopmentPlane AS MDP
