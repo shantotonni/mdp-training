@@ -7,6 +7,19 @@
           <div class="card">
             <div class="datatable" v-if="!isLoading">
               <div class="card-body">
+                <div class="d-flex">
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-primary btn-sm" @click="exportLearningFeedback">
+                      <i class="fa fa-file-excel"></i>
+                      Export Excel
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" @click="reload">
+                      <i class="fas fa-sync"></i>
+                      Reload
+                    </button>
+
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table
                       class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
@@ -69,11 +82,11 @@ export default {
   },
   mounted() {
     document.title = 'Training Feedback List | Training Feedback';
-    this.getAllLearningTransfer();
+    this.getAllLearningFeedback();
 
   },
   methods: {
-    getAllLearningTransfer() {
+    getAllLearningFeedback() {
       axios.get(baseurl + `api/mdp-period-wise-feedback/${this.$route.params.Period}`).then((response)=>{
         console.log(response);
         this.learning_lists = response.data.data;
@@ -83,7 +96,25 @@ export default {
     },
     reload() {
       this.query = "";
-      this.getAllLearningTransfer();
+      this.getAllLearningFeedback();
+    },
+
+    exportLearningFeedback(){
+      axios.get(baseurl + `api/mdp-period-wise-feedback/${this.$route.params.Period}`).then((response)=>{
+        let dataSets = response.data.data;
+        if (dataSets.length > 0) {
+          let columns = Object.keys(dataSets[0]);
+          columns = columns.filter((item) => item !== 'row_num');
+          let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+          columns = columns.map((item) => {
+            let title = item.replace(rex, '$1$4 $2$3$5')
+            return {title, key: item}
+          });
+          bus.$emit('data-table-import', dataSets, columns, 'MDP Training Feedback')
+        }
+      }).catch((error)=>{
+        console.log(response)
+      })
     },
   },
 }
