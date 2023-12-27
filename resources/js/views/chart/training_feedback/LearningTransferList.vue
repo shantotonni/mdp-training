@@ -13,11 +13,6 @@
                       <i class="fa fa-file-excel"></i>
                       Export Excel
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" @click="reload">
-                      <i class="fas fa-sync"></i>
-                      Reload
-                    </button>
-
                   </div>
                 </div>
                 <div class="table-responsive">
