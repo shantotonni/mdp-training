@@ -29,6 +29,7 @@ class SEPAutomationCollection extends ResourceCollection
               'SubmittedDate'=>$sep->SubmittedDate,
               'Approval'=>$sep->Approval,
               'HeadCount'=>$sep->HeadCount,
+              'Status'=>$sep->Status,
           ];
         }),
     ];

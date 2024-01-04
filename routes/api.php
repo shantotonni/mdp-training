@@ -85,6 +85,7 @@ Route::group(['middleware' => ['jwt']], function () {
 
     //Export
     Route::post('export-action-plane-list',[ActionPlanController::class,'exportActionPlan']);
+    Route::post('export-sep-list',[SEPAutomationController::class,'exportSep']);
 
     //End
 
@@ -106,9 +107,8 @@ Route::group(['middleware' => ['jwt']], function () {
 
 
     Route::get('all-division', [SEPAutomationController::class,'allDivision']);
-    Route::post('all-designation', [SEPAutomationController::class,'allDesignation']);
-    Route::post('all-department', [SEPAutomationController::class,'allDepartment']);
-    Route::post('all-portfolio', [SEPAutomationController::class,'allPortfolio']);
+    Route::post('all-portfolio-by-division', [SEPAutomationController::class,'allPortfolio']);
+    Route::get('all-designation', [SEPAutomationController::class,'allDesignation']);
 
 
 

@@ -24,7 +24,6 @@ class DesignationStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'DepartmentID'=>'required',
             'DesignationName'=>'required',
         ];
     }

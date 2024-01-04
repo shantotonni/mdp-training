@@ -27,6 +27,11 @@ class SEPAutomationStoreRequest extends FormRequest
             'DivisionID'=>'required',
             'DepartmentID'=>'required',
             'DesignationID'=>'required',
+            'PortfolioID'=>'required',
+            'SubmittedDate'=>'required',
+            'Approval'=>'required',
+            'Status'=>'required',
+
 
         ];
     }

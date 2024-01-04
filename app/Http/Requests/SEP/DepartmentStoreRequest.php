@@ -24,7 +24,7 @@ class DepartmentStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'PortfolioID'=>'required',
+//            'PortfolioID'=>'required',
             'DepartmentName'=>'required',
         ];
     }

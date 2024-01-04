@@ -8,25 +8,13 @@ use App\Http\Resources\SEP\DesignationCollection;
 use App\Models\SEPDepartment;
 use App\Models\SEPDesignation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class DesignationController extends Controller
 {
-    public function index(Request $request){
-        $token = $request->bearerToken();
-        $payload = JWTAuth::setToken($token)->getPayload();
-        $role = $payload['Type'];
-        if ($role == 'admin'){
-            $DepartmentID = $request->DepartmentID;
-            $dept = SEPDesignation::query();
-            if ($DepartmentID){
-                $dept = $dept->where('DepartmentID',$DepartmentID);
-            }
-            $dept = $dept->orderBy('DepartmentID','desc')->paginate(15);
-
-        }else{
-            $dept = SEPDesignation::with('department')->orderBy('DepartmentID','desc')->paginate(15);
-        }
+    public function index(){
+            $dept = SEPDesignation::paginate(15);
         return new DesignationCollection($dept);
     }
 
@@ -36,10 +24,17 @@ class DesignationController extends Controller
     }
 
     public function store(DesignationStoreRequest $request){
+        $exists = SEPDesignation::where('DesignationName','=',$request->DesignationName)->count();
+        if($exists) {
+            return response()->json([
+                'status' => 'success',
+                'message'=>'Designation Name need to be unique!'
+            ]);
+        }
 
         try {
             $dept = new SEPDesignation();
-            $dept->DepartmentID = $request->DepartmentID;
+//            $dept->DepartmentID = $request->DepartmentID;
             $dept->DesignationCode = $request->DesignationCode;
             $dept->DesignationName = $request->DesignationName;
             $dept->save();
@@ -52,11 +47,23 @@ class DesignationController extends Controller
     }
 
     public function update(DesignationStoreRequest $request,$DesignationID){
+        $exists = SEPDesignation::where('DesignationID',$request->DesignationID)
+            ->where('DesignationName','!=',$request->DesignationName)->count();
+        if($exists) {
+            $exist2 = SEPDesignation::where('DesignationName','=',$request->DesignationName)->count();
+            if($exist2) {
+                return response()->json([
+                    'status' => 'success',
+                    'message'=>'Designation Name need to be unique!'
+                ]);
+            }
+        }
         try {
             $dept = SEPDesignation::where('DesignationID',$DesignationID)->first();
-            $dept->DepartmentID = $request->DepartmentID;
+//            $dept->DepartmentID = $request->DepartmentID;
             $dept->DesignationCode = $request->DesignationCode;
             $dept->DesignationName = $request->DesignationName;
+
             $dept->save();
         } catch (\Exception $exception) {
             return response()->json([

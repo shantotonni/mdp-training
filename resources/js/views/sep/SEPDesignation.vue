@@ -26,21 +26,21 @@
                   <div class="flex-grow-1">
 <!--                     v-if="type ==='admin'"-->
                     <div class="row">
+<!--                      <div class="col-md-2">-->
+<!--                        <div class="form-group">-->
+<!--                          <select id="DepartmentID" class="form-control" v-model="DepartmentID">-->
+<!--                            <option value="">Select Department</option>-->
+<!--                            <option :value="div.DepartmentID" v-for="(div,index) in departments" :key="index" >{{div.DepartmentName}}</option>-->
+<!--                          </select>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                      <div class="col-md-2">-->
+<!--                        <button type="submit" @click="getAllDepartment" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>-->
+<!--                      </div>-->
                       <div class="col-md-2">
-                        <div class="form-group">
-                          <select id="DepartmentID" class="form-control" v-model="DepartmentID">
-                            <option value="">Select Department</option>
-                            <option :value="div.DepartmentID" v-for="(div,index) in departments" :key="index" >{{div.DepartmentName}}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-md-2">
-                        <button type="submit" @click="getAllDepartment" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
-                      </div>
-                      <div class="col-sm-8">
                         <div class="float-right d-none d-md-block">
                           <div class="card-tools">
-                              <input v-model="query" type="text" class="form-control" placeholder="Search by Division">
+                              <input v-model="query" type="text" class="form-control" placeholder="Search by Designation">
                           </div>
                         </div>
                       </div>
@@ -54,7 +54,7 @@
                     <thead>
                     <tr>
                       <th class="text-center">SN</th>
-                      <th class="text-center">Department</th>
+<!--                      <th class="text-center">Department</th>-->
                       <th class="text-center">Designation Name</th>
                       <th class="text-center">Designation Code</th>
                       <th class="text-center">Action</th>
@@ -63,7 +63,7 @@
                     <tbody>
                     <tr v-for="(port, i) in ports" :key="port.DesignationID" v-if="ports.length">
                       <th scope="row">{{ ++i }}</th>
-                      <td>{{ port.DepartmentName }}</td>
+<!--                      <td>{{ port.DepartmentName }}</td>-->
                       <td>{{ port.DesignationName }}</td>
                       <td>{{ port.DesignationCode }}</td>
                       <td class="text-center">
@@ -97,16 +97,16 @@
             <div class="modal-body">
               <div class="col-md-12">
                 <div class="row">
-                  <div class="col-6 col-md-6">
-                    <div class="form-group">
-                      <label>Department</label>
-                      <select v-model="form.DepartmentID" name="Portfolio" id="Portfolio" class="form-control" :class="{ 'is-invalid': form.errors.has('Department') }" >
-                        <option value="">Select Department</option>
-                        <option :value="div.DepartmentID" v-for="(div,index) in departments" :key="index">{{div.DepartmentName}}</option>
-                      </select>
-                      <div class="error" v-if="form.errors.has('Department')" v-html="form.errors.get('Department')" />
-                    </div>
-                  </div>
+<!--                  <div class="col-6 col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Department</label>-->
+<!--                      <select v-model="form.DepartmentID" name="Portfolio" id="Portfolio" class="form-control" :class="{ 'is-invalid': form.errors.has('Department') }" >-->
+<!--                        <option value="">Select Department</option>-->
+<!--                        <option :value="div.DepartmentID" v-for="(div,index) in departments" :key="index">{{div.DepartmentName}}</option>-->
+<!--                      </select>-->
+<!--                      <div class="error" v-if="form.errors.has('Department')" v-html="form.errors.get('Department')" />-->
+<!--                    </div>-->
+<!--                  </div>-->
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Designation Name</label>
@@ -115,6 +115,7 @@
                              :class="{ 'is-invalid': form.errors.has('DesignationName') }">
                       <div class="error" v-if="form.errors.has('DesignationName')"
                            v-html="form.errors.get('DesignationName')"/>
+                      <span class="text-danger">{{ notifmsg}} </span>
                     </div>
                   </div>
                   <div class="col-6 col-md-6">
@@ -132,7 +133,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal">Close</button>
-              <button :disabled="form.busy" type="submit" class="btn btn-primary">{{ editMode ? "Update" : "Create" }} port</button>
+              <button :disabled="form.busy" type="submit" class="btn btn-primary">{{ editMode ? "Update" : "Create" }} Designation</button>
             </div>
           </form>
         </div>
@@ -160,13 +161,14 @@ export default {
         current_page: 1,
       },
       query: "",
+      notifmsg: "",
       type: '',
-      DepartmentID:'',
+      // DepartmentID:'',
       editMode: false,
       isLoading: false,
       dialog: false,
       form: new Form({
-        DepartmentID:'',
+        // DepartmentID:'',
         DesignationID:'',
         DesignationCode:'',
         DesignationName:'',
@@ -184,7 +186,7 @@ export default {
   },
   mounted() {
     document.title = 'Designation List';
-    this.getAllDepartment();
+    // this.getAllDepartment();
     this.getAllDesignation();
   },
   methods: {
@@ -192,7 +194,7 @@ export default {
       //this.isLoading = true;
       axios.get(baseurl+ 'api/sep-designation?page='+ this.pagination.current_page
           + "&query=" + this.query
-          + "&DesignationID=" +this.DesignationID
+          // + "&DesignationID=" +this.DesignationID
       ).then((response)=>{
         this.ports = response.data.data;
         this.pagination = response.data.meta;
@@ -209,14 +211,14 @@ export default {
         this.isLoading = false;
       });
     },
-    getAllDepartment(){
-      axios.get(baseurl + 'api/all-department').then((response) => {
-        console.log('sas',response);
-        this.departments = response.data.data;
-      }).catch((error) => {
-
-      })
-    },
+    // getAllDepartment(){
+    //   axios.get(baseurl + 'api/all-department').then((response) => {
+    //     console.log('sas',response);
+    //     this.departments = response.data.data;
+    //   }).catch((error) => {
+    //
+    //   })
+    // },
 
     reload(){
       this.getAllDesignation();
@@ -235,8 +237,12 @@ export default {
     store(){
       this.form.busy = true;
       this.form.post(baseurl+ "api/sep-designation").then(response => {
-        $("#StudentModelModal").modal("hide");
-        this.getAllDesignation();
+        if (response.data.message){
+          this.notifmsg = response.data.message
+        }else{
+          $("#StudentModelModal").modal("hide");
+          this.getAllDesignation();
+        }
       }).catch(e => {
         this.isLoading = false;
       });
@@ -250,11 +256,15 @@ export default {
       $("#StudentModelModal").modal("show");
     },
     update(){
-      console.log( this.form.DesignationID);
       this.form.busy = true;
       this.form.put(baseurl+"api/sep-designation/" + this.form.DesignationID).then(response => {
-        $("#StudentModelModal").modal("hide");
-        this.getAllDesignation();
+        if (response.data.message){
+          this.notifmsg = response.data.message
+        }else{
+          $("#StudentModelModal").modal("hide");
+          this.getAllDesignation();
+        }
+
       }).catch(e => {
         this.isLoading = false;
       });

@@ -12,22 +12,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class DepartmentController extends Controller
 {
-    public function index(Request $request){
-        $token = $request->bearerToken();
-        $payload = JWTAuth::setToken($token)->getPayload();
-        $role = $payload['Type'];
-        if ($role == 'admin'){
-            $PortfolioID = $request->PortfolioID;
-            $dept = SEPDepartment::query();
-            if ($PortfolioID){
-                $dept = $dept->where('PortfolioID',$PortfolioID);
-            }
-            $dept = $dept->orderBy('PortfolioID','desc')->paginate(15);
-
-        }else{
-            $dept = SEPDepartment::with('portfolio')->orderBy('PortfolioID','desc')->paginate(15);
-        }
-
+    public function index(){
+            $dept = SEPDepartment::paginate(15);
         return new DepartmentCollection($dept);
     }
 
@@ -41,10 +27,16 @@ class DepartmentController extends Controller
     }
 
     public function store(DepartmentStoreRequest $request){
-
+        $exists = SEPDepartment::where('DepartmentName','=',$request->DepartmentName)->count();
+        if($exists) {
+            return response()->json([
+                'status' => 'success',
+                'message'=>'Department Name need to be unique!'
+            ]);
+        }
         try {
             $dept = new SEPDepartment();
-            $dept->PortfolioID = $request->PortfolioID;
+//            $dept->PortfolioID = $request->PortfolioID;
             $dept->DepartmentCode = $request->DepartmentCode;
             $dept->DepartmentName = $request->DepartmentName;
             $dept->save();
@@ -57,9 +49,20 @@ class DepartmentController extends Controller
     }
 
     public function update(DepartmentStoreRequest $request,$DepartmentID){
+        $exists = SEPDepartment::where('DepartmentID',$request->DepartmentID)
+            ->where('DepartmentName','!=',$request->DepartmentName)->count();
+        if($exists) {
+            $exist2 = SEPDepartment::where('DepartmentName','=',$request->DepartmentName)->count();
+            if($exist2) {
+                return response()->json([
+                    'status' => 'success',
+                    'message'=>'Department Name need to be unique!'
+                ]);
+            }
+        }
         try {
             $dept = SEPDepartment::where('DepartmentID',$DepartmentID)->first();
-            $dept->PortfolioID = $request->PortfolioID;
+//            $dept->PortfolioID = $request->PortfolioID;
             $dept->DepartmentCode = $request->DepartmentCode;
             $dept->DepartmentName = $request->DepartmentName;
             $dept->save();
