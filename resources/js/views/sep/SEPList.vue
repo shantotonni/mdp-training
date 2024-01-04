@@ -13,6 +13,10 @@
               <i class="fas fa-sync"></i>
               Reload
             </button>
+            <button type="button" class="btn btn-primary btn-sm" @click="exportSEPList" >
+              <i class="fa fa-file-excel"></i>
+              Export Excel
+            </button>
           </div>
         </div>
       </div>
@@ -67,9 +71,9 @@
                       <div class="col-md-2">
                         <button type="submit" @click="getAllSEP" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                       </div>
-                      <div class="col-md-2" >
-                        <input v-model="query" type="text" class="form-control" placeholder="Search by Division">
-                      </div>
+<!--                      <div class="col-md-2" >-->
+<!--                        <input v-model="query" type="text" class="form-control" placeholder="Search">-->
+<!--                      </div>-->
                     </div>
 
                   </div>
@@ -84,28 +88,32 @@
                       <th class="text-center">Department</th>
                       <th class="text-center">Designation</th>
                       <th class="text-center">Submitted Date</th>
-                      <th class="text-center">Approval</th>
-                      <th class="text-center">HeadCount</th>
+                      <th class="text-center">Total Approval</th>
+                      <th class="text-center">Current HeadCount</th>
                       <th class="text-center">SepFile</th>
+                      <th class="text-center">Status</th>
                       <th class="text-center">Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(sep, i) in seps" :key="sep.SEPID" v-if="seps.length">
-                      <th scope="row">{{ ++i }}</th>
+                      <th scope="row" class="text-right">{{ ++i }}</th>
                       <td>{{ sep.DivisionID }}</td>
                       <td>{{ sep.PortfolioName}}</td>
                       <td>{{ sep.DepartmentName}}</td>
                       <td>{{ sep.DesignationName}}</td>
                       <td>{{ sep.SubmittedDate}}</td>
-                      <td>{{ sep.Approval}}</td>
-                      <td>{{ sep.HeadCount}}</td>
-                      <td class="text-left">
-
+                      <td class="text-right">{{ sep.Approval}}</td>
+                      <td class="text-right">{{ sep.HeadCount}}</td>
+                      <td>
                         <a :href="'public/file/SEP/'+sep.SepFile" download>{{sep.SepFile}}</a>
+<!--                        <p v-if="sep.SepFile"  @click="modalImageShow(sep)">{{sep.SepFile}}</p>-->
 
                       </td>
-
+                      <td class="text-left">
+                        <span class="badge badge-success" v-if="sep.Status == 'Y'">Active</span>
+                        <span class="badge badge-success" v-else>InActive</span>
+                      </td>
 <!--                      <td class="text-left">-->
 <!--                        <img v-if="sep.SepFile" height="40" width="40" :src="tableImage(sep.SepFile)" alt="" @click="modalImageShow(sep)" >{{sep.SepFile}}-->
 <!--                      </td>-->
@@ -128,7 +136,9 @@
             <div v-else>
               <skeleton-loader :row="14"/>
             </div>
+            <data-export/>
           </div>
+
         </div>
       </div>
     </div>
@@ -147,7 +157,7 @@
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Division</label>
-                      <select v-model="form.DivisionID" name="Division" id="Division" class="form-control" :class="{ 'is-invalid': form.errors.has('Division') }" @change="getAllPortfolio()">
+                      <select v-model="form.DivisionID" name="Division" id="Division" class="form-control" :class="{ 'is-invalid': form.errors.has('Division') }" @change="getAllPortfolio()" required>
                         <option value="">Select Division</option>
                         <option :value="div.Deptunit" v-for="(div,index) in divisions" :key="index">{{div.Deptunit}}</option>
                       </select>
@@ -157,7 +167,7 @@
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Portfolio</label>
-                      <select v-model="form.PortfolioID" name="Division" id="Division" class="form-control" :class="{ 'is-invalid': form.errors.has('Division') }" @change="getAllDepartment()">
+                      <select v-model="form.PortfolioID" name="Division" id="Division" class="form-control" :class="{ 'is-invalid': form.errors.has('Division') }" @change="getAllDepartment()" required>
                         <option value="">Select Division</option>
                         <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index">{{div.PortfolioName}}</option>
                       </select>
@@ -167,7 +177,7 @@
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Department</label>
-                      <select v-model="form.DepartmentID" name="department" id="department" class="form-control" :class="{ 'is-invalid': form.errors.has('department') }"  @change="getAllDesignation()">
+                      <select v-model="form.DepartmentID" name="department" id="department" class="form-control" :class="{ 'is-invalid': form.errors.has('department') }"  @change="getAllDesignation()" required>
                         <option value="">Select Department</option>
                         <option :value="div.DepartmentID" v-for="(div,index) in departments" :key="index">{{div.DepartmentName}}</option>
                       </select>
@@ -177,7 +187,7 @@
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Designation</label>
-                      <select v-model="form.DesignationID" name="Designation" id="Designation" class="form-control" :class="{ 'is-invalid': form.errors.has('Designation') }">
+                      <select v-model="form.DesignationID" name="Designation" id="Designation" class="form-control" :class="{ 'is-invalid': form.errors.has('Designation') }" required>
                         <option value="">Select Designation</option>
                         <option :value="div.DesignationID" v-for="(div,index) in designations" :key="index">{{div.DesignationName}}</option>
                       </select>
@@ -208,7 +218,7 @@
                       <label>Sep File</label>
                       <input  @change="imgUpload($event)" type="file" name="SepFile"
                              class="form-control"
-                             :class="{ 'is-invalid': form.errors.has('SepFile') }">
+                             :class="{ 'is-invalid': form.errors.has('SepFile') }" >
                       <div class="error" v-if="form.errors.has('SepFile')"
                            v-html="form.errors.get('SepFile')"/>
 
@@ -217,9 +227,9 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Total Approval</label>
-                      <input  type="text" name="Approval"
+                      <input  type="number" name="Approval"
                              class="form-control" v-model="form.Approval"
-                             :class="{ 'is-invalid': form.errors.has('Approval') }"  >
+                             :class="{ 'is-invalid': form.errors.has('Approval') }"  required>
                       <div class="error" v-if="form.errors.has('Approval')"
                            v-html="form.errors.get('Approval')"/>
 
@@ -227,10 +237,10 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Total HeadCount</label>
+                      <label>Current HeadCount</label>
                       <input  type="number" name="HeadCount"
                              class="form-control" v-model="form.HeadCount"
-                             :class="{ 'is-invalid': form.errors.has('HeadCount') }"  >
+                             :class="{ 'is-invalid': form.errors.has('HeadCount') }"  required>
                       <div class="error" v-if="form.errors.has('HeadCount')"
                            v-html="form.errors.get('HeadCount')"/>
 
@@ -238,7 +248,7 @@
                   </div>
                   <div class="col-md-6">
                   <div class="form-group">
-                    <label>Submitted Date</label>
+                    <label>Approved Date</label>
                     <datepicker name="Submitted Date"
                                 placeholder="Enter To Date"
                                 :format="customFormatter"
@@ -249,6 +259,16 @@
                          v-html="form.errors.get('SubmittedDate')"/>
                   </div>
                 </div>
+                  <div class="col-6 col-md-6">
+                    <div class="form-group">
+                      <label>Status</label>
+                      <select v-model="form.Status" name="Status" id="Status" class="form-control" :class="{ 'is-invalid': form.errors.has('Status') }" required>
+                        <option value="Y">Active</option>
+                        <option value="N" >Inactive</option>
+                      </select>
+                      <div class="error" v-if="form.errors.has('Status')" v-html="form.errors.get('Status')" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -260,21 +280,25 @@
         </div>
       </div>
     </div>
+
 <!--    <div class="modal fade bs-example-modal-center" id="showImageModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
-<!--      <div class="modal-dialog modal-dialog-centered">-->
+<!--      <div class="modal-dialog modal-dialog-centered" style="min-width: 80%">-->
 <!--        <div class="modal-content">-->
 <!--          <div class="modal-header">-->
 <!--            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="closeModal">×</button>-->
 <!--          </div>-->
 <!--          <div class="modal-body">-->
+<!--            <embed src = "/mdp-training/public/file/SEP/170255708118992253.pdf" width="100%" height="800" type='application/pdf'>-->
+
+
 <!--            &lt;!&ndash;            <img :src="showImage(form.SepFile)" alt="" height="40px" width="40px">&ndash;&gt;-->
-<!--            <img :src="tableImage2(form.SepFile)" alt="" v-model="form.ModalImage" height="500" width="450">-->
+<!--&lt;!&ndash;            <img :src="tableImage2(form.SepFile)" alt="" v-model="form.ModalImage" height="500" width="450">&ndash;&gt;-->
 <!--          </div>-->
 <!--        </div>-->
 <!--        &lt;!&ndash; /.modal-content &ndash;&gt;-->
 <!--       </div>-->
 <!--      </div>-->
-      <!-- /.modal-dialog -->
+<!--      &lt;!&ndash; /.modal-dialog &ndash;&gt;-->
   </div>
 </template>
 
@@ -283,6 +307,7 @@ import Datepicker from 'vuejs-datepicker';
 import moment from "moment";
 import {baseurl} from '../../base_url'
 import Multiselect from "vue-multiselect";
+import {bus} from "../../app";
 export default {
   name: "List",
   components: {
@@ -321,6 +346,7 @@ export default {
         SubmittedDate:'',
         Approval:'',
         HeadCount:'',
+        Status:'',
       }),
     }
   },
@@ -351,12 +377,35 @@ export default {
           + "&DesignationID=" +JSON.stringify(this.DesignationID)
           + "&DepartmentID=" + this.DepartmentID
           + "&PortfolioID=" + this.PortfolioID
-          // + "&DesignationID=" + this.DesignationID
+
       ).then((response)=>{
         this.seps = response.data.data;
         this.pagination = response.data.meta;
       }).catch((error)=>{
 
+      })
+    },
+    exportSEPList() {
+      axios.get(baseurl + 'api/sep-automation?page='+ this.pagination.current_page
+          + "&query=" + this.query
+          + "&DivisionID=" +this.DivisionID
+          + "&DesignationID=" +JSON.stringify(this.DesignationID)
+          + "&DepartmentID=" + this.DepartmentID
+          + "&PortfolioID=" + this.PortfolioID
+      ).then((response) => {
+        let dataSets = response.data.data;
+        if (dataSets.length > 0) {
+          let columns = Object.keys(dataSets[0]);
+          columns = columns.filter((item) => item !== 'row_num');
+          let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+          columns = columns.map((item) => {
+            let title = item.replace(rex, '$1$4 $2$3$5')
+            return {title, key: item}
+          });
+          bus.$emit('data-table-import', dataSets, columns, 'Sep List Export')
+        }
+      }).catch((error) => {
+        console.log(error)
       })
     },
     searchData(){
@@ -375,7 +424,7 @@ export default {
       })
     },
     getAllPortfolio(){
-      axios.post(baseurl +'api/all-portfolio/', {
+      axios.post(baseurl +'api/all-portfolio-by-division/', {
         DivisionID: this.form.DivisionID,
         DivisionID2: this.DivisionID
       }).then((response)=>{
@@ -385,30 +434,23 @@ export default {
       })
     },
     getAllDepartment(){
-      axios.post(baseurl +'api/all-department/', {
-        PortfolioID: this.form.PortfolioID,
-        PortfolioID2: this.PortfolioID
-      }).then((response)=>{
+      axios.get(baseurl + 'api/all-department').then((response) => {
         this.departments = response.data.data;
-      }).catch((error)=>{
+      }).catch((error) => {
 
       })
     },
     getAllDesignation(){
-      axios.post(baseurl +'api/all-designation/', {
-        DepartmentID: this.form.DepartmentID,
-        DepartmentID2: this.DepartmentID
-      }).then((response)=>{
-        console.log(response)
+      axios.get(baseurl + 'api/all-designation').then((response) => {
         this.designations = response.data.data;
-      }).catch((error)=>{
+      }).catch((error) => {
 
       })
     },
     // tableImage(SepFile) {
     //   return window.location.origin + "/mdp-training/public/file/SEP/" + SepFile;
     // },
-
+    //
     // modalImageShow(sep){
     //   // this.tableImage2(image)
     //   this.form.fill(sep);
@@ -428,8 +470,6 @@ export default {
     //   console.log(sep)
     //   return window.location.origin + "/mdp-training/public/file/SEP/" + sep;
     // },
-    //
-
     // closeModal(){
     //   $("#StudentModelModal").modal("hide");
     //   $("#showImageModal").modal("hide");
@@ -480,10 +520,7 @@ export default {
       this.form.reset();
       this.form.clear();
       this.form.fill(sep);
-      this.getAllDivision();
-      this.getAllPortfolio();
-      this.getAllDepartment();
-      this.getAllDesignation();
+
       $("#StudentModelModal").modal("show");
     },
     update(){
@@ -495,6 +532,7 @@ export default {
         this.isLoading = false;
       });
     },
+
     destroy(SEPID){
       Swal.fire({
         title: 'Are you sure?',

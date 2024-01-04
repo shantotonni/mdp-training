@@ -26,21 +26,21 @@
                   <div class="flex-grow-1">
 <!--                     v-if="type ==='admin'"-->
                     <div class="row">
+<!--                      <div class="col-md-2">-->
+<!--                        <div class="form-group">-->
+<!--                          <select id="PortfolioID" class="form-control" v-model="PortfolioID">-->
+<!--                            <option value="">Select Division</option>-->
+<!--                            <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index" >{{div.PortfolioName}}</option>-->
+<!--                          </select>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                      <div class="col-md-2">-->
+<!--                        <button type="submit" @click="getAllDepartment" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>-->
+<!--                      </div>-->
                       <div class="col-md-2">
-                        <div class="form-group">
-                          <select id="PortfolioID" class="form-control" v-model="PortfolioID">
-                            <option value="">Select Division</option>
-                            <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index" >{{div.PortfolioName}}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-md-2">
-                        <button type="submit" @click="getAllDepartment" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
-                      </div>
-                      <div class="col-sm-8">
                         <div class="float-right d-none d-md-block">
                           <div class="card-tools">
-                              <input v-model="query" type="text" class="form-control" placeholder="Search by Division">
+                              <input v-model="query" type="text" class="form-control" placeholder="Search by Department">
                           </div>
                         </div>
                       </div>
@@ -54,7 +54,7 @@
                     <thead>
                     <tr>
                       <th class="text-center">SN</th>
-                      <th class="text-center">Portfolio</th>
+<!--                      <th class="text-center">Portfolio</th>-->
                       <th class="text-center">Department Name</th>
                       <th class="text-center">Department Code</th>
                       <th class="text-center">Action</th>
@@ -63,7 +63,7 @@
                     <tbody>
                     <tr v-for="(port, i) in ports" :key="port.DepartmentID" v-if="ports.length">
                       <th scope="row">{{ ++i }}</th>
-                      <td>{{ port.PortfolioName }}</td>
+<!--                      <td>{{ port.PortfolioName }}</td>-->
                       <td>{{ port.DepartmentName }}</td>
                       <td>{{ port.DepartmentCode }}</td>
                       <td class="text-center">
@@ -97,16 +97,16 @@
             <div class="modal-body">
               <div class="col-md-12">
                 <div class="row">
-                  <div class="col-6 col-md-6">
-                    <div class="form-group">
-                      <label>Portfolio</label>
-                      <select v-model="form.PortfolioID" name="Portfolio" id="Portfolio" class="form-control" :class="{ 'is-invalid': form.errors.has('Portfolio') }" >
-                        <option value="">Select Portfolio</option>
-                        <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index">{{div.PortfolioName}}</option>
-                      </select>
-                      <div class="error" v-if="form.errors.has('Portfolio')" v-html="form.errors.get('Portfolio')" />
-                    </div>
-                  </div>
+<!--                  <div class="col-6 col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Portfolio</label>-->
+<!--                      <select v-model="form.PortfolioID" name="Portfolio" id="Portfolio" class="form-control" :class="{ 'is-invalid': form.errors.has('Portfolio') }" >-->
+<!--                        <option value="">Select Portfolio</option>-->
+<!--                        <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index">{{div.PortfolioName}}</option>-->
+<!--                      </select>-->
+<!--                      <div class="error" v-if="form.errors.has('Portfolio')" v-html="form.errors.get('Portfolio')" />-->
+<!--                    </div>-->
+<!--                  </div>-->
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Department Name</label>
@@ -115,6 +115,7 @@
                              :class="{ 'is-invalid': form.errors.has('DepartmentName') }">
                       <div class="error" v-if="form.errors.has('DepartmentName')"
                            v-html="form.errors.get('DepartmentName')"/>
+                      <span class="text-danger">{{ notifmsg}} </span>
                     </div>
                   </div>
                   <div class="col-6 col-md-6">
@@ -132,7 +133,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal">Close</button>
-              <button :disabled="form.busy" type="submit" class="btn btn-primary">{{ editMode ? "Update" : "Create" }} port</button>
+              <button :disabled="form.busy" type="submit" class="btn btn-primary">{{ editMode ? "Update" : "Create" }} Department</button>
             </div>
           </form>
         </div>
@@ -160,14 +161,15 @@ export default {
         current_page: 1,
       },
       query: "",
+      notifmsg: "",
       type: '',
-      PortfolioID:'',
+      // PortfolioID:'',
       editMode: false,
       isLoading: false,
       dialog: false,
       form: new Form({
         DepartmentID:'',
-        PortfolioID:'',
+        // PortfolioID:'',
         DepartmentCode:'',
         DepartmentName:'',
       }),
@@ -185,14 +187,14 @@ export default {
   mounted() {
     document.title = 'Department List';
     this.getAllDepartment();
-    this.getAllPortfolio();
+    // this.getAllPortfolio();
   },
   methods: {
     getAllDepartment(){
       //this.isLoading = true;
       axios.get(baseurl+ 'api/sep-department?page='+ this.pagination.current_page
           + "&query=" + this.query
-          + "&PortfolioID=" +this.PortfolioID
+          // + "&PortfolioID=" +this.PortfolioID
       ).then((response)=>{
         this.ports = response.data.data;
         this.pagination = response.data.meta;
@@ -209,14 +211,14 @@ export default {
         this.isLoading = false;
       });
     },
-    getAllPortfolio(){
-      axios.get(baseurl + 'api/all-portfolio').then((response) => {
-        console.log('sas',response);
-        this.portfolios = response.data.data;
-      }).catch((error) => {
-
-      })
-    },
+    // getAllPortfolio(){
+    //   axios.get(baseurl + 'api/all-portfolio').then((response) => {
+    //     console.log('sas',response);
+    //     this.portfolios = response.data.data;
+    //   }).catch((error) => {
+    //
+    //   })
+    // },
 
     reload(){
       this.getAllDepartment();
@@ -235,14 +237,17 @@ export default {
     store(){
       this.form.busy = true;
       this.form.post(baseurl+ "api/sep-department").then(response => {
-        $("#StudentModelModal").modal("hide");
-        this.getAllDepartment();
+        if (response.data.message){
+          this.notifmsg = response.data.message
+        }else{
+          $("#StudentModelModal").modal("hide");
+          this.getAllDepartment();
+        }
       }).catch(e => {
         this.isLoading = false;
       });
     },
     edit(port) {
-      console.log(port)
       this.editMode = true;
       this.form.reset();
       this.form.clear();
@@ -250,11 +255,14 @@ export default {
       $("#StudentModelModal").modal("show");
     },
     update(){
-      console.log( this.form.DepartmentID);
       this.form.busy = true;
       this.form.put(baseurl+"api/sep-department/" + this.form.DepartmentID).then(response => {
-        $("#StudentModelModal").modal("hide");
-        this.getAllDepartment();
+        if (response.data.message){
+          this.notifmsg = response.data.message
+        }else{
+          $("#StudentModelModal").modal("hide");
+          this.getAllDepartment();
+        }
       }).catch(e => {
         this.isLoading = false;
       });

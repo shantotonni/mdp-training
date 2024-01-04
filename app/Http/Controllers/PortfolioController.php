@@ -6,6 +6,7 @@ use App\Http\Requests\SEP\PortfolioStoreRequest;
 use App\Http\Resources\SEP\PortfolioCollection;
 use App\Models\Portfolio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PortfolioController extends Controller
@@ -33,6 +34,14 @@ class PortfolioController extends Controller
         return new PortfolioCollection(Portfolio::where('PortfolioName','LIKE',"%$query%")->paginate(10));
     }
     public function store(PortfolioStoreRequest $request){
+
+        $exists = Portfolio::where('PortfolioName','=',$request->PortfolioName)->where('DivisionID',$request->DivCode)->count();
+        if($exists) {
+            return response()->json([
+                'status' => 'success',
+                'message'=>'Portfolio Name need to be unique!'
+            ]);
+        }
         try {
             $port= new Portfolio();
             $port->DivisionID= $request->DivCode ;
@@ -47,6 +56,18 @@ class PortfolioController extends Controller
         }
     }
     public function update(PortfolioStoreRequest $request, $PortfolioID){
+
+        $exists = Portfolio::where('PortfolioID',$request->PortfolioID)
+            ->where('PortfolioName','!=',$request->PortfolioName)->count();
+        if($exists) {
+            $exist2 = Portfolio::where('PortfolioName','=',$request->PortfolioName)->where('DivisionID',$request->DivCode)->count();
+            if($exist2) {
+                return response()->json([
+                    'status' => 'success',
+                    'message'=>'Portfolio Name need to be unique!'
+                ]);
+            }
+        }
         try {
 
             $port= Portfolio::where('PortfolioID',$PortfolioID)->first();

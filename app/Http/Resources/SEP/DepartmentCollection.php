@@ -20,8 +20,8 @@ class DepartmentCollection extends ResourceCollection
                 'DepartmentID'=>$dept->DepartmentID,
                 'DepartmentName'=>$dept->DepartmentName,
                 'DepartmentCode'=>$dept->DepartmentCode,
-                'PortfolioID'=>$dept->PortfolioID,
-                'PortfolioName'=>isset($dept->portfolio)?$dept->portfolio->PortfolioName:'',
+//                'PortfolioID'=>$dept->PortfolioID,
+//                'PortfolioName'=>isset($dept->portfolio)?$dept->portfolio->PortfolioName:'',
                 ];
             })
         ];

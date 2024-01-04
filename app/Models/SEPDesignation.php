@@ -10,7 +10,7 @@ class SEPDesignation extends Model
     use HasFactory;
     protected $table = 'SEPDesignation';
 
-    protected $primaryKey = 'DepartmentID';
+    protected $primaryKey = 'DesignationID';
 
     protected $keyType = 'string';
     public $timestamps = false;

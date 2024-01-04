@@ -92,6 +92,7 @@
             <h5 class="modal-title mt-0" id="myLargeModalLabel">{{ editMode ? "Edit" : "Add" }} Portfolio</h5>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="closeModal">×</button>
           </div>
+
           <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)">
             <div class="modal-body">
               <div class="col-md-12">
@@ -114,6 +115,7 @@
                              :class="{ 'is-invalid': form.errors.has('PortfolioName') }">
                       <div class="error" v-if="form.errors.has('PortfolioName')"
                            v-html="form.errors.get('PortfolioName')"/>
+                      <span class="text-danger">{{ notifmsg}} </span>
                     </div>
                   </div>
                   <div class="col-6 col-md-6">
@@ -131,7 +133,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal">Close</button>
-              <button :disabled="form.busy" type="submit" class="btn btn-primary">{{ editMode ? "Update" : "Create" }} port</button>
+              <button :disabled="form.busy" type="submit" class="btn btn-primary">{{ editMode ? "Update" : "Create" }} Portfolio</button>
             </div>
           </form>
         </div>
@@ -153,6 +155,7 @@ export default {
   },
   data() {
     return {
+      notifmsg:'',
       ports: [],
       divisions: [],
       pagination: {
@@ -234,14 +237,18 @@ export default {
     store(){
       this.form.busy = true;
       this.form.post(baseurl+ "api/sep-portfolio").then(response => {
-        $("#StudentModelModal").modal("hide");
-        this.getAllPortfolio();
+        if (response.data.message){
+          this.notifmsg = response.data.message
+        }else{
+          $("#StudentModelModal").modal("hide");
+          this.getAllPortfolio();
+        }
       }).catch(e => {
+
         this.isLoading = false;
       });
     },
     edit(port) {
-      console.log(port)
       this.editMode = true;
       this.form.reset();
       this.form.clear();
@@ -250,12 +257,16 @@ export default {
       $("#StudentModelModal").modal("show");
     },
     update(){
-      console.log( this.form.PortfolioID);
       this.form.busy = true;
       this.form.put(baseurl+"api/sep-portfolio/" + this.form.PortfolioID).then(response => {
-        $("#StudentModelModal").modal("hide");
-        this.getAllPortfolio();
+        if (response.data.message){
+          this.notifmsg = response.data.message
+        }else{
+          $("#StudentModelModal").modal("hide");
+          this.getAllPortfolio();
+        }
       }).catch(e => {
+        this.notifmsg = e.response.data
         this.isLoading = false;
       });
     },
