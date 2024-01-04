@@ -21,19 +21,25 @@
                     <thead>
                     <tr>
                       <th>SN</th>
+                      <th>Appraisal Period</th>
                       <th>Training Title </th>
                       <th>Training Type</th>
                       <th>Training Date</th>
                       <th>Feedback</th>
+                      <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(list, i) in learning_lists" :key="list.ID" v-if="learning_lists.length">
                       <th>{{ ++i }}</th>
+                      <td>{{ list.AppraisalPeriod }}</td>
                       <td>{{ list.TrainingTitle }}</td>
                       <td>{{ list.TrainingType }}</td>
                       <td>{{ list.TrainingDate }}</td>
                       <td>{{ list.Feedback }}</td>
+                      <td>
+                        <router-link :to="`feedback-details/${list.AppraisalPeriod}/${list.TrainingID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i>Details</router-link>
+                      </td>
                     </tr>
                     </tbody>
                   </table>

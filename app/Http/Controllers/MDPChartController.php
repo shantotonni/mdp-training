@@ -99,30 +99,65 @@ class MDPChartController extends Controller
         ]);
     }
     public function MDPPeriodWiseTraining($Period){
-        $list = DB::select("select MDPT.TrainingTitle,MDPT.TrainingType,MDPT.TrainingDate,MDPF.LearningTransfer from MDPTrainingFeedback as MDPF
-	join MDPTraining MDPT
-		on MDPT.ID = MDPF.TrainingID
-	JOIN ManagementDevelopmentPlane AS MDP
-		ON MDP.ID = MDPT.MDPID
-	 where MDPF.LearningTransfer is not null and MDPF.LearningTransfer > 0
-        AND MDP.AppraisalPeriod = '$Period'");
+        $list = DB::select("select MDPF.TrainingID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType,MDPF.LearningTransfer,SUM(MDPF.LearningTransfer) / COUNT(MDPF.TrainingID) as AVGLEarningTransfer
+                         from MDPTrainingFeedback MDPF
+                            join MDPTraining as MDPT 
+                                on MDPF.TrainingID = MDPT.ID
+                            join ManagementDevelopmentPlane MDP
+                                on MDP.ID = MDPT.MDPID
+                         where LearningTransfer is not null 
+                            and MDP.AppraisalPeriod = '$Period'	
+                            and LearningTransfer > 0
+                         group by MDPF.TrainingID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType,MDPF.LearningTransfer");
         return response()->json([
            'data'=>$list
+        ]);
+    }
+
+    public function MDPLearningTransferDetails($Period,$TrainingID){
+        $list = DB::select("select MDP.EmployeeName,MDP.StaffID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType, MDPF.LearningTransfer from MDPTrainingFeedback MDPF
+                     join MDPTraining as MDPT 
+                            on MDPF.TrainingID = MDPT.ID
+                        join ManagementDevelopmentPlane MDP
+                            on MDP.ID = MDPT.MDPID
+                     where  LearningTransfer is not null and LearningTransfer > 0
+                        and MDP.AppraisalPeriod = '$Period'	
+                        and MDPF.TrainingID='$TrainingID'");
+        return response()->json([
+            'data'=>$list
         ]);
     }
 
 
     public function MDPPeriodWiseFeedback($Period){
 
-        $list = DB::select("select MDPT.TrainingTitle,MDPT.TrainingType,MDPT.TrainingDate,MDPF.Feedback from MDPTrainingFeedback as MDPF
-	join MDPTraining MDPT
-		on MDPT.ID = MDPF.TrainingID
-	JOIN ManagementDevelopmentPlane AS MDP
-		ON MDP.ID = MDPT.MDPID
-	 where MDPF.Feedback is not null and MDPF.Feedback > 0
-	 AND MDP.AppraisalPeriod = '$Period'");
+        $list = DB::select("select MDPF.TrainingID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType,SUM(MDPF.Feedback) / COUNT(MDPF.TrainingID) as Feedback
+                     from MDPTrainingFeedback MDPF
+                        join MDPTraining as MDPT 
+                            on MDPF.TrainingID = MDPT.ID
+                        join ManagementDevelopmentPlane MDP
+                            on MDP.ID = MDPT.MDPID
+                     where Feedback is not null 
+                        and MDP.AppraisalPeriod = '$Period'	
+                        and Feedback > 0
+                     group by MDPF.TrainingID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType,MDPF.Feedback");
         return response()->json([
            'data'=>$list
+        ]);
+    }
+
+    public function MDPPeriodWiseFeedbackDetails($Period, $TrainingID){
+
+        $list = DB::select("select MDP.EmployeeName,MDP.StaffID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType, MDPF.Feedback from MDPTrainingFeedback MDPF
+                     join MDPTraining as MDPT 
+                            on MDPF.TrainingID = MDPT.ID
+                        join ManagementDevelopmentPlane MDP
+                            on MDP.ID = MDPT.MDPID
+                     where Feedback is not null and Feedback > 0
+                        and MDP.AppraisalPeriod = '$Period'	
+                        and MDPF.TrainingID='$TrainingID'");
+        return response()->json([
+            'data'=>$list
         ]);
     }
 }
