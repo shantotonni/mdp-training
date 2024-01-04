@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <breadcrumb :options="['Learning Transfer ']"/>
+      <breadcrumb :options="['Learning Transfer Details']"/>
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
@@ -22,24 +22,24 @@
                     <tr>
                       <th>SN</th>
                       <th>Appraisal Period</th>
+                      <th>Employee Name</th>
+                      <th>Employee Code</th>
                       <th>Training Title </th>
                       <th>Training Type</th>
                       <th>Training Date</th>
                       <th>Learning Transfer</th>
-                      <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(list, i) in learning_lists" :key="list.ID" v-if="learning_lists.length">
                       <th>{{ ++i }}</th>
                       <td>{{ list.AppraisalPeriod }}</td>
+                      <td>{{ list.EmployeeName }}</td>
+                      <td>{{ list.StaffID }}</td>
                       <td>{{ list.TrainingTitle }}</td>
                       <td>{{ list.TrainingType }}</td>
                       <td>{{ list.TrainingDate }}</td>
-                      <td>{{ list.AVGLEarningTransfer }}</td>
-                      <td>
-                        <router-link :to="`learning-transfer-details/${list.AppraisalPeriod}/${list.TrainingID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i>Details</router-link>
-                      </td>
+                      <td>{{ list.LearningTransfer }}</td>
                     </tr>
                     </tbody>
                   </table>
@@ -82,13 +82,13 @@ export default {
     }
   },
   mounted() {
-    document.title = 'Learning Transfer  List | Learning Transfer ';
+    document.title = 'Learning Transfer  Details | Learning Transfer';
     this.getAllLearningTransfer();
 
   },
   methods: {
     getAllLearningTransfer() {
-      axios.get(baseurl + `api/mdp-period-wise-training/${this.$route.params.Period}`).then((response)=>{
+      axios.get(baseurl + `api/learning-transfer-details/${this.$route.params.Period}/${this.$route.params.TrainingID}`).then((response)=>{
         console.log(response);
         this.learning_lists = response.data.data;
       }).catch((error) => {

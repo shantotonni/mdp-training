@@ -163,18 +163,20 @@ class SEPAutomationController extends Controller
             ],500);
         }
     }
+
     public function allDivision(){
         $deptunit = DB::select(DB::raw(" SELECT DISTINCT [Deptunit] FROM Department WHERE Active = 'Y' AND DeptUnit <> ''"));
         return response()->json([
            'data'=>$deptunit
         ]);
     }
+
     public function allDesignation(){
         $designation= SEPDesignation::orderBy('DesignationID', 'desc')->get();
             return new DesignationCollection($designation);
     }
-    public function allPortfolio(Request $request){
 
+    public function allPortfolio(Request $request){
         $deptunit=$request->DivisionID;
         $deptunit2=$request->DivisionID2;
         if ($deptunit ||$deptunit2 ){
@@ -183,7 +185,6 @@ class SEPAutomationController extends Controller
                 'data'=>$portfolio
             ]);
         }
-
     }
 
     public function search($query)

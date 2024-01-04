@@ -40,7 +40,7 @@
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
-                          <select id="PortfolioID" class="form-control" v-model="PortfolioID" @change="getAllDepartment()"  >
+                          <select id="PortfolioID" class="form-control" v-model="PortfolioID">
                             <option value="">Select Portfolio</option>
                             <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index" >{{div.PortfolioName}}</option>
                           </select>
@@ -48,7 +48,7 @@
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
-                          <select id="DepartmentID" class="form-control" v-model="DepartmentID"  @change="getAllDesignation()">
+                          <select id="DepartmentID" class="form-control" v-model="DepartmentID">
                             <option value="">Select Departments</option>
                             <option :value="div.DepartmentID" v-for="(div,index) in departments" :key="index">{{div.DepartmentName}}</option>
                           </select>
@@ -369,15 +369,12 @@ export default {
   },
   methods: {
     getAllSEP(){
-
-      //this.isLoading = true;
       axios.get(baseurl+ 'api/sep-automation?page='+ this.pagination.current_page
           + "&query=" + this.query
           + "&DivisionID=" +this.DivisionID
           + "&DesignationID=" +JSON.stringify(this.DesignationID)
           + "&DepartmentID=" + this.DepartmentID
           + "&PortfolioID=" + this.PortfolioID
-
       ).then((response)=>{
         this.seps = response.data.data;
         this.pagination = response.data.meta;
@@ -405,7 +402,7 @@ export default {
           bus.$emit('data-table-import', dataSets, columns, 'Sep List Export')
         }
       }).catch((error) => {
-        console.log(error)
+       //
       })
     },
     searchData(){
@@ -447,33 +444,6 @@ export default {
 
       })
     },
-    // tableImage(SepFile) {
-    //   return window.location.origin + "/mdp-training/public/file/SEP/" + SepFile;
-    // },
-    //
-    // modalImageShow(sep){
-    //   // this.tableImage2(image)
-    //   this.form.fill(sep);
-    //   setTimeout(()=>{
-    //     $("#showImageModal").modal("show");
-    //   },300)
-    // },
-    // showImage() {
-    //   let img = this.form.SepFile;
-    //   if (img.length > 100) {
-    //     return this.form.SepFile;
-    //   } else {
-    //     return window.location.origin + "/mdp-training/public/file/SEP/" + this.form.SepFile;
-    //   }
-    // },
-    // tableImage2(sep) {
-    //   console.log(sep)
-    //   return window.location.origin + "/mdp-training/public/file/SEP/" + sep;
-    // },
-    // closeModal(){
-    //   $("#StudentModelModal").modal("hide");
-    //   $("#showImageModal").modal("hide");
-    // },
     imgUpload(e) {
       var input = e.target
       var file = input.files[0]
@@ -519,6 +489,7 @@ export default {
       this.form.reset();
       this.form.clear();
       this.form.fill(sep);
+      this.getAllPortfolio();
       $("#StudentModelModal").modal("show");
     },
     update(){

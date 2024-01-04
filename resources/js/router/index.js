@@ -43,7 +43,10 @@ import MDPOrganizedPendingPTCReportDetails from '../views/chart/MDPOrganizedPend
 import MDPOrganizedPendingPTCTitleWiseEmployee from '../views/chart/MDPOrganizedPendingPTCTitleWiseEmployee'
 //Learning Transfer
 import MDPPeriodWiseTraining from '../views/chart/learning_transfer/LearningTransferList.vue'
+import LearningTransferDetails from '../views/chart/learning_transfer/LearningTransferDetails.vue'
+
 import MDPPeriodWiseFeedback from '../views/chart/training_feedback/LearningTransferList.vue'
+import FeedbackDetails from '../views/chart/training_feedback/FeedbackDetails.vue'
 
 import NotFound from '../views/404/Index';
 import {baseurl} from '../base_url'
@@ -120,8 +123,10 @@ const routes = [
             {path: baseurl + 'mdp-organized-pending-ptc-title-wise-employee', name: 'MDPOrganizedPendingPTCTitleWiseEmployee', component: MDPOrganizedPendingPTCTitleWiseEmployee},
             //Learning Transfer
             {path: baseurl + 'mdp-period-wise-training/:Period', name: 'MDPPeriodWiseTraining', component: MDPPeriodWiseTraining},
-            //Learning feedback
+            {path: baseurl + 'mdp-period-wise-training/learning-transfer-details/:Period/:TrainingID', name: 'LearningTransferDetails', component: LearningTransferDetails},
+            //feedback
             {path: baseurl + 'mdp-period-wise-feedback/:Period', name: 'MDPPeriodWiseFeedback', component: MDPPeriodWiseFeedback},
+            {path: baseurl + 'mdp-period-wise-feedback/feedback-details/:Period/:TrainingID', name: 'FeedbackDetails', component: FeedbackDetails},
         ],
         beforeEnter(to, from, next) {
             checkToken(to, from, next);
