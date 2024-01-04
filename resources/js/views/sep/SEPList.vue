@@ -515,12 +515,10 @@ export default {
       });
     },
     edit(sep) {
-      console.log('edit',sep)
       this.editMode = true;
       this.form.reset();
       this.form.clear();
       this.form.fill(sep);
-
       $("#StudentModelModal").modal("show");
     },
     update(){
