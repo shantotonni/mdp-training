@@ -218,7 +218,7 @@
                       <label>Sep File</label>
                       <input  @change="imgUpload($event)" type="file" name="SepFile"
                              class="form-control"
-                             :class="{ 'is-invalid': form.errors.has('SepFile') }" >
+                             :class="{ 'is-invalid': form.errors.has('SepFile') }" accept="application/pdf">
                       <div class="error" v-if="form.errors.has('SepFile')"
                            v-html="form.errors.get('SepFile')"/>
 
