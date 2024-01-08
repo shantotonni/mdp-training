@@ -132,7 +132,7 @@ class SEPAutomationController extends Controller
             $sep->DivisionID= $request->DivisionID ;
             $sep->DepartmentID= $request->DepartmentID ;
             $sep->PortfolioID= $request->PortfolioID ;
-            $sep->PortfolioID= $request->DesignationID ;
+            $sep->DesignationID= $request->DesignationID ;
             $sep->SepFile= $fileNameToStore ;
             $sep->SubmittedDate= $request->SubmittedDate ;
             $sep->Approval= $request->Approval ;
@@ -190,12 +190,21 @@ class SEPAutomationController extends Controller
     public function search($query)
     {
 
-     $search =SEPAutomation::with('department','designation','division','portfolio')
-         ->orwhere('DivisionID','LIKE',"%$query%")
-         ->orwhere('PortfolioName','LIKE',"%$query%")
-         ->orWhere('DesignationName','LIKE',"%$query%")
-         ->orWhere('DepartmentName','LIKE',"%$query%")->paginate(15);
+//     $search =SEPAutomation::with('department','designation','division','portfolio')
+//         ->orwhere('DivisionID','LIKE',"%$query%")
+//         ->orwhere('PortfolioID','LIKE',"%$query%")
+//         ->orWhere('DesignationID','LIKE',"%$query%")
+//         ->orWhere('DepartmentID','LIKE',"%$query%")->paginate(15);
+//
 
+        $search =SEPAutomation::leftjoin('SEPPortfolio as p','p.PortfolioID', 'SEPAutomation.PortfolioID')
+            ->leftjoin('SEPDepartment as d','d.DepartmentID','SEPAutomation.DepartmentID')
+            ->leftjoin('SEPDesignation as deg','deg.DesignationID','SEPAutomation.DesignationID')
+           ->where('SEPAutomation.DivisionID','LIKE',"%$query%")
+//            ->orwhere('SEPAutomationPortfolioID','LIKE',"%$query%")
+//                ->orWhere('DesignationID','LIKE',"%$query%")
+//                ->orWhere('DepartmentID','LIKE',"%$query%")
+            ->paginate(15);
         return new SEPAutomationCollection($search);
     }
 
