@@ -215,7 +215,7 @@
 
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Sep File</label>
+                      <label>Sep File <small>(PDF only)</small></label>
                       <input  @change="imgUpload($event)" type="file" name="SepFile"
                              class="form-control"
                              :class="{ 'is-invalid': form.errors.has('SepFile') }" accept="application/pdf">
@@ -324,7 +324,7 @@ export default {
       pagination: {
         current_page: 1
       },
-      query: "",
+      query: '',
       type: '',
       Deptunit:'',
       DivisionID:'',
@@ -406,6 +406,7 @@ export default {
       })
     },
     searchData(){
+      // console.log(this.query)
       axios.get(baseurl+"api/search/sep-automation/" + this.query + "?page=" + this.pagination.current_page).then(response => {
         this.seps = response.data.data;
         this.pagination = response.data.meta;
