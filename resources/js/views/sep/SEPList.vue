@@ -71,9 +71,9 @@
                       <div class="col-md-2">
                         <button type="submit" @click="getAllSEP" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                       </div>
-<!--                      <div class="col-md-2" >-->
-<!--                        <input v-model="query" type="text" class="form-control" placeholder="Search">-->
-<!--                      </div>-->
+                      <div class="col-md-2" >
+                        <input v-model="query" type="text" class="form-control" placeholder="Search">
+                      </div>
                     </div>
 
                   </div>

@@ -201,9 +201,9 @@ class SEPAutomationController extends Controller
             ->leftjoin('SEPDepartment as d','d.DepartmentID','SEPAutomation.DepartmentID')
             ->leftjoin('SEPDesignation as deg','deg.DesignationID','SEPAutomation.DesignationID')
            ->where('SEPAutomation.DivisionID','LIKE',"%$query%")
-//            ->orwhere('SEPAutomationPortfolioID','LIKE',"%$query%")
-//                ->orWhere('DesignationID','LIKE',"%$query%")
-//                ->orWhere('DepartmentID','LIKE',"%$query%")
+            ->orwhere('p.PortfolioName','LIKE',"%$query%")
+            ->orWhere('deg.DesignationName','LIKE',"%$query%")
+            ->orWhere('d.DepartmentName','LIKE',"%$query%")
             ->paginate(15);
         return new SEPAutomationCollection($search);
     }
