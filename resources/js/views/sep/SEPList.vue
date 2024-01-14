@@ -87,7 +87,7 @@
                       <th class="text-center">Portfolio</th>
                       <th class="text-center">Department</th>
                       <th class="text-center">Designation</th>
-                      <th class="text-center">Submitted Date</th>
+                      <th class="text-center">Approved Date</th>
                       <th class="text-center">Total Approval</th>
                       <th class="text-center">Current HeadCount</th>
                       <th class="text-center">SepFile</th>
