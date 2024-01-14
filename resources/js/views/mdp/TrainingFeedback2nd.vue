@@ -192,8 +192,8 @@ export default {
     trainingFeedbackSubmit2nd(){
       let row_data = this.form.training_list;
       this.form.busy = true;
-      //console.log(row_data);
-      axios.post(baseurl + "api/training-feedback-submit-2nd",{row_data: row_data, Feedback: this.Feedback}).then(response => {
+      axios.post(baseurl + "api/training-feedback-submit-2nd",{row_data: row_data, Feedback: this.Feedback,TrainingTitle: this.TrainingTitle}).then(response => {
+        console.log(response)
         this.$toaster.success('Data Successfully Updated');
       }).catch(e => {
         this.isLoading = false;

@@ -53,8 +53,8 @@
                     <th>Offer Date Three</th>
                     <th>Offer Date Four</th>
                     <th>Offer Date Five</th>
-                    <!-- <th>Feedback</th>
-                    <th>Learning Transfer</th> -->
+                    <th>Feedback</th>
+                    <th>Learning Transfer</th>
                     <th>Trainer Name</th>
                     <th>Action</th>
                   </tr>
@@ -74,8 +74,8 @@
                       <td><datepicker v-model="training.OfferDateThree" :format="customFormatter" :typeable=true input-class="form-control"></datepicker></td>
                       <td><datepicker v-model="training.OfferDateFour" :format="customFormatter" :typeable=true input-class="form-control"></datepicker></td>
                       <td><datepicker v-model="training.OfferDateFive" :format="customFormatter" :typeable=true input-class="form-control"></datepicker></td>
-                      <!-- <td><input type="number" class="form-control" name="Feedback" v-model="training.Feedback"></td>
-                      <td><input type="number" class="form-control" name="learning_transfer" v-model="training.LearningTransfer"></td> -->
+                      <td><input type="number" class="form-control" name="Feedback" v-model="training.Feedback"></td>
+                      <td><input type="number" class="form-control" name="learning_transfer" v-model="training.LearningTransfer"></td>
                       <td><input type="text" class="form-control" name="TrainerName" v-model="training.TrainerName"></td>
                       <td>
                         <button type="button" @click="trainingFeedbackSubmit(i)" class="btn btn-info btn-sm">Update</button>
@@ -120,7 +120,7 @@ export default {
         AppraisalPeriod: '',
         training_list: [
           { TrainingTitle: '' , Status: '', DoneDate: '', OfferDateOne:'',OfferDateTwo:'',
-            OfferDateThree:'',OfferDateFour:'',OfferDateFive:'',EmpCode: '',AppraisalPeriod:'',TrainerName: ''
+            OfferDateThree:'',OfferDateFour:'',OfferDateFive:'',EmpCode: '',AppraisalPeriod:'',Feedback: '',LearningTransfer : '',TrainerName: ''
           },
         ],
       }),
