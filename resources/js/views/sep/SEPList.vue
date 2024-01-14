@@ -107,16 +107,11 @@
                       <td class="text-right">{{ sep.HeadCount}}</td>
                       <td>
                         <a :href="'public/file/SEP/'+sep.SepFile" download>{{sep.SepFile}}</a>
-<!--                        <p v-if="sep.SepFile"  @click="modalImageShow(sep)">{{sep.SepFile}}</p>-->
-
                       </td>
                       <td class="text-left">
                         <span class="badge badge-success" v-if="sep.Status == 'Y'">Active</span>
                         <span class="badge badge-success" v-else>InActive</span>
                       </td>
-<!--                      <td class="text-left">-->
-<!--                        <img v-if="sep.SepFile" height="40" width="40" :src="tableImage(sep.SepFile)" alt="" @click="modalImageShow(sep)" >{{sep.SepFile}}-->
-<!--                      </td>-->
                       <td class="text-center">
                         <button @click="edit(sep)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
                       </td>
@@ -194,24 +189,6 @@
                       <div class="error" v-if="form.errors.has('Designation')" v-html="form.errors.get('Designation')" />
                     </div>
                   </div>
-
-<!--                  <div class="col-6 col-md-6">-->
-<!--                    <div class="form-group">-->
-<!--                      <label>Designation</label>-->
-<!--                      <multiselect-->
-<!--                          v-model="form.DesignationID"-->
-<!--                          :options="designations"-->
-<!--                          :multiple="false"-->
-<!--                          :searchable="true"-->
-<!--                          :close-on-select="true"-->
-<!--                          :show-labels="true"-->
-<!--                          label="DesignationName"-->
-<!--                          track-by="DesignationID"-->
-<!--                          placeholder="Pick a Designation"></multiselect>-->
-
-<!--                      <div class="error" v-if="form.errors.has('Designation')" v-html="form.errors.get('Designation')" />-->
-<!--                    </div>-->
-<!--                  </div>-->
 
                   <div class="col-md-6">
                     <div class="form-group">
