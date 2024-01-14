@@ -71,9 +71,9 @@
                       <div class="col-md-2">
                         <button type="submit" @click="getAllSEP" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                       </div>
-<!--                      <div class="col-md-2" >-->
-<!--                        <input v-model="query" type="text" class="form-control" placeholder="Search">-->
-<!--                      </div>-->
+                      <div class="col-md-2" >
+                        <input v-model="query" type="text" class="form-control" placeholder="Search">
+                      </div>
                     </div>
 
                   </div>
@@ -87,7 +87,7 @@
                       <th class="text-center">Portfolio</th>
                       <th class="text-center">Department</th>
                       <th class="text-center">Designation</th>
-                      <th class="text-center">Submitted Date</th>
+                      <th class="text-center">Approved Date</th>
                       <th class="text-center">Total Approval</th>
                       <th class="text-center">Current HeadCount</th>
                       <th class="text-center">SepFile</th>
@@ -107,16 +107,11 @@
                       <td class="text-right">{{ sep.HeadCount}}</td>
                       <td>
                         <a :href="'public/file/SEP/'+sep.SepFile" download>{{sep.SepFile}}</a>
-<!--                        <p v-if="sep.SepFile"  @click="modalImageShow(sep)">{{sep.SepFile}}</p>-->
-
                       </td>
                       <td class="text-left">
                         <span class="badge badge-success" v-if="sep.Status == 'Y'">Active</span>
                         <span class="badge badge-success" v-else>InActive</span>
                       </td>
-<!--                      <td class="text-left">-->
-<!--                        <img v-if="sep.SepFile" height="40" width="40" :src="tableImage(sep.SepFile)" alt="" @click="modalImageShow(sep)" >{{sep.SepFile}}-->
-<!--                      </td>-->
                       <td class="text-center">
                         <button @click="edit(sep)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
                       </td>
@@ -195,30 +190,12 @@
                     </div>
                   </div>
 
-<!--                  <div class="col-6 col-md-6">-->
-<!--                    <div class="form-group">-->
-<!--                      <label>Designation</label>-->
-<!--                      <multiselect-->
-<!--                          v-model="form.DesignationID"-->
-<!--                          :options="designations"-->
-<!--                          :multiple="false"-->
-<!--                          :searchable="true"-->
-<!--                          :close-on-select="true"-->
-<!--                          :show-labels="true"-->
-<!--                          label="DesignationName"-->
-<!--                          track-by="DesignationID"-->
-<!--                          placeholder="Pick a Designation"></multiselect>-->
-
-<!--                      <div class="error" v-if="form.errors.has('Designation')" v-html="form.errors.get('Designation')" />-->
-<!--                    </div>-->
-<!--                  </div>-->
-
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Sep File</label>
+                      <label>Sep File <small>(PDF only)</small></label>
                       <input  @change="imgUpload($event)" type="file" name="SepFile"
                              class="form-control"
-                             :class="{ 'is-invalid': form.errors.has('SepFile') }" >
+                             :class="{ 'is-invalid': form.errors.has('SepFile') }" accept="application/pdf">
                       <div class="error" v-if="form.errors.has('SepFile')"
                            v-html="form.errors.get('SepFile')"/>
 
@@ -324,7 +301,7 @@ export default {
       pagination: {
         current_page: 1
       },
-      query: "",
+      query: '',
       type: '',
       Deptunit:'',
       DivisionID:'',
@@ -406,6 +383,7 @@ export default {
       })
     },
     searchData(){
+      // console.log(this.query)
       axios.get(baseurl+"api/search/sep-automation/" + this.query + "?page=" + this.pagination.current_page).then(response => {
         this.seps = response.data.data;
         this.pagination = response.data.meta;

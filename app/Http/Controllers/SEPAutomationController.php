@@ -20,7 +20,6 @@ class SEPAutomationController extends Controller
 {
     public function index(Request $request)
     {
-
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
@@ -190,20 +189,13 @@ class SEPAutomationController extends Controller
     public function search($query)
     {
 
-//     $search =SEPAutomation::with('department','designation','division','portfolio')
-//         ->orwhere('DivisionID','LIKE',"%$query%")
-//         ->orwhere('PortfolioID','LIKE',"%$query%")
-//         ->orWhere('DesignationID','LIKE',"%$query%")
-//         ->orWhere('DepartmentID','LIKE',"%$query%")->paginate(15);
-//
-
         $search =SEPAutomation::leftjoin('SEPPortfolio as p','p.PortfolioID', 'SEPAutomation.PortfolioID')
             ->leftjoin('SEPDepartment as d','d.DepartmentID','SEPAutomation.DepartmentID')
             ->leftjoin('SEPDesignation as deg','deg.DesignationID','SEPAutomation.DesignationID')
-           ->where('SEPAutomation.DivisionID','LIKE',"%$query%")
-//            ->orwhere('SEPAutomationPortfolioID','LIKE',"%$query%")
-//                ->orWhere('DesignationID','LIKE',"%$query%")
-//                ->orWhere('DepartmentID','LIKE',"%$query%")
+            ->where('SEPAutomation.DivisionID','LIKE',"%$query%")
+            ->orwhere('p.PortfolioName','LIKE',"%$query%")
+            ->orWhere('deg.DesignationName','LIKE',"%$query%")
+            ->orWhere('d.DepartmentName','LIKE',"%$query%")
             ->paginate(15);
         return new SEPAutomationCollection($search);
     }
@@ -211,7 +203,7 @@ class SEPAutomationController extends Controller
     public function exportSep(Request $request)
     {
         $query = $request->param;
-        $exportsep= SEPAutomation::where('DivisionID','LIKE',"%$query%")->orwhere('PortfolioID','LIKE',"%$query%")
+        $exportsep= SEPAutomation::orwhere('DivisionID','LIKE',"%$query%")->orwhere('PortfolioID','LIKE',"%$query%")
             ->orWhere('DesignationID','LIKE',"%$query%")
             ->orWhere('DepartmentID','LIKE',"%$query%")
             ->get();
