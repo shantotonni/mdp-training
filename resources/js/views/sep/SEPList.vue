@@ -195,7 +195,7 @@
                       <label>Sep File <small>(PDF only)</small></label>
                       <input  @change="imgUpload($event)" type="file" name="SepFile"
                              class="form-control"
-                             :class="{ 'is-invalid': form.errors.has('SepFile') }" accept="application/pdf">
+                             :class="{ 'is-invalid': form.errors.has('SepFile') }" accept="application/pdf" required>
                       <div class="error" v-if="form.errors.has('SepFile')"
                            v-html="form.errors.get('SepFile')"/>
 
@@ -230,7 +230,7 @@
                                 placeholder="Enter To Date"
                                 :format="customFormatter"
                                 v-model="form.SubmittedDate"
-                                :class="{ 'is-invalid': form.errors.has('SubmittedDate') }"> </datepicker>
+                                :class="{ 'is-invalid': form.errors.has('SubmittedDate') }" required> </datepicker>
 
                     <div class="error" v-if="form.errors.has('SubmittedDate')"
                          v-html="form.errors.get('SubmittedDate')"/>
