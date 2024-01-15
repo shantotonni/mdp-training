@@ -32,10 +32,14 @@
                     </thead>
                     <tbody>
                     <tr v-for="(ptc, i) in ptcs" v-if="ptcs.length"  >
-                      <th scope="row">{{ ++i }}</th>
+                      <th scope="row" class="text-center">{{ ++i }}</th>
                       <!--                      <td>{{ ptc.DepartmentName }}</td>-->
-                      <td @click="redirectToNext(ptc.TrainingTitle )">{{ ptc.TrainingTitle }}</td>
-                      <td>{{ ptc.Total }}</td>
+                      <td >{{ ptc.TrainingTitle }}</td>
+                      <td class="text-right">{{ ptc.Total }}</td>
+                      <td class="text-center">
+                        <button type="button" @click="redirectToNext(ptc.TrainingTitle )"class="btn btn-info btn-sm">Details</button>
+                      </td>
+
                     </tr>
                     </tbody>
                   </table>
@@ -82,7 +86,6 @@ export default {
   methods: {
     redirectToNext(ptc){
       this.title = ptc;
-
       this.$router.push({
         name: 'MDPOrganizedPendingPTCTitleWiseEmployee',
         params: { Title: this.title, Period: this.$route.params.Period, Status: this.$route.params.Status}
