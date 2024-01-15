@@ -95,10 +95,11 @@ export default {
         this.ptcs = response.data.ptc;
       });
     },
-    exportEMPList() {
-      axios.get(baseurl +  'export-emp-list/',{data: this.$route.params}).then((response) => {
+
+    exportEMPList(){
+      axios.post(baseurl + 'api/mdp-organized-pending-ptc-title-wise-employee/',{data: this.$route.params}).then((response)=>{
         console.log(response)
-        let dataSets = response.data.data;
+        let dataSets = response.data.ptc;
         if (dataSets.length > 0) {
           let columns = Object.keys(dataSets[0]);
           columns = columns.filter((item) => item !== 'row_num');
@@ -107,10 +108,10 @@ export default {
             let title = item.replace(rex, '$1$4 $2$3$5')
             return {title, key: item}
           });
-          bus.$emit('data-table-import', dataSets, columns, 'Employee Export')
+          bus.$emit('data-table-import', dataSets, columns, 'MDP Training Employee List')
         }
-      }).catch((error) => {
-        //
+      }).catch((error)=>{
+        console.log(error)
       })
     },
   },

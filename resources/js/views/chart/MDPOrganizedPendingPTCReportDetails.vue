@@ -5,7 +5,7 @@
         <div class="col-sm-6">
           <div class="float-right d-none d-md-block">
             <div class="card-tools">
-              <button type="button" class="btn btn-primary btn-sm" @click="exportEMPList" >
+              <button type="button" class="btn btn-primary btn-sm" @click="exportTraining" >
                 <i class="fa fa-file-excel"></i>
                 Export Excel
               </button>
@@ -26,6 +26,7 @@
                       <!--                      <th class="text-center">Department</th>-->
                       <th class="text-center">Training Title</th>
                       <th class="text-center">Total</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -34,6 +35,7 @@
                       <!--                      <td>{{ ptc.DepartmentName }}</td>-->
                       <td @click="redirectToNext(ptc.TrainingTitle )">{{ ptc.TrainingTitle }}</td>
                       <td>{{ ptc.Total }}</td>
+
                     </tr>
                     </tbody>
                   </table>
@@ -85,11 +87,10 @@ export default {
         params: { Title: this.title, Period: this.$route.params.Period, Status: this.$route.params.Status}
       });
     },
-    exportEMPList() {
-      console.log(this.$route.params)
-      axios.get(baseurl +  'export-emp-list/',{data: this.$route.params}).then((response) => {
+    exportTraining(){
+      axios.get(baseurl + `api/mdp-organized-pending-ptc-details/${this.$route.params.Period}/${this.$route.params.Status}`).then((response)=>{
         console.log(response)
-        let dataSets = response.data.data;
+        let dataSets = response.data.ptc;
         if (dataSets.length > 0) {
           let columns = Object.keys(dataSets[0]);
           columns = columns.filter((item) => item !== 'row_num');
@@ -98,10 +99,10 @@ export default {
             let title = item.replace(rex, '$1$4 $2$3$5')
             return {title, key: item}
           });
-          bus.$emit('data-table-import', dataSets, columns, 'Employee Export')
+          bus.$emit('data-table-import', dataSets, columns, 'MDP Training List')
         }
-      }).catch((error) => {
-        //
+      }).catch((error)=>{
+        console.log(error)
       })
     },
   },

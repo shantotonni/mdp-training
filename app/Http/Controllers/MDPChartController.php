@@ -55,7 +55,7 @@ class MDPChartController extends Controller
             $d = 'done';
         }
 
-        $sql = "SELECT MDPT.TrainingTitle,COUNT(MDPF.Status) as Total
+        $sql = "SELECT MDPT.TrainingTitle,COUNT(MDPF.Status) as Total,MDP.AppraisalPeriod,MDPF.Status
                   FROM MDPTraining AS MDPT
                     JOIN ManagementDevelopmentPlane AS MDP
                   ON MDP.ID = MDPT.MDPID
@@ -65,7 +65,7 @@ class MDPChartController extends Controller
                         MDPT.TrainingTitle IS NOT NULL 
                         AND MDPF.Status IS NOT NULL AND MDPF.Status='$d'
                         AND MDP.AppraisalPeriod = '$Period'
-                  GROUP BY MDPT.TrainingTitle,MDPF.Status";
+                  GROUP BY MDPT.TrainingTitle,MDPF.Status,MDP.AppraisalPeriod,MDPF.Status";
         $ptc = DB::select($sql);
 
         return response()->json([
@@ -160,32 +160,6 @@ class MDPChartController extends Controller
         return response()->json([
             'data'=>$list
         ]);
-    }
-    public function empExport($Period, $Status)
-    {
-        if ($Status == 'Pending'){
-            $d = 'offered';
-        }else{
-            $d = 'done';
-        }
-
-        $ptc = DB::select("SELECT MDPT.TrainingTitle,COUNT(MDPF.Status) as Total
-                  FROM MDPTraining AS MDPT
-                    JOIN ManagementDevelopmentPlane AS MDP
-                  ON MDP.ID = MDPT.MDPID
-                    JOIN MDPTrainingFeedback AS MDPF
-                  ON MDPF.TrainingID = MDPT.ID
-                  WHERE 
-                        MDPT.TrainingTitle IS NOT NULL 
-                        AND MDPF.Status IS NOT NULL AND MDPF.Status='$d'
-                        AND MDP.AppraisalPeriod = '$Period'
-                  GROUP BY MDPT.TrainingTitle,MDPF.Status");
-
-        Excel::create('projects', function ($excel) use ($ptc) {
-            $excel->sheet('Sheet 1', function ($sheet) use ($ptc) {
-                $sheet->fromArray($ptc);
-            });
-        })->export('xls');
     }
 
 }
