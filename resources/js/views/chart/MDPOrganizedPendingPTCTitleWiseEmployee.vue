@@ -1,14 +1,46 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <br>
-      <br>
+      <breadcrumb :options="['Employee List']">
+        <div class="col-sm-6">
+          <div class="float-right d-none d-md-block">
+            <div class="card-tools">
+              <button type="button" class="btn btn-primary btn-sm" @click="exportEMPList" >
+                <i class="fa fa-file-excel"></i>
+                Export Excel
+              </button>
+            </div>
+          </div>
+        </div>
+      </breadcrumb>
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
             <div class="datatable" v-if="!isLoading">
               <div class="card-body">
-                <div id="main" style="min-height:1000px"></div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
+                    <thead>
+                    <tr>
+                      <th class="text-center">SN</th>
+                      <!--                      <th class="text-center">Department</th>-->
+                      <th class="text-center">StaffID</th>
+                      <th class="text-center">EmployeeName</th>
+                      <th class="text-center">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(ptc, i) in ptcs" v-if="ptcs.length"  >
+                      <th scope="row">{{ ++i }}</th>
+                      <td>{{ ptc.StaffID }}</td>
+                      <td>{{ ptc.EmployeeName }}</td>
+                      <td>{{ ptc.Status }}</td>
+
+                    </tr>
+                    </tbody>
+                  </table>
+                  <br>
+                </div>
               </div>
             </div>
             <div v-else>
@@ -23,101 +55,65 @@
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker';
+import moment from "moment";
 import {baseurl} from '../../base_url'
-import {Common} from "../../mixins/common";
+import Multiselect from "vue-multiselect";
 import {bus} from "../../app";
-import Multiselect from 'vue-multiselect'
-import * as echarts from 'echarts';
 export default {
   name: "List",
-  components: { Multiselect },
-  mixins: [Common],
+  components: {
+    Multiselect ,
+    Datepicker
+  },
   data() {
     return {
       isLoading: false,
-      key:[],
-      values:[],
-      total: 0,
+      ptcs:[],
+      pagination: {
+        current_page: 1,
+      },
+      query: "",
+    }
+  },
+  watch: {
+    query: function(newQ, old) {
+      if (newQ === "") {
+        this.getAllEmployee();
+      } else {
+        this.searchData();
+      }
     }
   },
   mounted() {
-    document.title = 'MDP Chart | MDP'
-  },
-  created() {
-    //localStorage.setItem('data',JSON.stringify(this.$route.params));
-    //JSON.parse(localStorage.getItem('data'))
-    axios.post(baseurl + 'api/mdp-organized-pending-ptc-title-wise-employee/',{data: this.$route.params}).then((response)=>{
-      console.log(response)
-      response.data.ptc.forEach((getRecord, index) => {
-        this.key.push(getRecord.EmployeeName);
-        this.values.push(5);
-      })
-      this.loadChart()
-    });
-  },
-  destroyed() {
-    //localStorage.removeItem('data')
+    document.title = 'Employee List';
+    this.getAllEmployee();
   },
   methods: {
-    loadChart(){
-      // Create the echarts instance
-      let myChart = echarts.init(document.getElementById('main'));
-      // Draw the chart
-      myChart.setOption({
-        title: {
-          text: 'Organized vs Pending PTC'
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        grid: {
-          left: 0,
-          right: 40,
-          top: 35,
-          bottom: 0,
-          containLabel: true
-        },
-        legend: {},
-        xAxis: {
-          type: 'value',
-          min: 0,
-          max: 5
-        },
-        yAxis: {
-          type: 'category',
-          data: this.key
-        },
-        series: [
-          {
-            type: 'bar',
-            data: this.values
-          },
-        ]
+    getAllEmployee(){
+      axios.post(baseurl + 'api/mdp-organized-pending-ptc-title-wise-employee/',{data: this.$route.params}).then((response)=>{
+        this.ptcs = response.data.ptc;
       });
-      myChart.on('click', (params) =>{
-        console.log(params.name)
-        this.$router.push(baseurl + 'mdp-organized-pending-ptc-title-wise-employee/' + this.$route.params.Period + '/' + this.$route.params.Status + '/' + params.name)
-      });
+    },
+    exportEMPList() {
+      axios.get(baseurl +  'export-emp-list/',{data: this.$route.params}).then((response) => {
+        console.log(response)
+        let dataSets = response.data.data;
+        if (dataSets.length > 0) {
+          let columns = Object.keys(dataSets[0]);
+          columns = columns.filter((item) => item !== 'row_num');
+          let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+          columns = columns.map((item) => {
+            let title = item.replace(rex, '$1$4 $2$3$5')
+            return {title, key: item}
+          });
+          bus.$emit('data-table-import', dataSets, columns, 'Employee Export')
+        }
+      }).catch((error) => {
+        //
+      })
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
-.document-upload-modal {
-  .delete {
-    color: red;
-    position: absolute;
-    right: 25px;
-    display: none;
-    top: 10px;
-  }
-
-  .title:hover .delete {
-    display: block
-  }
-}
-</style>

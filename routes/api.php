@@ -134,6 +134,7 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('get-all-session', [CommonController::class,'getAllSession']);
 
     //chart report mdp-organized-pending-ptc
+    Route::get('export-emp-list', [MDPChartController::class,'empExport']);
     Route::get('mdp-organized-pending-ptc/{Period}', [MDPChartController::class,'getOrganizedPendingPTC']);
     Route::get('mdp-organized-pending-ptc-details/{Period}/{Status}', [MDPChartController::class,'getOrganizedPendingPTCDetails']);
     Route::post('mdp-organized-pending-ptc-title-wise-employee', [MDPChartController::class,'getOrganizedPendingPTCTitleWiseEmployee']);

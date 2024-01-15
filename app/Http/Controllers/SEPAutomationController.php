@@ -78,7 +78,6 @@ class SEPAutomationController extends Controller
             $sep->Approval= $request->Approval ;
             $sep->HeadCount= $request->HeadCount ;
             $sep->DesignationID= $request->DesignationID ;
-//            $sep->DesignationID= json_decode($DesignationID['DesignationID']);
             $sep->SepFile= $fileNameToStore ;
             $sep->Status= $request->Status ;
             $sep->CreatedDate= Carbon::now() ;
