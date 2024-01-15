@@ -74,6 +74,7 @@ class MDPChartController extends Controller
     }
 
     public function getOrganizedPendingPTCTitleWiseEmployee(Request $request){
+//        dd($Title);
         $Period = $request->data['Period'];
         $Status = $request->data['Status'];
         $Title = $request->data['Title'];
@@ -161,5 +162,6 @@ class MDPChartController extends Controller
             'data'=>$list
         ]);
     }
+
 
 }

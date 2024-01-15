@@ -26,6 +26,7 @@
                       <!--                      <th class="text-center">Department</th>-->
                       <th class="text-center">Training Title</th>
                       <th class="text-center">Total</th>
+                      <th>Action</th>
 
                     </tr>
                     </thead>
@@ -35,7 +36,6 @@
                       <!--                      <td>{{ ptc.DepartmentName }}</td>-->
                       <td @click="redirectToNext(ptc.TrainingTitle )">{{ ptc.TrainingTitle }}</td>
                       <td>{{ ptc.Total }}</td>
-
                     </tr>
                     </tbody>
                   </table>
@@ -82,6 +82,7 @@ export default {
   methods: {
     redirectToNext(ptc){
       this.title = ptc;
+
       this.$router.push({
         name: 'MDPOrganizedPendingPTCTitleWiseEmployee',
         params: { Title: this.title, Period: this.$route.params.Period, Status: this.$route.params.Status}

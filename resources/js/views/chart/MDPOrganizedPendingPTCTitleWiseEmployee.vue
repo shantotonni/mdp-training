@@ -70,6 +70,7 @@ export default {
     return {
       isLoading: false,
       ptcs:[],
+      routeData:[],
       pagination: {
         current_page: 1,
       },
@@ -89,9 +90,21 @@ export default {
     document.title = 'Employee List';
     this.getAllEmployee();
   },
+  created() {
+    this.routeData = this.$route.params
+    this.$watch(
+        () => this.$route.params,
+        () => {
+          this.fetchData()
+        },
+        // fetch the data when the view is created and the data is
+        // already being observed
+        { immediate: true }
+    )
+  },
   methods: {
     getAllEmployee(){
-      axios.post(baseurl + 'api/mdp-organized-pending-ptc-title-wise-employee/',{data: this.$route.params}).then((response)=>{
+      axios.post(baseurl + 'api/mdp-organized-pending-ptc-title-wise-employee/', {data: this.routeData}).then((response)=>{
         this.ptcs = response.data.ptc;
       });
     },

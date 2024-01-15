@@ -120,7 +120,7 @@ const routes = [
             {path: baseurl + 'mdp-chart-report', name: 'MDPChartReport', component: MDPChartReport},
             {path: baseurl + 'mdp-organized-pending-ptc/:Period', name: 'MDPOrganizedPendingPTCReport', component: MDPOrganizedPendingPTCReport},
             {path: baseurl + 'mdp-organized-pending-ptc-details/:Period/:Status', name: 'MDPOrganizedPendingPTCReportDetails', component: MDPOrganizedPendingPTCReportDetails},
-            {path: baseurl + 'mdp-organized-pending-ptc-title-wise-employee', name: 'MDPOrganizedPendingPTCTitleWiseEmployee', component: MDPOrganizedPendingPTCTitleWiseEmployee},
+            {path: baseurl + 'mdp-organized-pending-ptc-title-wise-employee/:Title/:Period/:Status', name: 'MDPOrganizedPendingPTCTitleWiseEmployee', component: MDPOrganizedPendingPTCTitleWiseEmployee},
             //Learning Transfer
             {path: baseurl + 'mdp-period-wise-training/:Period', name: 'MDPPeriodWiseTraining', component: MDPPeriodWiseTraining},
             {path: baseurl + 'mdp-period-wise-training/learning-transfer-details/:Period/:TrainingID', name: 'LearningTransferDetails', component: LearningTransferDetails},
