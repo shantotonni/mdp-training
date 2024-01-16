@@ -26,7 +26,7 @@
                       <!--                      <th class="text-center">Department</th>-->
                       <th class="text-center">Training Title</th>
                       <th class="text-center">Total</th>
-                      <th>Action</th>
+                      <th class="text-center">Action</th>
 
                     </tr>
                     </thead>

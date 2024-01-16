@@ -36,7 +36,6 @@ class DepartmentController extends Controller
         }
         try {
             $dept = new SEPDepartment();
-//            $dept->PortfolioID = $request->PortfolioID;
             $dept->DepartmentCode = $request->DepartmentCode;
             $dept->DepartmentName = $request->DepartmentName;
             $dept->save();

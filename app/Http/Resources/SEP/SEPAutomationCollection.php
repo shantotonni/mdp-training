@@ -30,6 +30,7 @@ class SEPAutomationCollection extends ResourceCollection
               'Approval'=>$sep->Approval,
               'HeadCount'=>$sep->HeadCount,
               'Status'=>$sep->Status,
+              'EmployeeType'=>$sep->EmployeeType,
           ];
         }),
     ];

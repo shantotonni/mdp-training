@@ -26,17 +26,6 @@
                   <div class="flex-grow-1">
 <!--                     v-if="type ==='admin'"-->
                     <div class="row">
-<!--                      <div class="col-md-2">-->
-<!--                        <div class="form-group">-->
-<!--                          <select id="PortfolioID" class="form-control" v-model="PortfolioID">-->
-<!--                            <option value="">Select Division</option>-->
-<!--                            <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index" >{{div.PortfolioName}}</option>-->
-<!--                          </select>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-2">-->
-<!--                        <button type="submit" @click="getAllDepartment" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>-->
-<!--                      </div>-->
                       <div class="col-md-2">
                         <div class="float-right d-none d-md-block">
                           <div class="card-tools">
@@ -54,7 +43,6 @@
                     <thead>
                     <tr>
                       <th class="text-center">SN</th>
-<!--                      <th class="text-center">Portfolio</th>-->
                       <th class="text-center">Department Name</th>
                       <th class="text-center">Department Code</th>
                       <th class="text-center">Action</th>
@@ -63,7 +51,6 @@
                     <tbody>
                     <tr v-for="(port, i) in ports" :key="port.DepartmentID" v-if="ports.length">
                       <th scope="row">{{ ++i }}</th>
-<!--                      <td>{{ port.PortfolioName }}</td>-->
                       <td>{{ port.DepartmentName }}</td>
                       <td>{{ port.DepartmentCode }}</td>
                       <td class="text-center">
@@ -74,7 +61,7 @@
                     </tbody>
                   </table>
                   <br>
-<!--                  <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? getAllDepartment() : searchData()"></pagination>-->
+                  <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="query === '' ? getAllDepartment() : searchData()"></pagination>
                 </div>
               </div>
             </div>
@@ -97,16 +84,6 @@
             <div class="modal-body">
               <div class="col-md-12">
                 <div class="row">
-<!--                  <div class="col-6 col-md-6">-->
-<!--                    <div class="form-group">-->
-<!--                      <label>Portfolio</label>-->
-<!--                      <select v-model="form.PortfolioID" name="Portfolio" id="Portfolio" class="form-control" :class="{ 'is-invalid': form.errors.has('Portfolio') }" >-->
-<!--                        <option value="">Select Portfolio</option>-->
-<!--                        <option :value="div.PortfolioID" v-for="(div,index) in portfolios" :key="index">{{div.PortfolioName}}</option>-->
-<!--                      </select>-->
-<!--                      <div class="error" v-if="form.errors.has('Portfolio')" v-html="form.errors.get('Portfolio')" />-->
-<!--                    </div>-->
-<!--                  </div>-->
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Department Name</label>
@@ -163,13 +140,11 @@ export default {
       query: "",
       notifmsg: "",
       type: '',
-      // PortfolioID:'',
       editMode: false,
       isLoading: false,
       dialog: false,
       form: new Form({
         DepartmentID:'',
-        // PortfolioID:'',
         DepartmentCode:'',
         DepartmentName:'',
       }),
@@ -187,18 +162,15 @@ export default {
   mounted() {
     document.title = 'Department List';
     this.getAllDepartment();
-    // this.getAllPortfolio();
   },
   methods: {
     getAllDepartment(){
       //this.isLoading = true;
       axios.get(baseurl+ 'api/sep-department?page='+ this.pagination.current_page
           + "&query=" + this.query
-          // + "&PortfolioID=" +this.PortfolioID
       ).then((response)=>{
         this.ports = response.data.data;
         this.pagination = response.data.meta;
-        //this.isLoading = false;
       }).catch((error)=>{
 
       })
@@ -211,14 +183,6 @@ export default {
         this.isLoading = false;
       });
     },
-    // getAllPortfolio(){
-    //   axios.get(baseurl + 'api/all-portfolio').then((response) => {
-    //     console.log('sas',response);
-    //     this.portfolios = response.data.data;
-    //   }).catch((error) => {
-    //
-    //   })
-    // },
 
     reload(){
       this.getAllDepartment();
@@ -242,6 +206,7 @@ export default {
         }else{
           $("#StudentModelModal").modal("hide");
           this.getAllDepartment();
+
         }
       }).catch(e => {
         this.isLoading = false;
@@ -258,7 +223,9 @@ export default {
       this.form.busy = true;
       this.form.put(baseurl+"api/sep-department/" + this.form.DepartmentID).then(response => {
         if (response.data.message){
-          this.notifmsg = response.data.message
+          setTimeout(() => {
+            this.notifmsg = response.data.message
+          }, 500);
         }else{
           $("#StudentModelModal").modal("hide");
           this.getAllDepartment();

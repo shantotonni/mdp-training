@@ -31,8 +31,8 @@
                     </thead>
                     <tbody>
                     <tr v-for="(ptc, i) in ptcs" v-if="ptcs.length"  >
-                      <th scope="row">{{ ++i }}</th>
-                      <td>{{ ptc.StaffID }}</td>
+                      <th scope="row" class="text-center">{{ ++i }}</th>
+                      <td class="text-right">{{ ptc.StaffID }}</td>
                       <td>{{ ptc.EmployeeName }}</td>
                       <td>{{ ptc.Status }}</td>
 

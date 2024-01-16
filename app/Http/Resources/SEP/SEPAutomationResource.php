@@ -27,7 +27,8 @@ class SEPAutomationResource extends JsonResource
             'SubmittedDate'=>$this->SubmittedDate,
             'Approval'=>$this->Approval,
             'HeadCount'=>$this->HeadCount,
-            'Status'=>$this->Status
+            'Status'=>$this->Status,
+            'EmployeeType'=>$this->EmployeeType
 
         ];
     }

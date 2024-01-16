@@ -51,57 +51,66 @@ class SEPAutomationController extends Controller
         return new SEPAutomationCollection($sep);
     }
     public function store(SEPAutomationStoreRequest $request){
-        $DesignationID=$request->DesignationID;
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
 
 
         $requestFile = $request->SepFile;
-        $destination =public_path('file/SEP/');
-        list($type, $file) = explode(';', $requestFile);
-        list(, $extension) = explode('/', $type);
-        list(, $file) = explode(',', $file);
-        $fileNameToStore = time() . rand(1, 100000000) . '.' . $extension;
-        $source = fopen($requestFile, 'r');
-        $destination = fopen($destination . $fileNameToStore, 'w');
-        stream_copy_to_stream($source, $destination);
-        fclose($source);
-        fclose($destination);
-        try {
-            $sep= new SEPAutomation();
-            $sep->CreatedBy= $empcode;
-            $sep->DivisionID= $request->DivisionID ;
-            $sep->DepartmentID= $request->DepartmentID ;
-            $sep->PortfolioID= $request->PortfolioID ;
-            $sep->SubmittedDate= $request->SubmittedDate ;
-            $sep->Approval= $request->Approval ;
-            $sep->HeadCount= $request->HeadCount ;
-            $sep->DesignationID= $request->DesignationID ;
-            $sep->SepFile= $fileNameToStore ;
-            $sep->Status= $request->Status ;
-            $sep->CreatedDate= Carbon::now() ;
-            $sep->save() ;
+        if($requestFile) {
+            $destination =public_path('file/SEP/');
+            list($type, $file) = explode(';', $requestFile);
+            list(, $extension) = explode('/', $type);
+            list(, $file) = explode(',', $file);
+            $fileNameToStore = time() . rand(1, 100000000) . '.' . $extension;
+            $source = fopen($requestFile, 'r');
+            $destination = fopen($destination . $fileNameToStore, 'w');
+            stream_copy_to_stream($source, $destination);
+            fclose($source);
+            fclose($destination);
+            try {
+                $sep= new SEPAutomation();
+                $sep->CreatedBy= $empcode;
+                $sep->DivisionID= $request->DivisionID ;
+                $sep->DepartmentID= $request->DepartmentID ;
+                $sep->PortfolioID= $request->PortfolioID ;
+                $sep->SubmittedDate= $request->SubmittedDate ;
+                $sep->Approval= $request->Approval ;
+                $sep->HeadCount= $request->HeadCount ;
+                $sep->DesignationID= $request->DesignationID ;
+                $sep->SepFile= $fileNameToStore ;
+                $sep->Status= $request->Status ;
+                $sep->EmployeeType= $request->EmployeeType ;
+                $sep->CreatedDate= Carbon::now() ;
+//                $sep->save() ;
 
-            $sep= new SEPAutomationLog();
-            $sep->CreatedBy= $empcode;
-            $sep->DivisionID= $request->DivisionID ;
-            $sep->DepartmentID= $request->DepartmentID ;
-            $sep->PortfolioID= $request->PortfolioID ;
-            $sep->SubmittedDate= $request->SubmittedDate ;
-            $sep->Approval= $request->Approval ;
-            $sep->HeadCount= $request->HeadCount ;
-            $sep->DesignationID= $request->DesignationID ;
-            $sep->Status= $request->Status ;
-            $sep->SepFile= $fileNameToStore ;
-            $sep->CreatedDate= Carbon::now() ;
-            $sep->save() ;
-        } catch (\Exception $exception) {
+                $sep= new SEPAutomationLog();
+                $sep->CreatedBy= $empcode;
+                $sep->DivisionID= $request->DivisionID ;
+                $sep->DepartmentID= $request->DepartmentID ;
+                $sep->PortfolioID= $request->PortfolioID ;
+                $sep->SubmittedDate= $request->SubmittedDate ;
+                $sep->Approval= $request->Approval ;
+                $sep->HeadCount= $request->HeadCount ;
+                $sep->DesignationID= $request->DesignationID ;
+                $sep->Status= $request->Status ;
+                $sep->EmployeeType= $request->EmployeeType ;
+                $sep->SepFile= $fileNameToStore ;
+                $sep->CreatedDate= Carbon::now() ;
+//                $sep->save() ;
+            } catch (\Exception $exception) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Something went wrong! '.$exception->getMessage()
+                ],500);
+            }
+        }else{
             return response()->json([
-                'status' => 'error',
-                'message' => 'Something went wrong! '.$exception->getMessage()
-            ],500);
+                'status' => 'success',
+                'message'=>'Sep File field is required.'
+            ]);
         }
+
     }
 
     public function update(SEPAutomationStoreRequest $request, $SEPID){
@@ -135,6 +144,7 @@ class SEPAutomationController extends Controller
             $sep->SubmittedDate= $request->SubmittedDate ;
             $sep->Approval= $request->Approval ;
             $sep->HeadCount= $request->HeadCount ;
+            $sep->EmployeeType= $request->EmployeeType ;
             $sep->EditDate= Carbon::now() ;
             $sep->Status= $request->Status ;
             $sep->EditBy= $empcode ;
@@ -149,6 +159,7 @@ class SEPAutomationController extends Controller
             $sep->DesignationID= $request->DesignationID ;
             $sep->SepFile= $fileNameToStore ;
             $sep->Status= $request->Status ;
+            $sep->EmployeeType= $request->EmployeeType ;
             $sep->EditDate= Carbon::now() ;
             $sep->EditBy= $empcode ;
             $sep->CreatedBy= $empcode;
@@ -208,4 +219,6 @@ class SEPAutomationController extends Controller
             ->get();
         return new ExportSEPAutomationCollection($exportsep);
     }
+
+
 }

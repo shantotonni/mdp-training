@@ -90,6 +90,7 @@
                       <th class="text-center">Approved Date</th>
                       <th class="text-center">Total Approval</th>
                       <th class="text-center">Current HeadCount</th>
+                      <th class="text-center">Employment Tag</th>
                       <th class="text-center">SepFile</th>
                       <th class="text-center">Status</th>
                       <th class="text-center">Action</th>
@@ -105,6 +106,7 @@
                       <td>{{ sep.SubmittedDate}}</td>
                       <td class="text-right">{{ sep.Approval}}</td>
                       <td class="text-right">{{ sep.HeadCount}}</td>
+                      <td>{{ sep.EmployeeType}}</td>
                       <td>
                         <a :href="'public/file/SEP/'+sep.SepFile" download>{{sep.SepFile}}</a>
                       </td>
@@ -112,10 +114,23 @@
                         <span class="badge badge-success" v-if="sep.Status == 'Y'">Active</span>
                         <span class="badge badge-success" v-else>InActive</span>
                       </td>
+<!--                      <td class="text-center">-->
+<!--                        <button @click="calculatesum(sep)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>-->
+<!--                      </td>-->
                       <td class="text-center">
                         <button @click="edit(sep)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
                       </td>
                     </tr>
+                    <tr>
+                      <td colspan="8">Total Approval</td>
+                      <td class="text-center" colspan="4">{{ total[1]}}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="8">Total Current HeadCount</td>
+                      <td class="text-center" colspan="4">{{ total[0]}}</td>
+                    </tr>
+
+
                     </tbody>
                   </table>
                   <br>
@@ -195,10 +210,10 @@
                       <label>Sep File <small>(PDF only)</small></label>
                       <input  @change="imgUpload($event)" type="file" name="SepFile"
                              class="form-control"
-                             :class="{ 'is-invalid': form.errors.has('SepFile') }" accept="application/pdf" required>
+                             :class="{ 'is-invalid': form.errors.has('SepFile') }" accept="application/pdf" >
                       <div class="error" v-if="form.errors.has('SepFile')"
                            v-html="form.errors.get('SepFile')"/>
-
+                      <span class="text-danger">{{ notifmsg}} </span>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -239,6 +254,17 @@
                   <div class="col-6 col-md-6">
                     <div class="form-group">
                       <label>Status</label>
+                      <select v-model="form.EmployeeType" name="EmployeeType" id="EmployeeType" class="form-control" :class="{ 'is-invalid': form.errors.has('EmployeeType') }" required>
+                        <option value="Permanent">Permanent</option>
+                        <option value="Contractual" >Contractual</option>
+                        <option value="Casual" >Casual</option>
+                      </select>
+                      <div class="error" v-if="form.errors.has('Status')" v-html="form.errors.get('Status')" />
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <div class="form-group">
+                      <label>Status</label>
                       <select v-model="form.Status" name="Status" id="Status" class="form-control" :class="{ 'is-invalid': form.errors.has('Status') }" required>
                         <option value="Y">Active</option>
                         <option value="N" >Inactive</option>
@@ -258,24 +284,7 @@
       </div>
     </div>
 
-<!--    <div class="modal fade bs-example-modal-center" id="showImageModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
-<!--      <div class="modal-dialog modal-dialog-centered" style="min-width: 80%">-->
-<!--        <div class="modal-content">-->
-<!--          <div class="modal-header">-->
-<!--            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="closeModal">×</button>-->
-<!--          </div>-->
-<!--          <div class="modal-body">-->
-<!--            <embed src = "/mdp-training/public/file/SEP/170255708118992253.pdf" width="100%" height="800" type='application/pdf'>-->
 
-
-<!--            &lt;!&ndash;            <img :src="showImage(form.SepFile)" alt="" height="40px" width="40px">&ndash;&gt;-->
-<!--&lt;!&ndash;            <img :src="tableImage2(form.SepFile)" alt="" v-model="form.ModalImage" height="500" width="450">&ndash;&gt;-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; /.modal-content &ndash;&gt;-->
-<!--       </div>-->
-<!--      </div>-->
-<!--      &lt;!&ndash; /.modal-dialog &ndash;&gt;-->
   </div>
 </template>
 
@@ -294,6 +303,7 @@ export default {
   data() {
     return {
       seps: [],
+      total: [],
       portfolios: [],
       divisions: [],
       departments: [],
@@ -302,6 +312,7 @@ export default {
         current_page: 1
       },
       query: '',
+      notifmsg: '',
       type: '',
       Deptunit:'',
       DivisionID:'',
@@ -323,6 +334,7 @@ export default {
         SubmittedDate:'',
         Approval:'',
         HeadCount:'',
+        EmployeeType:'',
         Status:'',
       }),
     }
@@ -343,8 +355,18 @@ export default {
     this.getAllPortfolio();
     this.getAllDepartment();
     this.getAllDesignation();
+    this.calculatesum();
   },
   methods: {
+    calculatesum(){
+      var totalHead = 0 , totalApproval = 0
+      this.seps.forEach(element => {
+        totalHead += parseInt(element.HeadCount);
+        totalApproval += parseInt(element.Approval);
+      });
+
+      this.total =[totalHead,totalApproval]
+    },
     getAllSEP(){
       axios.get(baseurl+ 'api/sep-automation?page='+ this.pagination.current_page
           + "&query=" + this.query
@@ -355,6 +377,7 @@ export default {
       ).then((response)=>{
         this.seps = response.data.data;
         this.pagination = response.data.meta;
+        this.calculatesum();
       }).catch((error)=>{
 
       })
@@ -383,7 +406,6 @@ export default {
       })
     },
     searchData(){
-      // console.log(this.query)
       axios.get(baseurl+"api/search/sep-automation/" + this.query + "?page=" + this.pagination.current_page).then(response => {
         this.seps = response.data.data;
         this.pagination = response.data.meta;
@@ -456,8 +478,14 @@ export default {
     store(){
       this.form.busy = true;
       this.form.post(baseurl+ "api/sep-automation").then(response => {
-        $("#StudentModelModal").modal("hide");
-        this.getAllSEP();
+        if (response.data.message){
+          this.notifmsg = response.data.message
+        }else{
+          $("#StudentModelModal").modal("hide");
+          this.getAllSEP();
+          this.isLoading = true;
+        }
+
       }).catch(e => {
         this.isLoading = false;
       });
@@ -537,3 +565,21 @@ export default {
   float: right;
 }
 </style>
+<div><!--    <div class="modal fade bs-example-modal-center" id="showImageModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
+<!--      <div class="modal-dialog modal-dialog-centered" style="min-width: 80%">-->
+<!--        <div class="modal-content">-->
+<!--          <div class="modal-header">-->
+<!--            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="closeModal">×</button>-->
+<!--          </div>-->
+<!--          <div class="modal-body">-->
+<!--            <embed src = "/mdp-training/public/file/SEP/170255708118992253.pdf" width="100%" height="800" type='application/pdf'>-->
+
+
+<!--            &lt;!&ndash;            <img :src="showImage(form.SepFile)" alt="" height="40px" width="40px">&ndash;&gt;-->
+<!--&lt;!&ndash;            <img :src="tableImage2(form.SepFile)" alt="" v-model="form.ModalImage" height="500" width="450">&ndash;&gt;-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; /.modal-content &ndash;&gt;-->
+<!--       </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; /.modal-dialog &ndash;&gt;--></div>
