@@ -60,19 +60,29 @@ export default {
   mixins: [Common],
   data() {
     return {
+      TotalTrainingListCount: '',
       isLoading: false,
     }
   },
+  created() {
+    this.getAllChartReport()
+  },
   mounted() {
     document.title = 'MDP Chart | MDP';
-    this.loadChart();
   },
   methods: {
+    getAllChartReport(){
+      axios.get(baseurl + `api/get-all-chart-report`).then((response)=>{
+        this.TotalTrainingListCount = response.data.training_count[0].TotalTrainingList
+        this.loadChart();
+      });
+    },
     loadChart(){
       // Create the echarts instance
       let myChartOne = echarts.init(document.getElementById('main'));
       let myChartTwo = echarts.init(document.getElementById('Two'));
       let myChartThree = echarts.init(document.getElementById('Three'));
+      console.log(this.TotalTrainingListCount)
       // Draw the chart
       myChartOne.setOption({
         title: {
@@ -85,18 +95,17 @@ export default {
         yAxis: {
           type: 'value',
           min: 0,
-          max: 100
+          max: this.TotalTrainingListCount
         },
         series: [
           {
             name: 'sales',
             type: 'bar',
-            data: [100]
+            data: [this.TotalTrainingListCount]
           }
         ]
       });
       myChartOne.on('click', (params) =>{
-        // console.log(params.name)
         this.$router.push(baseurl + 'mdp-organized-pending-ptc/' + params.name)
       });
 

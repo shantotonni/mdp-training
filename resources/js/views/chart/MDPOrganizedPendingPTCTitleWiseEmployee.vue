@@ -23,20 +23,20 @@
                     <thead>
                     <tr>
                       <th class="text-center">SN</th>
-                      <!--                      <th class="text-center">Department</th>-->
+                      <th class="text-center">Training Title</th>
                       <th class="text-center">StaffID</th>
                       <th class="text-center">EmployeeName</th>
                       <th class="text-center">Status</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(ptc, i) in ptcs" v-if="ptcs.length"  >
-                      <th scope="row" class="text-center">{{ ++i }}</th>
-                      <td class="text-right">{{ ptc.StaffID }}</td>
-                      <td>{{ ptc.EmployeeName }}</td>
-                      <td>{{ ptc.Status }}</td>
-
-                    </tr>
+                      <tr v-for="(ptc, i) in ptcs" v-if="ptcs.length"  >
+                        <th scope="row" class="text-center">{{ ++i }}</th>
+                        <td>{{ ptc.TrainingTitle }}</td>
+                        <td>{{ ptc.StaffID }}</td>
+                        <td>{{ ptc.EmployeeName }}</td>
+                        <td>{{ ptc.Status }}</td>
+                      </tr>
                     </tbody>
                   </table>
                   <br>
