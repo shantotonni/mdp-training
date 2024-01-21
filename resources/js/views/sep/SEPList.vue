@@ -123,7 +123,7 @@
                     </tr>
                     <tr>
                       <td colspan="8" class="text-right" ><b>Total Approval</b></td>
-                      <td class="text-center" colspan="4">{{ total[1]}}</td>
+                      <td class="text-center" colspan="4"> <b>{{ total[1]}}</b></td>
                     </tr>
                     <tr>
                       <td colspan="8" class="text-right"><b>Total Current HeadCount</b></td>
