@@ -122,12 +122,12 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="8">Total Approval</td>
-                      <td class="text-center" colspan="4">{{ total[1]}}</td>
+                      <td colspan="8" class="text-right" ><b>Total Approval</b></td>
+                      <td class="text-center" colspan="4"> <b>{{ total[1]}}</b></td>
                     </tr>
                     <tr>
-                      <td colspan="8">Total Current HeadCount</td>
-                      <td class="text-center" colspan="4">{{ total[0]}}</td>
+                      <td colspan="8" class="text-right"><b>Total Current HeadCount</b></td>
+                      <td class="text-center" colspan="4"><b>{{ total[0]}}</b></td>
                     </tr>
 
 
@@ -479,7 +479,10 @@ export default {
       this.form.busy = true;
       this.form.post(baseurl+ "api/sep-automation").then(response => {
         if (response.data.message){
-          this.notifmsg = response.data.message
+          setTimeout(() => {
+            this.notifmsg = response.data.message
+          },5000);
+
         }else{
           $("#StudentModelModal").modal("hide");
           this.getAllSEP();
