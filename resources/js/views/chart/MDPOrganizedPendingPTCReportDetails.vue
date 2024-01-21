@@ -26,9 +26,10 @@
                       <th class="text-center">Training Title</th>
                       <th class="text-center">Training Type</th>
                       <th class="text-center">Training Date</th>
+                      <th class="text-center">Status</th>
                       <th class="text-center">Training Type Status</th>
                       <th class="text-center">Employee Name</th>
-                      <th class="text-center">Action</th>
+<!--                      <th class="text-center">Action</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -37,11 +38,12 @@
                         <td>{{ ptc.TrainingTitle }}</td>
                         <td class="text-right">{{ ptc.TrainingType }}</td>
                         <td class="text-right">{{ ptc.TrainingDate }}</td>
+                        <td class="text-right">{{ ptc.Status }}</td>
                         <td class="text-right">{{ ptc.TrainingTypeStatus }}</td>
                         <td class="text-right">{{ ptc.EmployeeName }}</td>
-                        <td class="text-center">
-                          <button type="button" @click="redirectToNext(ptc.TrainingTitle )"class="btn btn-info btn-sm">Details</button>
-                        </td>
+<!--                        <td class="text-center">-->
+<!--                          <button type="button" @click="redirectToNext(ptc.TrainingTitle )"class="btn btn-info btn-sm">Details</button>-->
+<!--                        </td>-->
                       </tr>
                     </tbody>
                   </table>

@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     getAllLearningTransfer() {
-      axios.get(baseurl + `api/learning-transfer-details/${this.$route.params.Period}/${this.$route.params.TrainingID}`).then((response)=>{
+      axios.get(baseurl + `api/learning-transfer-details/${this.$route.params.Period}/${this.$route.params.TrainingTitle}`).then((response)=>{
         console.log(response);
         this.learning_lists = response.data.data;
       }).catch((error) => {

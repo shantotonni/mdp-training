@@ -70,30 +70,38 @@ class MDPChartController extends Controller
         ]);
     }
     public function MDPPeriodWiseTraining($Period){
-        $list = DB::select("select MDPF.TrainingID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType,MDPF.LearningTransfer,SUM(MDPF.LearningTransfer) / COUNT(MDPF.TrainingID) as AVGLEarningTransfer
-                         from MDPTrainingFeedback MDPF
-                            join MDPTraining as MDPT 
-                                on MDPF.TrainingID = MDPT.ID
-                            join ManagementDevelopmentPlane MDP
-                                on MDP.ID = MDPT.MDPID
-                         where LearningTransfer is not null 
-                            and MDP.AppraisalPeriod = '$Period'	
-                            and LearningTransfer > 0
-                         group by MDPF.TrainingID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType,MDPF.LearningTransfer");
+        $list = DB::select("select MDP.AppraisalPeriod, MDPT.TrainingTitle,SUM(MDPF.LearningTransfer) / COUNT(MDPF.TrainingID) as AVGLEarningTransfer, COUNT(MDPT.TrainingTitle) as Total
+            from MDPTrainingFeedback MDPF
+            join MDPTraining as MDPT 
+                on MDPF.TrainingID = MDPT.ID
+            join ManagementDevelopmentPlane MDP
+                on MDP.ID = MDPT.MDPID
+            where LearningTransfer is not null 
+            and MDP.AppraisalPeriod = '2023-2024'	
+            and LearningTransfer >= 0
+            group by MDP.AppraisalPeriod, MDPT.TrainingTitle");
         return response()->json([
            'data'=>$list
         ]);
     }
 
-    public function MDPLearningTransferDetails($Period,$TrainingID){
-        $list = DB::select("select MDP.EmployeeName,MDP.StaffID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType, MDPF.LearningTransfer from MDPTrainingFeedback MDPF
-                     join MDPTraining as MDPT 
-                            on MDPF.TrainingID = MDPT.ID
-                        join ManagementDevelopmentPlane MDP
-                            on MDP.ID = MDPT.MDPID
-                     where  LearningTransfer is not null and LearningTransfer > 0
-                        and MDP.AppraisalPeriod = '$Period'	
-                        and MDPF.TrainingID='$TrainingID'");
+    public function MDPLearningTransferDetails($Period,$TrainingTitle){
+        $list = DB::select("select MDP.AppraisalPeriod, MDPT.TrainingTitle, MDPT.ID,MDPT.MDPID, MDPT.TrainingType, MDPT.TrainingDate, MDPT.TrainingTypeStatus,
+            MDPF.TrainingFeedbackID, MDP.StaffID,MDP.EmployeeName,D.DesgName,MDP.Department, MDPF.Status, MDPF.DoneDate, MDPF.OfferDateOne,
+             MDPF.OfferDateTwo,MDPF.OfferDateThree,MDPF.Feedback,MDPF.LearningTransfer,MDPF.TrainerName
+            from MDPTrainingFeedback MDPF
+            join MDPTraining as MDPT 
+                on MDPF.TrainingID = MDPT.ID
+            join ManagementDevelopmentPlane MDP
+                on MDP.ID = MDPT.MDPID
+            INNER JOIN Employer E
+                ON MDP.StaffID = E.EmpCode 
+            INNER JOIN Designation D
+                ON E.DesgCode= D.DesgCode
+            where LearningTransfer is not null 
+            and MDP.AppraisalPeriod = '$Period'	
+            and LearningTransfer >= 0
+            and MDPT.TrainingTitle = '$TrainingTitle'");
         return response()->json([
             'data'=>$list
         ]);
@@ -102,31 +110,39 @@ class MDPChartController extends Controller
 
     public function MDPPeriodWiseFeedback($Period){
 
-        $list = DB::select("select MDPF.TrainingID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType,SUM(MDPF.Feedback) / COUNT(MDPF.TrainingID) as Feedback
-                     from MDPTrainingFeedback MDPF
-                        join MDPTraining as MDPT 
-                            on MDPF.TrainingID = MDPT.ID
-                        join ManagementDevelopmentPlane MDP
-                            on MDP.ID = MDPT.MDPID
-                     where Feedback is not null 
-                        and MDP.AppraisalPeriod = '$Period'	
-                        and Feedback > 0
-                     group by MDPF.TrainingID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType,MDPF.Feedback");
+        $list = DB::select("select MDP.AppraisalPeriod, MDPT.TrainingTitle,SUM(MDPF.Feedback) / COUNT(MDPF.TrainingID) as Feedback, COUNT(MDPT.TrainingTitle) as Total
+                    from MDPTrainingFeedback MDPF
+                    join MDPTraining as MDPT 
+                        on MDPF.TrainingID = MDPT.ID
+                    join ManagementDevelopmentPlane MDP
+                        on MDP.ID = MDPT.MDPID
+                    where Feedback is not null 
+                    and MDP.AppraisalPeriod = '$Period'	
+                    and Feedback >= 0
+                    group by MDP.AppraisalPeriod, MDPT.TrainingTitle");
         return response()->json([
            'data'=>$list
         ]);
     }
 
-    public function MDPPeriodWiseFeedbackDetails($Period, $TrainingID){
+    public function MDPPeriodWiseFeedbackDetails($Period, $TrainingTitle){
 
-        $list = DB::select("select MDP.EmployeeName,MDP.StaffID,MDP.AppraisalPeriod, MDPT.TrainingTitle,MDPT.TrainingDate, MDPT.TrainingType, MDPF.Feedback from MDPTrainingFeedback MDPF
-                     join MDPTraining as MDPT 
-                            on MDPF.TrainingID = MDPT.ID
-                        join ManagementDevelopmentPlane MDP
-                            on MDP.ID = MDPT.MDPID
-                     where Feedback is not null and Feedback > 0
-                        and MDP.AppraisalPeriod = '$Period'	
-                        and MDPF.TrainingID='$TrainingID'");
+        $list = DB::select("select MDP.AppraisalPeriod,MDPT.TrainingTitle, MDPT.ID,MDPT.MDPID, MDPT.TrainingType, MDPT.TrainingDate, MDPT.TrainingTypeStatus,
+            MDPF.TrainingFeedbackID, MDP.StaffID,MDP.EmployeeName,D.DesgName,MDP.Department, MDPF.Status, MDPF.DoneDate, MDPF.OfferDateOne,
+             MDPF.OfferDateTwo,MDPF.OfferDateThree,MDPF.Feedback,MDPF.LearningTransfer,MDPF.TrainerName
+            from MDPTrainingFeedback MDPF
+            join MDPTraining as MDPT 
+                on MDPF.TrainingID = MDPT.ID
+            join ManagementDevelopmentPlane MDP
+                on MDP.ID = MDPT.MDPID
+            INNER JOIN Employer E
+                ON MDP.StaffID = E.EmpCode 
+            INNER JOIN Designation D
+                ON E.DesgCode= D.DesgCode
+            where Feedback is not null 
+            and MDP.AppraisalPeriod = '$Period'	
+            and Feedback >= 0
+            and MDPT.TrainingTitle = '$TrainingTitle'");
         return response()->json([
             'data'=>$list
         ]);

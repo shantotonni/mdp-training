@@ -140,10 +140,10 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::post('mdp-organized-pending-ptc-title-wise-employee', [MDPChartController::class,'getOrganizedPendingPTCTitleWiseEmployee']);
     //Learning Transfer
     Route::get('mdp-period-wise-training/{Period}', [MDPChartController::class,'MDPPeriodWiseTraining']);
-    Route::get('learning-transfer-details/{Period}/{TrainingID}', [MDPChartController::class,'MDPLearningTransferDetails']);
+    Route::get('learning-transfer-details/{Period}/{TrainingTitle}', [MDPChartController::class,'MDPLearningTransferDetails']);
     Route::post('export-training',[MDPChartController::class,'exportTraining']);
     //Training Feedback
     Route::get('mdp-period-wise-feedback/{Period}', [MDPChartController::class,'MDPPeriodWiseFeedback']);
-    Route::get('feedback-details/{Period}/{TrainingID}', [MDPChartController::class,'MDPPeriodWiseFeedbackDetails']);
+    Route::get('feedback-details/{Period}/{TrainingTitle}', [MDPChartController::class,'MDPPeriodWiseFeedbackDetails']);
 
 });

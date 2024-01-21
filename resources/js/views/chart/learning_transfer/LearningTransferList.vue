@@ -23,9 +23,8 @@
                       <th>SN</th>
                       <th>Appraisal Period</th>
                       <th>Training Title </th>
-                      <th>Training Type</th>
-                      <th>Training Date</th>
                       <th>Learning Transfer</th>
+                      <th>Total</th>
                       <th>Action</th>
                     </tr>
                     </thead>
@@ -34,11 +33,10 @@
                       <th>{{ ++i }}</th>
                       <td>{{ list.AppraisalPeriod }}</td>
                       <td>{{ list.TrainingTitle }}</td>
-                      <td>{{ list.TrainingType }}</td>
-                      <td>{{ list.TrainingDate }}</td>
                       <td>{{ list.AVGLEarningTransfer }}</td>
+                      <td>{{ list.Total }}</td>
                       <td>
-                        <router-link :to="`learning-transfer-details/${list.AppraisalPeriod}/${list.TrainingID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i>Details</router-link>
+                        <router-link :to="`learning-transfer-details/${list.AppraisalPeriod}/${list.TrainingTitle}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i>Details</router-link>
                       </td>
                     </tr>
                     </tbody>
