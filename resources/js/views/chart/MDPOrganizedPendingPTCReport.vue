@@ -47,7 +47,7 @@ export default {
     axios.get(baseurl + `api/mdp-organized-pending-ptc/${this.$route.params.Period}`).then((response)=>{
       this.key = Object.keys(response.data.ptc[0])
       this.values = Object.values(response.data.ptc[0])
-      this.total = response.data.total[0].Total
+      this.total = response.data.total
       this.loadChart()
     });
   },
@@ -84,8 +84,6 @@ export default {
         ]
       });
       myChart.on('click', (params) =>{
-        // Print name in console
-        console.log(params.name);
         this.$router.push(baseurl + 'mdp-organized-pending-ptc-details/' + this.$route.params.Period + '/' + params.name)
       });
     },
@@ -102,7 +100,6 @@ export default {
     display: none;
     top: 10px;
   }
-
   .title:hover .delete {
     display: block
   }

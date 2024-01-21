@@ -23,24 +23,26 @@
                     <thead>
                     <tr>
                       <th class="text-center">SN</th>
-                      <!--                      <th class="text-center">Department</th>-->
                       <th class="text-center">Training Title</th>
-                      <th class="text-center">Total</th>
+                      <th class="text-center">Training Type</th>
+                      <th class="text-center">Training Date</th>
+                      <th class="text-center">Training Type Status</th>
+                      <th class="text-center">Employee Name</th>
                       <th class="text-center">Action</th>
-
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(ptc, i) in ptcs" v-if="ptcs.length"  >
-                      <th scope="row" class="text-center">{{ ++i }}</th>
-                      <!--                      <td>{{ ptc.DepartmentName }}</td>-->
-                      <td >{{ ptc.TrainingTitle }}</td>
-                      <td class="text-right">{{ ptc.Total }}</td>
-                      <td class="text-center">
-                        <button type="button" @click="redirectToNext(ptc.TrainingTitle )"class="btn btn-info btn-sm">Details</button>
-                      </td>
-
-                    </tr>
+                      <tr v-for="(ptc, i) in ptcs" v-if="ptcs.length">
+                        <th scope="row" class="text-center">{{ ++i }}</th>
+                        <td>{{ ptc.TrainingTitle }}</td>
+                        <td class="text-right">{{ ptc.TrainingType }}</td>
+                        <td class="text-right">{{ ptc.TrainingDate }}</td>
+                        <td class="text-right">{{ ptc.TrainingTypeStatus }}</td>
+                        <td class="text-right">{{ ptc.EmployeeName }}</td>
+                        <td class="text-center">
+                          <button type="button" @click="redirectToNext(ptc.TrainingTitle )"class="btn btn-info btn-sm">Details</button>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                   <br>
