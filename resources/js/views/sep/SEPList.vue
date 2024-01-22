@@ -122,7 +122,10 @@
                       </td>
                     </tr>
                     <tr>
-                      <td class="text-right" colspan="7">
+                      <td class="text-center" colspan="2">
+                        <b>Total Headcount</b>
+                      </td>
+                      <td class="text-right" colspan="5">
                         <b>{{ total[1]}}</b>
                         <span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp</span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span>
                       </td>
