@@ -123,10 +123,10 @@ const routes = [
             {path: baseurl + 'mdp-organized-pending-ptc-title-wise-employee/:Title/:Period/:Status', name: 'MDPOrganizedPendingPTCTitleWiseEmployee', component: MDPOrganizedPendingPTCTitleWiseEmployee},
             //Learning Transfer
             {path: baseurl + 'mdp-period-wise-training/:Period', name: 'MDPPeriodWiseTraining', component: MDPPeriodWiseTraining},
-            {path: baseurl + 'mdp-period-wise-training/learning-transfer-details/:Period/:TrainingID', name: 'LearningTransferDetails', component: LearningTransferDetails},
+            {path: baseurl + 'mdp-period-wise-training/learning-transfer-details/:Period/:TrainingTitle', name: 'LearningTransferDetails', component: LearningTransferDetails},
             //feedback
             {path: baseurl + 'mdp-period-wise-feedback/:Period', name: 'MDPPeriodWiseFeedback', component: MDPPeriodWiseFeedback},
-            {path: baseurl + 'mdp-period-wise-feedback/feedback-details/:Period/:TrainingID', name: 'FeedbackDetails', component: FeedbackDetails},
+            {path: baseurl + 'mdp-period-wise-feedback/feedback-details/:Period/:TrainingTitle', name: 'FeedbackDetails', component: FeedbackDetails},
         ],
         beforeEnter(to, from, next) {
             checkToken(to, from, next);
