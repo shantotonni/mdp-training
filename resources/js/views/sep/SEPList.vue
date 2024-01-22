@@ -122,12 +122,17 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="8" class="text-right" ><b>Total Approval</b></td>
-                      <td class="text-center" colspan="4"> <b>{{ total[1]}}</b></td>
+                      <td colspan="6"  ><b>Total Approval</b></td>
+                      <td class="text-left" colspan="6">
+                        <span> &nbsp </span><span> &nbsp </span><span> &nbsp </span>
+                        <b>{{ total[1]}}</b>
+                      </td>
                     </tr>
                     <tr>
-                      <td colspan="8" class="text-right"><b>Total Current HeadCount</b></td>
-                      <td class="text-center" colspan="4"><b>{{ total[0]}}</b></td>
+                      <td colspan="7" ><b>Total Current HeadCount</b></td>
+                      <td class="text-left" colspan="5">
+                        <span> &nbsp</span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span>
+                        <b>{{ total[0]}}</b></td>
                     </tr>
 
 
