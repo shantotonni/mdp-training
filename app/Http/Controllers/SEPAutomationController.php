@@ -82,7 +82,7 @@ class SEPAutomationController extends Controller
                 $sep->Status= $request->Status ;
                 $sep->EmployeeType= $request->EmployeeType ;
                 $sep->CreatedDate= Carbon::now() ;
-//                $sep->save() ;
+                $sep->save() ;
 
                 $sep= new SEPAutomationLog();
                 $sep->CreatedBy= $empcode;
@@ -97,7 +97,7 @@ class SEPAutomationController extends Controller
                 $sep->EmployeeType= $request->EmployeeType ;
                 $sep->SepFile= $fileNameToStore ;
                 $sep->CreatedDate= Carbon::now() ;
-//                $sep->save() ;
+                $sep->save() ;
             } catch (\Exception $exception) {
                 return response()->json([
                     'status' => 'error',
