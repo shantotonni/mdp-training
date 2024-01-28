@@ -126,12 +126,10 @@
                         <b>Total Headcount</b>
                       </td>
                       <td class="text-right" colspan="5">
-                        <b>{{ total[1]}}</b>
-                        <span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp</span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span>
+                        {{ total[1]}}
                       </td>
-                      <td class="text-left" colspan="5">
-                        <span> &nbsp</span><span> &nbsp </span><span> &nbsp </span><span> &nbsp</span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span><span> &nbsp</span><span> &nbsp </span><span> &nbsp </span><span> &nbsp </span>
-                        <b>{{ total[0]}}</b></td>
+                      <td class="text-right">{{ total[0]}}</td>
+                      <td class="text-right" colspan="4"></td>
                     </tr>
 
 
@@ -482,15 +480,13 @@ export default {
     store(){
       this.form.busy = true;
       this.form.post(baseurl+ "api/sep-automation").then(response => {
-        if (response.data.message){
-          setTimeout(() => {
-            this.notifmsg = response.data.message
-          },5000);
-
-        }else{
+        if (response.data.status == 'success'){
           $("#StudentModelModal").modal("hide");
           this.getAllSEP();
-          this.isLoading = true;
+          this.isLoading = false;
+          this.$toaster.success(response.data.message);
+        }else{
+          this.$toaster.error(response.data.message);
         }
 
       }).catch(e => {

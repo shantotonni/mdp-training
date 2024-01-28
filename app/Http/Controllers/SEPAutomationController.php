@@ -97,7 +97,11 @@ class SEPAutomationController extends Controller
                 $sep->EmployeeType= $request->EmployeeType ;
                 $sep->SepFile= $fileNameToStore ;
                 $sep->CreatedDate= Carbon::now() ;
-                $sep->save() ;
+                $sep->save();
+                return response()->json([
+                    'status' => 'success',
+                    'message'=>'Successfully Stored'
+                ]);
             } catch (\Exception $exception) {
                 return response()->json([
                     'status' => 'error',
@@ -106,7 +110,7 @@ class SEPAutomationController extends Controller
             }
         }else{
             return response()->json([
-                'status' => 'success',
+                'status' => 'error',
                 'message'=>'Sep File field is required.'
             ]);
         }
