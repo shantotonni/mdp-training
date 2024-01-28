@@ -244,6 +244,7 @@
                   <div class="form-group">
                     <label>Approved Date</label>
                     <datepicker name="Submitted Date"
+                                input-class="form-control"
                                 placeholder="Enter To Date"
                                 :format="customFormatter"
                                 v-model="form.SubmittedDate"
