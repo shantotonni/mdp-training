@@ -48,62 +48,67 @@ class MDPTrainigFeedbackController extends Controller
     }
 
     public function store(Request $request){
+        try {
+            $data                   = (object)$request->row_data;
+            $mdp                    = ManagementDevelopmentPlane::where('StaffID',$data->EmpCode)->where('AppraisalPeriod',$data->AppraisalPeriod)->first();
+            $training_list          = MDPTraining::where('MDPID',$mdp->ID)->where('TrainingTitle',$data->TrainingTitle)->whereNotNull('TrainingTitle')->first();
+            $MDPTrainingFeedback    = MDPTrainingFeedback::where('TrainingID',$training_list->ID)->first();
 
-        $data                   = (object)$request->row_data;
-        $mdp                    = ManagementDevelopmentPlane::where('StaffID',$data->EmpCode)->where('AppraisalPeriod',$data->AppraisalPeriod)->first();
-        $training_list          = MDPTraining::where('MDPID',$mdp->ID)->where('TrainingTitle',$data->TrainingTitle)->whereNotNull('TrainingTitle')->first();
-        $MDPTrainingFeedback    = MDPTrainingFeedback::where('TrainingID',$training_list->ID)->first();
-
-        if (!$MDPTrainingFeedback){
-            $MDPTrainingFeedback = new MDPTrainingFeedback();
-        }
-        if ($data->Status == 'offered'){
-            $DoneDate           = '';
-            $Feedback           = '';
-            $LearningTransfer   = '';
-        }else{
-            $DoneDate = date('Y-m-d',strtotime($data->DoneDate));
-            $Feedback           = $data->Feedback;
-            $LearningTransfer   = $data->LearningTransfer;
-        }
-
-        if ($data->OfferDateOne)
-            $OfferDateOne       = date('Y-m-d',strtotime($data->OfferDateOne));
+            if (!$MDPTrainingFeedback){
+                $MDPTrainingFeedback = new MDPTrainingFeedback();
+            }
+            if ($data->Status == 'offered'){
+                $DoneDate           = '';
+                $Feedback           = null;
+                $LearningTransfer   = null;
+            }else{
+                $DoneDate = date('Y-m-d',strtotime($data->DoneDate));
+                $Feedback           = $data->Feedback;
+                $LearningTransfer   = $data->LearningTransfer;
+            }
+            if ($data->OfferDateOne)
+                $OfferDateOne       = date('Y-m-d',strtotime($data->OfferDateOne));
             else $OfferDateOne  = '';
 
-        if ($data->OfferDateTwo)
-            $OfferDateTwo  = date('Y-m-d',strtotime($data->OfferDateTwo));
-        else $OfferDateTwo = '';
+            if ($data->OfferDateTwo)
+                $OfferDateTwo  = date('Y-m-d',strtotime($data->OfferDateTwo));
+            else $OfferDateTwo = '';
 
-        if ($data->OfferDateThree)
-            $OfferDateThree  = date('Y-m-d',strtotime($data->OfferDateThree));
-        else $OfferDateThree = '';
+            if ($data->OfferDateThree)
+                $OfferDateThree  = date('Y-m-d',strtotime($data->OfferDateThree));
+            else $OfferDateThree = '';
 
-        if ($data->OfferDateFour)
-            $OfferDateFour  = date('Y-m-d',strtotime($data->OfferDateFour));
-        else $OfferDateFour = '';
+            if ($data->OfferDateFour)
+                $OfferDateFour  = date('Y-m-d',strtotime($data->OfferDateFour));
+            else $OfferDateFour = '';
 
-        if ($data->OfferDateFive)
-            $OfferDateFive  = date('Y-m-d',strtotime($data->OfferDateFive));
-        else $OfferDateFive = '';
+            if ($data->OfferDateFive)
+                $OfferDateFive  = date('Y-m-d',strtotime($data->OfferDateFive));
+            else $OfferDateFive = '';
 
-        $MDPTrainingFeedback->TrainingID        = $training_list->ID;
-        $MDPTrainingFeedback->Status            = $data->Status;
-        $MDPTrainingFeedback->DoneDate          = $DoneDate;
-        $MDPTrainingFeedback->Feedback          = $Feedback;
-        $MDPTrainingFeedback->LearningTransfer  = $LearningTransfer;
-        $MDPTrainingFeedback->OfferDateOne      = $OfferDateOne;
-        $MDPTrainingFeedback->OfferDateTwo      = $OfferDateTwo;
-        $MDPTrainingFeedback->OfferDateThree    = $OfferDateThree;
-        $MDPTrainingFeedback->OfferDateFour     = $OfferDateFour;
-        $MDPTrainingFeedback->OfferDateFive     = $OfferDateFive;
-        $MDPTrainingFeedback->TrainerName       = $data->TrainerName;
-        $MDPTrainingFeedback->StaffID           = $data->EmpCode;
-        $MDPTrainingFeedback->save();
-        return response()->json([
-           'status'=>200,
-           'message'=>'Feedback Submitted Successfully'
-        ]);
+            $MDPTrainingFeedback->TrainingID        = $training_list->ID;
+            $MDPTrainingFeedback->Status            = $data->Status;
+            $MDPTrainingFeedback->DoneDate          = $DoneDate;
+            $MDPTrainingFeedback->Feedback          = $Feedback;
+            $MDPTrainingFeedback->LearningTransfer  = $LearningTransfer;
+            $MDPTrainingFeedback->OfferDateOne      = $OfferDateOne;
+            $MDPTrainingFeedback->OfferDateTwo      = $OfferDateTwo;
+            $MDPTrainingFeedback->OfferDateThree    = $OfferDateThree;
+            $MDPTrainingFeedback->OfferDateFour     = $OfferDateFour;
+            $MDPTrainingFeedback->OfferDateFive     = $OfferDateFive;
+            $MDPTrainingFeedback->TrainerName       = $data->TrainerName;
+            $MDPTrainingFeedback->StaffID           = $data->EmpCode;
+            $MDPTrainingFeedback->save();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Feedback Submitted Successfully'
+            ]);
+        }catch (\Exception $exception){
+            return response()->json([
+                'status'=>401,
+                'message'=>$exception->getMessage()
+            ]);
+        }
     }
 
     public function additionalTrainingAddAndFeedback(Request $request){
