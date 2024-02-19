@@ -244,6 +244,7 @@
                   <div class="form-group">
                     <label>Approved Date</label>
                     <datepicker name="Submitted Date"
+                                input-class="form-control"
                                 placeholder="Enter To Date"
                                 :format="customFormatter"
                                 v-model="form.SubmittedDate"
@@ -255,7 +256,7 @@
                 </div>
                   <div class="col-6 col-md-6">
                     <div class="form-group">
-                      <label>Status</label>
+                      <label>Employee Status</label>
                       <select v-model="form.EmployeeType" name="EmployeeType" id="EmployeeType" class="form-control" :class="{ 'is-invalid': form.errors.has('EmployeeType') }" required>
                         <option value="Permanent">Permanent</option>
                         <option value="Contractual" >Contractual</option>
