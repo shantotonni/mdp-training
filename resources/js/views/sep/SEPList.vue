@@ -90,7 +90,7 @@
                       <th class="text-center">Approved Date</th>
                       <th class="text-center">Total Approval</th>
                       <th class="text-center">Current HeadCount</th>
-                      <th class="text-center">Employment Tag</th>
+                      <th class="text-center">Employment Type</th>
                       <th class="text-center">SepFile</th>
                       <th class="text-center">Status</th>
                       <th class="text-center">Action</th>
@@ -256,7 +256,7 @@
                 </div>
                   <div class="col-6 col-md-6">
                     <div class="form-group">
-                      <label>Employee Status</label>
+                      <label>Employee Type</label>
                       <select v-model="form.EmployeeType" name="EmployeeType" id="EmployeeType" class="form-control" :class="{ 'is-invalid': form.errors.has('EmployeeType') }" required>
                         <option value="Permanent">Permanent</option>
                         <option value="Contractual" >Contractual</option>
