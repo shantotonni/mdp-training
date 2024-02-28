@@ -150,7 +150,11 @@ export default {
       let row_data = this.form.training_list[i];
       this.form.busy = true;
       axios.post(baseurl + "api/training-feedback-submit",{row_data: row_data}).then(response => {
-        this.$toaster.success('Data Successfully Updated');
+        if (response.data.status === 200){
+          this.$toaster.success('Data Successfully Updated');
+        }else {
+          this.$toaster.error(response.data.message);
+        }
       }).catch(e => {
         this.isLoading = false;
       });
