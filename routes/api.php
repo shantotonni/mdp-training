@@ -104,13 +104,9 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::apiResource('sep-portfolio',PortfolioController::class);
     Route::get('search/sep-portfolio/{query}', [PortfolioController::class,'search']);
 
-
-
     Route::get('all-division', [SEPAutomationController::class,'allDivision']);
     Route::post('all-portfolio-by-division', [SEPAutomationController::class,'allPortfolio']);
     Route::get('all-designation', [SEPAutomationController::class,'allDesignation']);
-
-
 
     //job description
     Route::get('job-description/list',[JobDescriptionController::class,'index']);

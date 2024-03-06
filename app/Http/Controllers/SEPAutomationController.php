@@ -47,7 +47,6 @@ class SEPAutomationController extends Controller
 
         $sep = $sep->orderBy('SEPID','desc')->where('CreatedBy',$empcode)
             ->where('Status','Y')->paginate(15);
-
         return new SEPAutomationCollection($sep);
     }
     public function store(SEPAutomationStoreRequest $request){
