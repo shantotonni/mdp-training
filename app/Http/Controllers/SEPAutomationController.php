@@ -32,21 +32,23 @@ class SEPAutomationController extends Controller
 
         $sep = SEPAutomation::query()->with('department','designation','division','portfolio');
         if (!empty($DivisionID)){
-            $sep = $sep->orwhere('DivisionID',$DivisionID);
+            $sep = $sep->where('DivisionID',$DivisionID);
         }
         if (!empty($PortfolioID)){
-            $sep = $sep->orwhere('PortfolioID',$PortfolioID);
+            $sep = $sep->where('PortfolioID',$PortfolioID);
         }
         if (!empty($DepartmentID)){
-            $sep = $sep->orwhere('DepartmentID',$DepartmentID);
+            $sep = $sep->where('DepartmentID',$DepartmentID);
         }
         if (!empty($Designation)){
             $DesignationID = $Designation->DesignationID;
-            $sep = $sep->orwhere('DesignationID',$DesignationID);
+            $sep = $sep->where('DesignationID',$DesignationID);
         }
 
-        $sep = $sep->orderBy('SEPID','desc')->where('CreatedBy',$empcode)
-            ->where('Status','Y')->paginate(15);
+        $sep = $sep->where('Status','Y')
+            ->where('CreatedBy',$empcode)
+            ->paginate(15);
+
         return new SEPAutomationCollection($sep);
     }
     public function store(SEPAutomationStoreRequest $request){
