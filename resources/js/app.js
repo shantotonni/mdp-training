@@ -57,6 +57,7 @@ Vue.component('barchart', require('./components/chart/Bar').default);
 
 //custom pagination component
 Vue.component('pagination', require('./components/partial/PaginationComponent.vue').default);
+Vue.component('report-pagination', require('./components/partial/ReportPaginationComponent.vue').default);
 
 
 const app = new Vue({

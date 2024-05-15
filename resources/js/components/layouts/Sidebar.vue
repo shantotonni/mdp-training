@@ -67,11 +67,13 @@
           <li>
             <a href="javascript:void(0);" class="waves-effect">
               <i class="mdi mdi-twitch"></i>
-              <span>Echart Report<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
+              <span>Report<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
             </a>
             <ul class="submenu">
               <li>
-                <router-link :to="{name: 'MDPChartReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Report</router-link>
+                <router-link :to="{name: 'MDPChartReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Echart Report</router-link>
+                <router-link :to="{name: 'PendingPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Pending PTC Report</router-link>
+                <router-link :to="{name: 'ApprovedPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Approved PTC Report</router-link>
               </li>
             </ul>
           </li>

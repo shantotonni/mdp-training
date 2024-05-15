@@ -48,6 +48,10 @@ import LearningTransferDetails from '../views/chart/learning_transfer/LearningTr
 import MDPPeriodWiseFeedback from '../views/chart/training_feedback/LearningTransferList.vue'
 import FeedbackDetails from '../views/chart/training_feedback/FeedbackDetails.vue'
 
+//report
+import PendingPTCReport from '../views/report/PendingPTCReport.vue'
+import ApprovedPTCReport from '../views/report/ApprovedPTCReport.vue'
+
 import NotFound from '../views/404/Index';
 import {baseurl} from '../base_url'
 
@@ -61,7 +65,6 @@ const config = () => {
 }
 const checkToken = (to, from, next) => {
     let token = localStorage.getItem('token');
-    console.log(token)
     if (token === undefined || token === null || token === '') {
         next(baseurl + 'login');
     } else {
@@ -127,6 +130,9 @@ const routes = [
             //feedback
             {path: baseurl + 'mdp-period-wise-feedback/:Period', name: 'MDPPeriodWiseFeedback', component: MDPPeriodWiseFeedback},
             {path: baseurl + 'mdp-period-wise-feedback/feedback-details/:Period/:TrainingTitle', name: 'FeedbackDetails', component: FeedbackDetails},
+            //report PendingPTCReport
+            {path: baseurl + 'pending-PTC-report', name: 'PendingPTCReport', component: PendingPTCReport},
+            {path: baseurl + 'approved-PTC-report', name: 'ApprovedPTCReport', component: ApprovedPTCReport},
         ],
         beforeEnter(to, from, next) {
             checkToken(to, from, next);

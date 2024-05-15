@@ -137,7 +137,10 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('get-all-chart-report', [MDPChartController::class,'getAllChartReport']);
     Route::get('mdp-organized-pending-ptc/{Period}', [MDPChartController::class,'getOrganizedPendingPTC']);
     Route::get('mdp-organized-pending-ptc-details/{Period}/{Status}', [MDPChartController::class,'getOrganizedPendingPTCDetails']);
+    Route::post('mdp-pending-ptc-report', [MDPChartController::class,'getPendingPTCReport']);
+    Route::post('mdp-approved-ptc-report', [MDPChartController::class,'getApprovedPTCReport']);
     Route::post('mdp-organized-pending-ptc-title-wise-employee', [MDPChartController::class,'getOrganizedPendingPTCTitleWiseEmployee']);
+
     //Learning Transfer
     Route::get('mdp-period-wise-training/{Period}', [MDPChartController::class,'MDPPeriodWiseTraining']);
     Route::get('learning-transfer-details/{Period}/{TrainingTitle}', [MDPChartController::class,'MDPLearningTransferDetails']);
