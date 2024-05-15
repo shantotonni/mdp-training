@@ -44,7 +44,7 @@
               </li>
             </ul>
           </li>
-          <li>
+          <li v-if="Type === 'sepadmin'">
             <a href="javascript:void(0);" class="waves-effect">
               <i class="mdi mdi-twitch"></i>
               <span>SEP Automation<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
@@ -101,7 +101,8 @@ export default {
   data(){
     return {
       user_menu:[],
-      EmpCode: '',
+      EmpCode:'',
+      Type:'',
       isAdmin: false,
     }
   },
@@ -116,6 +117,7 @@ export default {
       this.axiosPost('me', {}, (response) => {
         if (response.payload){
            this.EmpCode = response.payload.EmpCode;
+           this.Type = response.payload.Type;
         }else {
           this.EmpCode ='';
         }

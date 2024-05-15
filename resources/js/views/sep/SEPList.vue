@@ -75,7 +75,6 @@
                         <input v-model="query" type="text" class="form-control" placeholder="Search">
                       </div>
                     </div>
-
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -114,9 +113,6 @@
                         <span class="badge badge-success" v-if="sep.Status == 'Y'">Active</span>
                         <span class="badge badge-success" v-else>InActive</span>
                       </td>
-<!--                      <td class="text-center">-->
-<!--                        <button @click="calculatesum(sep)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>-->
-<!--                      </td>-->
                       <td class="text-center">
                         <button @click="edit(sep)" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
                       </td>
@@ -131,8 +127,6 @@
                       <td class="text-right">{{ total[0]}}</td>
                       <td class="text-right" colspan="4"></td>
                     </tr>
-
-
                     </tbody>
                   </table>
                   <br>
@@ -283,8 +277,6 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -358,6 +350,22 @@ export default {
     this.calculatesum();
   },
   methods: {
+    getAllSEP(){
+      axios.get(baseurl+ 'api/sep-automation?page='+ this.pagination.current_page
+          + "&query=" + this.query
+          + "&DivisionID=" +this.DivisionID
+          + "&DesignationID=" +JSON.stringify(this.DesignationID)
+          + "&DepartmentID=" + this.DepartmentID
+          + "&PortfolioID=" + this.PortfolioID
+      ).then((response)=>{
+        console.log(response)
+        this.seps = response.data.data;
+        this.pagination = response.data.meta;
+        this.calculatesum();
+      }).catch((error)=>{
+
+      })
+    },
     calculatesum(){
       var totalHead = 0 , totalApproval = 0
       this.seps.forEach(element => {
@@ -367,21 +375,7 @@ export default {
 
       this.total =[totalHead,totalApproval]
     },
-    getAllSEP(){
-      axios.get(baseurl+ 'api/sep-automation?page='+ this.pagination.current_page
-          + "&query=" + this.query
-          + "&DivisionID=" +this.DivisionID
-          + "&DesignationID=" +JSON.stringify(this.DesignationID)
-          + "&DepartmentID=" + this.DepartmentID
-          + "&PortfolioID=" + this.PortfolioID
-      ).then((response)=>{
-        this.seps = response.data.data;
-        this.pagination = response.data.meta;
-        this.calculatesum();
-      }).catch((error)=>{
 
-      })
-    },
     exportSEPList() {
       axios.get(baseurl + 'api/sep-automation?page='+ this.pagination.current_page
           + "&query=" + this.query
@@ -508,7 +502,6 @@ export default {
         this.isLoading = false;
       });
     },
-
     destroy(SEPID){
       Swal.fire({
         title: 'Are you sure?',
