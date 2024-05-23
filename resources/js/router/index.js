@@ -19,6 +19,7 @@ import SEPAutomation from '../views/sep/SEPList.vue'
 import SEPPortfolio from '../views/sep/SEPPortfolio.vue'
 import SEPDepartment from '../views/sep/SEPDepartment.vue'
 import SEPDesignation from '../views/sep/SEPDesignation.vue'
+import RecruitmentRequisition from '../views/recruitment_requisition/Index.vue'
 
 //import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 
@@ -142,6 +143,15 @@ const routes = [
         path: baseurl + 'login',
         name: 'Login',
         component: Login,
+        beforeEnter(to, from, next) {
+            activeToken(to, from, next);
+        }
+    },
+    //Recruitment Requisition 
+    {
+        path: baseurl + 'recruitment-requisition',
+        name: 'RecruitmentRequisition',
+        component: RecruitmentRequisition,
         beforeEnter(to, from, next) {
             activeToken(to, from, next);
         }

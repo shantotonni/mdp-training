@@ -14,9 +14,13 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\CommonController;
-
+use App\Http\Controllers\RecruitmentController;
 
 Route::post('login', [AuthController::class, 'login']);
+
+//Recruitment Requisition
+Route::get('get-all-departments', [RecruitmentController::class, 'allDepartment']);
+Route::post('store-recruitment-requisition', [RecruitmentController::class, 'storeRecruitmentRequisition']);
 
 Route::group(['middleware' => 'jwt'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
