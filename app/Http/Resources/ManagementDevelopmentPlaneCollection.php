@@ -3,14 +3,23 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ManagementDevelopmentPlaneCollection extends ResourceCollection
 {
 
     public function toArray($request)
     {
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $empcode = $payload['EmpCode'];
         return [
-            'data'=>$this->collection->transform(function ($mdp){
+            'data'=>$this->collection->transform(function ($mdp) use($empcode){
+                if ($mdp->SuppervisorStaffID == $empcode){
+                    $superVisor  = 'Y';
+                }else{
+                    $superVisor  = 'N';
+                }
                 return [
                     'ID'=>$mdp->ID,
                     'StaffID'=>$mdp->StaffID,
@@ -21,6 +30,7 @@ class ManagementDevelopmentPlaneCollection extends ResourceCollection
                     'Contact Number'=>$mdp->Mobile,
                     'SupervisorEmail'=>$mdp->SuppervisorEmail,
                     'AppraisalPeriod'=>$mdp->AppraisalPeriod,
+                    'MDPStatus'=>$mdp->MDPStatus,
                     'Mobile'=>$mdp->Mobile,
                     'P1'=>isset($mdp->initiative[0]) ? $mdp->initiative[0]->Name: '',
                     'P2'=>isset($mdp->initiative[1]) ? $mdp->initiative[1]->Name: '',
@@ -35,6 +45,7 @@ class ManagementDevelopmentPlaneCollection extends ResourceCollection
                     'T5'=>isset($mdp->training[4]) ? $mdp->training[4]->TrainingTitle: '',
                     'C1'=>$mdp->AreaOne,
                     'C2'=>$mdp->AreaTwo,
+                    'Supervisor'=>$superVisor,
                 ];
             })
         ];

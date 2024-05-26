@@ -48,6 +48,7 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::get('mdp/print/{ID}', [MDPController::class,'print']);
     Route::get('search/mdp/list/{query}', [MDPController::class,'search']);
     Route::delete('mdp/delete/{ID}', [MDPController::class,'delete']);
+    Route::get('approved-mdp', [MDPController::class,'approvedMDP']);
 
     Route::post('get-employee-by-employee-code', [MDPController::class,'getEmployeeByEmployeeCode']);
     Route::post('get-supervisor-by-employee-code', [MDPController::class,'getSupervisorByEmployeeCode']);

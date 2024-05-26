@@ -266,7 +266,7 @@ import {Common} from "../../mixins/common";
   };
   </script>
   
-  <style>
+  <style scoped>
 #mainContent {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

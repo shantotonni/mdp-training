@@ -80,6 +80,7 @@
                                               <th>Official Email</th>
                                               <th>Mobile</th>
                                               <th>Appraisal Period</th>
+                                              <th>MDP Status</th>
                                               <th class="text-center">Action</th>
                                           </tr>
                                         </thead>
@@ -93,11 +94,19 @@
                                               <td>{{ mdp.OfficialEmail }}</td>
                                               <td>{{ mdp.Mobile }}</td>
                                               <td>{{ mdp.AppraisalPeriod }}</td>
+                                              <td>
+                                                <span v-if="mdp.MDPStatus === 'Pending' " class="badge badge-danger"> Pending</span>
+                                                <span v-if="mdp.MDPStatus === 'Approved' " class="badge badge-success"> Approved</span>
+                                              </td>
                                               <td class="text-center">
                                                 <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
                                                 <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> MDP</router-link>
                                                 <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> PTC</router-link>
                                                 <button @click="destroy(mdp.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                                <button v-if="(mdp.Supervisor === 'Y') && mdp.MDPStatus === 'Pending'"
+                                                        @click="approvedMDP(mdp.ID)" class="btn btn-success btn-sm"><i class="mdi mdi-printer"></i> Approved</button>
+                                                <button v-if="(mdp.Supervisor === 'Y') && mdp.MDPStatus === 'Approved'"
+                                                        @click="approvedMDP(mdp.ID)" class="btn btn-warning btn-sm"><i class="mdi mdi-printer"></i> Disapproved</button>
                                               </td>
                                           </tr>
                                         </tbody>
@@ -213,6 +222,28 @@ export default {
             this.getAllMDPList();
             this.query = "";
             // this.$toaster.success('Data Successfully Refresh');
+        },
+        approvedMDP(mdpID) {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              axios.get(baseurl + 'api/approved-mdp?mdpID=' + mdpID).then((response) => {
+                this.getAllMDPList();
+                Swal.fire(
+                    response.data.title +'!',
+                    response.data.message,
+                    'success'
+                )
+              })
+            }
+          })
         },
         exportMDPList(){
           axios.get(baseurl + 'api/export-mdp-list?query=' +  this.query

@@ -7,6 +7,7 @@ use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\ManagementDevelopmentPlaneCollection;
 use App\Http\Resources\ManagementDevelopmentPlaneResource;
 use App\Http\Resources\SupervisorResource;
+use App\Mail\MDPCreateMail;
 use App\Models\Employee;
 use App\Models\ManagementDevelopmentPlane;
 use App\Models\MDPEmployeeTrainingList;
@@ -18,6 +19,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\Input;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Mail;
 
 class MDPController extends Controller
 {
@@ -43,7 +45,10 @@ class MDPController extends Controller
             }
             $mdp = $mdp->orderBy('ID','desc')->paginate(15);
         }else{
-            $mdp = ManagementDevelopmentPlane::orderBy('ID','desc')->where('StaffID',$empcode)->paginate(15);
+            $mdp = ManagementDevelopmentPlane::orderBy('ID','desc')
+                                                ->where('StaffID',$empcode)
+                                                ->orWhere('SuppervisorStaffID', $empcode)
+                                                ->paginate(15);
         }
         return new ManagementDevelopmentPlaneCollection($mdp);
     }
@@ -107,6 +112,7 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
             $ManagementDevelopmentPlane->CreatedBy = $empcode;
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
+            $ManagementDevelopmentPlane->MDPStatus = 'Pending';
             if ($ManagementDevelopmentPlane->save()){
                 foreach ($initiative as $value){
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
@@ -131,12 +137,18 @@ class MDPController extends Controller
 //                    $areaone->AreaTwoName = $are['AreaTwoName'];
 //                    $areaone->save();
 //                }
+
+                $email = $request->SuppervisorEmail;
+                $data = 'MDP Submitted!';
+                Mail::to($email)->send(new MDPCreateMail($data, $request->EmployeeName, $request->Designation ));
+
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Successfully Submitted.'
                 ]);
             }
+
 
         } catch (\Exception $exception) {
             return response()->json([
@@ -439,6 +451,28 @@ class MDPController extends Controller
        // $suggestive_list = LevelWiseLearningOfferingList::where('Level',$employee_level->Level)->get();
         return response()->json([
             'suggestive_list'=>$suggestive_list,
+        ]);
+    }
+
+    public function approvedMDP(Request $request)
+    {
+        $mdpID = $request->mdpID;
+        $mdp = ManagementDevelopmentPlane::where('ID', $mdpID)->first();
+        if ($mdp->MDPStatus == 'Approved'){
+            $status = 'Pending';
+            $message = 'Successfully Disapproved';
+            $title = 'Disapproved';
+        }else{
+            $status = 'Approved';
+            $message = 'Successfully Approved';
+            $title = 'Approved';
+        }
+        $mdp->MDPStatus = $status;
+        $mdp->save();
+        return response()->json([
+            'status' => 'success',
+            'message' => $message,
+            'title' => $title,
         ]);
     }
 }

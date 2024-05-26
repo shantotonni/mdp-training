@@ -366,7 +366,7 @@ export default {
       suggestive_list: [],
       form: new Form({
         ID :'',
-        AppraisalPeriod :'2023-2024',
+        AppraisalPeriod :'2024-2025',
         StaffID :'',
         EmployeeName :'',
         Designation :'',
