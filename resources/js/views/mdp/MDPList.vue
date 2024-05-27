@@ -99,14 +99,16 @@
                                                 <span v-if="mdp.MDPStatus === 'Approved' " class="badge badge-success"> Approved</span>
                                               </td>
                                               <td class="text-center">
-                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
-                                                <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> MDP</router-link>
-                                                <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"><i class="mdi mdi-printer"></i> PTC</router-link>
-                                                <button @click="destroy(mdp.ID)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm" v-if="mdp.MDPStatus === 'Pending'"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
+                                                <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"
+                                                             v-if="mdp.MDPStatus === 'Approved'"><i class="mdi mdi-printer"></i> MDP</router-link>
+                                                <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"
+                                                             v-if="mdp.MDPStatus === 'Approved'"><i class="mdi mdi-printer"></i> PTC</router-link>
                                                 <button v-if="(mdp.Supervisor === 'Y') && mdp.MDPStatus === 'Pending'"
                                                         @click="approvedMDP(mdp.ID)" class="btn btn-success btn-sm"><i class="mdi mdi-printer"></i> Approved</button>
                                                 <button v-if="(mdp.Supervisor === 'Y') && mdp.MDPStatus === 'Approved'"
                                                         @click="approvedMDP(mdp.ID)" class="btn btn-warning btn-sm"><i class="mdi mdi-printer"></i> Disapproved</button>
+                                                <button @click="destroy(mdp.ID)" v-if="mdp.MDPStatus === 'Pending'" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                               </td>
                                           </tr>
                                         </tbody>

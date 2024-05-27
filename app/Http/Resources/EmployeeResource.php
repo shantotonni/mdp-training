@@ -36,6 +36,7 @@ class EmployeeResource extends JsonResource
             'Division'=>isset($this->division) ? $this->division->DivName: '',
             'DeptCode'=>$this->DeptCode,
             'Department'=>isset($this->department) ? $this->department->DeptName: '',
+            'Business'=>isset($this->department) ? $this->department->DeptUnit: '',
             'DesgCode'=>$this->DesgCode,
             'Designation'=>isset($this->designation) ? $this->designation->DesgName: '',
             'OfficialEmail'=>isset($this->email) ? $this->email->EmailID: '',

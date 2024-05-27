@@ -95,6 +95,7 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->EmployeeName = $request->EmployeeName;
             $ManagementDevelopmentPlane->Designation = $request->Designation;
             $ManagementDevelopmentPlane->Department = $request->Department;
+            $ManagementDevelopmentPlane->Business = $request->Business;
             $ManagementDevelopmentPlane->OfficialEmail = $request->OfficialEmail;
             $ManagementDevelopmentPlane->Mobile = $request->Mobile;
             $ManagementDevelopmentPlane->DateOfBirth = $request->DateOfBirth;

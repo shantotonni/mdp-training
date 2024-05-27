@@ -64,6 +64,13 @@
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
+                              <label>Business</label>
+                              <input type="text" name="Business" readonly v-model="form.Business" class="form-control" :class="{ 'is-invalid': form.errors.has('Business') }">
+                              <div class="error" v-if="form.errors.has('Business')" v-html="form.errors.get('Business')" />
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
                               <label>Official Email</label>
                               <input type="text" name="OfficialEmail" v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }">
                               <div class="error" v-if="form.errors.has('OfficialEmail')" v-html="form.errors.get('OfficialEmail')" />
@@ -371,6 +378,7 @@ export default {
         EmployeeName :'',
         Designation :'',
         Department: '',
+        Business: '',
         OfficialEmail:'',
         Mobile:'',
         DateOfBirth:'',
@@ -431,6 +439,7 @@ export default {
         this.form.EmployeeName = response.data.employee.EmployeeName;
         this.form.Designation = response.data.employee.Designation;
         this.form.Department = response.data.employee.Department;
+        this.form.Business = response.data.employee.Business;
         this.form.OfficialEmail = response.data.employee.OfficialEmail;
         this.form.Mobile = response.data.employee.Mobile;
         this.form.DateOfBirth = response.data.employee.DateOfBirth;
