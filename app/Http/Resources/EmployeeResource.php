@@ -30,23 +30,23 @@ class EmployeeResource extends JsonResource
             $mobile = '';
         }
         return [
-            'StaffID'=>$this->EmpCode,
-            'EmployeeName'=>isset($this->personal) ? $this->personal->Name: '',
-            'DivCode'=>$this->DivCode,
-            'Division'=>isset($this->division) ? $this->division->DivName: '',
-            'DeptCode'=>$this->DeptCode,
-            'Department'=>isset($this->department) ? $this->department->DeptName: '',
-            'Business'=>isset($this->department) ? $this->department->DeptUnit: '',
-            'DesgCode'=>$this->DesgCode,
-            'Designation'=>isset($this->designation) ? $this->designation->DesgName: '',
-            'OfficialEmail'=>isset($this->email) ? $this->email->EmailID: '',
-            'Mobile'=>$mobile,
-            'DateOfBirth'=>isset($this->personal) ? date('Y-m-d',strtotime($this->personal->BirthDate)): '',
-            'CurrentPosition'=>isset($this->designation) ? $this->designation->DesgName: '',
+            'StaffID'           =>$this->EmpCode,
+            'EmployeeName'      =>isset($this->personal) ? $this->personal->Name: '',
+            'DivCode'           =>$this->DivCode,
+            'Division'          =>isset($this->division) ? $this->division->DivName: '',
+            'DeptCode'          =>$this->DeptCode,
+            'Department'        =>isset($this->department) ? $this->department->DeptName: '',
+            'Business'          =>isset($this->department) ? $this->department->DeptUnit: '',
+            'DesgCode'          =>$this->DesgCode,
+            'Designation'       =>isset($this->designation) ? $this->designation->DesgName: '',
+            'OfficialEmail'     =>isset($this->email) ? $this->email->EmailID: '',
+            'Mobile'            =>$mobile,
+            'DateOfBirth'       =>isset($this->personal) ? date('Y-m-d',strtotime($this->personal->BirthDate)): '',
+            'CurrentPosition'   =>isset($this->designation) ? $this->designation->DesgName: '',
             //'PresentJobStartedOn'=>isset($this->emphist) ? date('Y-m-d',strtotime($this->emphist->EffectiveDate)): '',
             'PresentJobStartedOn'=>isset($this->LastPromoDate) ? date('Y-m-d',strtotime($this->LastPromoDate)): '',
-            'Qualification'=> isset($this->education) ? $this->education->Degree: '',
-            'JoiningDate'=>date('Y-m-d',strtotime($this->JoiningDate)),
+            'Qualification'     => isset($this->education) ? $this->education->Degree: '',
+            'JoiningDate'       =>date('Y-m-d',strtotime($this->JoiningDate)),
         ];
     }
 }
