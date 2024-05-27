@@ -77,6 +77,7 @@
                                               <th>Employee Name</th>
                                               <th>Designation</th>
                                               <th>Department</th>
+                                              <th>Business</th>
                                               <th>Official Email</th>
                                               <th>Mobile</th>
                                               <th>Appraisal Period</th>
@@ -91,6 +92,7 @@
                                               <td>{{ mdp.EmployeeName }}</td>
                                               <td>{{ mdp.Designation }}</td>
                                               <td>{{ mdp.Department }}</td>
+                                              <td>{{ mdp.Business }}</td>
                                               <td>{{ mdp.OfficialEmail }}</td>
                                               <td>{{ mdp.Mobile }}</td>
                                               <td>{{ mdp.AppraisalPeriod }}</td>
