@@ -120,6 +120,13 @@
                               <div class="error" v-if="form.errors.has('Qualification')" v-html="form.errors.get('Qualification')" />
                             </div>
                           </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Upload Signature</label>
+                              <input type="file" @change="handleFileChange" name="Signature"  class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }"  accept="image/*" required>
+                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')" />
+                            </div>
+                          </div>
                         </div>
                         <hr>
                        </div>
@@ -386,6 +393,7 @@ export default {
         CurrentPosition:'',
         PresentJobStartedOn:'',
         Qualification:'',
+        Signature: '',
         SuppervisorStaffID:'',
         SuppervisorName:'',
         SuppervisorDesignation:'',
@@ -404,7 +412,8 @@ export default {
         //area: [{ AreaOneName: '', AreaTwoName: ''}],
       }),
       isLoading: false,
-      dropDown:''
+      dropDown:'',
+      errorMessage: ''
     }
   },
   mounted() {
@@ -417,13 +426,33 @@ export default {
   },
   methods: {
     store(){
+      if (this.form.Signature) {
+        const img = new Image();
+        img.onload = () => {
+          const width = img.width;
+          const height = img.height;
+
+          if (width !== 200 || height !== 60) {
+            this.errorMessage = 'Image dimensions must be 200x60 pixels.';
+          }
+        };
+        img.onerror = () => {
+          this.errorMessage = 'Invalid image file.';
+        };
+
+        const objectURL = URL.createObjectURL(this.form.Signature);
+        img.src = objectURL;
+      } else {
+        this.errorMessage = 'Please select an image file.';
+      }
+
       this.form.busy = true;
       this.form.post(baseurl + "api/mdp/store").then(response => {
         console.log(response)
         if (response.data.status === 'error'){
           this.errorNoti(response.data.message);
         }else {
-          this.redirect(this.mainOrigin + 'mdp-list')
+          // this.redirect(this.mainOrigin + 'mdp-list')
           this.successNoti(response.data.message);
         }
       }).catch(e => {
@@ -495,6 +524,10 @@ export default {
       }).catch((error)=>{
 
       })
+    },
+    handleFileChange(event) {
+      this.form.Signature = event.target.files[0];
+      this.errorMessage = '';
     },
     getUserData() {
       this.axiosPost('me', {}, (response) => {

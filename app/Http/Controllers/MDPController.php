@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\Input;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Mail;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class MDPController extends Controller
 {
@@ -89,6 +91,22 @@ class MDPController extends Controller
             $training = $request->training;
             //$area = $request->area;
 
+            $file = $request->file('Signature');
+
+            // Validate image dimensions
+            $image = Image::make($file);
+            if ($image->width() != 200 || $image->height() != 60) {
+                // return response()->json(['success' => false, 'message' => 'Image dimensions must be 200x60 pixels.']);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Image dimensions must be 200x60 pixels.'
+                ]);
+            }
+
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            $path = $file->storeAs('signatures', $filename, 'public');
+
             $ManagementDevelopmentPlane = new ManagementDevelopmentPlane();
             $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;
             $ManagementDevelopmentPlane->StaffID = $request->StaffID;
@@ -114,6 +132,7 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->CreatedBy = $empcode;
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             $ManagementDevelopmentPlane->MDPStatus = 'Pending';
+            // $ManagementDevelopmentPlane->Signature = $filename;
             if ($ManagementDevelopmentPlane->save()){
                 foreach ($initiative as $value){
                     $MDPPersonalInitiative = new MDPPersonalInitiative();

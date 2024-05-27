@@ -168,7 +168,9 @@
                               <br>
                               <div class="six_part">
                                 <p style="font-size: 20px">
-                                  Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                  Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">
+                                    <img :src="`${mainOrigin}assets/images/logo.jpeg`" style='height: 45px; width: 200px' />
+                                  </span>
                                 </p>
                                 <p style="font-size: 20px">
                                   Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
