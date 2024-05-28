@@ -89,23 +89,24 @@ class MDPController extends Controller
 
             $initiative = $request->initiative;
             $training = $request->training;
-            //$area = $request->area;
-
-            $file = $request->file('Signature');
 
             // Validate image dimensions
-            $image = Image::make($file);
-            if ($image->width() != 200 || $image->height() != 60) {
-                // return response()->json(['success' => false, 'message' => 'Image dimensions must be 200x60 pixels.']);
+            $imageDimantion = Image::make($request->Signature);
+            if ($imageDimantion->width() != 200 || $imageDimantion->height() != 60) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Image dimensions must be 200x60 pixels.'
                 ]);
             }
 
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-
-            $path = $file->storeAs('signatures', $filename, 'public');
+            //FOR IMAGE
+            if ($request->Signature) {
+                $image   = $request->Signature;
+                $name    = uniqid().time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                Image::make($image)->save(public_path('signature/').$name);
+            } else {
+                $name = '';
+            }
 
             $ManagementDevelopmentPlane = new ManagementDevelopmentPlane();
             $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;
@@ -132,7 +133,7 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->CreatedBy = $empcode;
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             $ManagementDevelopmentPlane->MDPStatus = 'Pending';
-            // $ManagementDevelopmentPlane->Signature = $filename;
+            $ManagementDevelopmentPlane->Signature = $name;
             if ($ManagementDevelopmentPlane->save()){
                 foreach ($initiative as $value){
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
@@ -150,13 +151,6 @@ class MDPController extends Controller
                     $MDPTraining->TrainingDate = $item['TrainingDate'];
                     $MDPTraining->save();
                 }
-//                foreach ($area as $are){
-//                    $areaone = new Area();
-//                    $areaone->MDPID = $ManagementDevelopmentPlane->ID;
-//                    $areaone->AreaOneName = $are['AreaOneName'];
-//                    $areaone->AreaTwoName = $are['AreaTwoName'];
-//                    $areaone->save();
-//                }
 
                 $email = $request->SuppervisorEmail;
                 $data = 'MDP Submitted!';
@@ -188,12 +182,10 @@ class MDPController extends Controller
 
             $initiative = $request->initiative;
             $training = $request->training;
-            //$area = $request->area;
 
             $ManagementDevelopmentPlane = ManagementDevelopmentPlane::where('ID',$request->ID)->first();
             MDPPersonalInitiative::where('MDPID',$request->ID)->delete();
             MDPTraining::where('MDPID',$request->ID)->delete();
-            //Area::where('MDPID',$request->ID)->delete();
 
             $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;
             $ManagementDevelopmentPlane->StaffID = $request->StaffID;
@@ -233,13 +225,6 @@ class MDPController extends Controller
                     $MDPTraining->TrainingDate = $item['TrainingDate'];
                     $MDPTraining->save();
                 }
-//                foreach ($area as $are){
-//                    $areaone = new Area();
-//                    $areaone->MDPID = $ManagementDevelopmentPlane->ID;
-//                    $areaone->AreaOneName = $are['AreaOneName'];
-//                    $areaone->AreaTwoName = $are['AreaTwoName'];
-//                    $areaone->save();
-//                }
 
                 DB::commit();
                 return response()->json([
@@ -334,11 +319,9 @@ class MDPController extends Controller
         return response()->json([
             'data' => $feedbackCollection
         ]);
-
     }
 
-    public function search($query)
-    {
+    public function search($query){
         return new ManagementDevelopmentPlaneCollection(ManagementDevelopmentPlane::where('StaffID','LIKE',"%$query%")->latest()->paginate(10));
     }
 
@@ -360,12 +343,6 @@ class MDPController extends Controller
             $TrainingTitleString = $TrainingTitleString . $row['TrainingTitle'] . '##';
         }
         $TrainingTitleString = substr($TrainingTitleString,0,strlen($TrainingTitleString) - 2);
-        //return $TrainingTitleString;
-        // if(!empty(json_decode($request->TrainingTitle)->TrainingTitle)){
-        //     $TrainingTitle = json_decode($request->TrainingTitle)->TrainingTitle;
-        // }else{
-        //     $TrainingTitle = "";
-        // }
         $individual_training = DB::select("EXEC doLoadEmployeeWiseReport '$session','$EmpCode','$TrainingTitleString' ");
         return response()->json([
            'individual_training' => $individual_training
@@ -466,9 +443,7 @@ class MDPController extends Controller
     }
 
     public function getLevelWiseSuggestiveList($empcode){
-        //$employee_level = EmployeeDepartment::where('EmpCode',$empcode)->first();
         $suggestive_list = DB::select("EXEC usp_doLoadBDPTrainingTitel '$empcode' ");
-       // $suggestive_list = LevelWiseLearningOfferingList::where('Level',$employee_level->Level)->get();
         return response()->json([
             'suggestive_list'=>$suggestive_list,
         ]);

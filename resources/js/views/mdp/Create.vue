@@ -122,9 +122,10 @@
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label>Upload Signature</label>
-                              <input type="file" @change="handleFileChange" name="Signature"  class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }"  accept="image/*" required>
-                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')" />
+                              <label>Upload Signature(<span style="font-size: 8px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
+                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">
+                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
+                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="40px" width="40px">
                             </div>
                           </div>
                         </div>
@@ -409,11 +410,11 @@ export default {
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
         ],
-        //area: [{ AreaOneName: '', AreaTwoName: ''}],
       }),
       isLoading: false,
       dropDown:'',
-      errorMessage: ''
+      errorMessage: '',
+      imageDimensions: ''
     }
   },
   mounted() {
@@ -426,25 +427,25 @@ export default {
   },
   methods: {
     store(){
-      if (this.form.Signature) {
-        const img = new Image();
-        img.onload = () => {
-          const width = img.width;
-          const height = img.height;
-
-          if (width !== 200 || height !== 60) {
-            this.errorMessage = 'Image dimensions must be 200x60 pixels.';
-          }
-        };
-        img.onerror = () => {
-          this.errorMessage = 'Invalid image file.';
-        };
-
-        const objectURL = URL.createObjectURL(this.form.Signature);
-        img.src = objectURL;
-      } else {
-        this.errorMessage = 'Please select an image file.';
-      }
+      // if (this.form.Signature) {
+      //   const img = new Image();
+      //   img.onload = () => {
+      //     const width = img.width;
+      //     const height = img.height;
+      //
+      //     if (width !== 200 || height !== 60) {
+      //       this.errorMessage = 'Image dimensions must be 200x60 pixels.';
+      //     }
+      //   };
+      //   img.onerror = () => {
+      //     this.errorMessage = 'Invalid image file.';
+      //   };
+      //
+      //   const objectURL = URL.createObjectURL(this.form.Signature);
+      //   img.src = objectURL;
+      // } else {
+      //   this.errorMessage = 'Please select an image file.';
+      // }
 
       this.form.busy = true;
       this.form.post(baseurl + "api/mdp/store").then(response => {
@@ -452,7 +453,7 @@ export default {
         if (response.data.status === 'error'){
           this.errorNoti(response.data.message);
         }else {
-          // this.redirect(this.mainOrigin + 'mdp-list')
+           this.redirect(this.mainOrigin + 'mdp-list')
           this.successNoti(response.data.message);
         }
       }).catch(e => {
@@ -525,10 +526,6 @@ export default {
 
       })
     },
-    handleFileChange(event) {
-      this.form.Signature = event.target.files[0];
-      this.errorMessage = '';
-    },
     getUserData() {
       this.axiosPost('me', {}, (response) => {
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
@@ -563,13 +560,22 @@ export default {
     Training_deleteFind: function (index2) {
       this.form.training.splice(index2, 1);
     },
-    // //for Area_one
-    // AreaaddFind: function () {
-    //   this.form.area.push({ AreaOneName: '', AreaTwoName: ''});
-    // },
-    // AreadeleteFind: function (index2) {
-    //   this.form.area.splice(index2, 1);
-    // },
+    changeImage(event) {
+      let file = event.target.files[0];
+      let reader = new FileReader();
+      reader.onload = event => {
+        this.form.Signature = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    showImage() {
+      let img = this.form.Signature;
+      if (img.length > 100) {
+        return this.form.Signature;
+      } else {
+        return window.location.origin + "/signature/" + this.form.Signature;
+      }
+    },
   },
 }
 </script>

@@ -79,14 +79,18 @@
                                <div style="display: flex">
                                  <div style="width: 33%">
                                    <p>
-                                     <span style="display: inline-block;border-top: 1px solid;width: 160px;text-align: center"></span>
+                                     <span style="display: inline-block;border-bottom: 1px solid;width: 160px;text-align: center">
+                                       <img :src="loadSignature(mdplist.Signature)" style='height: 20px; width: 150px' />
+                                     </span>
                                    </p>
                                    <p>Signature of the Incumbent</p>
                                    <p>Form No: TR-00301/06</p>
                                  </div>
                                  <div style="text-align: center;width: 33%">
-                                   <p>
-                                     <span style="display: inline-block;border-top: 1px solid;width: 200px;text-align: center"></span>
+                                   <p style="text-align: center">
+                                     <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">
+                                       Electronically Approved
+                                     </span>
                                    </p>
                                    <p>Signature of the Supervisor</p>
                                  </div>
@@ -152,11 +156,13 @@ export default {
       },2000)
     });
   },
-
-    methods: {
-      customFormatter(date) {
-        return moment(date).format('YYYY-MM-DD');
-      },
+  methods: {
+    loadSignature(signature){
+      return baseurl + "/signature/" + signature;
+    },
+    customFormatter(date) {
+      return moment(date).format('YYYY-MM-DD');
+    },
     },
 }
 </script>

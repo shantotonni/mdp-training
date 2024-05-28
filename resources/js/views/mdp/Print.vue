@@ -169,11 +169,13 @@
                               <div class="six_part">
                                 <p style="font-size: 20px">
                                   Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">
-                                    <img :src="`${mainOrigin}assets/images/logo.jpeg`" style='height: 45px; width: 200px' />
+                                    <img :src="loadSignature(mdplist.Signature)" style='height: 20px; width: 150px' />
                                   </span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
+                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">
+                                  {{ mdplist.CreatedDate }}
+                                </span>
                                 </p>
                               </div>
                               <br>
@@ -201,10 +203,14 @@
                               <br>
                               <div class="six_part">
                                 <p style="font-size: 20px">
-                                  Signature <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center"></span>
+                                  Signature <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">
+                                  Electronically Approved
+                                </span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
+                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">
+                                  {{ mdplist.CreatedDate }}
+                                </span>
                                 </p>
                               </div>
 <!--                              <div class="third_part">-->
@@ -267,24 +273,20 @@ export default {
     },
   created() {
     axios.get(baseurl + `api/mdp/print/${this.$route.params.ID}`).then((response)=>{
-      console.log(response.data.data)
       this.mdplist = response.data.data
       this.initiative = response.data.data.initiative
       this.training = response.data.data.training
       this.Area = response.data.data.area
-      // setTimeout(function(){
-      //   window.print()
-      // },1000)
       $('#mdp').printThis({
         importCSS: true,
         loadCSS: "path/to/new/CSS/file",
       });
-
     });
   },
-
-    methods: {
-      //
+  methods: {
+      loadSignature(signature){
+        return baseurl + "/signature/" + signature;
+      }
     },
 }
 </script>
