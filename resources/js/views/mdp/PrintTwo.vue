@@ -80,13 +80,13 @@
                                  <div style="width: 33%">
                                    <p>
                                      <span style="display: inline-block;border-bottom: 1px solid;width: 160px;text-align: center">
-                                       <img :src="loadSignature(mdplist.Signature)" style='height: 20px; width: 150px' />
+                                       <img :src="loadSignature(mdplist.Signature)" style='height: 40px; width: 150px' />
                                      </span>
                                    </p>
                                    <p>Signature of the Incumbent</p>
                                    <p>Form No: TR-00301/06</p>
                                  </div>
-                                 <div style="text-align: center;width: 33%">
+                                 <div style="text-align: center;width: 33%;margin-top: 20px">
                                    <p style="text-align: center">
                                      <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">
                                        Electronically Approved
@@ -94,7 +94,7 @@
                                    </p>
                                    <p>Signature of the Supervisor</p>
                                  </div>
-                                 <div style="text-align: center;width: 33%">
+                                 <div style="text-align: center;width: 33%;margin-top: 20px">
                                    <p>
                                      <span style="display: inline-block;border-top: 1px solid;width: 200px;text-align: center"></span>
                                    </p>

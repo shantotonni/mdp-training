@@ -31,7 +31,7 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'to_period'=>$to_period,
             'AreaOne'=> $this->AreaOne,
             'AreaTwo'=> $this->AreaTwo,
-            'CreatedDate'=> date('Y-m-d',strtotime($this->CreatedDate)),
+            'CreatedDate'=> date('F j, Y',strtotime($this->CreatedDate)),
             'CurrentPosition'=> $this->CurrentPosition,
             'Department'=> $this->Department,
             'Designation'=> $this->Designation,

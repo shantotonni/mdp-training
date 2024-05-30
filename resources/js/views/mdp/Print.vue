@@ -20,19 +20,22 @@
                                   to June <span style="display: inline-block;border-bottom: 1px solid;width: 315px;text-align: center">{{ mdplist.to_period }}</span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Staff Id <span style="display: inline-block;border-bottom: 1px solid;width: 290px;text-align: center">{{ mdplist.StaffID }}</span>
                                   Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 390px;text-align: center">{{ mdplist.EmployeeName }}</span>
+                                  Employee Id <span style="display: inline-block;border-bottom: 1px solid;width: 250px;text-align: center">{{ mdplist.StaffID }}</span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">{{ mdplist.Designation }}</span>
-                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 306px;text-align: center">{{ mdplist.DateOfBirth }}</span>
+                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Designation }}</span>
+                                  Department <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Designation }}</span>
+<!--                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 306px;text-align: center">{{ mdplist.DateOfBirth }}</span>-->
                                 </p>
                                 <p style="font-size: 20px">
-                                  Present Age <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Age }}</span>
-                                  Date of joining company <span style="display: inline-block;border-bottom: 1px solid;width: 250px;text-align: center">{{ mdplist.JoiningDate }}</span>
+                                  Present Job Started on<span style="display: inline-block;border-bottom: 1px solid;width: 270px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>
+<!--                                  Present Age <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Age }}</span>-->
+                                  Date of joining in ACI <span style="display: inline-block;border-bottom: 1px solid;width: 250px;text-align: center">{{ mdplist.JoiningDate }}</span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Present Job Started <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>
+                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.DateOfBirth }}</span>
+<!--                                  Present Job Started <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>-->
                                   Qualification <span style="display: inline-block;border-bottom: 1px solid;width: 265px;text-align: center">{{ mdplist.Qualification }}</span>
                                 </p>
                               </div>
@@ -98,7 +101,14 @@
 <!--                                </p>-->
                               </div>
 
-                              <p>Form No.: TR-003-01/06</p>
+                              <div style="display: flex">
+                                <div>
+                                  <p>Form No.: TR-003-01/07</p>
+                                </div>
+                                <div style="margin-left: 700px">
+                                  <p style="text-align: right;padding-top: 58px">Page No: 1 of 2</p>
+                                </div>
+                              </div>
 
 
 <!--                              <div class="third_part">-->
@@ -169,7 +179,7 @@
                               <div class="six_part">
                                 <p style="font-size: 20px">
                                   Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">
-                                    <img :src="loadSignature(mdplist.Signature)" style='height: 20px; width: 150px' />
+                                    <img :src="loadSignature(mdplist.Signature)" style='height: 40px; width: 150px' />
                                   </span>
                                 </p>
                                 <p style="font-size: 20px">
@@ -221,7 +231,14 @@
 <!--                                  <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>-->
 <!--                                </p>-->
 <!--                              </div>-->
-                              <p style="padding-top: 70px">Form No.: TR-003-01/06</p>
+                              <div style="display: flex">
+                                <div>
+                                  <p>Form No.: TR-003-01/07</p>
+                                </div>
+                                <div style="margin-left: 700px">
+                                  <p style="text-align: right;padding-top: 58px">Page No: 2 of 2</p>
+                                </div>
+                              </div>
                             </div>
                         </div>
                     </div>
