@@ -64,7 +64,7 @@
               </li>
             </ul>
           </li>
-          <li>
+          <li v-if="EmpCode === 'admin'">
             <a href="javascript:void(0);" class="waves-effect">
               <i class="mdi mdi-twitch"></i>
               <span>Report<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
@@ -77,7 +77,7 @@
               </li>
             </ul>
           </li>
-          <li>
+          <li v-if="EmpCode === 'admin'">
             <a href="javascript:void(0);" class="waves-effect">
               <i class="mdi mdi-clipboard-arrow-up-outline"></i>
               <span>Admin User<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>

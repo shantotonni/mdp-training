@@ -402,13 +402,30 @@ class MDPController extends Controller
             }else{
                 $dropDown = 'NO';
             }
+            $mdp = ManagementDevelopmentPlane::where('StaffID',$empcode)->get()->pluck('ID');
+            $doneTraining = MDPTraining::query()->whereIn('MDPID',$mdp)->select('MDPTraining.ID','MDPTraining.TrainingTitle','MDPTrainingFeedback.Status')
+                ->leftJoin('MDPTrainingFeedback','MDPTrainingFeedback.TrainingID','=','MDPTraining.ID')
+                ->where('MDPTrainingFeedback.Status','=', 'done')->get();
 
             $training_list_by_empcode = MDPEmployeeTrainingList::where('StaffID', $empcode)->get();
+
+            $dup = array();
+            foreach ($doneTraining as $k => $v) {
+                foreach ($training_list_by_empcode as $key => $value) {
+                    if ($k != $key && $v->TrainingTitle != $value->TrainingTitle) {
+                        if (in_array( $value, $dup) ) {
+                            unset($training_list_by_empcode[$k]);
+                        } else {
+                            $dup[] = $value;
+                        }
+                    }
+                }
+            }
 
             return response()->json([
                 'employee'=>new EmployeeResource($employee),
                 'training_history'=>$training_history,
-                'training_list'=>$training_list_by_empcode,
+                'training_list'=>$dup,
                 'dropDown'=>$dropDown,
             ]);
         }else{
