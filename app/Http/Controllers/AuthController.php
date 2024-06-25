@@ -149,7 +149,7 @@ class AuthController extends Controller
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
 
-        $personal = Employee::where('EmpCode', $empcode)->with('email')->first();
+        $personal = Employee::where('EmpCode', $empcode)->with('email','personal')->first();
 
         $departments = [];
         $divisions = [];

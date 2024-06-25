@@ -464,7 +464,7 @@ export default {
       axios.post(baseurl +'api/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
       }).then((response)=>{
-        console.log(response.data.training_list)
+        console.log(response)
         this.training_history = response.data.training_history;
         this.form.EmployeeName = response.data.employee.EmployeeName;
         this.form.Designation = response.data.employee.Designation;
@@ -479,7 +479,7 @@ export default {
         this.form.Qualification = response.data.employee.Qualification;
         this.form.StaffID = response.data.employee.StaffID;
         this.dropDown = response.data.dropDown;
-        this.training_list = response.data;
+        this.training_list = response.data.training_list;
       }).catch((error)=>{
 
       })

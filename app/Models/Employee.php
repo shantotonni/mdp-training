@@ -10,7 +10,6 @@ class Employee extends Model
     use HasFactory;
 
     protected $table = 'Employer';
-
     protected $primaryKey = 'EmpCode';
     protected $keyType = 'string';
     public $timestamps = false;
@@ -29,7 +28,7 @@ class Employee extends Model
         return $this->hasOne(EmployeeEmailId::class,'EmpCode','EmpCode');
     }
     public function personal(){
-        return $this->hasOne(Personal::class,'EmpCode','EmpCode');
+        return $this->hasOne(Personal::class,'EmpCode','EmpCode')->select('EmpCode','MobileNo','Name','BirthDate');
     }
     public function education(){
         return $this->hasOne(Education::class,'EmpCode','EmpCode')->orderBy('PassYear','desc');

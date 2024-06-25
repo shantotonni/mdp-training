@@ -6,7 +6,7 @@
           <div class="col-sm-12">
             <h4 class="page-title" style="font-size: 30px">Dashboard</h4>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item active" style="font-size: 26px;color:rgb(10, 106, 255)">Welcome to Management Development Plan and Action Plan for 2023-2024</li>
+              <li class="breadcrumb-item active" style="font-size: 26px;color:rgb(10, 106, 255)">Welcome to Management Development Plan and Action Plan</li>
             </ol>
           </div>
           <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 80px">

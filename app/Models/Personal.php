@@ -10,7 +10,6 @@ class Personal extends Model
     use HasFactory;
 
     protected $table = 'Personal';
-
     protected $primaryKey = 'EmpCode';
     protected $keyType = 'string';
     public $timestamps = false;

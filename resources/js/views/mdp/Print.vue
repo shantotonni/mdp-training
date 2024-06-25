@@ -12,7 +12,6 @@
                               </div>
                               <div class="first_part">
                                 <h3 style="text-align:center">Management Development Plan</h3>
-<!--                                <p style="text-align: right;">fddfd</p>-->
                                 <hr>
                                 <br>
                                 <p style="font-size: 20px">
