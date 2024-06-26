@@ -122,11 +122,14 @@
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label>Upload Signature(<span style="font-size: 8px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
+                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
                               <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">
                               <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
                               <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="40px" width="40px">
                             </div>
+                          </div>
+                          <div class="col-md-4">
+                            <a href="https://www.photopea.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>
                           </div>
                         </div>
                         <hr>

@@ -24,17 +24,18 @@ class ManagementDevelopmentPlaneRequest extends FormRequest
     public function rules()
     {
         return [
-            'AppraisalPeriod'=>'required',
-            'StaffID'=>'required',
-            'EmployeeName'=>'required',
-            'Designation'=>'required',
-            'Department'=>'required',
+            'AppraisalPeriod'   =>'required',
+            'StaffID'           =>'required',
+            'EmployeeName'      =>'required',
+            'Designation'       =>'required',
+            'Department'        =>'required',
             //'OfficialEmail'=>'required',
-            'Mobile'=>'required|min:11|max:11',
-            'JoiningDate'=>'required',
-            'CurrentPosition'=>'required',
-            'Qualification'=>'required',
+            'Mobile'            =>'required|min:11|max:11',
+            'JoiningDate'       =>'required',
+            'CurrentPosition'   =>'required',
+            'Qualification'     =>'required',
             'SuppervisorStaffID'=>'required',
+            'Signature'         =>'required|mimes:jpeg,png,jpg',
         ];
     }
 }

@@ -25,7 +25,7 @@
                                 </p>
                                 <p style="font-size: 20px">
                                   Designation <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Designation }}</span>
-                                  Department <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Designation }}</span>
+                                  Department <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Department }}</span>
 <!--                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 306px;text-align: center">{{ mdplist.DateOfBirth }}</span>-->
                                 </p>
                                 <p style="font-size: 20px">
@@ -36,7 +36,7 @@
                                 <p style="font-size: 20px">
                                   Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.DateOfBirth }}</span>
 <!--                                  Present Job Started <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>-->
-                                  Qualification <span style="display: inline-block;border-bottom: 1px solid;width: 265px;text-align: center">{{ mdplist.Qualification }}</span>
+                                  Education <span style="display: inline-block;border-bottom: 1px solid;width: 265px;text-align: center">{{ mdplist.Qualification }}</span>
                                 </p>
                               </div>
                               <br>
