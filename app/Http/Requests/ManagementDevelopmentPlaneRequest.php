@@ -35,7 +35,7 @@ class ManagementDevelopmentPlaneRequest extends FormRequest
             'CurrentPosition'   =>'required',
             'Qualification'     =>'required',
             'SuppervisorStaffID'=>'required',
-            'Signature'         =>'required|mimes:jpeg,png,jpg',
+            'Signature'         =>'required',
         ];
     }
 }

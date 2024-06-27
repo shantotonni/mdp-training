@@ -129,7 +129,7 @@
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <a href="https://www.photopea.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>
+                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>
                           </div>
                         </div>
                         <hr>
