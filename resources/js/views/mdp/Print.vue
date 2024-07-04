@@ -6,9 +6,15 @@
                     <div class="card">
                         <div class="datatable" v-if="!isLoading">
                             <div class="card-body">
-                              <div>
-                                <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
-                                <p style="font-size:15px">Advanced Chemical Industries Limited</p>
+                              <div style="display:flex;">
+                                <div>
+                                  <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
+                                  <p style="font-size:15px">Advanced Chemical Industries Limited</p>
+                                </div>
+                                <div >
+                                  <p style="font-size:15px;margin-left: 500px;margin-top: 20px;width: 200px;height: 55px; border: 1px solid black;
+                                   box-sizing: border-box;text-align: center"><span style="margin-top: 14px;display: block">Private & Confidential</span></p>
+                                </div>
                               </div>
                               <div class="first_part">
                                 <h3 style="text-align:center">Management Development Plan</h3>
