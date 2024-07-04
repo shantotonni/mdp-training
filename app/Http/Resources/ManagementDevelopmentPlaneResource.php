@@ -51,6 +51,7 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'SuppervisorStaffID'=> $this->SuppervisorStaffID,
             'initiative'=> $this->initiative,
             'training'=>$this->training,
+            'MDPStatus'=>$this->MDPStatus,
             //'area'=>$this->area,
 
             //'AreaOneText'=> $this->Area,

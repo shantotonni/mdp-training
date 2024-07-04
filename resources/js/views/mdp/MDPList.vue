@@ -102,10 +102,10 @@
                                               </td>
                                               <td class="text-center">
                                                 <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm" v-if="mdp.MDPStatus === 'Pending'"><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
-                                                <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm"
-                                                             v-if="mdp.MDPStatus === 'Approved'"><i class="mdi mdi-printer"></i> MDP</router-link>
-                                                <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"
-                                                             v-if="mdp.MDPStatus === 'Approved'"><i class="mdi mdi-printer"></i> PTC</router-link>
+                                                <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm" v-if="mdp.MDPStatus === 'Approved' || type === 'admin'">
+                                                  <i class="mdi mdi-printer"></i> MDP</router-link>
+                                                <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm" v-if="mdp.MDPStatus === 'Approved' || type === 'admin'">
+                                                  <i class="mdi mdi-printer"></i> PTC</router-link>
 
                                                 <button v-if="(mdp.Supervisor === 'Y' || type === 'admin') && mdp.MDPStatus === 'Pending'"
                                                         @click="approvedMDP(mdp.ID)" class="btn btn-success btn-sm"><i class="mdi mdi-printer"></i> Approved</button>

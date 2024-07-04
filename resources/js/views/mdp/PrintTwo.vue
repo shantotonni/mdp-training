@@ -88,8 +88,11 @@
                                  </div>
                                  <div style="text-align: center;width: 33%;margin-top: 20px">
                                    <p style="text-align: center">
-                                     <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">
+                                     <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center" v-if="mdplist.MDPStatus === 'Approved'">
                                        Electronically Approved
+                                     </span>
+                                     <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center" v-if="mdplist.MDPStatus === 'Pending'">
+
                                      </span>
                                    </p>
                                    <p>Signature of the Supervisor</p>

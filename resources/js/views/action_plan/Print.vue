@@ -58,7 +58,13 @@
                                 <div style="display: flex">
                                     <div class="col-md-3" style="text-align: left">
                                       <p style="font-size: 18px">Signature of Employee</p>
-                                      <input type="text">
+                                      <div style="width: 200px;height: 55px; border: 1px solid black; box-sizing: border-box;">
+                                        <img v-if="action_plan.Signature" :src="loadSignature(action_plan.Signature)" style="height: 40px; width: 150px;margin-left: 25px;margin-top: 5px;" />
+                                      </div>
+<!--                                      <div class="fake-input">-->
+<!--&lt;!&ndash;                                        <input type="text" />&ndash;&gt;-->
+<!--                                        -->
+<!--                                      </div>-->
                                     </div>
                                   <div class="col-md-3">
                                     <p style="font-size: 18px">Signature of Supervisor</p>
@@ -261,9 +267,14 @@
                               <br>
                               <div style="display: flex">
                                 <div class="col-md-6" style="text-align: left">
-                                  <p style="font-size: 20px">Signature of Appraisee
-                                    <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center"></span>
+                                  <p style="font-size: 20px">
+                                    Signature of Appraisee <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">
+                                    <img v-if="action_plan.Signature" :src="loadSignature(action_plan.Signature)" style='height: 40px; width: 150px' />
+                                  </span>
                                   </p>
+<!--                                  <p style="font-size: 20px">Signature of Appraisee-->
+<!--                                    <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center"></span>-->
+<!--                                  </p>-->
                                 </div>
                                 <div class="col-md-6">
                                   <p style="font-size: 20px">Signature of Appraiser
@@ -368,15 +379,16 @@ export default {
         importCSS: true,
         loadCSS: baseurl+"css/app.css",
       });
-
     });
   },
-
-    methods: {
-      customFormatter(date) {
-        return moment(date).format('MMMM YYYY');
-      },
+  methods: {
+    loadSignature(signature){
+      return baseurl + "/action_plan/signature/" + signature;
     },
+    customFormatter(date) {
+        return moment(date).format('MMMM YYYY');
+    },
+  },
 }
 </script>
 <style scoped>
@@ -402,6 +414,12 @@ table tr th,table tr td {
 }
 .margin_p .table>tbody>tr>td, .table>tfoot>tr>td, .table>thead>tr>td {
   /* padding: 15px 12px; */
+}
+.div1 {
+  width: 300px;
+  height: 100px;
+  border: 1px solid black;
+  box-sizing: border-box;
 }
 
 </style>

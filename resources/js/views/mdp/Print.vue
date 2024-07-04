@@ -212,10 +212,11 @@
                               </div>
                               <br>
                               <div class="six_part">
-                                <p style="font-size: 20px">
-                                  Signature <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">
+                                <p style="font-size: 20px"> Signature
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center" v-if="mdplist.MDPStatus === 'Approved'">
                                   Electronically Approved
-                                </span>
+                                  </span>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center" v-if="mdplist.MDPStatus === 'Pending'"></span>
                                 </p>
                                 <p style="font-size: 20px">
                                   Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">

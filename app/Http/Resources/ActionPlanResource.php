@@ -32,6 +32,7 @@ class ActionPlanResource extends JsonResource
             'Business'=>$this->Business,
             'ActionPlanPeriod'=>$this->ActionPlanPeriod,
             'finds'=>$this->task,
+            'Signature'=>$this->Signature,
         ];
     }
 }

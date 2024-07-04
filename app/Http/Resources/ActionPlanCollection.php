@@ -33,6 +33,7 @@ class ActionPlanCollection extends ResourceCollection
                     'Business'                  => $action_plan->Business,
                     'ActionPlanPeriod'          => $action_plan->ActionPlanPeriod,
                     'isEdit'                    => $isEdit,
+                    'Signature'                 => $action_plan->Signature,
                 ];
             })
         ];

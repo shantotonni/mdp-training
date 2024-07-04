@@ -108,7 +108,7 @@
                               <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
                               <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">
                               <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
-                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="40px" width="40px">
+                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">
                             </div>
                           </div>
                           <div class="col-md-4">
