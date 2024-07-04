@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ActionPlanRequest;
+use App\Http\Requests\ActionPlanUpdateRequest;
 use App\Http\Resources\ActionPlanCollection;
 use App\Http\Resources\ActionPlanResource;
 use App\Http\Resources\EmployeeResource;
@@ -15,6 +16,7 @@ use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ActionPlanController extends Controller
@@ -85,6 +87,24 @@ class ActionPlanController extends Controller
 
             $finds = $request->finds;
 
+            // Validate image dimensions
+            $imageDimantion = Image::make($request->Signature);
+            if ($imageDimantion->width() != 200 || $imageDimantion->height() != 60) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Image dimensions must be 200x60 pixels.'
+                ]);
+            }
+
+            //FOR IMAGE
+            if ($request->Signature) {
+                $image   = $request->Signature;
+                $name    = uniqid().time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                Image::make($image)->save(public_path('action_plan/signature/').$name);
+            } else {
+                $name = '';
+            }
+
             $ActionPlane                            = new ActionPlan();
             $ActionPlane->ActionPlanPeriod          = $request->ActionPlanPeriod;
             $ActionPlane->StaffID                   = $request->StaffID;
@@ -100,6 +120,7 @@ class ActionPlanController extends Controller
             $ActionPlane->SuppervisorDesignation    = $request->SuppervisorDesignation;
             $ActionPlane->SuppervisorEmail          = $request->SuppervisorEmail;
             $ActionPlane->SuppervisorMobile         = $request->SuppervisorMobile;
+            $ActionPlane->Signature                 = $name;
             $ActionPlane->CreatedBy                 = $empcode;
             $ActionPlane->UpdatedBy                 = $empcode;
             if ($ActionPlane->save()){
@@ -135,7 +156,7 @@ class ActionPlanController extends Controller
         ]);
     }
 
-    public function update(ActionPlanRequest $request){
+    public function update(ActionPlanUpdateRequest $request){
 
         DB::beginTransaction();
         try {

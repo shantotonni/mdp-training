@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ManagementDevelopmentPlaneRequest;
+use App\Http\Requests\ManagementDevelopmentPlaneUpdateRequest;
+use App\Http\Resources\ContSupervisorResource;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\ManagementDevelopmentPlaneCollection;
 use App\Http\Resources\ManagementDevelopmentPlaneResource;
 use App\Http\Resources\SupervisorResource;
 use App\Mail\MDPCreateMail;
+use App\Models\ContactPersonal;
 use App\Models\Employee;
 use App\Models\ManagementDevelopmentPlane;
 use App\Models\MDPEmployeeTrainingList;
@@ -16,6 +19,8 @@ use App\Models\MDPTraining;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\Input;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -27,6 +32,7 @@ class MDPController extends Controller
 {
     public function index(Request $request)
     {
+
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
@@ -47,10 +53,22 @@ class MDPController extends Controller
             }
             $mdp = $mdp->orderBy('ID','desc')->paginate(15);
         }else{
-            $mdp = ManagementDevelopmentPlane::orderBy('ID','desc')
-                                                ->where('StaffID',$empcode)
-                                                ->orWhere('SuppervisorStaffID', $empcode)
-                                                ->paginate(15);
+            $mdp = ManagementDevelopmentPlane::query();
+            $Department = json_decode($request->Department);
+            if (!empty($Department) && isset($Department)){
+                $Department = collect($Department);
+                $DeptName = $Department->pluck('DeptName');
+                $mdp = $mdp->whereIn('Department',$DeptName);
+            }
+            if ($session){
+                $mdp = $mdp->where('AppraisalPeriod',$session);
+            }
+            $mdp = $mdp->orderBy('ID','desc')
+                ->where(function ($query) use($empcode){
+                    $query->where('StaffID',$empcode);
+                    $query->orWhere('SuppervisorStaffID', $empcode);
+                })
+                ->paginate(15);
         }
         return new ManagementDevelopmentPlaneCollection($mdp);
     }
@@ -153,8 +171,20 @@ class MDPController extends Controller
                 }
 
                 $email = $request->SuppervisorEmail;
-                $data = 'MDP Submitted!';
-                Mail::to($email)->send(new MDPCreateMail($data, $request->EmployeeName, $request->Designation ));
+                $explode = explode('@', $email);
+                if ($explode[1] === 'aci-bd.com') {
+                    Config::set('mail.mailers.smtp.host', 'mail.aci-bd.com');
+
+                    $data = 'MDP Submitted!';
+                    Mail::to($email)->send(new MDPCreateMail($data, $request->EmployeeName, $request->Designation ));
+                }
+                //else {
+//                    Artisan::call('config:clear');
+//                    Artisan::call('cache:clear');
+//                    Artisan::call('config:cache');
+//                    Artisan::call('optimize');
+//                    Config::set('mail.mailers.smtp.host', 'smtp.agni.com');
+//                }
 
                 DB::commit();
                 return response()->json([
@@ -162,7 +192,6 @@ class MDPController extends Controller
                     'message' => 'Successfully Submitted.'
                 ]);
             }
-
 
         } catch (\Exception $exception) {
             return response()->json([
@@ -172,7 +201,51 @@ class MDPController extends Controller
         }
     }
 
-    public function update(ManagementDevelopmentPlaneRequest $request){
+    public function testsendemail(){
+
+        //$data = array();
+        //$data['to'] = $to;
+        //$data['emailbody'] = $emailbody;
+        //$html = $this->load->view('email_body', $data, TRUE);
+        $html = 'Test email';
+        //print_r($to); exit();
+        $this->load->library('phpmailer');
+        //$to = 'faysalahmed@aci-bd.com';
+        //$to = 'faysal.ahmed7212@gmail.com';
+        $to = 'sandip@acilogistics.net';
+        $subject = "ACI Approval System";
+
+        $this->email = new PHPMailer(true);
+        $this->email->IsSMTP(true); // telling the class to use SMTP
+        $this->email->IsHTML(true); // telling the class to use HTML
+        //$this->email->Host = "smtp.agni.com"; // SMTP server
+
+        $emailext = explode('@',$to);
+        if($emailext[1] == 'aci-bd.com'){
+            $this->email->Host = "192.168.1.30"; // SMTP server
+        }else{
+            $this->email->Host = "smtp.agni.com"; // SMTP server
+        }
+        $this->email->Port = 25;
+
+        $this->email->SetFrom('faysalahmed@aci-bd.com', $subject);
+        $this->email->AddReplyTo('faysalahmed@aci-bd.com', $subject);
+
+
+        $this->email->AddAddress($to);
+
+        $this->email->Subject = $subject;
+        $this->email->MsgHTML($html);
+        //print_r($this->email->Send()); exit();
+        if ($this->email->Send()) {
+            //print "Done";
+        } else {
+            //print "Failed";
+        }
+
+    }
+
+    public function update(ManagementDevelopmentPlaneUpdateRequest $request){
 
         DB::beginTransaction();
         try {
@@ -444,26 +517,50 @@ class MDPController extends Controller
     }
 
     public function getSupervisorByEmployeeCode(Request $request){
-        if ($request->SuperVisorEmpCode === $request->EmpCode){
+        $first_character = mb_substr($request->SuperVisorEmpCode, 0, 1);
+        if ($first_character !== 'C'){
+            if ($request->SuperVisorEmpCode === $request->EmpCode){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Same Employee Code'
+                ]);
+            }
+            $empcode = $request->SuperVisorEmpCode;
+            $empcodelength = strlen($empcode);
+            if ($empcodelength == 3){
+                $empcode = '00'.$empcode;
+            }elseif ($empcodelength == 4){
+                $empcode = '0'.$empcode;
+            }else{
+                $empcode = $empcode;
+            }
+            $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education')->first();
             return response()->json([
-                'status' => 'error',
-                'message' => 'Same Employee Code'
+                'employee'=>new SupervisorResource($employee),
+            ]);
+        }else{
+
+            if ($request->SuperVisorEmpCode === $request->EmpCode){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Same Employee Code'
+                ]);
+            }
+            $empcode = $request->SuperVisorEmpCode;
+            $empcodelength = strlen($empcode);
+            if ($empcodelength == 3){
+                $empcode = '00'.$empcode;
+            }elseif ($empcodelength == 4){
+                $empcode = '0'.$empcode;
+            }else{
+                $empcode = $empcode;
+            }
+
+            $employee = ContactPersonal::where('EmpCode', $empcode)->with('department','designation')->first();
+            return response()->json([
+                'employee'=>new ContSupervisorResource($employee),
             ]);
         }
-        $empcode = $request->SuperVisorEmpCode;
-        $empcodelength = strlen($empcode);
-        if ($empcodelength == 3){
-            $empcode = '00'.$empcode;
-        }elseif ($empcodelength == 4){
-            $empcode = '0'.$empcode;
-        }else{
-            $empcode = $empcode;
-        }
-
-        $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education')->first();
-        return response()->json([
-            'employee'=>new SupervisorResource($employee),
-        ]);
     }
 
     public function getLevelWiseSuggestiveList($empcode){

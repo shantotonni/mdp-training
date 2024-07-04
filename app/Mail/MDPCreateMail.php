@@ -25,7 +25,7 @@ class MDPCreateMail extends Mailable
     public function build()
     {
         // return $this->view('view.name');
-        return $this->from('no-reply@aci-bd.com')->subject('MDP Submitted')->view('mail.mdp_mail',[
+        return $this->from('noreply@aci-bd.com')->subject('MDP Submitted')->view('mail.mdp_mail',[
             'data' => $this->data,
             'name' => $this->name,
             'Designation' => $this->Designation,

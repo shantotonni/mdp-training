@@ -42,7 +42,7 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'DateOfBirth'=> date('Y-m-d',strtotime($this->DateOfBirth)),
             'Age'=> $age,
             'OfficialEmail'=> $this->OfficialEmail,
-            'PresentJobStartedOn'=> date('Y-m-d',strtotime($this->PresentJobStartedOn)),
+            'PresentJobStartedOn'=> $this->PresentJobStartedOn ? date('Y-m-d',strtotime($this->PresentJobStartedOn)) : '',
             'Qualification'=> $this->Qualification,
             'SuppervisorDesignation'=> $this->SuppervisorDesignation,
             'SuppervisorEmail'=> $this->SuppervisorEmail,

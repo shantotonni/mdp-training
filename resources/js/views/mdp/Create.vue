@@ -125,7 +125,7 @@
                               <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
                               <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">
                               <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
-                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="40px" width="40px">
+                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">
                             </div>
                           </div>
                           <div class="col-md-4">
@@ -161,7 +161,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor Email</label>
-                              <input type="text" name="SuppervisorEmail" readonly v-model="form.SuppervisorEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorEmail') }">
+                              <input type="text" name="SuppervisorEmail" v-model="form.SuppervisorEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorEmail') }">
                               <div class="error" v-if="form.errors.has('SuppervisorEmail')" v-html="form.errors.get('SuppervisorEmail')" />
                             </div>
                           </div>
@@ -212,7 +212,7 @@
                           </div>
                         </div>
                         <hr>
-                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'" style="width: 230px;height: 45px"> Suggestive List</button>
+                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'" style="width: 230px;height: 45px">Suggestive List</button>
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
                         <hr>
@@ -358,6 +358,10 @@
       <!-- /.modal-dialog -->
     </div>
 
+    <div>
+      <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
+    </div>
+
   </div>
 </template>
 
@@ -417,7 +421,8 @@ export default {
       isLoading: false,
       dropDown:'',
       errorMessage: '',
-      imageDimensions: ''
+      imageDimensions: '',
+      PreLoader: false,
     }
   },
   mounted() {
@@ -430,37 +435,19 @@ export default {
   },
   methods: {
     store(){
-      // if (this.form.Signature) {
-      //   const img = new Image();
-      //   img.onload = () => {
-      //     const width = img.width;
-      //     const height = img.height;
-      //
-      //     if (width !== 200 || height !== 60) {
-      //       this.errorMessage = 'Image dimensions must be 200x60 pixels.';
-      //     }
-      //   };
-      //   img.onerror = () => {
-      //     this.errorMessage = 'Invalid image file.';
-      //   };
-      //
-      //   const objectURL = URL.createObjectURL(this.form.Signature);
-      //   img.src = objectURL;
-      // } else {
-      //   this.errorMessage = 'Please select an image file.';
-      // }
-
       this.form.busy = true;
+      this.PreLoader = true;
       this.form.post(baseurl + "api/mdp/store").then(response => {
-        console.log(response)
         if (response.data.status === 'error'){
           this.errorNoti(response.data.message);
         }else {
-           this.redirect(this.mainOrigin + 'mdp-list')
+          this.redirect(this.mainOrigin + 'mdp-list')
           this.successNoti(response.data.message);
         }
+        this.PreLoader = false;
       }).catch(e => {
         this.isLoading = false;
+        this.PreLoader = false;
       });
     },
     getEmployeeByStaffID(){

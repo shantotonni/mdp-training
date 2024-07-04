@@ -79,7 +79,7 @@
                       <td>{{ plan.Mobile }}</td>
                       <td>{{ plan.ActionPlanPeriod }}</td>
                       <td class="text-center">
-                        <router-link :to="`action-plan-edit/${plan.ID}`" class="btn btn-info btn-sm"><i
+                        <router-link :to="`action-plan-edit/${plan.ID}`" v-if="plan.isEdit" class="btn btn-info btn-sm"><i
                             class="mdi mdi-square-edit-outline"></i> Edit
                         </router-link>
                         <router-link :to="`action-plan-print/${plan.ID}`" class="btn btn-info btn-sm"><i

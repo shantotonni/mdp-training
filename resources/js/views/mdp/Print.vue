@@ -179,7 +179,7 @@
                               <div class="six_part">
                                 <p style="font-size: 20px">
                                   Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">
-                                    <img :src="loadSignature(mdplist.Signature)" style='height: 40px; width: 150px' />
+                                    <img v-if="mdplist.Signature" :src="loadSignature(mdplist.Signature)" style='height: 40px; width: 150px' />
                                   </span>
                                 </p>
                                 <p style="font-size: 20px">

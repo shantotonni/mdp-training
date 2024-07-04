@@ -17,7 +17,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.4",
         "maatwebsite/excel": "*",
-        "phpmailer/phpmailer": "^6.6",
+        "phpmailer/phpmailer": "^6.9",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {

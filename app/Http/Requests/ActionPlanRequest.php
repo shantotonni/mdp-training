@@ -32,6 +32,7 @@ class ActionPlanRequest extends FormRequest
             'Department'=>'required',
             'Mobile'=>'required|min:11|max:11',
             'SuppervisorStaffID'=>'required',
+            'Signature'=>'required',
         ];
     }
 }

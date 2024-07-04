@@ -106,10 +106,12 @@
                                                              v-if="mdp.MDPStatus === 'Approved'"><i class="mdi mdi-printer"></i> MDP</router-link>
                                                 <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm"
                                                              v-if="mdp.MDPStatus === 'Approved'"><i class="mdi mdi-printer"></i> PTC</router-link>
-                                                <button v-if="(mdp.Supervisor === 'Y') && mdp.MDPStatus === 'Pending'"
+
+                                                <button v-if="(mdp.Supervisor === 'Y' || type === 'admin') && mdp.MDPStatus === 'Pending'"
                                                         @click="approvedMDP(mdp.ID)" class="btn btn-success btn-sm"><i class="mdi mdi-printer"></i> Approved</button>
-                                                <button v-if="(mdp.Supervisor === 'Y') && mdp.MDPStatus === 'Approved'"
+                                                <button v-if="(mdp.Supervisor === 'Y' || type === 'admin') && mdp.MDPStatus === 'Approved'"
                                                         @click="approvedMDP(mdp.ID)" class="btn btn-warning btn-sm"><i class="mdi mdi-printer"></i> Disapproved</button>
+
                                                 <button @click="destroy(mdp.ID)" v-if="mdp.MDPStatus === 'Pending'" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                               </td>
                                           </tr>

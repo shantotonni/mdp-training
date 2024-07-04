@@ -32,6 +32,11 @@ import '@livelybone/vue-datepicker/lib/css/index.css'
 import Swal from 'sweetalert2';
 window.Swal = Swal;
 
+//pre loader
+import loader from "vue-ui-preloader";
+Vue.use(loader);
+
+
 //moment
 import moment from 'moment'
 

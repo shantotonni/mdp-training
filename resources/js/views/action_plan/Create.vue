@@ -103,6 +103,17 @@
                               <div class="error" v-if="form.errors.has('Department')" v-html="form.errors.get('Department')" />
                             </div>
                           </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
+                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">
+                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
+                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="40px" width="40px">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>
+                          </div>
                         </div>
                         <hr>
                        </div>
@@ -218,6 +229,9 @@
         </div>
       </div>
     </div>
+    <div>
+      <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
+    </div>
   </div>
 </template>
 
@@ -243,7 +257,7 @@ export default {
       departments: [],
       form: new Form({
         ID :'',
-        ActionPlanPeriod :'2023-2024',
+        ActionPlanPeriod :'2024-2025',
         StaffID :'',
         EmployeeName :'',
         Designation :'',
@@ -258,9 +272,11 @@ export default {
         SuppervisorDesignation:'',
         SuppervisorEmail:'',
         SuppervisorMobile:'',
+        Signature:'',
         finds: [{ TaskName: '' , TargetDateOfCompletion: '', CriterionOfMeasurement: ''}],
       }),
       isLoading: false,
+      PreLoader: false,
     }
   },
   mounted() {
@@ -273,6 +289,7 @@ export default {
   methods: {
     store(){
       this.form.busy = true;
+      this.PreLoader = true;
       this.form.post(baseurl + "api/hr_action_plane_store").then(response => {
         if (response.data.status === 'error'){
           this.errorNoti(response.data.message);
@@ -280,8 +297,10 @@ export default {
           this.redirect(this.mainOrigin + 'action-plan-list')
           this.successNoti(response.data.message);
         }
+        this.PreLoader = false;
       }).catch(e => {
         this.isLoading = false;
+        this.PreLoader = false;
       });
     },
     getEmployeeByStaffID(){
@@ -319,6 +338,22 @@ export default {
       }).catch((error)=>{
 
       })
+    },
+    changeImage(event) {
+      let file = event.target.files[0];
+      let reader = new FileReader();
+      reader.onload = event => {
+        this.form.Signature = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    showImage() {
+      let img = this.form.Signature;
+      if (img.length > 100) {
+        return this.form.Signature;
+      } else {
+        return window.location.origin + "/signature/" + this.form.Signature;
+      }
     },
     getUserData() {
       this.axiosPost('me', {}, (response) => {
