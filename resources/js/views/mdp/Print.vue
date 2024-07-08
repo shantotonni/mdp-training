@@ -9,40 +9,40 @@
                               <div style="display:flex;">
                                 <div>
                                   <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
-                                  <p style="font-size:15px">Advanced Chemical Industries Limited</p>
+                                  <p style="font-size:20px">Advanced Chemical Industries Limited</p>
                                 </div>
                                 <div >
-                                  <p style="font-size:15px;margin-left: 500px;margin-top: 20px;width: 200px;height: 55px; border: 1px solid black;
-                                   box-sizing: border-box;text-align: center"><span style="margin-top: 14px;display: block">Private & Confidential</span></p>
+                                  <p style="font-size:15px;margin-left: 400px;margin-top: 20px;width: 200px;height: 55px; border: 1px solid black;
+                                   box-sizing: border-box;text-align: center"><span style="margin-top: 14px;display: block;font-weight: bold;font-style: italic">Private & Confidential</span></p>
                                 </div>
                               </div>
                               <div class="first_part">
-                                <h3 style="text-align:center">Management Development Plan</h3>
+                                <h4 style="text-align:center;text-transform: uppercase">Management Development Plan</h4>
                                 <hr>
                                 <br>
                                 <p style="font-size: 20px">
 <!--                                  Appraisal Period <span style="display: inline-block;border-bottom: 1px solid;width: 200px;text-align: center">{{ mdplist.AppraisalPeriod }}</span>-->
-                                  Training Period From July <span style="display: inline-block;border-bottom: 1px solid;width: 315px;text-align: center">{{ mdplist.from_period }}</span>
+                                  Appraisal period from July <span style="display: inline-block;border-bottom: 1px solid;width: 315px;text-align: center">{{ mdplist.from_period }}</span>
                                   to June <span style="display: inline-block;border-bottom: 1px solid;width: 315px;text-align: center">{{ mdplist.to_period }}</span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Name of employee <span style="display: inline-block;border-bottom: 1px solid;width: 390px;text-align: center">{{ mdplist.EmployeeName }}</span>
-                                  Employee Id <span style="display: inline-block;border-bottom: 1px solid;width: 250px;text-align: center">{{ mdplist.StaffID }}</span>
+                                  Name of Employee: <span style="display: inline-block;border-bottom: 1px solid;width: 390px;text-align: center">{{ mdplist.EmployeeName }}</span>
+                                  Employee ID: <span style="display: inline-block;border-bottom: 1px solid;width: 250px;text-align: center">{{ mdplist.StaffID }}</span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Designation <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Designation }}</span>
-                                  Department <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Department }}</span>
+                                  Designation: <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Designation }}</span>
+                                  Department: <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Department }}</span>
 <!--                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 306px;text-align: center">{{ mdplist.DateOfBirth }}</span>-->
                                 </p>
                                 <p style="font-size: 20px">
-                                  Present Job Started on<span style="display: inline-block;border-bottom: 1px solid;width: 270px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>
+                                  Present Job Started on:<span style="display: inline-block;border-bottom: 1px solid;width: 270px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>
 <!--                                  Present Age <span style="display: inline-block;border-bottom: 1px solid;width: 350px;text-align: center">{{ mdplist.Age }}</span>-->
-                                  Date of joining in ACI <span style="display: inline-block;border-bottom: 1px solid;width: 250px;text-align: center">{{ mdplist.JoiningDate }}</span>
+                                  Date of Joining in ACI: <span style="display: inline-block;border-bottom: 1px solid;width: 250px;text-align: center">{{ mdplist.JoiningDate }}</span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Date of birth <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.DateOfBirth }}</span>
+                                  Date of Birth: <span style="display: inline-block;border-bottom: 1px solid;width: 220px;text-align: center">{{ mdplist.DateOfBirth }}</span>
 <!--                                  Present Job Started <span style="display: inline-block;border-bottom: 1px solid;width: 370px;text-align: center">{{ mdplist.PresentJobStartedOn }}</span>-->
-                                  Education <span style="display: inline-block;border-bottom: 1px solid;width: 265px;text-align: center">{{ mdplist.Qualification }}</span>
+                                  Educational Qualification: <span style="display: inline-block;border-bottom: 1px solid;width: 360px;text-align: center">{{ mdplist.Qualification }}</span>
                                 </p>
                               </div>
                               <br>
@@ -53,29 +53,6 @@
                                 <p v-for="(number, i) in row_number" :key="i" style="font-size: 20px">
                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ initiative[i] !== undefined ? initiative[i].Name: '' }}</span>
                                 </p>
-<!--                              <div v-else>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center" ></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                              </div>-->
                               </div>
                               <br>
                               <br>
@@ -87,55 +64,28 @@
                                 <p v-for="(number, i) in row_number" :key="i" style="font-size: 20px">
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ training[i] !== undefined ? training[i].TrainingTitle: '' }}</span>
                                 </p>
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                <p>-->
-<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 700px;text-align: center"></span>-->
-<!--                                </p>-->
                               </div>
 
                               <div style="display: flex">
                                 <div>
-                                  <p>Form No.: TR-003-01/07</p>
+                                  <p style="font-size: 20px">Form No.: TR-003-01/07</p>
                                 </div>
-                                <div style="margin-left: 700px">
-                                  <p style="text-align: right;padding-top: 58px">Page No: 1 of 2</p>
+                                <div style="margin-left: 600px">
+                                  <p style="text-align: right;font-size: 20px">Page No.: 1 of 2</p>
                                 </div>
                               </div>
 
-
-<!--                              <div class="third_part">-->
-<!--                                <h4 style="font-width: bold;">Training & Development Policy</h4>-->
-<!--                                <p>-->
-<!--                                  Issued by: Ms. Sheema Abed Rahman, GM, CS-->
-<!--                                  <br>-->
-<!--                                 <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>-->
-<!--                                </p>-->
-<!--                              </div>-->
                               <br>
                               <br>
                               <div class="fourth_part">
                                 <p style="font-weight: bold;font-size: 20px">B. For development to take future responsibilities</p>
-                                <p style="font-size: 18px">Other than those mentioned in A, list below two areas of personal development/training that you would like
-                                  to see happen in your case in the coming years and explain how those trainings will help the company.</p>
+                                <p style="font-size: 20px">Other than those mentioned in A, list below two areas of personal development / training that you would
+                                  like to see happen in your case in the coming years and explain how those trainings will help the company.</p>
 
 <!--                                1. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">-->
 <!--                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaOneName: '' }}</span>-->
 <!--                                </p>-->
-                                1. <p style="font-size: 20px">
+                                <span style="font-size: 20px">1.</span> <p style="font-size: 20px">
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ mdplist.AreaOne }}</span>
                                 </p>
                                 <p>
@@ -156,13 +106,7 @@
                               </div>
                               <br>
                               <div class="fifth_part">
-<!--                                <p>-->
-<!--                                  2. <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>-->
-<!--                                </p>-->
-<!--                                2. <p v-for="(number, i) in row_number" :key="i" v-if="Area.length">-->
-<!--                                <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaTwoName: '' }}</span>-->
-<!--                              </p>-->
-                                2.<p>
+                                <span style="font-size: 20px">2.</span><p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;font-size: 20px">{{ mdplist.AreaTwo }}</span>
                                 </p>
                                 <p>
@@ -184,19 +128,19 @@
                               <br>
                               <div class="six_part">
                                 <p style="font-size: 20px">
-                                  Signature of employee <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">
+                                  Signature of employee: <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">
                                     <img v-if="mdplist.Signature" :src="loadSignature(mdplist.Signature)" style='height: 40px; width: 150px' />
                                   </span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">
+                                  Date: <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">
                                   {{ mdplist.CreatedDate }}
                                 </span>
                                 </p>
                               </div>
                               <br>
                               <div class="fourth_part">
-                                <p style="font-size: 20px">Remarks and recommendations of superior</p>
+                                <p style="font-size: 20px">Remarks and recommendations of Superior</p>
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
                                 </p>
@@ -218,32 +162,27 @@
                               </div>
                               <br>
                               <div class="six_part">
-                                <p style="font-size: 20px"> Signature
+                                <p style="font-size: 20px"> Signature:
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center" v-if="mdplist.MDPStatus === 'Approved'">
                                   Electronically Approved
                                   </span>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center" v-if="mdplist.MDPStatus === 'Pending'"></span>
                                 </p>
                                 <p style="font-size: 20px">
-                                  Date <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">
+                                  Date: <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">
                                   {{ mdplist.CreatedDate }}
                                 </span>
                                 </p>
                               </div>
-<!--                              <div class="third_part">-->
-<!--                                <h4 style="font-width: bold;">Training & Development Policy</h4>-->
-<!--                                <p>-->
-<!--                                  Issued by: Ms. Sheema Abed Rahman, GM, CS-->
-<!--                                  <br>-->
-<!--                                  <span style="text-align: center;margin-left: 80px"> 30 June 2005</span>-->
-<!--                                </p>-->
-<!--                              </div>-->
+                              <br>
+                              <p style="font-size: 20px"><span style="font-weight: bold">Note</span>: Keep a copy in the Department Training file and forward the original to Personnel Department.</p>
+                              <br>
                               <div style="display: flex">
                                 <div>
-                                  <p>Form No.: TR-003-01/07</p>
+                                  <p style="font-size: 20px">Form No.: TR-003-01/07</p>
                                 </div>
-                                <div style="margin-left: 700px">
-                                  <p style="text-align: right;padding-top: 58px">Page No: 2 of 2</p>
+                                <div style="margin-left: 600px">
+                                  <p style="text-align: right;font-size: 20px">Page No.: 2 of 2</p>
                                 </div>
                               </div>
                             </div>
