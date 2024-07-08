@@ -156,9 +156,9 @@
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
                                 </p>
-                                <p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>
-                                </p>
+<!--                                <p>-->
+<!--                                  <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center"></span>-->
+<!--                                </p>-->
                               </div>
                               <br>
                               <div class="six_part">
