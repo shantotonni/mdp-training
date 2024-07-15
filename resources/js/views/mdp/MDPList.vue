@@ -112,7 +112,7 @@
                                                 <button v-if="(mdp.Supervisor === 'Y' || type === 'admin') && mdp.MDPStatus === 'Approved'"
                                                         @click="approvedMDP(mdp.ID)" class="btn btn-warning btn-sm"><i class="mdi mdi-printer"></i> Disapproved</button>
 
-                                                <button @click="destroy(mdp.ID)" v-if="mdp.MDPStatus === 'Pending'" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                                <button @click="destroy(mdp.ID)"  class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                               </td>
                                           </tr>
                                         </tbody>

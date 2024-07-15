@@ -9,7 +9,7 @@ class MDPEmployeeTrainingList extends Model
 {
     use HasFactory;
 
-    protected $table = 'MDPEmployeeTrainingList';
+    protected $table = 'MDPEligibleEmployeeTrainingList';
     protected $primaryKey = 'ID';
     protected $guarded = [];
 
