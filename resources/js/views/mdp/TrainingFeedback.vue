@@ -13,7 +13,7 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <select name="AppraisalPeriod" id="AppraisalPeriod" v-model="AppraisalPeriod" class="form-control">
-                            <option value="2023-2024">2023-2024</option>
+                            <option value="2023-2024">2024-2025</option>
                           </select>
                         </div>
                       </div>

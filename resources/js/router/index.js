@@ -22,6 +22,7 @@ import SEPDesignation from '../views/sep/SEPDesignation.vue'
 import RecruitmentRequisition from '../views/recruitment_requisition/Index.vue'
 
 //import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
+import TaxCertificate from '../views/tax/TaxCertificate'
 
 //user
 import UserList from '../views/users/Index'
@@ -134,6 +135,8 @@ const routes = [
             //report PendingPTCReport
             {path: baseurl + 'pending-PTC-report', name: 'PendingPTCReport', component: PendingPTCReport},
             {path: baseurl + 'approved-PTC-report', name: 'ApprovedPTCReport', component: ApprovedPTCReport},
+            //tax TaxCertificate
+            {path: baseurl + 'tax-certificate', name: 'TaxCertificate', component: TaxCertificate},
         ],
         beforeEnter(to, from, next) {
             checkToken(to, from, next);
