@@ -10,6 +10,7 @@ use App\Http\Controllers\MDPTrainigFeedbackController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SEPAutomationController;
+use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
@@ -150,4 +151,6 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::get('mdp-period-wise-feedback/{Period}', [MDPChartController::class,'MDPPeriodWiseFeedback']);
     Route::get('feedback-details/{Period}/{TrainingTitle}', [MDPChartController::class,'MDPPeriodWiseFeedbackDetails']);
 
+    // For TAx Route
+    Route::get('send-otp', [TaxController::class,'sendOTP']);
 });

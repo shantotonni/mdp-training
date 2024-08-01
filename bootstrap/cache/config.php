@@ -586,7 +586,7 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.agni.com',
+        'host' => 'mail.aci-bd.com',
         'port' => '25',
         'username' => NULL,
         'password' => NULL,
@@ -631,7 +631,7 @@
     ),
     'from' => 
     array (
-      'address' => 'no-reply@aci-bd.com',
+      'address' => 'noreply@aci-bd.com',
       'name' => 'MDP',
     ),
     'markdown' => 
