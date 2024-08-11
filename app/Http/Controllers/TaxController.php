@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\SendOTP;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TaxController extends Controller
 {
@@ -45,6 +47,67 @@ class TaxController extends Controller
                 'error'=>$e->getMessage()
             ]);
         }
+    }
+
+    public function verifyOTP(Request $request){
+        DB::beginTransaction();
+        try {
+            $Mobile = $request->Mobile;
+            $OTPCode = $request->OTPCode;
+            $token = $request->bearerToken();
+            $payload = JWTAuth::setToken($token)->getPayload();
+            $EmpCode = $payload['EmpCode'];
+
+            $otp_verify = SendOTP::query()->where('Mobile',$Mobile)->where('OTPCode',$OTPCode)->where('Status',0)
+                ->orderBy('createdDate','desc')->first();
+            if ($otp_verify){
+                $otp_verify->Status = 1;
+                //$otp_verify->save();
+
+                $getCompany = DB::connection('HRPayroll')->select("Select c.company from employer a,TaxCompany c where a.empcode = '$EmpCode' and a.deptcode=c.deptcode");
+                $companyName = $getCompany[0]->company;
+                $TaxCertificate = DB::connection('HRPayroll')->select("Execute sp_TaxCertificate '2023-2024','$EmpCode','$companyName','%', 99, 'A', '%', 'su'");
+                $TaxDeposit = DB::connection('HRPayroll')->select("Execute sp_TaxDeposit '2023-2024','$EmpCode','$companyName'");
+
+                return $TaxDeposit;
+
+                DB::commit();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Successfully Verify',
+                    'TaxCertificate' => $TaxCertificate,
+                    'TaxDeposit' => $TaxDeposit,
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Something Went Wrong'
+                ]);
+            }
+        }catch (\Exception $e){
+            return response()->json([
+                'status'=>401,
+                'error'=>$e->getMessage()
+            ]);
+        }
+    }
+
+    public function getTaxData(Request $request){
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $EmpCode = $payload['EmpCode'];
+
+        $getCompany = DB::connection('HRPayroll')->select("Select c.company from employer a,TaxCompany c where a.empcode = '$EmpCode' and a.deptcode=c.deptcode");
+        $companyName = $getCompany[0]->company;
+        $TaxCertificate = DB::connection('HRPayroll')->select("Execute sp_TaxCertificate '2023-2024','$EmpCode','$companyName','%', 99, 'A', '%', 'su'");
+        $TaxDeposit = DB::connection('HRPayroll')->select("Execute sp_TaxDeposit '2023-2024','$EmpCode','$companyName'");
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully Verify',
+            'TaxCertificate' => $TaxCertificate[0],
+            'TaxDeposit' => $TaxDeposit,
+        ]);
     }
 
 

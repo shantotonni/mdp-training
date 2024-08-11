@@ -102,6 +102,17 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+        'HRPayroll' => [
+            'driver' => 'sqlsrv',
+            'host' => '192.168.41.160',
+            'port' => '1433',
+            'database' => 'HRPayroll',
+            'username' => 'sa',
+            'password' => 'dataport',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'strict' => false,
+        ],
     ],
 
     /*

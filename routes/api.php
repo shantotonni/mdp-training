@@ -153,4 +153,6 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
 
     // For TAx Route
     Route::get('send-otp', [TaxController::class,'sendOTP']);
+    Route::get('verify-otp', [TaxController::class,'verifyOTP']);
+    Route::get('get-tax-data', [TaxController::class,'getTaxData']);
 });

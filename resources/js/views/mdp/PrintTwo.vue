@@ -8,7 +8,7 @@
                             <div class="card-body">
                               <div style="text-align: center">
                                 <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
-                                <h3>Personal Training Commitment 2023-2024</h3>
+                                <h3>Personal Training Commitment 2024-2025</h3>
                               </div>
                               <div class="first_part">
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
@@ -50,7 +50,7 @@
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td>In-house or External Training By the Company for Delivering Present Job Responsibility</td>
+                                      <td style="padding: ">In-house or External Training By the Company for Delivering Present Job Responsibility</td>
                                       <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingTitle }}</p></td>
                                       <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingType }}</p></td>
                                       <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ customFormatter(train.TrainingDate) }}</p></td>
@@ -73,7 +73,6 @@
                                   </tbody>
                                 </table>
                               </div>
-                              <hr>
                               <br>
                               <div class="first_part">
                                <div style="display: flex">
