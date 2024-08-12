@@ -277,10 +277,10 @@ export default {
       OTPCode: '',
       isMessage : false,
       isLoading: false,
-      isSendOtp : false,
+      isSendOtp : true,
       isOTPVerification : false,
       isFormSubmit : false,
-      isTaxPrintPart : true,
+      isTaxPrintPart : false,
       PrintDate: moment().format('MMMM Do YYYY')
     }
   },
@@ -294,7 +294,7 @@ export default {
     // });
   },
   mounted() {
-    this.getTaxData()
+    // this.getTaxData()
     // if (this.isTaxPrintPart === true){
     //   $('#mdp').printThis({
     //     importCSS: true,
@@ -316,6 +316,9 @@ export default {
       axios.get(baseurl+'api/verify-otp?Mobile=' + this.Mobile
           + "&OTPCode=" + this.OTPCode
       ).then((response)=>{
+        this.isTaxPrintPart = true
+        this.isOTPVerification = false
+        this.getTaxData()
         console.log(response)
       }).catch((error)=>{
 

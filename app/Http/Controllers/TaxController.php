@@ -75,7 +75,7 @@ class TaxController extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Successfully Verify',
-                    'TaxCertificate' => $TaxCertificate,
+                    'TaxCertificate' => $TaxCertificate[0],
                     'TaxDeposit' => $TaxDeposit,
                 ]);
             }else{
