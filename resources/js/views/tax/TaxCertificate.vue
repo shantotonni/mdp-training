@@ -8,13 +8,10 @@
             <div class="datatable" v-if="!isLoading">
               <div class="card-body">
 
-                <div class="phoneVerificationPart" v-if="isSendOtp">
+                <div class="phoneVerificationPart" v-if="!isSendOtp">
                   <div class="d-flex">
                     <div class="flex-grow-1">
                       <div class="row">
-                        <div class="col-md-2">
-                          <input v-model="Mobile" type="text" class="form-control" required placeholder="Enter Mobile">
-                        </div>
                         <div class="col-md-2">
                           <button type="submit" @click="sendOTP" class="btn btn-success"><i class="mdi mdi-filter"></i>Send OTP</button>
                         </div>
@@ -23,15 +20,19 @@
                   </div>
                 </div>
 
-                <div class="phoneVerificationPart" v-if="isOTPVerification">
+                <div class="phoneVerificationPart" v-if="isSendOtp && !isOTPVerification">
                   <div class="d-flex">
                     <div class="flex-grow-1">
                       <div class="row">
                         <div class="col-md-2">
-                          <input v-model="Mobile" type="text" class="form-control" required placeholder="Enter Mobile" readonly>
+                          <input :value="Mobile" type="text" class="form-control" readonly>
                         </div>
                         <div class="col-md-2">
+                            <ValidationProvider name="OTP" mode="eager" rules="required"
+                                                v-slot="{ errors }">
                           <input v-model="OTPCode" type="text" class="form-control" required placeholder="Enter OTP Code">
+                                <span class="error-message"> {{ errors[0] }}</span>
+                            </ValidationProvider>
                         </div>
                         <div class="col-md-2">
                           <button type="submit" @click="verifyOTP" class="btn btn-success"><i class="mdi mdi-filter"></i>Verify OTP</button>
@@ -280,7 +281,7 @@ export default {
       isSendOtp : false,
       isOTPVerification : false,
       isFormSubmit : false,
-      isTaxPrintPart : true,
+      isTaxPrintPart : false,
       PrintDate: moment().format('MMMM Do YYYY')
     }
   },
@@ -294,7 +295,7 @@ export default {
     // });
   },
   mounted() {
-    this.getTaxData()
+   // this.getTaxData()
     // if (this.isTaxPrintPart === true){
     //   $('#mdp').printThis({
     //     importCSS: true,
@@ -304,18 +305,23 @@ export default {
   },
   methods: {
     sendOTP(){
-      axios.get(baseurl+'api/send-otp?Mobile=' + this.Mobile).then((response)=>{
+      axios.get(baseurl+'api/send-otp').then((response)=>{
+        this.Mobile =response.data.mobileNo
         this.$toaster.success('Successfully Send');
-        this.isSendOtp = false;
-        this.isOTPVerification = true;
+        this.isSendOtp = true;
       }).catch((error)=>{
 
       })
     },
     verifyOTP(){
-      axios.get(baseurl+'api/verify-otp?Mobile=' + this.Mobile
-          + "&OTPCode=" + this.OTPCode
+      axios.get(baseurl+'api/verify-otp?OTPCode=' + this.OTPCode
       ).then((response)=>{
+          this.$toaster.success(response.data.message);
+          if(response.data.status==='success'){
+              this.isOTPVerification = true;
+              this.isTaxPrintPart=true
+              this.getTaxData()
+          }
         console.log(response)
       }).catch((error)=>{
 

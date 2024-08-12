@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Personal;
 use App\Models\SendOTP;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,56 +12,91 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TaxController extends Controller
 {
-    public function sendOTP(Request $request){
-        DB::beginTransaction();
+    public function sendOTP(Request $request)
+    {
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $empcode = $payload['EmpCode'];
+
+        // Define the start and end times for the range
+        $start = Carbon::createFromTime(8, 30); // 8:30 AM
+        $end = Carbon::createFromTime(18, 0);   // 6:00 PM
+
+        // Get the current time
+        $current = Carbon::now();
+
         try {
-            $Mobile = $request->Mobile;
-            $OTP = rand(100000,999999);
-            $smscontent = 'Otp Code - '.$OTP;
+            // Check if the current time is within the range
+            if ($current->between($start, $end)) {
+                DB::beginTransaction();
+                $checkMobile = Personal::select('MobileNo')->where('EmpCode', $empcode)->first();
+                $Mobile = $checkMobile['MobileNo'];
+                if ($Mobile) {
+                    $OTP = rand(100000, 999999);
+                    $smscontent = 'Otp Code - ' . $OTP;
 
-            $otp = new SendOTP();
-            $otp->Mobile = $Mobile;
-            $otp->OTPCode = $OTP;
-            $otp->status = 0;
-            $otp->CreatedDate = Carbon::now();
-            $otp->save();
+                    $otp = new SendOTP();
+                    $otp->Mobile = $Mobile;
+                    $otp->OTPCode = $OTP;
+                    $otp->SentTime = Carbon::now();
+                    $otp->status = 0;
+                    $otp->CreatedDate = Carbon::now();
+                    $otp->save();
 
-            $to = $Mobile;
-            $sId = '8809617615000';
-            $applicationName = 'MDP Training';
-            $moduleName = 'Tax Certification';
-            $otherInfo = '';
-            $userId = $OTP;
-            $vendor = 'smsq';
-            $message = $smscontent;
-            $this->sendSmsQ($to, $sId, $applicationName, $moduleName, $otherInfo, $userId, $vendor, $message);
+                    $to = $Mobile;
+                    $sId = '8809617615000';
+                    $applicationName = 'MDP Training';
+                    $moduleName = 'Tax Certification';
+                    $otherInfo = '';
+                    $userId = $OTP;
+                    $vendor = 'smsq';
+                    $message = $smscontent;
+                    $this->sendSmsQ($to, $sId, $applicationName, $moduleName, $otherInfo, $userId, $vendor, $message);
+                    DB::commit();
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Successfully Send',
+                        'mobileNo' => $Mobile
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Mobile No Not Found',
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Current time is outside the range of the office time'
+                ]);
 
-            DB::commit();
+            }
 
+        } catch (\Exception $e) {
             return response()->json([
-               'status' => 'success',
-               'message' => 'Successfully Send'
-            ]);
-        }catch (\Exception $e){
-            return response()->json([
-                'status'=>401,
-                'error'=>$e->getMessage()
+                'status' => 401,
+                'error' => $e->getMessage()
             ]);
         }
     }
 
-    public function verifyOTP(Request $request){
+    public function verifyOTP(Request $request)
+    {
         DB::beginTransaction();
         try {
-            $Mobile = $request->Mobile;
-            $OTPCode = $request->OTPCode;
             $token = $request->bearerToken();
             $payload = JWTAuth::setToken($token)->getPayload();
             $EmpCode = $payload['EmpCode'];
+            $checkMobile = Personal::select('MobileNo')->where('EmpCode', $EmpCode)->first();
+            $Mobile = $checkMobile['MobileNo'];
+            $OTPCode = $request->OTPCode;
 
-            $otp_verify = SendOTP::query()->where('Mobile',$Mobile)->where('OTPCode',$OTPCode)->where('Status',0)
-                ->orderBy('createdDate','desc')->first();
-            if ($otp_verify){
+            $otp_verify = SendOTP::query()->where('Mobile', $Mobile)
+                ->where('OtpCode', $OTPCode)
+                ->where('SentTime', '>=', Carbon::now()->subMinutes(5))
+                ->orderBy('SentTime', 'desc')->first();
+
+            if ($otp_verify) {
                 $otp_verify->Status = 1;
                 //$otp_verify->save();
 
@@ -69,30 +105,31 @@ class TaxController extends Controller
                 $TaxCertificate = DB::connection('HRPayroll')->select("Execute sp_TaxCertificate '2023-2024','$EmpCode','$companyName','%', 99, 'A', '%', 'su'");
                 $TaxDeposit = DB::connection('HRPayroll')->select("Execute sp_TaxDeposit '2023-2024','$EmpCode','$companyName'");
 
-                return $TaxDeposit;
+                //return $TaxDeposit;
 
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Successfully Verify',
+                    'message' => 'Successfully Verified',
                     'TaxCertificate' => $TaxCertificate,
                     'TaxDeposit' => $TaxDeposit,
                 ]);
-            }else{
+            } else {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Something Went Wrong'
+                    'message' => 'Invalid Otp Or Expired'
                 ]);
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
-                'status'=>401,
-                'error'=>$e->getMessage()
+                'status' => 401,
+                'error' => $e->getMessage()
             ]);
         }
     }
 
-    public function getTaxData(Request $request){
+    public function getTaxData(Request $request)
+    {
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $EmpCode = $payload['EmpCode'];
@@ -123,7 +160,7 @@ class TaxController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => 'To='.$to.'&SID='.$sId.'&ApplicationName='.urlencode($applicationName).'&ModuleName='.urlencode($moduleName).'&OtherInfo='.urlencode($otherInfo).'&userID='.$userId.'&Message='.$message.'&SmsVendor='.$vendor,
+            CURLOPT_POSTFIELDS => 'To=' . $to . '&SID=' . $sId . '&ApplicationName=' . urlencode($applicationName) . '&ModuleName=' . urlencode($moduleName) . '&OtherInfo=' . urlencode($otherInfo) . '&userID=' . $userId . '&Message=' . $message . '&SmsVendor=' . $vendor,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/x-www-form-urlencoded'
             ),
