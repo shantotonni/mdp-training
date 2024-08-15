@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Personal;
 use App\Models\SendOTP;
+use App\Models\TaxCertificate;
+use App\Models\TaxCertificateConfigaration;
+use App\Models\TaxDeposit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,32 +15,46 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TaxController extends Controller
 {
+
+    public function getSupportingData(Request $request){
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $empcode = $payload['EmpCode'];
+        $checkMobile = Personal::select('Name','MobileNo')->where('EmpCode', $empcode)->first();
+        $Mobile = $checkMobile['MobileNo'];
+        $Name = $checkMobile['Name'];
+        if (substr($Mobile, 0, 1) === '1') {
+            // Add '0' at the beginning of the number
+            $Mobile = '0' . $Mobile;
+        }
+        return response()->json([
+            'mobileNo' => $Mobile,
+            'Name' => $Name,
+        ]);
+    }
     public function sendOTP(Request $request)
     {
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
 
-        // Define the start and end times for the range
-        $start = Carbon::createFromTime(8, 30); // 8:30 AM
-        $end = Carbon::createFromTime(18, 0);   // 6:00 PM
-
-        // Get the current time
-        $current = Carbon::now();
-
         try {
-            // Check if the current time is within the range
-            if ($current->between($start, $end)) {
                 DB::beginTransaction();
                 $checkMobile = Personal::select('MobileNo')->where('EmpCode', $empcode)->first();
                 $Mobile = $checkMobile['MobileNo'];
+                if (substr($Mobile, 0, 1) === '1') {
+                    // Add '0' at the beginning of the number
+                    $Mobile = '0' . $Mobile;
+                }
+
                 if ($Mobile) {
                     $OTP = rand(100000, 999999);
-                    $smscontent = 'Otp Code - ' . $OTP;
+                    $smscontent = 'Your OTP for Tax Certificate is  - ' . $OTP. '.'.' Please enter this on the verification';
 
                     $otp = new SendOTP();
                     $otp->Mobile = $Mobile;
                     $otp->OTPCode = $OTP;
+                    $otp->EmpCode = $empcode;
                     $otp->SentTime = Carbon::now();
                     $otp->status = 0;
                     $otp->CreatedDate = Carbon::now();
@@ -64,13 +81,7 @@ class TaxController extends Controller
                         'message' => 'Mobile No Not Found',
                     ]);
                 }
-            } else {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Current time is outside the range of the office time'
-                ]);
 
-            }
 
         } catch (\Exception $e) {
             return response()->json([
@@ -90,20 +101,27 @@ class TaxController extends Controller
             $checkMobile = Personal::select('MobileNo')->where('EmpCode', $EmpCode)->first();
             $Mobile = $checkMobile['MobileNo'];
             $OTPCode = $request->OTPCode;
+            if (substr($Mobile, 0, 1) === '1') {
+                // Add '0' at the beginning of the number
+                $Mobile = '0' . $Mobile;
+            }
 
-            $otp_verify = SendOTP::query()->where('Mobile', $Mobile)
+            $otp_verify = SendOTP::query()
+                ->where('EmpCode', $EmpCode)
+                ->where('Mobile', $Mobile)
                 ->where('OtpCode', $OTPCode)
                 ->where('SentTime', '>=', Carbon::now()->subMinutes(5))
                 ->orderBy('SentTime', 'desc')->first();
 
             if ($otp_verify) {
                 $otp_verify->Status = 1;
-                //$otp_verify->save();
+                $otp_verify->save();
 
-                $getCompany = DB::connection('HRPayroll')->select("Select c.company from employer a,TaxCompany c where a.empcode = '$EmpCode' and a.deptcode=c.deptcode");
-                $companyName = $getCompany[0]->company;
-                $TaxCertificate = DB::connection('HRPayroll')->select("Execute sp_TaxCertificate '2023-2024','$EmpCode','$companyName','%', 99, 'A', '%', 'su'");
-                $TaxDeposit = DB::connection('HRPayroll')->select("Execute sp_TaxDeposit '2023-2024','$EmpCode','$companyName'");
+                $checkCompany = TaxCertificate::select('Company')->where('EmpCode',$EmpCode)->first();
+                $companyName = $checkCompany->Company;
+
+                $TaxCertificate =  TaxCertificate::where('EmpCode',$EmpCode)->first();
+                $TaxDeposit =  TaxDeposit::where('EmpCode',$EmpCode)->get();
 
                 //return $TaxDeposit;
 
@@ -135,17 +153,29 @@ class TaxController extends Controller
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $EmpCode = $payload['EmpCode'];
+        $fiscalYear = $this->getFiscalYear();
 
-        $getCompany = DB::connection('HRPayroll')->select("Select c.company from employer a,TaxCompany c where a.empcode = '$EmpCode' and a.deptcode=c.deptcode");
-        $companyName = $getCompany[0]->company;
-        $TaxCertificate = DB::connection('HRPayroll')->select("Execute sp_TaxCertificate '2023-2024','$EmpCode','$companyName','%', 99, 'A', '%', 'su'");
-        $TaxDeposit = DB::connection('HRPayroll')->select("Execute sp_TaxDeposit '2023-2024','$EmpCode','$companyName'");
+        //$getCompany = DB::connection('HRPayroll')->select("Select c.company from employer a,TaxCompany c where a.empcode = '$EmpCode' and a.deptcode=c.deptcode");
+        //$companyName = $getCompany[0]->company;
+//        $TaxCertificate = DB::connection('HRPayroll')->select("Execute sp_TaxCertificate '2023-2024','$EmpCode','$companyName','%', 99, 'A', '%', 'su'");
+//        $TaxDeposit = DB::connection('HRPayroll')->select("Execute sp_TaxDeposit '2023-2024','$EmpCode','$companyName'");
+        $checkCompany = TaxCertificate::select('Company')->where('EmpCode',$EmpCode)->first();
+        $companyDesignTemplate='';
+        if(!empty($checkCompany->Company)){
+            $companyName = $checkCompany->Company;
+            $companyDesignTemplate=  TaxCertificateConfigaration::where('CompanyName',$companyName)->first();
+        }
+
+        $TaxCertificate =  TaxCertificate::where('EmpCode',$EmpCode)->first();
+        $TaxDeposit =  TaxDeposit::where('EmpCode',$EmpCode)->where('taxYear',$fiscalYear)->get();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully Verify',
-            'TaxCertificate' => $TaxCertificate[0],
+            'TaxCertificate' => $TaxCertificate,
             'TaxDeposit' => $TaxDeposit,
+            'EmpCode' => $EmpCode,
+            'companyDesignTemplate' => $companyDesignTemplate,
         ]);
     }
 
@@ -174,4 +204,48 @@ class TaxController extends Controller
         curl_close($curl);
         return $response;
     }
+    function getFiscalYear(Carbon $date = null)
+    {
+        // Default to the current date if no date is provided
+        $date = $date ?: Carbon::now();
+
+        // Define the start of the fiscal year
+        $fiscalYearStartMonth = 7; // April
+        $fiscalYearStartDay = 1;   // 1st of April
+
+        // Determine the fiscal year based on the given date
+        if ($date->month >= $fiscalYearStartMonth && $date->day >= $fiscalYearStartDay) {
+            $startYear = $date->year;
+            $endYear = $date->addYear()->year;
+        } else {
+            $startYear = $date->subYear()->year;
+            $endYear = $date->year;
+        }
+
+        return "{$startYear}-{$endYear}";
+    }
+    function getLastFiscalYear(Carbon $date = null)
+    {
+        $currentDate = Carbon::now();
+        $currentYear = $currentDate->year;
+        $currentMonth = $currentDate->month;
+
+        // Determine the start and end year of the last fiscal year
+        if ($currentMonth >= 6) {
+            // Fiscal year starts from April of the current year to March of the next year
+            $startYear = $currentYear - 1;
+            $endYear = $currentYear;
+        } else {
+            // Fiscal year starts from April of the previous year to March of the current year
+            $startYear = $currentYear - 2;
+            $endYear = $currentYear - 1;
+        }
+
+        $startOfLastFiscalYear = Carbon::createFromDate($startYear, 4, 1);
+        $endOfLastFiscalYear = Carbon::createFromDate($endYear, 3, 31);
+
+
+        return "{$startOfLastFiscalYear->format('Y')}-{$endOfLastFiscalYear->format('Y')}";
+    }
+
 }
