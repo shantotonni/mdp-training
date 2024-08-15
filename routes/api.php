@@ -152,6 +152,7 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::get('feedback-details/{Period}/{TrainingTitle}', [MDPChartController::class,'MDPPeriodWiseFeedbackDetails']);
 
     // For TAx Route
+    Route::get('get-tax-supporting-data', [TaxController::class,'getSupportingData']);
     Route::get('send-otp', [TaxController::class,'sendOTP']);
     Route::get('verify-otp', [TaxController::class,'verifyOTP']);
     Route::get('get-tax-data', [TaxController::class,'getTaxData']);
