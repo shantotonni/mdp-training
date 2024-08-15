@@ -128,6 +128,8 @@ class TaxController extends Controller
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
+                    'message' => 'Successfully Verify',
+                    'TaxCertificate' => $TaxCertificate[0],
                     'message' => 'Successfully Verified',
                     'TaxCertificate' => $TaxCertificate,
                     'TaxDeposit' => $TaxDeposit,

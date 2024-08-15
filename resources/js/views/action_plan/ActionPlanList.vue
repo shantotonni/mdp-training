@@ -9,7 +9,7 @@
               <div class="card-body">
                 <div class="d-flex">
                   <div class="flex-grow-1">
-                    <div class="row" v-if="type==='sadmin'">
+                    <div class="row" v-if="type==='sadmin' || type==='Administrator'">
                       <div class="col-md-2">
                         <input v-model="query" type="text" class="form-control" placeholder="Search">
                       </div>
@@ -44,7 +44,7 @@
                       <i class="fas fa-sync"></i>
                       Reload
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" @click="exportActionPlanList" v-if="personal===null">
+                    <button type="button" class="btn btn-primary btn-sm" @click="exportActionPlanList" v-if="personal === null">
                       <i class="fa fa-file-excel"></i>
                       Export Excel
                     </button>
@@ -175,6 +175,7 @@ export default {
     },
     getData() {
       this.axiosPost('me', {}, (response) => {
+        console.log(response)
         this.$store.commit('me', response);
         this.personal = response.personal
         this.type = response.payload.Type
@@ -184,7 +185,6 @@ export default {
     },
     getAllDivision(){
       axios.get(baseurl + 'api/get-all-division/').then((response) => {
-        console.log(response)
         this.divisions = response.data.divisions;
       }).catch((error) => {
 
@@ -194,7 +194,6 @@ export default {
       axios.post(baseurl +'api/get-all-department/', {
         Division: this.Division,
       }).then((response)=>{
-        console.log(response)
         this.departments = response.data.departments;
       }).catch((error)=>{
 

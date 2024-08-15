@@ -526,7 +526,7 @@ export default {
     },
     mounted() {
         this.getSupportingData()
-       // this.getTaxData()
+        // this.getTaxData()
         // if (this.isTaxPrintPart === true){
         //   $('#mdp').printThis({
         //     importCSS: true,
