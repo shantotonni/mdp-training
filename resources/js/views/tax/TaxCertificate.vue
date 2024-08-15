@@ -22,26 +22,26 @@
                                     <div class="phoneVerificationPart" v-if="!isSendOtp">
                                         <div class="d-flex">
                                             <div class="flex-grow-1">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h4>Welcome to <span style="color: green">{{ Name }} !</span>
-                                                        </h4>
-                                                        <br>
-                                                        <p>We’ve got your mobile number on file: <span
-                                                                style="color: #0a6aff">{{ Mobile }}</span></p>
-                                                        <p>If this mobile number is incorrect, please contact with
-                                                            HR. </p>
-                                                    </div>
+<!--                                                <div class="row">-->
+<!--                                                    <div class="col-md-12">-->
+<!--                                                        <h4>Welcome <span style="color: green">{{ Name }} !</span>-->
+<!--                                                        </h4>-->
+<!--                                                        <br>-->
+<!--                                                        <p>We’ve got your mobile number on file: <span-->
+<!--                                                                style="color: #0a6aff">{{ Mobile }}</span></p>-->
+<!--                                                        <p>If this mobile number is incorrect, please contact with-->
+<!--                                                            HR. </p>-->
+<!--                                                    </div>-->
 
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <button type="submit" @click="sendOTP" class="btn btn-success">
-                                                            <i
-                                                                    class="mdi mdi-filter"></i>Send OTP
-                                                        </button>
-                                                    </div>
-                                                </div>
+<!--                                                </div>-->
+<!--                                                <div class="row">-->
+<!--                                                    <div class="col-md-2">-->
+<!--                                                        <button type="submit" @click="sendOTP" class="btn btn-success">-->
+<!--                                                            <i-->
+<!--                                                                    class="mdi mdi-filter"></i>Send OTP-->
+<!--                                                        </button>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
                                             </div>
                                         </div>
                                     </div>
@@ -167,7 +167,7 @@
                                                             </td>
                                                             <td style="width:20%;text-align:center;border: 1px solid black;border-collapse: collapse;">
                                                                 {{
-                                                                moment(singleTaxDepositFirstHalf.ChallanDate).format('yyyy-MM-DD')
+                                                                moment(singleTaxDepositFirstHalf.ChallanDate).format('DD-MM-yyyy')
                                                                 }}
                                                             </td>
                                                             <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
@@ -215,7 +215,7 @@
                                                             </td>
                                                             <td style="text-align:center;border: 1px solid black;border-collapse: collapse;">
                                                                 {{
-                                                                moment(singleTaxDepositSecondHalf.ChallanDate).format('yyyy-MM-DD')
+                                                                moment(singleTaxDepositSecondHalf.ChallanDate).format('DD-MM-yyyy')
                                                                 }}
                                                             </td>
                                                             <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
@@ -246,7 +246,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.Basic }}</p>
+                                                    {{ Number(TaxCertificate.Basic).toLocaleString() }}</p>
                                             </div>
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
@@ -255,7 +255,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.Bonus }}</p>
+                                                    {{ Number(TaxCertificate.Bonus).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -265,7 +265,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.Rent }}</p>
+                                                    {{ Number(TaxCertificate.Rent).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -274,7 +274,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.Srent }}</p>
+                                                    {{ Number(TaxCertificate.Srent).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -284,7 +284,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.Transport }}</p>
+                                                    {{ Number(TaxCertificate.Transport).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -293,7 +293,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.CompanyCar }}</p>
+                                                    {{ Number(TaxCertificate.CompanyCar).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -303,7 +303,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.CompanyCar1 }}</p>
+                                                    {{ Number(TaxCertificate.CompanyCar1).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -313,7 +313,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.CompanyCar2 }}</p>
+                                                    {{ Number(TaxCertificate.CompanyCar2).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -323,7 +323,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.PF }}</p>
+                                                    {{ Number(TaxCertificate.PF).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -333,7 +333,7 @@
                                                     .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.ENTERTAIN }}</p>
+                                                    {{ Number(TaxCertificate.ENTERTAIN).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -343,7 +343,7 @@
                                                     .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.WPPF }}</p>
+                                                    {{ Number(TaxCertificate.WPPF).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;margin-bottom:10px;font-size: 15px;">
@@ -354,7 +354,7 @@
                                                     .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="font-weight:bolder;margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.TotalA1 }}</p>
+                                                    {{ Number(TaxCertificate.TotalA1).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -362,9 +362,9 @@
                                                     Interest
                                                     on Recognized Provident Fund (RPF)</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1"><span
-                                                        style="float: right;">{{ TaxCertificate.Interest }}</span></p>
+                                                        style="float: right;">{{ Number(TaxCertificate.Interest).toLocaleString() }}</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.Interest1 }}</p>
+                                                    {{ Number(TaxCertificate.Interest1).toLocaleString() }}</p>
                                             </div>
 
 
@@ -372,7 +372,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Less
                                                     Exepmted upto 33% of salary income excluding RPF interest</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1"><span
-                                                        style="float: right;">{{ TaxCertificate.Salaryrpf }}</span></p>
+                                                        style="float: right;">{{ Number(TaxCertificate.Salaryrpf).toLocaleString() }}</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right; border-bottom: 2px solid;">
                                                     0</p>
                                             </div>
@@ -384,7 +384,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="font-weight:bolder;margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.TotalA2 }}</p>
+                                                    {{ Number(TaxCertificate.TotalA2).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -393,7 +393,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right; border-bottom: 2px solid;">
-                                                    {{ TaxCertificate.LessSalary }}</p>
+                                                    {{ Number(TaxCertificate.LessSalary).toLocaleString() }}</p>
                                             </div>
 
                                             <div style="margin-bottom:10px;display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
@@ -403,7 +403,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="font-weight:bolder;margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.TotalA }}</p>
+                                                    {{ Number(TaxCertificate.TotalA).toLocaleString() }}</p>
                                             </div>
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
@@ -412,7 +412,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.LessInv }}</p>
+                                                    {{ Number(TaxCertificate.LessInv).toLocaleString() }}</p>
                                             </div>
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
@@ -421,7 +421,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.PFBal }}</p>
+                                                    {{ Number(TaxCertificate.PFBal).toLocaleString() }}</p>
                                             </div>
                                             <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
@@ -430,7 +430,7 @@
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ TaxCertificate.PFLoan }}</p>
+                                                    {{ Number(TaxCertificate.PFLoan).toLocaleString() }}</p>
                                             </div>
 
 
@@ -511,7 +511,7 @@ export default {
             isSendOtp: false,
             isOTPVerification: false,
             isFormSubmit: false,
-            isTaxPrintPart: false,
+            isTaxPrintPart: true,
             PrintDate: moment().format('MMMM Do YYYY')
         }
     },
@@ -526,7 +526,7 @@ export default {
     },
     mounted() {
         this.getSupportingData()
-        // this.getTaxData()
+         this.getTaxData()
         // if (this.isTaxPrintPart === true){
         //   $('#mdp').printThis({
         //     importCSS: true,
