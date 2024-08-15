@@ -13,7 +13,7 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <select name="AppraisalPeriod" id="AppraisalPeriod" v-model="form.AppraisalPeriod" class="form-control">
-                            <option value="2023-2024">2024-2025</option>
+                            <option value="2024-2025">2024-2025</option>
                           </select>
                         </div>
                       </div>
@@ -246,11 +246,10 @@ export default {
         OfferDateFour: '',
         OfferDateFive: '',
         EmpCode: '',
-        AppraisalPeriod: '2023-2024',
+        AppraisalPeriod: '2024-2025',
         TrainingTitle: '',
         TrainingType: '',
         TrainerName: '',
-
         EmployeeName :'',
         Designation :'',
         Department: '',
