@@ -1,7 +1,7 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'MDPTraining',
+    'name' => 'MedicalBilling',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
@@ -192,7 +192,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'D:\\wamp\\www\\mdp-training\\storage\\framework/cache/data',
+        'path' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -236,7 +236,7 @@
         'driver' => 'octane',
       ),
     ),
-    'prefix' => 'mdptraining_cache',
+    'prefix' => 'medicalbilling_cache',
   ),
   'cors' => 
   array (
@@ -360,7 +360,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'mdptraining_database_',
+        'prefix' => 'medicalbilling_database_',
       ),
       'default' => 
       array (
@@ -387,10 +387,10 @@
     'convert_entities' => true,
     'options' => 
     array (
-      'font_dir' => 'D:\\wamp\\www\\mdp-training\\storage\\fonts',
-      'font_cache' => 'D:\\wamp\\www\\mdp-training\\storage\\fonts',
-      'temp_dir' => 'C:\\Users\\zahid.mis\\AppData\\Local\\Temp',
-      'chroot' => 'D:\\wamp\\www\\mdp-training',
+      'font_dir' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\fonts',
+      'font_cache' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\fonts',
+      'temp_dir' => 'C:\\Users\\shojibul\\AppData\\Local\\Temp',
+      'chroot' => 'D:\\xampp\\htdocs\\mdp-training',
       'allowed_protocols' => 
       array (
         'file://' => 
@@ -435,12 +435,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\wamp\\www\\mdp-training\\storage\\app',
+        'root' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\wamp\\www\\mdp-training\\storage\\app/public',
+        'root' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -458,7 +458,7 @@
     ),
     'links' => 
     array (
-      'D:\\wamp\\www\\mdp-training\\public\\storage' => 'D:\\wamp\\www\\mdp-training\\storage\\app/public',
+      'D:\\xampp\\htdocs\\mdp-training\\public\\storage' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -529,13 +529,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'D:\\wamp\\www\\mdp-training\\storage\\logs/laravel.log',
+        'path' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'D:\\wamp\\www\\mdp-training\\storage\\logs/laravel.log',
+        'path' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -586,7 +586,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'D:\\wamp\\www\\mdp-training\\storage\\logs/laravel.log',
+        'path' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -598,10 +598,10 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailtrap.io',
-        'port' => '2525',
-        'username' => 'dd637d12597fe8',
-        'password' => '954a98bc93f48a',
+        'host' => 'mail.aci-bd.com',
+        'port' => '25',
+        'username' => NULL,
+        'password' => NULL,
         'timeout' => NULL,
         'auth_mode' => NULL,
       ),
@@ -643,15 +643,15 @@
     ),
     'from' => 
     array (
-      'address' => 'no-reply@aci-bd.com',
-      'name' => 'Medical Billing',
+      'address' => 'noreply@aci-bd.com',
+      'name' => 'MDP',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'D:\\wamp\\www\\mdp-training\\resources\\views/vendor/mail',
+        0 => 'D:\\xampp\\htdocs\\mdp-training\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -756,7 +756,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'D:\\wamp\\www\\mdp-training\\storage\\framework/sessions',
+    'files' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -765,7 +765,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'mdptraining_session',
+    'cookie' => 'medicalbilling_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -776,9 +776,9 @@
   array (
     'paths' => 
     array (
-      0 => 'D:\\wamp\\www\\mdp-training\\resources\\views',
+      0 => 'D:\\xampp\\htdocs\\mdp-training\\resources\\views',
     ),
-    'compiled' => 'D:\\wamp\\www\\mdp-training\\storage\\framework\\views',
+    'compiled' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\framework\\views',
   ),
   'flare' => 
   array (
@@ -933,7 +933,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'D:\\wamp\\www\\mdp-training\\storage\\framework/cache/laravel-excel',
+      'local_path' => 'D:\\xampp\\htdocs\\mdp-training\\storage\\framework/cache/laravel-excel',
       'local_permissions' => 
       array (
       ),

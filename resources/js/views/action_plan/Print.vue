@@ -386,7 +386,11 @@ export default {
       return baseurl + "/action_plan/signature/" + signature;
     },
     customFormatter(date) {
+      if (date){
         return moment(date).format('MMMM YYYY');
+      }else {
+        return 'On Demand';
+      }
     },
   },
 }
