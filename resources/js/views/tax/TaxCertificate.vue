@@ -22,26 +22,26 @@
                                     <div class="phoneVerificationPart" v-if="!isSendOtp">
                                         <div class="d-flex">
                                             <div class="flex-grow-1">
-<!--                                                <div class="row">-->
-<!--                                                    <div class="col-md-12">-->
-<!--                                                        <h4>Welcome <span style="color: green">{{ Name }} !</span>-->
-<!--                                                        </h4>-->
-<!--                                                        <br>-->
-<!--                                                        <p>We’ve got your mobile number on file: <span-->
-<!--                                                                style="color: #0a6aff">{{ Mobile }}</span></p>-->
-<!--                                                        <p>If this mobile number is incorrect, please contact with-->
-<!--                                                            HR. </p>-->
-<!--                                                    </div>-->
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h4>Welcome <span style="color: green">{{ Name }} !</span>
+                                                        </h4>
+                                                        <br>
+                                                        <p>We’ve got your mobile number on file: <span
+                                                                style="color: #0a6aff">{{ Mobile }}</span></p>
+                                                        <p>If this mobile number is incorrect, please contact with
+                                                            HR. </p>
+                                                    </div>
 
-<!--                                                </div>-->
-<!--                                                <div class="row">-->
-<!--                                                    <div class="col-md-2">-->
-<!--                                                        <button type="submit" @click="sendOTP" class="btn btn-success">-->
-<!--                                                            <i-->
-<!--                                                                    class="mdi mdi-filter"></i>Send OTP-->
-<!--                                                        </button>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <button type="submit" @click="sendOTP" class="btn btn-success">
+                                                            <i
+                                                                    class="mdi mdi-filter"></i>Send OTP
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -511,7 +511,7 @@ export default {
             isSendOtp: false,
             isOTPVerification: false,
             isFormSubmit: false,
-            isTaxPrintPart: true,
+            isTaxPrintPart: false,
             PrintDate: moment().format('MMMM Do YYYY')
         }
     },
@@ -526,7 +526,7 @@ export default {
     },
     mounted() {
         this.getSupportingData()
-         this.getTaxData()
+        // this.getTaxData()
         // if (this.isTaxPrintPart === true){
         //   $('#mdp').printThis({
         //     importCSS: true,
