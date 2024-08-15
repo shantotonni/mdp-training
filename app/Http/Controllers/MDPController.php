@@ -366,7 +366,7 @@ class MDPController extends Controller
     }
 
     public function mdpExport(Request $request){
-
+        $session = $request->sessionP;
         $Department = json_decode($request->Department);
         $mdp_list = ManagementDevelopmentPlane::query()->with('initiative','training','training.feedback');
         if (!empty($Department) && isset($Department)){
@@ -374,7 +374,7 @@ class MDPController extends Controller
             $DeptName = $Department->pluck('DeptName');
             $mdp_list = $mdp_list->whereIn('Department',$DeptName);
         }
-        $mdp_list = $mdp_list->orderBy('Department','asc')->get();
+        $mdp_list = $mdp_list->where('AppraisalPeriod',$session)->orderBy('Department','asc')->get();
         return new ManagementDevelopmentPlaneCollection($mdp_list);
     }
 
