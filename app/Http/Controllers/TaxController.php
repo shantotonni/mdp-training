@@ -86,7 +86,7 @@ class TaxController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 401,
-                'error' => $e->getMessage()
+                'message' => $e->getMessage()
             ]);
         }
     }
