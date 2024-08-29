@@ -60,7 +60,8 @@ export default {
   mixins: [Common],
   data() {
     return {
-      TotalTrainingListCount: '',
+      label: [],
+      value: [],
       isLoading: false,
     }
   },
@@ -73,7 +74,14 @@ export default {
   methods: {
     getAllChartReport(){
       axios.get(baseurl + `api/get-all-chart-report`).then((response)=>{
-        this.TotalTrainingListCount = response.data.training_count[0].TotalTrainingList
+        let chart_one_labels = [];
+        let chart_one_values = [];
+        let recordOne = response.data.training_count
+        recordOne.forEach((getRecord, index) => {
+          this.label.push(getRecord.AppraisalPeriod);
+          this.value.push(getRecord.Total);
+        })
+        console.log(this.value)
         this.loadChart();
       });
     },
@@ -82,7 +90,6 @@ export default {
       let myChartOne = echarts.init(document.getElementById('main'));
       let myChartTwo = echarts.init(document.getElementById('Two'));
       let myChartThree = echarts.init(document.getElementById('Three'));
-      console.log(this.TotalTrainingListCount)
       // Draw the chart
       myChartOne.setOption({
         title: {
@@ -90,18 +97,18 @@ export default {
         },
         tooltip: {},
         xAxis: {
-          data: ['2023-2024']
+          data: this.label
         },
         yAxis: {
           type: 'value',
           min: 0,
-          max: this.TotalTrainingListCount
+          max: 15000
         },
         series: [
           {
             name: 'sales',
             type: 'bar',
-            data: [this.TotalTrainingListCount]
+            data: this.value
           }
         ]
       });
