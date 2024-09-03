@@ -13,7 +13,8 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <select name="AppraisalPeriod" id="AppraisalPeriod" v-model="AppraisalPeriod" class="form-control">
-                            <option value="2023-2024">2024-2025</option>
+                            <option value="">Select Session</option>
+                            <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>
                           </select>
                         </div>
                       </div>
@@ -106,9 +107,10 @@ export default {
   mixins: [Common],
   data() {
     return {
+      sessions: [],
       personal: {},
       empcode: '',
-      AppraisalPeriod: '2023-2024',
+      AppraisalPeriod: '',
       isLoading: false,
       tableDataVisible: false,
       EmployeeName: '',
@@ -130,6 +132,7 @@ export default {
   mounted() {
     document.title = 'Training Feedback | MDP';
     this.getData();
+    this.getAllSession();
   },
   methods: {
     getAllEmpCodeWiseTraingList() {
@@ -169,6 +172,13 @@ export default {
     },
     customFormatter(date) {
       return moment(date).format('YYYY-MM-DD');
+    },
+    getAllSession(){
+      axios.get(baseurl + 'api/get-all-session/').then((response) => {
+        this.sessions = response.data.sessions;
+      }).catch((error) => {
+
+      })
     },
     reload() {
       this.training_list = "";

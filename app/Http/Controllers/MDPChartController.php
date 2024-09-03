@@ -10,6 +10,12 @@ class MDPChartController extends Controller
 {
     public function getAllChartReport(){
         $training_list = DB::select("exec SP_doLoadAllChartReport");
+//        $format = [];
+//        foreach ($training_list as $item){
+//            $format[] = [
+//                $item->AppraisalPeriod => $item->Total
+//            ];
+//        }
         return response()->json([
            'training_count' =>  $training_list
         ]);
