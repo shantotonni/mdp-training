@@ -19,59 +19,59 @@
                             <div class="datatable" v-if="!isLoading">
                                 <div class="card-body">
 
-                                    <div class="phoneVerificationPart" v-if="!isSendOtp">
-                                        <div class="d-flex">
-                                            <div class="flex-grow-1">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h4>Welcome <span style="color: green">{{ Name }} !</span>
-                                                        </h4>
-                                                        <br>
-                                                        <p>We’ve got your mobile number on file: <span
-                                                                style="color: #0a6aff">{{ Mobile }}</span></p>
-                                                        <p>If this mobile number is incorrect, please contact with
-                                                            HR. </p>
-                                                    </div>
+                                    <!--                                    <div class="phoneVerificationPart" v-if="!isSendOtp">-->
+                                    <!--                                        <div class="d-flex">-->
+                                    <!--                                            <div class="flex-grow-1">-->
+                                    <!--                                                <div class="row">-->
+                                    <!--                                                    <div class="col-md-12">-->
+                                    <!--                                                        <h4>Welcome <span style="color: green">{{ Name }} !</span>-->
+                                    <!--                                                        </h4>-->
+                                    <!--                                                        <br>-->
+                                    <!--                                                        <p>We’ve got your mobile number on file: <span-->
+                                    <!--                                                                style="color: #0a6aff">{{ Mobile }}</span></p>-->
+                                    <!--                                                        <p>If this mobile number is incorrect, please contact with-->
+                                    <!--                                                            HR. </p>-->
+                                    <!--                                                    </div>-->
 
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <button type="submit" @click="sendOTP" class="btn btn-success">
-                                                            <i
-                                                                    class="mdi mdi-filter"></i>Send OTP
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!--                                                </div>-->
+                                    <!--                                                <div class="row">-->
+                                    <!--                                                    <div class="col-md-2">-->
+                                    <!--                                                        <button type="submit" @click="sendOTP" class="btn btn-success">-->
+                                    <!--                                                            <i-->
+                                    <!--                                                                    class="mdi mdi-filter"></i>Send OTP-->
+                                    <!--                                                        </button>-->
+                                    <!--                                                    </div>-->
+                                    <!--                                                </div>-->
+                                    <!--                                            </div>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
 
-                                    <div class="phoneVerificationPart" v-if="isSendOtp && !isOTPVerification">
-                                        <div class="d-flex">
-                                            <div class="flex-grow-1">
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <input :value="Mobile" type="text" class="form-control"
-                                                               readonly>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <ValidationProvider name="OTP" mode="eager" rules="required"
-                                                                            v-slot="{ errors }">
-                                                            <input v-model="OTPCode" type="text" class="form-control"
-                                                                   required placeholder="Enter OTP Code">
-                                                            <span class="error-message"> {{ errors[0] }}</span>
-                                                        </ValidationProvider>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <button type="submit" @click="verifyOTP"
-                                                                class="btn btn-success"><i
-                                                                class="mdi mdi-filter"></i>Verify OTP
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!--                                    <div class="phoneVerificationPart" v-if="isSendOtp && !isOTPVerification">-->
+                                    <!--                                        <div class="d-flex">-->
+                                    <!--                                            <div class="flex-grow-1">-->
+                                    <!--                                                <div class="row">-->
+                                    <!--                                                    <div class="col-md-2">-->
+                                    <!--                                                        <input :value="Mobile" type="text" class="form-control"-->
+                                    <!--                                                               readonly>-->
+                                    <!--                                                    </div>-->
+                                    <!--                                                    <div class="col-md-2">-->
+                                    <!--                                                        <ValidationProvider name="OTP" mode="eager" rules="required"-->
+                                    <!--                                                                            v-slot="{ errors }">-->
+                                    <!--                                                            <input v-model="OTPCode" type="text" class="form-control"-->
+                                    <!--                                                                   required placeholder="Enter OTP Code">-->
+                                    <!--                                                            <span class="error-message"> {{ errors[0] }}</span>-->
+                                    <!--                                                        </ValidationProvider>-->
+                                    <!--                                                    </div>-->
+                                    <!--                                                    <div class="col-md-2">-->
+                                    <!--                                                        <button type="submit" @click="verifyOTP"-->
+                                    <!--                                                                class="btn btn-success"><i-->
+                                    <!--                                                                class="mdi mdi-filter"></i>Verify OTP-->
+                                    <!--                                                        </button>-->
+                                    <!--                                                    </div>-->
+                                    <!--                                                </div>-->
+                                    <!--                                            </div>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
 
                                     <div class="taxPart" v-if="isTaxPrintPart">
                                         <div class="row">
@@ -84,54 +84,83 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div style="font-size: 15px; font-family: Roboto, sans-serif; font-weight: 300;">
-                                            <p style="text-align: right;font-weight: bold;margin: 0px">{{
-                                                PrintDate
-                                                }}</p>
-                                            <h2 style="text-align: center;text-decoration: underline;font-weight: bold;font-size: 25px">
-                                                Certificate of Tax deduction at source from salary</h2>
+                                        <div style="font-family:'Nunito' !important;font-size: 17px; font-weight: 300;">
+                                            <h2 style="font-family:'Nunito' !important;text-align: center;font-weight: bold;font-size: 20px">
+                                                Certificate of deduction or collection of tax at source from income
+                                                <br>
+                                                (other than salary paid by the Government) of the recipient
+                                                <br>
+                                                classifiable under the head "Income From Employment"
+                                                <br>
+                                                <span style="font-family:'Nunito' !important;font-size: 20px;text-decoration: underline">[Under Section 145 of ITA, 2023 & Rule 10 (1)]</span>
 
-                                            <div style="display: flex; justify-content: space-between; margin-top: 2rem;font-size: 15px">
-                                                <div style="width: 52%;">
-                                                    <p style="line-height: .5;"><span
-                                                            style="display: inline-block;width: 210px;font-weight: bold">Name</span>
-                                                        <span>: {{ TaxCertificate.EmpName }}</span></p>
-                                                    <p style="line-height: .5;"><span
-                                                            style="display: inline-block;width: 210px;font-weight: bold">Tax Deduction(Taka)</span>
-                                                        <span v-if="TaxCertificate.Tax !=0">: {{
+
+                                            </h2>
+                                            <p style="font-family:'Nunito' !important;font-size: 17px;text-align: right;font-weight: bold;margin: 0px">
+                                                Issue Date:
+                                                {{ moment('2024-09-30').format('DD MMMM YYYY') }}</p>
+                                            <div style="display: flex; justify-content: space-between;font-size: 17px;">
+
+                                                <table style="width:100%;border: 1px solid black;border-collapse: collapse;"
+                                                       class="table-sm small">
+                                                    <tr style="font-size: 17px">
+                                                        <th style="font-family:'Nunito';font-size: 17px;">Name of
+                                                            Employee
+                                                        </th>
+                                                        <td>: {{ TaxCertificate.EmpName }}</td>
+
+                                                        <th style="font-family:'Nunito';font-size: 17px;">E-TIN</th>
+                                                        <td>: {{ TaxCertificate.TinNo }}</td>
+                                                    </tr>
+                                                    <tr style="font-size: 17px">
+                                                        <th style="font-family:'Nunito';font-size: 17px;">Designation
+                                                        </th>
+                                                        <td>: {{ TaxCertificate.Designation }}</td>
+                                                        <th style="font-family:'Nunito';font-size: 17px;">Income Year
+                                                        </th>
+                                                        <td>: {{ TaxCertificate.IncomeYear }}</td>
+
+                                                    </tr>
+                                                    <tr style="font-size: 17px">
+                                                        <th style="font-family:'Nunito';font-size: 17px;">Department
+                                                        </th>
+                                                        <td>: {{ TaxCertificate.Department }}</td>
+
+                                                        <th style="font-family:'Nunito';font-size: 17px;">Assessment
+                                                            Year
+                                                        </th>
+                                                        <td>: {{ TaxCertificate.TaxYear }}</td>
+
+                                                    </tr>
+                                                    <tr style="font-size: 15px">
+                                                        <th style="font-family:'Nunito';font-size: 17px;">Tax
+                                                            Deducted(Tk.)
+                                                        </th>
+                                                        <td><span v-if="TaxCertificate.Tax !=0">: {{
                                                             Number(TaxCertificate.Tax).toLocaleString()
                                                             }}</span>
-                                                        <span v-else>: Nill</span>
-                                                    </p>
-                                                    <p style="width: 100%"><span
-                                                            style="display: inline-block;width: 210px;font-weight: bold">In Word(Taka)</span>
-                                                        <span v-if="TaxCertificate.Tax !=0">: {{
-                                                            inWords(TaxCertificate.Tax)
-                                                            }}</span>
-                                                        <span v-else>: Nill</span>
-                                                    </p>
-                                                    <p style="line-height: .5;"><span
-                                                            style="display: inline-block;width: 210px;font-weight: bold">Income Year</span>
-                                                        <span>: {{ TaxCertificate.IncomeYear }}</span></p>
+                                                            <span v-else>: Nill</span></td>
 
-                                                </div>
-                                                <div style="width: 50%;">
-                                                    <p style="line-height: .5;"><span
-                                                            style="display: inline-block;width: 160px;font-weight: bold">Department</span>
-                                                        <span>: {{ TaxCertificate.Department }}</span></p>
-                                                    <p style="line-height: .5;"><span
-                                                            style="display: inline-block;width: 160px;font-weight: bold">Designation</span>
-                                                        <span>: {{ TaxCertificate.Designation }}</span></p>
-                                                    <p style="line-height: .5;"><span
-                                                            style="display: inline-block;width: 160px;font-weight: bold">E-Tin</span>
-                                                        <span>: {{ TaxCertificate.TinNo }}</span></p>
-                                                    <p style="line-height: .5;"><span
-                                                            style="display: inline-block;width: 160px;font-weight: bold">Assessment Year</span>
-                                                        <span>: {{ TaxCertificate.TaxYear }}</span></p>
+                                                    </tr>
+                                                    <tr style="font-size: 15px">
+                                                        <th style="font-family:'Nunito';font-size: 17px;">In
+                                                            Word(Taka)
+                                                        </th>
+                                                        <td>
+                                                            <span v-if="TaxCertificate.Tax !=0">:
+                                                                {{
+                                                                inWords(TaxCertificate.Tax)
+                                                                }}</span>
+                                                            <span v-else>: Nill</span>
 
-                                                </div>
+                                                        </td>
+
+                                                    </tr>
+
+                                                </table>
                                             </div>
-                                            <p style="margin: 0px;font-size: 15px;font-weight: bold">Tax Deposit
+                                            <p style="font-family:'Nunito';margin: 0px;font-size: 17px;font-weight: bold">
+                                                Tax Deposit
                                                 Details:</p>
                                             <div style="display: flex;">
                                                 <div style="flex: 1;padding-right: 1rem;">
@@ -229,26 +258,36 @@
                                                                 }}
                                                             </td>
                                                         </tr>
+                                                        <tr>
+                                                            <td colspan="4"
+                                                                style="text-align: end;border-right: 1px solid">
+                                                                <span style="font-weight: bold">Grand Total</span>
+                                                            </td>
+                                                            <td style="text-align: end">
+                                                                {{ Number(TaxCertificate.Tax).toLocaleString() }}
+                                                            </td>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                             </div>
 
-                                            <p style="margin-top: 5px;font-size: 15px">We further confirm that we have
+                                            <p style="font-family:'Nunito';font-size: 17px;margin-top: 5px;">We further
+                                                confirm that we have
                                                 duly
-                                                deducted and deposited teh above mentioned amount to Sonali Bnk
+                                                deducted and deposited the above mentioned amount to Sonali Bank Ltd
                                                 Registration Complex Branch, Dhaka on basis of the following
                                                 computation.
                                             </p>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Basic
-                                                    Salary</p>
+                                                </p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
                                                     {{ Number(TaxCertificate.Basic).toLocaleString() }}</p>
                                             </div>
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
                                                     Festival
                                                     Bonus</p>
@@ -258,7 +297,7 @@
                                                     {{ Number(TaxCertificate.Bonus).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">House
                                                     Rent
                                                     Allowance</p>
@@ -268,7 +307,7 @@
                                                     {{ Number(TaxCertificate.Rent).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
                                                     Accommodation Facilities (Actual Cost)</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
@@ -277,7 +316,7 @@
                                                     {{ Number(TaxCertificate.Srent).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
                                                     Transport
                                                     Allowance</p>
@@ -287,16 +326,17 @@
                                                     {{ Number(TaxCertificate.Transport).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Motor
-                                                    Vehicle Facilities</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.CompanyCar).toLocaleString() }}</p>
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                <p style="font-weight:bold;margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                    Motor
+                                                    Vehicle Facilities :</p>
+                                                <!--                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .-->
+                                                <!--                                                    <span style="float: right;">TK.</span></p>-->
+                                                <!--                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">-->
+                                                <!--                                                    {{ Number(TaxCertificate.CompanyCar).toLocaleString() }}</p>-->
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Motor
                                                     car
                                                     up to 2500CC(10000 per month *12 months)</p>
@@ -306,7 +346,7 @@
                                                     {{ Number(TaxCertificate.CompanyCar1).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Motor
                                                     car
                                                     above 2500CC(25000 per month *12 months)</p>
@@ -316,17 +356,17 @@
                                                     {{ Number(TaxCertificate.CompanyCar2).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
                                                     Contribution to Recognized Provident Fund (Company's
-                                                    COntribution)</p>
+                                                    Contribution)</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
                                                     {{ Number(TaxCertificate.PF).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;;width: 70%;line-height:1">
                                                     Entertainment Allowance</p>
                                                 <p style="margin:0;padding-bottom: 5px;;width: 10%;line-height:1">. . .
@@ -336,97 +376,107 @@
                                                     {{ Number(TaxCertificate.ENTERTAIN).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;;width: 70%;line-height:1">
                                                     WPPF</p>
                                                 <p style="margin:0;padding-bottom: 5px;;width: 10%;line-height:1">. . .
                                                     .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.WPPF).toLocaleString() }}</p>
+                                                    {{ Number(TaxCertificate.WPF).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;margin-bottom:10px;font-size: 15px;">
-                                                <p style="font-weight:bolder;margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Salary
-                                                    Income</p>
-                                                <p style="margin:0;padding-bottom: 5px;;width: 10%;line-height:1">. . .
+                                            <div style="font-family:'Nunito';font-size: 17px;border: 2px solid;display: flex; justify-content: space-between;margin-top: 5px;margin-bottom:10px;">
+                                                <p style="font-weight:bold;margin:0;width: 70%">
+                                                    Income from employment</p>
+                                                <p style="margin:0;padding: 5px 0px;width: 10%;line-height:1">. . .
                                                     .
                                                     <span style="float: right;">TK.</span></p>
-                                                <p style="font-weight:bolder;margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
+                                                <p style="padding: 5px 0px;font-weight:bolder;margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
                                                     {{ Number(TaxCertificate.TotalA1).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;;width: 70%;line-height:1">
                                                     Interest
                                                     on Recognized Provident Fund (RPF)</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1"><span
-                                                        style="float: right;">{{ Number(TaxCertificate.Interest).toLocaleString() }}</span></p>
+                                                        style="float: right;">{{
+                                                    Number(TaxCertificate.Interest).toLocaleString()
+                                                    }}</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
                                                     {{ Number(TaxCertificate.Interest1).toLocaleString() }}</p>
                                             </div>
 
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Less
-                                                    Exepmted upto 33% of salary income excluding RPF interest</p>
+                                                    Exepmted upto 33% of employment income excluding RPF interest</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1"><span
-                                                        style="float: right;">{{ Number(TaxCertificate.Salaryrpf).toLocaleString() }}</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right; border-bottom: 2px solid;">
+                                                        style="float: right;">{{
+                                                    Number(TaxCertificate.Salaryrpf).toLocaleString()
+                                                    }}</span></p>
+                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
                                                     0</p>
                                             </div>
 
-                                            <div style="margin-bottom:10px;display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
-                                                <p style="font-weight:bolder;margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Total
-                                                    Salary income</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
+                                            <div style="font-family:'Nunito';font-size: 17px;border: 2px solid;margin-bottom:10px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                <p style="font-weight:bold;margin:0;width: 70%;">
+                                                    Total income from employment</p>
+
+                                                <p style="margin:0;width: 10%;">. . . .
                                                     <span style="float: right;">TK.</span></p>
-                                                <p style="font-weight:bolder;margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                <p style="font-weight:bolder;margin:0;width: 20%;text-align: right;">
                                                     {{ Number(TaxCertificate.TotalA2).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Less
-                                                    Exempted upto 1/3rd of salary income or taka 450000</p>
+                                                    Exempted upto 1/3rd of employment income or taka 450000</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right; border-bottom: 2px solid;">
+                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
                                                     {{ Number(TaxCertificate.LessSalary).toLocaleString() }}</p>
                                             </div>
 
-                                            <div style="margin-bottom:10px;display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
-                                                <p style="font-weight:bolder;margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Total
-                                                    Taxable Income from Salary</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
+                                            <div style="font-family:'Nunito';font-size: 17px;border: 2px solid;margin-bottom:10px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                <p style="font-weight:bold;margin:0;width: 70%;">
+                                                    Total Taxable Income from employment</p>
+                                                <p style="margin:0;width: 10%;">. . . .
                                                     <span style="float: right;">TK.</span></p>
-                                                <p style="font-weight:bolder;margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                <p style="font-weight:bolder;margin:0;width: 20%;text-align: right;">
                                                     {{ Number(TaxCertificate.TotalA).toLocaleString() }}</p>
                                             </div>
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
                                                     Investment
-                                                    For Tax rebate-RPF(Company`s & Own Contribution)</p>
+                                                    for tax rebate-RPF(Company`s & Own Contribution)</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
                                                     {{ Number(TaxCertificate.LessInv).toLocaleString() }}</p>
                                             </div>
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
                                                     Provident
-                                                    Found Balance as on {{ LastTaxDate }}</p>
+                                                    Fund Balance as on {{ LastTaxDate }}</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
                                                     {{ Number(TaxCertificate.PFBal).toLocaleString() }}</p>
                                             </div>
-                                            <div style="display: flex; justify-content: space-between;margin-top: 5px;font-size: 15px;">
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
                                                 <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
                                                     Provident
-                                                    Found Loan Balance as on {{ LastTaxDate }}</p>
+                                                    Fund Loan Balance as on {{ LastTaxDate }}</p>
+                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
+                                                    <span style="float: right;">TK.</span></p>
+                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                    {{ Number(TaxCertificate.PFLoan).toLocaleString() }}</p>
+                                            </div>
+                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                    Can loan balance as on {{ LastTaxDate }}</p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
@@ -434,37 +484,38 @@
                                             </div>
 
 
-                                            <div style="display: flex; justify-content: space-between; margin-top: 50px; font-weight: bolder;">
+                                            <div style="display: flex; justify-content: space-between; margin-top: 20px; font-weight: bolder;">
                                                 <div>
                                                     <div><img :src="`${mainOrigin}CompanyLogo/taxGmSignature.png`"
                                                               style="width: 200px" alt="user"/></div>
                                                     <hr style="
-                  border: 1px solid rgb(51, 51, 51);
-                  height: 1px;
-                  width: 260px;
-                  float: left;
-                  background-color: black;
-                  color: rgb(51, 51, 51);
-                  margin-bottom: 0;
-                  ">
-                                                    <br>
-                                                    <p style="font-size: 15px"> Name: Farida Rahman<br>Designation: GM,
+                                                      border: 1px solid rgb(51, 51, 51);
+                                                      height: 1px;
+                                                      width: 260px;
+                                                      float: left;
+                                                      background-color: black;
+                                                      color: rgb(51, 51, 51);
+                                                      margin-bottom: 0;
+                                                      margin-top: 0px;
+                                                      ">
+                                                    <p style="margin-bottom: 20px;font-family:'Nunito';font-size: 17px">Farida Rahman<br>
+                                                        GM,
                                                         Personnel</p></div>
-                                                <p style="padding-top:60px;width: 30%;line-height:1"><span
-                                                        style="float: right;">{{ EmpCode }} </span></p>
+                                                <!--                                                <p style="padding-top:60px;width: 30%;line-height:1"><span-->
+                                                <!--                                                        style="float: right;">{{ EmpCode }} </span></p>-->
                                             </div>
 
                                         </div>
-                                        <div style="position:fixed;margin-top:10px;bottom: 0px;"
+                                        <div style="position:fixed;margin-top:15px;bottom: 0px;"
                                              v-if="companyDesignTemplate.CompanyName !=='Creative Communication Limited'">
-                                            <p style="margin: 0;font-size: 15px"
+                                            <p style="font-family:'Nunito';margin: 0;font-size: 17px"
                                                v-if="companyDesignTemplate.FooterContentTop">
                                                 {{ companyDesignTemplate.FooterContentTop }}</p>
-                                            <p style="margin: 0;font-size: 15px"
+                                            <p style="font-family:'Nunito';margin: 0;font-size: 17px"
                                                v-if="companyDesignTemplate.FooterContentBottom">
                                                 {{ companyDesignTemplate.FooterContentBottom }}</p>
                                         </div>
-                                        <div v-else style="position:fixed;margin-top:10px;bottom: 0px;">
+                                        <div v-else style="position:fixed;margin-top:15px;bottom: 0px;">
                                             <div class="row">
                                                 <div class="col-md-12" style="text-align: initial;">
                                                     <img :src="`${mainOrigin}CompanyLogo/creativecomltdfooter.png`"
@@ -511,7 +562,7 @@ export default {
             isSendOtp: false,
             isOTPVerification: false,
             isFormSubmit: false,
-            isTaxPrintPart: false,
+            isTaxPrintPart: true,
             PrintDate: moment().format('MMMM Do YYYY')
         }
     },
@@ -526,7 +577,7 @@ export default {
     },
     mounted() {
         this.getSupportingData()
-        // this.getTaxData()
+        this.getTaxData()
         // if (this.isTaxPrintPart === true){
         //   $('#mdp').printThis({
         //     importCSS: true,
@@ -591,7 +642,7 @@ export default {
                     this.TaxDepositFirstHalf = this.TaxDeposit.slice(0, middleIndex);
                     this.TaxDepositSecondHalf = this.TaxDeposit.slice(middleIndex);
                 }
-                this.printData();
+                //this.printData();
 
             }).catch((error) => {
 
