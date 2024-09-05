@@ -85,437 +85,496 @@
                                             </div>
                                         </div>
                                         <div style="font-family:'Nunito' !important;font-size: 17px; font-weight: 300;">
-                                            <h2 style="font-family:'Nunito' !important;text-align: center;font-weight: bold;font-size: 20px">
+                                            <h2 style="margin-top:0px;font-family:'Nunito' !important;text-align: center;font-weight: bold;font-size: 20px">
                                                 Certificate of deduction or collection of tax at source from income
                                                 <br>
                                                 (other than salary paid by the Government) of the recipient
                                                 <br>
                                                 classifiable under the head "Income From Employment"
                                                 <br>
-                                                <span style="font-family:'Nunito' !important;font-size: 20px;text-decoration: underline">[Under Section 145 of ITA, 2023 & Rule 10 (1)]</span>
+                                                <span style="font-family:'Nunito' !important;font-size: 20px;text-decoration: underline">[Under Section 145 of ITA, 2023 & Rule 10(1)]</span>
 
 
                                             </h2>
                                             <p style="font-family:'Nunito' !important;font-size: 17px;text-align: right;font-weight: bold;margin: 0px">
                                                 Issue Date:
                                                 {{ moment('2024-09-30').format('DD MMMM YYYY') }}</p>
-                                            <div style="display: flex; justify-content: space-between;font-size: 17px;">
 
-                                                <table style="width:100%;border: 1px solid black;border-collapse: collapse;"
-                                                       class="table-sm small">
-                                                    <tr style="font-size: 17px">
-                                                        <th style="font-family:'Nunito';font-size: 17px;">Name of
-                                                            Employee
-                                                        </th>
-                                                        <td>: {{ TaxCertificate.EmpName }}</td>
+                                            <div style="display: flex;font-family:'Nunito' !important; justify-content: space-between; margin-top: 1rem;">
+                                                <div style="width: 80%;">
+                                                    <p style="line-height: .5;font-family:'Nunito' !important;"><span
+                                                            style="font-family:'Nunito' !important;display: inline-block;width: 210px;">Name of Employee</span>
+                                                        <span>: {{ TaxCertificate.EmpName }}</span></p>
+                                                    <p style="font-family:'Nunito' !important;line-height: .5;"><span
+                                                            style="display: inline-block;width: 210px;">Designation</span>
+                                                        <span>: {{ TaxCertificate.Designation }}</span></p>
+                                                    <p style="font-family:'Nunito' !important;line-height: .5;"><span
+                                                            style="display: inline-block;width: 210px;">Department</span>
+                                                        <span>: {{ TaxCertificate.Department }}</span></p>
+                                                    <p style="font-family:'Nunito' !important;line-height: .5;"><span
+                                                            style="display: inline-block;width: 210px;">Tax Deducted(Tk.)</span>
+                                                        <span v-if="TaxCertificate.Tax !=0">: {{ Number(TaxCertificate.Tax).toLocaleString() }}</span><span
+                                                                v-else>: Nill</span></p>
 
-                                                        <th style="font-family:'Nunito';font-size: 17px;">E-TIN</th>
-                                                        <td>: {{ TaxCertificate.TinNo }}</td>
-                                                    </tr>
-                                                    <tr style="font-size: 17px">
-                                                        <th style="font-family:'Nunito';font-size: 17px;">Designation
-                                                        </th>
-                                                        <td>: {{ TaxCertificate.Designation }}</td>
-                                                        <th style="font-family:'Nunito';font-size: 17px;">Income Year
-                                                        </th>
-                                                        <td>: {{ TaxCertificate.IncomeYear }}</td>
 
-                                                    </tr>
-                                                    <tr style="font-size: 17px">
-                                                        <th style="font-family:'Nunito';font-size: 17px;">Department
-                                                        </th>
-                                                        <td>: {{ TaxCertificate.Department }}</td>
-
-                                                        <th style="font-family:'Nunito';font-size: 17px;">Assessment
-                                                            Year
-                                                        </th>
-                                                        <td>: {{ TaxCertificate.TaxYear }}</td>
-
-                                                    </tr>
-                                                    <tr style="font-size: 15px">
-                                                        <th style="font-family:'Nunito';font-size: 17px;">Tax
-                                                            Deducted(Tk.)
-                                                        </th>
-                                                        <td><span v-if="TaxCertificate.Tax !=0">: {{
-                                                            Number(TaxCertificate.Tax).toLocaleString()
-                                                            }}</span>
-                                                            <span v-else>: Nill</span></td>
-
-                                                    </tr>
-                                                    <tr style="font-size: 15px">
-                                                        <th style="font-family:'Nunito';font-size: 17px;">In
-                                                            Word(Taka)
-                                                        </th>
-                                                        <td>
-                                                            <span v-if="TaxCertificate.Tax !=0">:
-                                                                {{
-                                                                inWords(TaxCertificate.Tax)
-                                                                }}</span>
-                                                            <span v-else>: Nill</span>
-
-                                                        </td>
-
-                                                    </tr>
-
-                                                </table>
-                                            </div>
-                                            <p style="font-family:'Nunito';margin: 0px;font-size: 17px;font-weight: bold">
-                                                Tax Deposit
-                                                Details:</p>
-                                            <div style="display: flex;">
-                                                <div style="flex: 1;padding-right: 1rem;">
-                                                    <table style="width:100%;border: 1px solid black;border-collapse: collapse;"
-
-                                                           class="table-sm small">
-                                                        <tr style="border: 1px solid black;border-collapse: collapse;">
-                                                            <th style="border: 1px solid black;border-collapse: collapse;font-size: 15px ">
-                                                                SL No.
-                                                            </th>
-                                                            <th style="border: 1px solid black;border-collapse: collapse;font-size: 15px">
-                                                                Challan No
-                                                            </th>
-                                                            <th style="border: 1px solid black;border-collapse: collapse;font-size: 15px">
-                                                                Challan Date
-                                                            </th>
-                                                            <th style="border: 1px solid black;border-collapse: collapse;font-size: 15px">
-                                                                Total Amount in the Challan
-                                                            </th>
-                                                            <th style="border: 1px solid black;border-collapse: collapse;font-size: 15px">
-                                                                Amount relating to this Cretificate
-                                                            </th>
-                                                        </tr>
-                                                        <tr style="border: 1px solid black;border-collapse: collapse;"
-                                                            v-if="TaxDepositFirstHalf.length>0"
-                                                            v-for="(singleTaxDepositFirstHalf,firstHalfIndex) in TaxDepositFirstHalf"
-                                                        >
-                                                            <td style="border: 1px solid black;border-collapse: collapse; text-align: center">
-                                                                {{ firstHalfIndex + 1 }}
-                                                            </td>
-                                                            <td style="width:30%;border: 1px solid black;border-collapse: collapse;text-align: center">
-                                                                {{ singleTaxDepositFirstHalf.ChallanNo }}
-                                                            </td>
-                                                            <td style="width:20%;text-align:center;border: 1px solid black;border-collapse: collapse;">
-                                                                {{
-                                                                moment(singleTaxDepositFirstHalf.ChallanDate).format('DD-MM-yyyy')
-                                                                }}
-                                                            </td>
-                                                            <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
-                                                                {{
-                                                                Number(singleTaxDepositFirstHalf.Amount).toLocaleString()
-                                                                }}
-                                                            </td>
-                                                            <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
-                                                                {{
-                                                                Number(singleTaxDepositFirstHalf.CAmount).toLocaleString()
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                    </table>
                                                 </div>
-                                                <div style="flex: 1;padding-left: 1rem;">
-                                                    <table style="width:100%;border: 1px solid black;border-collapse: collapse;"
-                                                           class="table-sm small">
-                                                        <tr style="border: 1px solid black;border-collapse: collapse;">
-                                                            <th style="font-size: 15px;border: 1px solid black;border-collapse: collapse;">
-                                                                SL No.
-                                                            </th>
-                                                            <th style="font-size: 15px;border: 1px solid black;border-collapse: collapse;">
-                                                                Challan No
-                                                            </th>
-                                                            <th style="width:20%;font-size: 15px;border: 1px solid black;border-collapse: collapse;">
-                                                                Challan Date
-                                                            </th>
-                                                            <th style="font-size: 15px;border: 1px solid black;border-collapse: collapse;">
-                                                                Total Amount in the Challan
-                                                            </th>
-                                                            <th style="font-size: 15px;border: 1px solid black;border-collapse: collapse;">
-                                                                Amount relating to this Cretificate
-                                                            </th>
-                                                        </tr>
-                                                        <tr style="border: 1px solid black;border-collapse: collapse;"
-                                                            v-if="TaxDepositSecondHalf.length>0"
-                                                            v-for="(singleTaxDepositSecondHalf,secondHalfIndex) in TaxDepositSecondHalf"
-                                                        >
-                                                            <td style="border: 1px solid black;border-collapse: collapse;text-align: center">
-                                                                {{ TaxDepositFirstHalfLastIndex + secondHalfIndex }}
-                                                            </td>
-                                                            <td style="width:30%;border: 1px solid black;border-collapse: collapse;text-align: center">
-                                                                {{ singleTaxDepositSecondHalf.ChallanNo }}
-                                                            </td>
-                                                            <td style="text-align:center;border: 1px solid black;border-collapse: collapse;">
-                                                                {{
-                                                                moment(singleTaxDepositSecondHalf.ChallanDate).format('DD-MM-yyyy')
-                                                                }}
-                                                            </td>
-                                                            <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
-                                                                {{
-                                                                Number(singleTaxDepositSecondHalf.Amount).toLocaleString()
-                                                                }}
-                                                            </td>
-                                                            <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
-                                                                {{
-                                                                Number(singleTaxDepositSecondHalf.CAmount).toLocaleString()
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="4"
-                                                                style="text-align: end;border-right: 1px solid">
-                                                                <span style="font-weight: bold">Grand Total</span>
-                                                            </td>
-                                                            <td style="text-align: end">
-                                                                {{ Number(TaxCertificate.Tax).toLocaleString() }}
-                                                            </td>
-                                                        </tr>
-                                                    </table>
+                                                <div style="width: 50%;">
+                                                    <p style="font-family:'Nunito' !important;line-height: .5;"><span
+                                                            style="display: inline-block;width: 160px;">E-Tin</span>
+                                                        <span>: {{ TaxCertificate.TinNo }}</span></p>
+                                                    <p style="font-family:'Nunito' !important;line-height: .5;"><span
+                                                            style="display: inline-block;width: 160px;">Income Year</span>
+                                                        <span>: {{ TaxCertificate.IncomeYear }}</span></p>
+                                                    <p style="font-family:'Nunito' !important;line-height: .5;"><span
+                                                            style="display: inline-block;width: 160px;">Assessment Year</span>
+                                                        <span>: {{ TaxCertificate.TaxYear }}</span></p>
+
                                                 </div>
                                             </div>
+                                            <p style="font-family:'Nunito' !important;line-height: .5;"><span
+                                                style="display: inline-block;width: 210px;">In Word (Taka)</span>
+                                                <span v-if="TaxCertificate.Tax !=0">:{{
+                                                        inWords(TaxCertificate.Tax)
+                                                    }}</span><span v-else>: Nill</span></p>
 
-                                            <p style="font-family:'Nunito';font-size: 17px;margin-top: 5px;">We further
-                                                confirm that we have
-                                                duly
-                                                deducted and deposited the above mentioned amount to Sonali Bank Ltd
-                                                Registration Complex Branch, Dhaka on basis of the following
-                                                computation.
-                                            </p>
+<!--                                            <table style="width:100%;border: 1px solid black;border-collapse: collapse;"-->
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Basic
+                                                <!--                                                       class="table-sm">-->
+                                                <!--                                                    <tr style="font-size: 17px;width: 9%">-->
+                                                <!--                                                        <th style="font-family:'Nunito';font-size: 17px;width: 20%">Name of-->
+                                                <!--                                                            Employee-->
+                                                <!--                                                        </th>-->
+                                                <!--                                                        <td>: {{ TaxCertificate.EmpName }}</td>-->
+
+                                                <!--                                                        <th style="font-family:'Nunito';font-size: 17px;">E-TIN</th>-->
+                                                <!--                                                        <td>: {{ TaxCertificate.TinNo }}</td>-->
+                                                <!--                                                    </tr>-->
+                                                <!--                                                    <tr style="font-size: 17px">-->
+                                                <!--                                                        <th style="font-family:'Nunito';font-size: 17px;">Designation-->
+                                                <!--                                                        </th>-->
+                                                <!--                                                        <td>: {{ TaxCertificate.Designation }}</td>-->
+                                                <!--                                                        <th style="font-family:'Nunito';font-size: 17px;">Income Year-->
+                                                <!--                                                        </th>-->
+                                                <!--                                                        <td style="width: 30%">: {{ TaxCertificate.IncomeYear }}</td>-->
+
+                                                <!--                                                    </tr>-->
+                                                <!--                                                    <tr style="font-size: 17px">-->
+                                                <!--                                                        <th style="font-family:'Nunito';font-size: 17px;">Department-->
+                                                <!--                                                        </th>-->
+                                                <!--                                                        <td>: {{ TaxCertificate.Department }}</td>-->
+
+                                                <!--                                                        <th style="width:20%;font-family:'Nunito';font-size: 17px;">Assessment-->
+                                                <!--                                                            Year-->
+                                                <!--                                                        </th>-->
+                                                <!--                                                        <td>: {{ TaxCertificate.TaxYear }}</td>-->
+
+                                                <!--                                                    </tr>-->
+                                                <!--                                                    <tr style="font-size: 17px">-->
+                                                <!--                                                        <th style="font-family:'Nunito';font-size: 17px;">Tax-->
+                                                <!--                                                            Deducted(Tk.)-->
+                                                <!--                                                        </th>-->
+                                                <!--                                                        <td><span v-if="TaxCertificate.Tax !=0">: {{-->
+                                                <!--                                                            Number(TaxCertificate.Tax).toLocaleString()-->
+                                                <!--                                                            }}</span>-->
+                                                <!--                                                            <span v-else>: Nill</span></td>-->
+
+                                                <!--                                                    </tr>-->
+                                                <!--                                                    <tr style="font-size: 17px;width: 100%">-->
+                                                <!--                                                        <th style="font-family:'Nunito';font-size: 17px;">In-->
+                                                <!--                                                            Word(Taka)-->
+                                                <!--                                                        </th>-->
+                                                <!--                                                        <td style="width: 40%">-->
+                                                <!--                                                            <span v-if="TaxCertificate.Tax !=0">:-->
+                                                <!--                                                                {{-->
+                                                <!--                                                                inWords(TaxCertificate.Tax)-->
+                                                <!--                                                                }}</span>-->
+                                                <!--                                                            <span v-else>: Nill</span>-->
+
+                                                <!--                                                        </td>-->
+
+                                                <!--                                                    </tr>-->
+
+                                                <!--                                                </table>-->
+                                                <p style="font-family:'Nunito';margin: 0px;font-size: 17px;font-weight: bold">Details of tax deposit to the government treasury:</p>
+                                                <div style="display: flex;">
+                                                    <div style="flex: 1;padding-right: 1rem;">
+                                                        <table style="width:100%;border: 1px solid black;border-collapse: collapse;"
+
+                                                               class="table-sm small">
+                                                            <tr style="border: 1px solid black;border-collapse: collapse;">
+                                                                <th style="text-align:center;border: 1px solid black;border-collapse: collapse;font-size: 15px;font-weight: bold ">
+                                                                    SL No.
+                                                                </th>
+                                                                <th style="text-align:center;border: 1px solid black;border-collapse: collapse;font-size: 15px;font-weight: bold">
+                                                                    Challan No
+                                                                </th>
+                                                                <th style="text-align:center;border: 1px solid black;border-collapse: collapse;font-size: 15px;font-weight: bold">
+                                                                    Challan Date
+                                                                </th>
+                                                                <th style="text-align:center;font-weight: bold;border: 1px solid black;border-collapse: collapse;font-size: 15px">
+                                                                    Total Amount in the Challan
+                                                                </th>
+                                                                <th style="text-align:center;font-weight: bold;border: 1px solid black;border-collapse: collapse;font-size: 15px">
+                                                                    Amount relating to this Cretificate
+                                                                </th>
+                                                            </tr>
+                                                            <tr style="border: 1px solid black;border-collapse: collapse;"
+                                                                v-if="TaxDepositFirstHalf.length>0"
+                                                                v-for="(singleTaxDepositFirstHalf,firstHalfIndex) in TaxDepositFirstHalf"
+                                                            >
+                                                                <td style="border: 1px solid black;border-collapse: collapse; text-align: center">
+                                                                    {{ firstHalfIndex + 1 }}
+                                                                </td>
+                                                                <td style="width:30%;border: 1px solid black;border-collapse: collapse;text-align: center">
+                                                                    {{ singleTaxDepositFirstHalf.ChallanNo }}
+                                                                </td>
+                                                                <td style="width:20%;text-align:center;border: 1px solid black;border-collapse: collapse;">
+                                                                    {{
+                                                                    moment(singleTaxDepositFirstHalf.ChallanDate).format('DD-MM-yyyy')
+                                                                    }}
+                                                                </td>
+                                                                <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
+                                                                    {{
+                                                                    Number(singleTaxDepositFirstHalf.Amount).toLocaleString()
+                                                                    }}
+                                                                </td>
+                                                                <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
+                                                                    {{
+                                                                    Number(singleTaxDepositFirstHalf.CAmount).toLocaleString()
+                                                                    }}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div style="flex: 1;padding-left: 1rem;">
+                                                        <table style="width:100%;border: 1px solid black;border-collapse: collapse;"
+                                                               class="table-sm small">
+                                                            <tr style="border: 1px solid black;border-collapse: collapse;">
+                                                                <th style="text-align:center;font-weight: bold;font-size: 15px;border: 1px solid black;border-collapse: collapse;">
+                                                                    SL No.
+                                                                </th>
+                                                                <th style="text-align:center;font-weight: bold;font-size: 15px;border: 1px solid black;border-collapse: collapse;">
+                                                                    Challan No
+                                                                </th>
+                                                                <th style="text-align:center;font-weight: bold;width:20%;font-size: 15px;border: 1px solid black;border-collapse: collapse;">
+                                                                    Challan Date
+                                                                </th>
+                                                                <th style="text-align:center;font-weight: bold;font-size: 15px;border: 1px solid black;border-collapse: collapse;">
+                                                                    Total Amount in the Challan
+                                                                </th>
+                                                                <th style="text-align:center;font-weight: bold;font-size: 15px;border: 1px solid black;border-collapse: collapse;">
+                                                                    Amount relating to this Cretificate
+                                                                </th>
+                                                            </tr>
+                                                            <tr style="border: 1px solid black;border-collapse: collapse;"
+                                                                v-if="TaxDepositSecondHalf.length>0"
+                                                                v-for="(singleTaxDepositSecondHalf,secondHalfIndex) in TaxDepositSecondHalf"
+                                                            >
+                                                                <td style="border: 1px solid black;border-collapse: collapse;text-align: center">
+                                                                    {{ TaxDepositFirstHalfLastIndex + secondHalfIndex }}
+                                                                </td>
+                                                                <td style="width:30%;border: 1px solid black;border-collapse: collapse;text-align: center">
+                                                                    {{ singleTaxDepositSecondHalf.ChallanNo }}
+                                                                </td>
+                                                                <td style="text-align:center;border: 1px solid black;border-collapse: collapse;">
+                                                                    {{
+                                                                    moment(singleTaxDepositSecondHalf.ChallanDate).format('DD-MM-yyyy')
+                                                                    }}
+                                                                </td>
+                                                                <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
+                                                                    {{
+                                                                    Number(singleTaxDepositSecondHalf.Amount).toLocaleString()
+                                                                    }}
+                                                                </td>
+                                                                <td style="border: 1px solid black;border-collapse: collapse;text-align: end">
+                                                                    {{
+                                                                    Number(singleTaxDepositSecondHalf.CAmount).toLocaleString()
+                                                                    }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="4"
+                                                                    style="text-align: end;border-right: 1px solid">
+                                                                    <span style="font-weight: bold">Grand Total</span>
+                                                                </td>
+                                                                <td style="text-align: end">
+                                                                    {{ Number(TaxCertificate.Tax).toLocaleString() }}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                <p style="font-family:'Nunito';font-size: 17px;margin-top: 5px;">We
+                                                    further
+                                                    confirm that we have
+                                                    duly
+                                                    deducted and deposited the above mentioned amount to Sonali Bank
+                                                    Ltd,
+                                                    Registration Complex Branch, Dhaka on basis of the following
+                                                    computation.
                                                 </p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.Basic).toLocaleString() }}</p>
-                                            </div>
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Festival
-                                                    Bonus</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.Bonus).toLocaleString() }}</p>
-                                            </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">House
-                                                    Rent
-                                                    Allowance</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.Rent).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Basic
+                                                    </p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.Basic).toLocaleString() }}</p>
+                                                </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Festival
+                                                        Bonus</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.Bonus).toLocaleString() }}</p>
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Accommodation Facilities (Actual Cost)</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.Srent).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        House
+                                                        Rent
+                                                        Allowance</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.Rent).toLocaleString() }}</p>
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Transport
-                                                    Allowance</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.Transport).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Accommodation Facilities (Actual Cost)</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.Srent).toLocaleString() }}</p>
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="font-weight:bold;margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Motor
-                                                    Vehicle Facilities :</p>
-                                                <!--                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .-->
-                                                <!--                                                    <span style="float: right;">TK.</span></p>-->
-                                                <!--                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">-->
-                                                <!--                                                    {{ Number(TaxCertificate.CompanyCar).toLocaleString() }}</p>-->
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Transport
+                                                        Allowance</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.Transport).toLocaleString() }}</p>
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Motor
-                                                    car
-                                                    up to 2500CC(10000 per month *12 months)</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.CompanyCar1).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="font-weight:bold;margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Motor
+                                                        Vehicle Facilities :</p>
+                                                    <!--                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .-->
+                                                    <!--                                                    <span style="float: right;">TK.</span></p>-->
+                                                    <!--                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">-->
+                                                    <!--                                                    {{ Number(TaxCertificate.CompanyCar).toLocaleString() }}</p>-->
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Motor
-                                                    car
-                                                    above 2500CC(25000 per month *12 months)</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.CompanyCar2).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Motor
+                                                        car
+                                                        up to 2500CC(10000 per month *12 months)</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.CompanyCar1).toLocaleString() }}</p>
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Contribution to Recognized Provident Fund (Company's
-                                                    Contribution)</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.PF).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Motor
+                                                        car
+                                                        above 2500CC(25000 per month *12 months)</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.CompanyCar2).toLocaleString() }}</p>
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;;width: 70%;line-height:1">
-                                                    Entertainment Allowance</p>
-                                                <p style="margin:0;padding-bottom: 5px;;width: 10%;line-height:1">. . .
-                                                    .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.ENTERTAIN).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Contribution to Recognized Provident Fund (Company's
+                                                        Contribution)</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.PF).toLocaleString() }}</p>
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;;width: 70%;line-height:1">
-                                                    WPPF</p>
-                                                <p style="margin:0;padding-bottom: 5px;;width: 10%;line-height:1">. . .
-                                                    .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.WPF).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;;width: 70%;line-height:1">
+                                                        Entertainment Allowance</p>
+                                                    <p style="margin:0;padding-bottom: 5px;;width: 10%;line-height:1">.
+                                                        . .
+                                                        .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.ENTERTAIN).toLocaleString() }}</p>
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;border: 2px solid;display: flex; justify-content: space-between;margin-top: 5px;margin-bottom:10px;">
-                                                <p style="font-weight:bold;margin:0;width: 70%">
-                                                    Income from employment</p>
-                                                <p style="margin:0;padding: 5px 0px;width: 10%;line-height:1">. . .
-                                                    .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="padding: 5px 0px;font-weight:bolder;margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.TotalA1).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;;width: 70%;line-height:1">
+                                                        WPPF</p>
+                                                    <p style="margin:0;padding-bottom: 5px;;width: 10%;line-height:1">.
+                                                        . .
+                                                        .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.WPF).toLocaleString() }}</p>
+                                                </div>
 
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;;width: 70%;line-height:1">
-                                                    Interest
-                                                    on Recognized Provident Fund (RPF)</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1"><span
-                                                        style="float: right;">{{
-                                                    Number(TaxCertificate.Interest).toLocaleString()
-                                                    }}</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.Interest1).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;border: 2px solid;display: flex; justify-content: space-between;margin-top: 5px;margin-bottom:10px;">
+                                                    <p style="font-weight:bold;margin:0;width: 70%">
+                                                        Income from employment</p>
+                                                    <p style="margin:0;padding: 5px 0px;width: 10%;line-height:1">. . .
+                                                        .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="padding: 5px 0px;font-weight:bolder;margin:0;padding-bottom: 5px;;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.TotalA1).toLocaleString() }}</p>
+                                                </div>
 
-
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Less
-                                                    Exepmted upto 33% of employment income excluding RPF interest</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1"><span
-                                                        style="float: right;">{{
-                                                    Number(TaxCertificate.Salaryrpf).toLocaleString()
-                                                    }}</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    0</p>
-                                            </div>
-
-                                            <div style="font-family:'Nunito';font-size: 17px;border: 2px solid;margin-bottom:10px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="font-weight:bold;margin:0;width: 70%;">
-                                                    Total income from employment</p>
-
-                                                <p style="margin:0;width: 10%;">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="font-weight:bolder;margin:0;width: 20%;text-align: right;">
-                                                    {{ Number(TaxCertificate.TotalA2).toLocaleString() }}</p>
-                                            </div>
-
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">Less
-                                                    Exempted upto 1/3rd of employment income or taka 450000</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.LessSalary).toLocaleString() }}</p>
-                                            </div>
-
-                                            <div style="font-family:'Nunito';font-size: 17px;border: 2px solid;margin-bottom:10px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="font-weight:bold;margin:0;width: 70%;">
-                                                    Total Taxable Income from employment</p>
-                                                <p style="margin:0;width: 10%;">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="font-weight:bolder;margin:0;width: 20%;text-align: right;">
-                                                    {{ Number(TaxCertificate.TotalA).toLocaleString() }}</p>
-                                            </div>
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Investment
-                                                    for tax rebate-RPF(Company`s & Own Contribution)</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.LessInv).toLocaleString() }}</p>
-                                            </div>
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Provident
-                                                    Fund Balance as on {{ LastTaxDate }}</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.PFBal).toLocaleString() }}</p>
-                                            </div>
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Provident
-                                                    Fund Loan Balance as on {{ LastTaxDate }}</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.PFLoan).toLocaleString() }}</p>
-                                            </div>
-                                            <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
-                                                <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
-                                                    Can loan balance as on {{ LastTaxDate }}</p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. . . .
-                                                    <span style="float: right;">TK.</span></p>
-                                                <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.PFLoan).toLocaleString() }}</p>
-                                            </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;;width: 70%;line-height:1">
+                                                        Interest
+                                                        on Recognized Provident Fund (RPF)</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1"><span
+                                                            style="float: right;">{{
+                                                        Number(TaxCertificate.Interest).toLocaleString()
+                                                        }}</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.Interest1).toLocaleString() }}</p>
+                                                </div>
 
 
-                                            <div style="display: flex; justify-content: space-between; margin-top: 20px; font-weight: bolder;">
-                                                <div>
-                                                    <div><img :src="`${mainOrigin}CompanyLogo/taxGmSignature.png`"
-                                                              style="width: 200px" alt="user"/></div>
-                                                    <hr style="
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Less
+                                                        Exepmted upto 33% of employment income excluding RPF
+                                                        interest</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1"><span
+                                                            style="float: right;">{{
+                                                        Number(TaxCertificate.Salaryrpf).toLocaleString()
+                                                        }}</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        0</p>
+                                                </div>
+
+                                                <div style="font-family:'Nunito';font-size: 17px;border: 2px solid;margin-bottom:10px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="font-weight:bold;margin:0;width: 70%;">
+                                                        Total income from employment</p>
+
+                                                    <p style="margin:0;width: 10%;">. . . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="font-weight:bolder;margin:0;width: 20%;text-align: right;">
+                                                        {{ Number(TaxCertificate.TotalA2).toLocaleString() }}</p>
+                                                </div>
+
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Less
+                                                        Exempted upto 1/3rd of employment income or taka 450000</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.LessSalary).toLocaleString() }}</p>
+                                                </div>
+
+                                                <div style="font-family:'Nunito';font-size: 17px;border: 2px solid;margin-bottom:10px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="font-weight:bold;margin:0;width: 70%;">
+                                                        Total Taxable Income from employment</p>
+                                                    <p style="margin:0;width: 10%;">. . . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="font-weight:bolder;margin:0;width: 20%;text-align: right;">
+                                                        {{ Number(TaxCertificate.TotalA).toLocaleString() }}</p>
+                                                </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Investment
+                                                        for tax rebate-RPF(Company`s & Own Contribution)</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.LessInv).toLocaleString() }}</p>
+                                                </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Provident
+                                                        Fund Balance as on {{ LastTaxDate }}</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.PFBal).toLocaleString() }}</p>
+                                                </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Provident
+                                                        Fund Loan Balance as on {{ LastTaxDate }}</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.PFLoan).toLocaleString() }}</p>
+                                                </div>
+                                                <div style="font-family:'Nunito';font-size: 17px;display: flex; justify-content: space-between;margin-top: 5px;">
+                                                    <p style="margin:0;padding-bottom: 5px;width: 70%;line-height:1">
+                                                        Car loan balance as on {{ LastTaxDate }}</p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 10%;line-height:1">. .
+                                                        . .
+                                                        <span style="float: right;">TK.</span></p>
+                                                    <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
+                                                        {{ Number(TaxCertificate.PFLoan).toLocaleString() }}</p>
+                                                </div>
+
+
+                                                <div style="display: flex; justify-content: space-between; margin-top: 0px; font-weight: bolder;">
+                                                    <div>
+                                                        <div><img :src="`${mainOrigin}CompanyLogo/taxGmSignature.png`"
+                                                                  style="width: 200px" alt="user"/></div>
+                                                        <hr style="
                                                       border: 1px solid rgb(51, 51, 51);
                                                       height: 1px;
                                                       width: 260px;
                                                       float: left;
                                                       background-color: black;
                                                       color: rgb(51, 51, 51);
-                                                      margin-bottom: 0;
+                                                      margin-bottom: 0px;
                                                       margin-top: 0px;
                                                       ">
-                                                    <p style="margin-bottom: 20px;font-family:'Nunito';font-size: 17px">Farida Rahman<br>
-                                                        GM,
-                                                        Personnel</p></div>
-                                                <!--                                                <p style="padding-top:60px;width: 30%;line-height:1"><span-->
-                                                <!--                                                        style="float: right;">{{ EmpCode }} </span></p>-->
-                                            </div>
+                                                        <p style="margin-bottom: 5px;font-family:'Nunito';font-size: 17px">
+                                                            Farida Rahman<br>
+                                                            GM,
+                                                            Personnel</p></div>
+                                                    <!--                                                <p style="padding-top:60px;width: 30%;line-height:1"><span-->
+                                                    <!--                                                        style="float: right;">{{ EmpCode }} </span></p>-->
+                                                </div>
 
                                         </div>
-                                        <div style="position:fixed;margin-top:15px;bottom: 0px;"
+                                        <div style="position:fixed;margin-top:10px;height: 90px;bottom: 0;"
                                              v-if="companyDesignTemplate.CompanyName !=='Creative Communication Limited'">
-                                            <p style="font-family:'Nunito';margin: 0;font-size: 17px"
+                                            <p style="padding:0;font-family:'Nunito';margin-top: 0;margin-bottom:0;font-size: 17px"
                                                v-if="companyDesignTemplate.FooterContentTop">
                                                 {{ companyDesignTemplate.FooterContentTop }}</p>
-                                            <p style="font-family:'Nunito';margin: 0;font-size: 17px"
+                                            <p style="padding:0;font-family:'Nunito';margin-top: 0;bottom:0;font-size: 17px"
                                                v-if="companyDesignTemplate.FooterContentBottom">
                                                 {{ companyDesignTemplate.FooterContentBottom }}</p>
                                         </div>
-                                        <div v-else style="position:fixed;margin-top:15px;bottom: 0px;">
+                                        <div v-else style="position:fixed;margin-top:15px;bottom: 0;">
                                             <div class="row">
                                                 <div class="col-md-12" style="text-align: initial;">
                                                     <img :src="`${mainOrigin}CompanyLogo/creativecomltdfooter.png`"
