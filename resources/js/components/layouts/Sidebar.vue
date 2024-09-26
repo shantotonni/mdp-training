@@ -4,7 +4,7 @@
       <div id="sidebar-menu">
         <ul class="metismenu" id="side-menu">
           <li class="menu-title">Main</li>
-          <li>
+          <li @click="hideSideBar()">
             <router-link :to="{name : 'Dashboard'}" class="waves-effect"><i class="ti-home"></i> <span>Dashboard</span></router-link>
           </li>
           <li>
@@ -13,13 +13,13 @@
               <span>Training<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
             </a>
             <ul class="submenu">
-              <li><router-link :to="{name: 'MDPList'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP List</router-link></li>
-              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP Training Status</router-link></li>
+              <li @click="hideSideBar()"><router-link :to="{name: 'MDPList'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP List</router-link></li>
+              <li @click="hideSideBar()" v-if="EmpCode === 'admin'"><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP Training Status</router-link></li>
 <!--              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'TrainingFeedback2nd'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Training Feedback</router-link></li>-->
-              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'AdditionalTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Additional Training</router-link></li>
-              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'TopRankedTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Top Ranked Training</router-link></li>
-              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'EmployeeIndividualTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Employee Individual Training</router-link></li>
-              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'employeeWiseReport'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Training Title Wise Employee List</router-link></li>
+              <li @click="hideSideBar()" v-if="EmpCode === 'admin'"><router-link :to="{name: 'AdditionalTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Additional Training</router-link></li>
+              <li @click="hideSideBar()" v-if="EmpCode === 'admin'"><router-link :to="{name: 'TopRankedTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Top Ranked Training</router-link></li>
+              <li @click="hideSideBar()" v-if="EmpCode === 'admin'"><router-link :to="{name: 'EmployeeIndividualTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Employee Individual Training</router-link></li>
+              <li @click="hideSideBar()" v-if="EmpCode === 'admin'"><router-link :to="{name: 'employeeWiseReport'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Training Title Wise Employee List</router-link></li>
             </ul>
           </li>
           <li>
@@ -28,7 +28,7 @@
               <span>Action Plan<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
             </a>
             <ul class="submenu">
-              <li>
+              <li @click="hideSideBar()">
                 <router-link :to="{name: 'ActionPlanList'}" ><i class="mdi mdi-floor-plan"></i>Action Plan</router-link>
               </li>
             </ul>
@@ -39,7 +39,7 @@
               <span>Job Description<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
             </a>
             <ul class="submenu">
-              <li>
+              <li @click="hideSideBar()">
                 <router-link :to="{name: 'JobDescriptionList'}" ><i class="mdi mdi-floor-plan"></i>Job Description List</router-link>
               </li>
             </ul>
@@ -50,16 +50,16 @@
               <span>SEP Automation<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
             </a>
             <ul class="submenu">
-              <li>
+              <li @click="hideSideBar()">
                 <router-link :to="{name: 'SEPPortfolio'}" ><i class="mdi mdi-floor-plan"></i>SEP Portfolio List</router-link>
               </li>
-              <li>
+              <li @click="hideSideBar()">
                 <router-link :to="{name: 'SEPDepartment'}" ><i class="mdi mdi-floor-plan"></i>SEP Department List</router-link>
               </li>
-              <li>
+              <li @click="hideSideBar()">
                 <router-link :to="{name: 'SEPDesignation'}" ><i class="mdi mdi-floor-plan"></i>SEP Designation List</router-link>
               </li>
-              <li>
+              <li @click="hideSideBar()">
                 <router-link :to="{name: 'SEPAutomation'}" ><i class="mdi mdi-floor-plan"></i>SEP Automation List</router-link>
               </li>
             </ul>
@@ -70,7 +70,7 @@
               <span>Report<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
             </a>
             <ul class="submenu">
-              <li>
+              <li @click="hideSideBar()">
                 <router-link :to="{name: 'MDPChartReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Echart Report</router-link>
                 <router-link :to="{name: 'PendingPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Pending PTC Report</router-link>
                 <router-link :to="{name: 'ApprovedPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Approved PTC Report</router-link>
@@ -95,7 +95,7 @@
               <span>Tax Certificate<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
             </a>
             <ul class="submenu">
-              <li>
+              <li @click="hideSideBar()">
                 <router-link :to="{name: 'TaxCertificate'}" ><i class="mdi mdi-floor-plan"></i>Tax Certificate</router-link>
               </li>
             </ul>
@@ -119,6 +119,9 @@ export default {
       isAdmin: false,
     }
   },
+  created() {
+    //
+  },
   mounted() {
     setTimeout(()=>{
       $("#side-menu").metisMenu();
@@ -141,6 +144,13 @@ export default {
         //this.errorNoti(error);
       });
     },
+    hideSideBar() {
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          document.body.classList.add('enlarged');
+        }, 100);
+      }
+    }
   }
 }
 </script>

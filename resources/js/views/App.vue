@@ -8,6 +8,10 @@ export default {
         return{
 
         }
-    }
+    },
+    created() {
+      $("body").toggleClass("enlarged");
+      console.log(34);
+    },
 }
 </script>
