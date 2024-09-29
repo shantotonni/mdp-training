@@ -62,7 +62,7 @@ class AuthController extends Controller
             } else {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'No user found '
+                    'message' => 'User/Password Wrong'
                 ], 404);
             }
         }

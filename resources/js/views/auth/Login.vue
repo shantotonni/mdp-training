@@ -3,8 +3,8 @@
     <div class="wrapper-page">
       <div class="card overflow-hidden account-card mx-3">
         <div class="bg-primary p-4 text-white text-center position-relative">
-          <h4 class="font-20 m-b-5">Management Development Plan and Action Plan</h4>
-          <p class="text-white-50 mb-4">Login Panel.</p>
+          <h4 class="font-20 m-b-5">HR Connect</h4>
+          <p class="text-white-50 mb-4">Tax Certificate, Management Development Plan, Action Plan, Job Description</p>
         </div>
         <div class="account-card-content">
           <ValidationObserver v-slot="{ handleSubmit }">
@@ -12,8 +12,7 @@
               <ValidationProvider name="User ID" mode="eager" rules="required" v-slot="{ errors }">
                 <div class="form-group">
                   <label for="EmpCode">Staff ID</label>
-                  <input type="text" class="form-control" :class="{'error-border': errors[0]}" id="EmpCode"
-                         v-model="EmpCode" name="email" placeholder="EmpCode" autocomplete="off">
+                  <input type="text" class="form-control" :class="{'error-border': errors[0]}" id="EmpCode" v-model="EmpCode" name="email" placeholder="EmpCode" autocomplete="off">
                   <span class="error-message"> {{ errors[0] }}</span>
                 </div>
               </ValidationProvider>

@@ -3,7 +3,7 @@
     <!-- LOGO -->
     <div class="topbar-left">
       <router-link :to="{name : 'Dashboard'}" class="logo" style="color: white!important;font-size: 14px!important;">
-        Management Development Plan and Action Plan
+        <span><img src="assets/images/logo.png" alt="" height="60" /> </span><i><img src="assets/images/logo-sm.png" alt="" height="35" /></i>
       </router-link>
     </div>
     <nav class="navbar-custom">
@@ -31,11 +31,11 @@
           </div>
         </li>
       </ul>
-<!--      <ul class="list-inline menu-left mb-0">-->
-<!--        <li class="float-left">-->
-<!--          <button class="button-menu-mobile open-left waves-effect"><i class="mdi mdi-menu"></i></button>-->
-<!--        </li>-->
-<!--      </ul>-->
+      <ul class="list-inline menu-left mb-0">
+        <li class="float-left">
+          <button class="button-menu-mobile open-left waves-effect" @click="toggleSidebar"><i class="mdi mdi-menu"></i></button>
+        </li>
+      </ul>
     </nav>
   </div>
 </template>
@@ -54,6 +54,7 @@ export default {
   },
   methods: {
     toggleSidebar(e) {
+      console.log("testtt")
       $("body").toggleClass("enlarged")
     },
     getData() {
