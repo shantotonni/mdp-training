@@ -18,7 +18,6 @@
                         <div class="card">
                             <div class="datatable" v-if="!isLoading">
                                 <div class="card-body">
-
                                     <div class="phoneVerificationPart" v-if="!isSendOtp">
                                         <div class="d-flex">
                                             <div class="flex-grow-1">
@@ -541,11 +540,11 @@
                                                     . .
                                                     <span style="float: right;">TK.</span></p>
                                                 <p style="margin:0;padding-bottom: 5px;width: 20%;line-height:1;text-align: right;">
-                                                    {{ Number(TaxCertificate.PFLoan).toLocaleString() }}</p>
+                                                    {{ Number(TaxCertificate.Carloan).toLocaleString() }}</p>
                                             </div>
 
 
-                                            <div style="display: flex; justify-content: space-between; margin-top: 0px; font-weight: bolder;">
+                                            <div style="display: flex; justify-content: space-between; margin-top: 5px; font-weight: bolder;">
                                                 <div>
                                                     <div><img :src="`${mainOrigin}CompanyLogo/taxGmSignature.png`"
                                                               style="width: 200px" alt="user"/></div>

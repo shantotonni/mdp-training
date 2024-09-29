@@ -24,6 +24,7 @@ class ActionPlanController extends Controller
     public function index(Request $request){
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
+
         $empcode = $payload['EmpCode'];
         $role = $payload['Type'];
         $Business = $payload['Business'];
