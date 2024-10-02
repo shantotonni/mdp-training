@@ -160,7 +160,7 @@ export default {
   },
   methods: {
     loadSignature(signature){
-      return baseurl + "/signature/" + signature;
+      return baseurl + "/mdp-training/signature/" + signature;
     },
     customFormatter(date) {
       return moment(date).format('YYYY-MM-DD');
