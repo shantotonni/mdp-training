@@ -11,6 +11,7 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SEPAutomationController;
 use App\Http\Controllers\TaxController;
+use App\Http\Controllers\TRAController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
@@ -134,6 +135,7 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::get('get-all-employee-training-list', [CommonController::class,'getEmployeeTrainingList']);
     Route::get('get-agree-business-user', [CommonController::class,'getAgreeBusinessUser']);
     Route::get('get-all-session', [CommonController::class,'getAllSession']);
+    Route::get('get-departments', [CommonController::class,'department']);
 
     //chart report mdp-organized-pending-ptc
     Route::get('get-all-chart-report', [MDPChartController::class,'getAllChartReport']);
@@ -156,4 +158,13 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::get('send-otp', [TaxController::class,'sendOTP']);
     Route::get('verify-otp', [TaxController::class,'verifyOTP']);
     Route::get('get-tax-data', [TaxController::class,'getTaxData']);
+    //TRA
+    Route::get('get-tax-zone', [TRAController::class,'getTaxZone']);
+    Route::get('get-tax-circle', [TRAController::class,'getTaxCircle']);
+    Route::get('get-acknowledgement', [TRAController::class,'getAcknowledgment']);
+    Route::get('get-periods', [TRAController::class,'getPeriods']);
+    Route::post('store-tax-return', [TRAController::class,'storeTaxReturn']);
+    Route::post('get-tra-report', [TRAController::class,'index']);
+    Route::get('get-tra-emp-list/{Year}/{Dept}/{Status}', [TRAController::class,'taxableEmp']);
+
 });

@@ -7,6 +7,7 @@ use App\Models\Bank;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\Department;
 use App\Models\MDPEmployeeTrainingList;
 use App\Models\Menu;
 use App\Models\Role;
@@ -62,6 +63,13 @@ class CommonController extends Controller
         $sessions = DB::select('select distinct AppraisalPeriod as Name from ManagementDevelopmentPlane');
         return response()->json([
             'sessions'=>$sessions
+        ]);
+    }
+
+    public function department(){
+        $list = Department::select('DeptCode','DeptName')->where('Active','Y')->get();
+        return response()->json([
+           'data'=>$list
         ]);
     }
 }

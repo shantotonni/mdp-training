@@ -9,7 +9,6 @@ use App\Models\TaxCertificateConfigaration;
 use App\Models\TaxDeposit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -49,12 +48,12 @@ class TaxController extends Controller
 
                 if ($Mobile) {
                     $OTP = rand(100000, 999999);
-                    $smscontent = 'Your OTP for Tax Certificate is  - ' . $OTP. '.'.' Please enter this on the verification';
-
+                    $smscontent = 'Your OTP for '.$request->ModuleName.' is  - ' . $OTP. '.'.' Please enter this on the verification';
                     $otp = new SendOTP();
                     $otp->Mobile = $Mobile;
                     $otp->OTPCode = $OTP;
                     $otp->EmpCode = $empcode;
+                    $otp->ModuleName = $request->ModuleName;
                     $otp->SentTime = Carbon::now();
                     $otp->status = 0;
                     $otp->CreatedDate = Carbon::now();
@@ -63,7 +62,7 @@ class TaxController extends Controller
                     $to = $Mobile;
                     $sId = '8809617615000';
                     $applicationName = 'MDP Training';
-                    $moduleName = 'Tax Certification';
+                    $moduleName = $request->ModuleName;
                     $otherInfo = '';
                     $userId = $OTP;
                     $vendor = 'smsq';

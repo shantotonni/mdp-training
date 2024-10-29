@@ -98,6 +98,12 @@
               <li @click="hideSideBar()">
                 <router-link :to="{name: 'TaxCertificate'}" ><i class="mdi mdi-floor-plan"></i>Tax Certificate</router-link>
               </li>
+              <li @click="hideSideBar()">
+                <router-link :to="{name: 'TaxReturnAcknowledgement'}" ><i class="mdi mdi-checkbox-multiple-marked-outline"></i>Tax Return Acknowledgement</router-link>
+              </li>
+              <li @click="hideSideBar()" v-if="EmpCode='30068'">
+                <router-link :to="{name: 'TaxReturnAcknowledgementReport'}" ><i class="mdi mdi-table-large"></i>Tax Return Acknowledgement Report</router-link>
+              </li>
             </ul>
           </li>
 

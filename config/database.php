@@ -113,6 +113,17 @@ return [
             'prefix' => '',
             'strict' => false,
         ],
+        'GroupDashBoard' => [
+            'driver' => 'sqlsrv',
+            'host' => '192.168.100.62',
+            'port' => '1433',
+            'database' => 'GroupDashBoard',
+            'username' => 'sa',
+            'password' => 'dataport',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'strict' => false,
+        ],
     ],
 
     /*

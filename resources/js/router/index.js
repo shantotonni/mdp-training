@@ -23,6 +23,9 @@ import RecruitmentRequisition from '../views/recruitment_requisition/Index.vue'
 
 //import TopTrainingPrint from '../views/mdp/TopTrainingPrint'
 import TaxCertificate from '../views/tax/TaxCertificate'
+import TaxReturnAcknowledgement from '../views/Tax/TRA.vue'
+import TaxReturnAcknowledgementReport from '../views/Tax/TRAReport.vue'
+import SubmitStatus from '../views/tax/TRAEmp.vue'
 
 //user
 import UserList from '../views/users/Index'
@@ -137,6 +140,9 @@ const routes = [
             {path: baseurl + 'approved-PTC-report', name: 'ApprovedPTCReport', component: ApprovedPTCReport},
             //tax TaxCertificate
             {path: baseurl + 'tax-certificate', name: 'TaxCertificate', component: TaxCertificate},
+            {path: baseurl + 'tax-return-acknowledgement', name: 'TaxReturnAcknowledgement', component: TaxReturnAcknowledgement},
+            {path: baseurl + 'tax-return-acknowledgement-report', name: 'TaxReturnAcknowledgementReport', component: TaxReturnAcknowledgementReport},
+            {path: baseurl + 'tax-return-submit/:Year/:Dept/:Status', name: 'SubmitStatus', component: SubmitStatus},
         ],
         beforeEnter(to, from, next) {
             checkToken(to, from, next);
