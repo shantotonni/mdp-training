@@ -66,8 +66,8 @@ class TRAController extends Controller
 
         }else{
             $list->whereRaw("a.EmpCode is null")
-                ->select(DB::raw("CONCAT(e.EmpCode,'',p.Name) as Employee"),'p.MobileNo' ,'p.PAddress as PermanentAddress','d.DeptName as Department','p.CAddress as CurrentAddress'
-                   ,'e.JoiningDate','e.Location','dg.DesgName as Designation', 'a.TaxYear');
+                ->select(DB::raw("CONCAT(e.EmpCode,': ',p.Name) as Employee"),'p.MobileNo' ,'p.PAddress as PermanentAddress','d.DeptName as Department','p.CAddress as CurrentAddress'
+                   , DB::raw("FORMAT(e.JoiningDate, 'dd-MM-yyyy') AS JoiningDate"),'e.Location','dg.DesgName as Designation', 'a.TaxYear');
         }
 
         return response()->json([
