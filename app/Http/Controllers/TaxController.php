@@ -48,7 +48,7 @@ class TaxController extends Controller
 
                 if ($Mobile) {
                     $OTP = rand(100000, 999999);
-                    $smscontent = 'Your OTP for '.$request->ModuleName.' is  - ' . $OTP. '.'.' Please enter this on the verification';
+                    $smscontent = "Your OTP for ".$request->ModuleName." is  - " . $OTP. " Please enter this on the verification \n Thanks \n ACI Tax Department";
                     $otp = new SendOTP();
                     $otp->Mobile = $Mobile;
                     $otp->OTPCode = $OTP;
