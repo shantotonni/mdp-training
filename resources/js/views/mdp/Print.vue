@@ -248,7 +248,7 @@ export default {
   },
   methods: {
       loadSignature(signature){
-        return baseurl + "/signature/" + signature;
+        return 'https://hrconnect.acigroup.info' + "/signature/" + signature;
       }
     },
 }

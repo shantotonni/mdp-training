@@ -160,7 +160,7 @@ export default {
   },
   methods: {
     loadSignature(signature){
-      return baseurl + "/signature/" + signature;
+      return 'https://hrconnect.acigroup.info' + "/signature/" + signature;
     },
     customFormatter(date) {
       return moment(date).format('YYYY-MM-DD');

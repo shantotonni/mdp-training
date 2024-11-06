@@ -618,6 +618,7 @@ export default {
             Mobile: '',
             OTPCode: '',
             LastTaxDate: '',
+            ModuleName: 'Tax Certificate',
             isMessage: false,
             isLoading: false,
             isSendOtp: false,
@@ -658,7 +659,7 @@ export default {
         },
 
         sendOTP() {
-            axios.get(baseurl + 'api/send-otp').then((response) => {
+            axios.get(baseurl + 'api/send-otp?ModuleName='+this.ModuleName).then((response) => {
                 this.Mobile = response.data.mobileNo
                 this.$toaster.success(response.data.message);
                 if (response.data.status === 'success') {
