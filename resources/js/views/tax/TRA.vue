@@ -453,7 +453,7 @@ export default {
           if (response.data.status == 'Success'){
             this.isLoading = false;
             this.$toaster.success(response.data.message);
-            location.reload();
+            //location.reload();
           }else{
             this.$toaster.error(response.data.message);
           }
