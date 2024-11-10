@@ -332,6 +332,7 @@ export default {
             TaxYear:'',
           }),
 
+            empCode: '',
             thisYear: '',
             NextYear: '',
             Mobile: '',
@@ -360,15 +361,13 @@ export default {
         getSupportingData() {
             axios.post(baseurl + 'api/me').then((response) => {
               if (response.data){
+                this.empCode = response.data.personal.EmpCode
                 this.form.Name = response.data.personal.personal.Name
                 this.form.Mobile = response.data.personal.personal.MobileNo
-                this.form.JoiningDate =(response.data.personal.JoiningDate.substring(0,10))
-                this.form.Department = response.data.personal.email.Department
-                this.form.Designation = response.data.personal.email.Designation
-                this.TaxYear = moment().year()  ;
                 this.getAcknowledgement();
                 this.getTaxData();
                 this.getTaxZone();
+                this.getEmployeeByStaffID();
               }else {
                 this.personal = ''
               }
@@ -376,6 +375,18 @@ export default {
 
             })
         },
+      getEmployeeByStaffID(){
+        axios.post(baseurl +'api/get-employee-by-employee-code/', {
+          EmpCode: this.empCode,
+        }).then((response)=>{
+          this.form.EmployeeName = response.data.employee.EmployeeName;
+          this.form.Designation = response.data.employee.Designation;
+          this.form.Department = response.data.employee.Department;
+          this.form.JoiningDate = response.data.employee.JoiningDate;
+        }).catch((error)=>{
+
+        })
+      },
       getTaxData() {
         axios.get(baseurl + 'api/get-tax-data').then((response) => {
           this.form.Etin = response.data.TaxCertificate.TinNo
@@ -383,7 +394,6 @@ export default {
 
         })
       },
-
         sendOTP() {
             axios.get(baseurl + 'api/send-otp?ModuleName='+this.ModuleName).then((response) => {
                 this.Mobile = response.data.mobileNo
@@ -403,7 +413,7 @@ export default {
                     this.$toaster.success(response.data.message);
                     this.isOTPVerification = true;
                     this.isTaxPrintPart = true
-                    this.getTaxZone()
+                    this.TaxYear = moment().year()  ;
                 } else {
                     this.$toaster.error(response.data.message);
                 }
