@@ -358,7 +358,6 @@ export default {
           + "&DepartmentID=" + this.DepartmentID
           + "&PortfolioID=" + this.PortfolioID
       ).then((response)=>{
-        console.log(response)
         this.seps = response.data.data;
         this.pagination = response.data.meta;
         this.calculatesum();

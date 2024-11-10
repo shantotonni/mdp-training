@@ -62,11 +62,11 @@
                       <td>{{item.DeptName}}</td>
                       <td>{{item.TotalEmployee}}</td>
                       <td>
-                        <router-link :to="`tax-return-submit/${TaxYear}/${item.DeptCode}/Submitted`" class="btn btn-info btn-sm" target= '_blank'> {{item.Submitted}}
+                        <router-link :to="`tax-return-submit/${TaxYear}/${item.DeptCode}/submitted`" class="btn btn-info btn-sm" target= '_blank'> {{item.Submitted}}
                       </router-link>
                       </td>
                       <td>
-                        <router-link :to="`tax-return-submit/${TaxYear}/${item.DeptCode}/NotSubmitted`" class="btn btn-info btn-sm" target= '_blank'> {{item.NotSubmitted}}
+                        <router-link :to="`tax-return-submit/${TaxYear}/${item.DeptCode}/not-submitted`" class="btn btn-info btn-sm" target= '_blank'> {{item.NotSubmitted}}
                       </router-link>
                       </td>
                     </tr>
@@ -112,6 +112,7 @@ export default {
       periods: [],
       pagination: {
         current_page: 1,
+        last_page: 1,
         from: 1,
         to: 1,
         total: 1,
@@ -132,7 +133,7 @@ export default {
   },
   methods: {
     getTRAReport(ex) {
-      axios.post(baseurl + 'api/get-tra-report?TaxYear='+this.TaxYear).then((response) => {
+      axios.post(baseurl + 'api/get-tra-report?TaxYear='+this.TaxYear+'&page='+ this.pagination.current_page).then((response) => {
         console.log(response)
         if (response.data.data.length > 0){
           if (ex === 'Y') {
@@ -150,6 +151,11 @@ export default {
           } else {
             this.headers = Object.keys(response.data.data[0])
             this.contents = response.data.data;
+            this.pagination.current_page = response.data.data.current_page;
+            this.pagination.from = response.data.data.from;
+            this.pagination.to = response.data.data.to;
+            this.pagination.total = response.data.data.total;
+            this.pagination.last_page = response.data.data.last_page;
           }
         }
 

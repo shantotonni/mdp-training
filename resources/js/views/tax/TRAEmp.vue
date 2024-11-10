@@ -30,8 +30,8 @@
                 <div class="d-flex">
                   <div class="flex-grow-1">
                     <h3 v-if="ZeroData.length>0" style="color: red; text-align: center" >{{ZeroData}}</h3>
-                    <h6 v-if="Status === 'NotSubmitted' && headers.length > 0">{{contents[0].Department}}'s Employee Details  :</h6>
-                    <h6  v-if=" Status === 'Submitted' && headers.length > 0">{{contents[0].Department}}'s Employee Details For Assessment Year {{contents[0].TaxYear}} :</h6>
+                    <h6 v-if="Status === 'not-submitted' && headers.length > 0">{{contents[0].Department}}'s Employee Details  :</h6>
+                    <h6  v-if=" Status === 'submitted' && headers.length > 0">{{contents[0].Department}}'s Employee Details For Assessment Year {{contents[0].TaxYear}} :</h6>
                   </div>
                   <br>
                 </div>
