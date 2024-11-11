@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Http\Requests\Tax\TaxReturnStoreRequest;
-use App\Models\TaxCertificate;
 use App\Models\TaxCircle;
 use App\Models\TaxZone;
 use App\Models\TRA;
@@ -15,7 +12,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TRAController extends Controller
 {
-
     public function index(Request $request){
 
        $TaxYear =$request->TaxYear;
@@ -48,7 +44,6 @@ class TRAController extends Controller
         }
 
     }
-
     public function taxableEmp($Year,$Dept,$Status){
         $list = DB::table('Employer as e')
             ->join('Personal as p ','p.EmpCode','=','e.EmpCode')
@@ -76,28 +71,24 @@ class TRAController extends Controller
            'data'=>$list ->orderBy('e.EmpCode','ASC')->paginate(10)
         ]);
     }
-
     public function getPeriods(){
      $list = TRA::select('TaxYear')->distinct()->get();
      return response()->json([
          'data'=>$list
      ]);
     }
-
    public function getTaxZone(){
        $zone = TaxZone::all();
        return response()->json([
           'data'=>$zone
        ]);
    }
-
    public function getTaxCircle(Request $request){
        $circle = TaxCircle::where('TaxZoneId',$request->id)->where('ActiveStatus','Y')->orderby('TaxCircleId','ASC')->get();
        return response()->json([
           'data'=>$circle
        ]);
    }
-
    public function getAcknowledgment(Request $request){
        $token = $request->bearerToken();
        $payload = JWTAuth::setToken($token)->getPayload();
@@ -163,5 +154,16 @@ class TRAController extends Controller
        }
 
 }
+    public function getViewEmpData(Request $request){
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $empcode = $payload['EmpCode'];
+
+        $list = DB::table('ViewAllData as v')
+            ->select('v.EmpCode','v.EmployeeName','v.DesgName','v.DeptName','v.MobileNo','t.TinNo','v.JoiningDate')
+            ->leftJoin('TaxCertificate as t','t.empcode','=','v.EmpCode')
+            ->where('v.EmpCode',$empcode)->first();
+        return $list;
+    }
 
 }

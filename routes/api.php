@@ -167,4 +167,8 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::post('get-tra-report', [TRAController::class,'index']);
     Route::get('get-tra-emp-list/{Year}/{Dept}/{Status}', [TRAController::class,'taxableEmp']);
 
+    Route::get('get-emp-data', [TRAController::class,'getViewEmpData']);
+
+
+
 });
