@@ -60,8 +60,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                 // v-if="isTaxPrintPart"
-                                    <div class="taxPart" >
+
+                                    <div class="taxPart" v-if="isTaxPrintPart">
                                         <div class="row">
                                           <div class="col-md-12"
                                                  :style="{position:'',textAlign: `${companyDesignTemplate.LogoAlignment}`}">
@@ -455,7 +455,7 @@ export default {
           if (response.data.status == 'Success'){
             this.isLoading = false;
             this.$toaster.success(response.data.message);
-            // location.reload();
+            // location.reload()
           }else{
 
             this.$toaster.error(response.data.message);
