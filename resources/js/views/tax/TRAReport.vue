@@ -135,7 +135,7 @@ export default {
     getTRAReport(ex) {
       axios.post(baseurl + 'api/get-tra-report?TaxYear='+this.TaxYear+'&page='+ this.pagination.current_page).then((response) => {
         console.log(response)
-        if (response.data.data.length > 0){
+        if (response.data.data.data.length > 0){
           if (ex === 'Y') {
             let dataSets = response.data.data;
             if (dataSets.length > 0) {
@@ -149,8 +149,8 @@ export default {
               bus.$emit('data-table-import', dataSets, columns, 'Tax Return Acknowledgement List')
             }
           } else {
-            this.headers = Object.keys(response.data.data[0])
-            this.contents = response.data.data;
+            this.headers = Object.keys(response.data.data.data[0])
+            this.contents = response.data.data.data;
             this.pagination.current_page = response.data.data.current_page;
             this.pagination.from = response.data.data.from;
             this.pagination.to = response.data.data.to;

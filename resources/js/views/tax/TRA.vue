@@ -355,43 +355,19 @@ export default {
       this.form.TaxYear = `${this.thisYear}-${this.NextYear}`;
     },
     mounted() {
-        this.getSupportingData()
+        this.getAllEmpInfo()
     },
     methods: {
-
-        getSupportingData() {
-            axios.post(baseurl + 'api/me').then((response) => {
-              if (response.data){
-                this.empCode = response.data.personal.EmpCode
-                this.form.Name = response.data.personal.personal.Name
-                this.form.Mobile = response.data.personal.personal.MobileNo
-                this.getAcknowledgement();
-                this.getTaxData();
-                this.getTaxZone();
-                this.getEmployeeByStaffID();
-              }else {
-                this.personal = ''
-              }
-            }).catch((error) => {
-
-            })
-        },
-      getEmployeeByStaffID(){
-        axios.post(baseurl +'api/get-employee-by-employee-code/', {
-          EmpCode: this.empCode,
-        }).then((response)=>{
-          this.form.EmployeeName = response.data.employee.EmployeeName;
-          this.form.Designation = response.data.employee.Designation;
-          this.form.Department = response.data.employee.Department;
-          this.form.JoiningDate = response.data.employee.JoiningDate;
-        }).catch((error)=>{
-
-        })
-      },
-      getTaxData() {
-        axios.get(baseurl + 'api/get-tax-data').then((response) => {
-          this.form.Etin = response.data.TaxCertificate.TinNo
-          this.TinNo = response.data.TaxCertificate.TinNo
+      getAllEmpInfo(){
+        axios.get(baseurl + 'api/get-emp-data').then((response) => {
+          this.form.Name = response.data.EmployeeName;
+          this.form.Designation = response.data.DesgName;
+          this.form.Department = response.data.DeptName;
+          this.form.JoiningDate =moment(response.data.JoiningDate).format('YYYY-MM-DD');
+          this.form.Mobile = response.data.MobileNo
+          this.form.Etin = response.data.TinNo
+          this.TinNo = response.data.TinNo
+          this.getAcknowledgement()
         }).catch((error) => {
 
         })
@@ -443,6 +419,7 @@ export default {
               this.form.Zone = response.data.data.TaxZoneId
               this.form.ReturnDate =   moment(response.data.data.DateOfReturnSubmission).format('YYYY-MM-DD')
               this.form.Serial = response.data.data.ReturnSerialNumber
+              this.getTaxZone()
               this.getTaxCircle( this.form.Zone);
             })
           },
@@ -452,7 +429,7 @@ export default {
       store(){
         this.form.busy = true;
         this.form.post(baseurl+ "api/store-tax-return").then(response => {
-          if (response.data.status == 'Success'){
+          if (response.data.status === 'Success'){
             this.isLoading = false;
             this.$toaster.success(response.data.message);
             // location.reload()

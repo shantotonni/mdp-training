@@ -15,6 +15,7 @@ use App\Models\Sessions;
 use App\Models\Student;
 use App\Models\StudentBill;
 use App\Models\StudentBillPayment;
+use App\Models\TaxCertificate;
 use App\Models\Year;
 use App\Services\BusinessService;
 use App\Services\DepartmentService;
@@ -72,4 +73,5 @@ class CommonController extends Controller
            'data'=>$list
         ]);
     }
+
 }
