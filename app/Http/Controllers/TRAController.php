@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Tax\TaxReturnStoreRequest;
 use App\Models\TaxCertificate;
 use App\Models\TaxCircle;
 use App\Models\TaxZone;
@@ -9,6 +10,7 @@ use App\Models\TRA;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TRAController extends Controller
@@ -107,7 +109,21 @@ class TRAController extends Controller
        ]);
    }
    public function storeTaxReturn(Request $request){
+
         DB::beginTransaction();
+       $validator = Validator::make($request->all(), [
+           'Etin'=>'required|min:8',
+           'Zone'=>'required',
+           'Serial'=>'required',
+           'ReturnDate'=>'required',
+           'Circle'=>'required'
+       ]);
+       if ($validator->fails()) {
+           return response()->json([
+               'status' => 'error',
+               'message' => $validator->errors()->first()]);
+       }
+
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $EmpCode = $payload['EmpCode'];

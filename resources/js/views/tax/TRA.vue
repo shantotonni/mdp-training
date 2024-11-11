@@ -173,11 +173,11 @@
                                                                   <label for="E-tin" class="col-lg-3 col-form-label">E-TIN : </label>
                                                                   <div class="col-lg-9">
                                                                     <input type="text" class="form-control"
+                                                                           :readonly ="TinNo.length>5"
                                                                            id="E-tin"
-                                                                           readonly
                                                                            v-model="form.Etin"
                                                                            data-required="true" name="E-tin"
-                                                                           placeholder="E-tin" min="12">
+                                                                           placeholder="E-tin" min="8">
                                                                     <span class="error-message"> {{ errors[0] }}</span>
                                                                   </div>
                                                                 </div>
@@ -332,6 +332,7 @@ export default {
             TaxYear:'',
           }),
 
+            TinNo: '',
             empCode: '',
             thisYear: '',
             NextYear: '',
@@ -390,6 +391,7 @@ export default {
       getTaxData() {
         axios.get(baseurl + 'api/get-tax-data').then((response) => {
           this.form.Etin = response.data.TaxCertificate.TinNo
+          this.TinNo = response.data.TaxCertificate.TinNo
         }).catch((error) => {
 
         })
@@ -453,8 +455,9 @@ export default {
           if (response.data.status == 'Success'){
             this.isLoading = false;
             this.$toaster.success(response.data.message);
-            //location.reload();
+            // location.reload()
           }else{
+
             this.$toaster.error(response.data.message);
           }
 
