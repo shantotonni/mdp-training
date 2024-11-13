@@ -60,8 +60,8 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="taxPart" v-if="isTaxPrintPart">
+//v-if="isTaxPrintPart"
+                                    <div class="taxPart" >
                                         <div class="row">
                                           <div class="col-md-12"
                                                  :style="{position:'',textAlign: `${companyDesignTemplate.LogoAlignment}`}">
@@ -368,6 +368,7 @@ export default {
           this.form.Etin = response.data.TinNo
           this.TinNo = response.data.TinNo
           this.getAcknowledgement()
+          this.getTaxZone()
         }).catch((error) => {
 
         })
@@ -419,7 +420,6 @@ export default {
               this.form.Zone = response.data.data.TaxZoneId
               this.form.ReturnDate =   moment(response.data.data.DateOfReturnSubmission).format('YYYY-MM-DD')
               this.form.Serial = response.data.data.ReturnSerialNumber
-              this.getTaxZone()
               this.getTaxCircle( this.form.Zone);
             })
           },
