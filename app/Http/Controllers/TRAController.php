@@ -162,7 +162,8 @@ class TRAController extends Controller
         $list = DB::table('ViewAllData as v')
             ->select('v.EmpCode','v.EmployeeName','v.DesgName','v.DeptName','v.MobileNo','t.TinNo','v.JoiningDate')
             ->leftJoin('TaxCertificate as t','t.empcode','=','v.EmpCode')
-            ->where('v.EmpCode',$empcode)->first();
+            ->where('v.EmpCode',$empcode)
+            ->first();
         return $list;
     }
 

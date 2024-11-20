@@ -27,6 +27,10 @@ import TaxReturnAcknowledgement from '../views/Tax/TRA.vue'
 import TaxReturnAcknowledgementReport from '../views/Tax/TRAReport.vue'
 import SubmitStatus from '../views/tax/TRAEmp.vue'
 
+import IdeaSubmissionForm from '../views/ideaHub/IdeaSubmissionForm.vue'
+import IdeaHub from '../views/ideaHub/IdeaList.vue'
+import IdeaHubDetails from '../views/ideaHub/IdeaDetails.vue'
+
 //user
 import UserList from '../views/users/Index'
 
@@ -143,6 +147,12 @@ const routes = [
             {path: baseurl + 'tax-return-acknowledgement', name: 'TaxReturnAcknowledgement', component: TaxReturnAcknowledgement},
             {path: baseurl + 'tax-return-acknowledgement-report', name: 'TaxReturnAcknowledgementReport', component: TaxReturnAcknowledgementReport},
             {path: baseurl + 'tax-return-submit/:Year/:Dept/:Status', name: 'SubmitStatus', component: SubmitStatus},
+
+            //idea hub
+            {path: baseurl + 'idea-submission', name: 'IdeaSubmissionForm', component: IdeaSubmissionForm},
+            {path: baseurl + 'idea-hub', name: 'IdeaHub', component: IdeaHub},
+            {path: baseurl + 'idea-hub-details/:IdeaID', name: 'IdeaHubDetails', component: IdeaHubDetails}
+
         ],
         beforeEnter(to, from, next) {
             checkToken(to, from, next);
