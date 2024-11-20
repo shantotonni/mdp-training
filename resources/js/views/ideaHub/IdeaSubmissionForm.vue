@@ -163,7 +163,7 @@
                                       </div>
                                       <div class="row p-3">
                                         <div class="col-md-4">
-                                          <ValidationProvider name="CurrentIssue" mode="eager"
+                                          <ValidationProvider name="Current Issue" mode="eager"
                                                               rules="required"
                                                               v-slot="{ errors }">
                                             <div class="form-group">
@@ -175,7 +175,7 @@
                                           </ValidationProvider>
                                         </div>
                                         <div class="col-md-8">
-                                          <ValidationProvider name="ImpactOfTheIssue" mode="eager"
+                                          <ValidationProvider name="Impact Of The Issue" mode="eager"
                                                               rules="required"
                                                               v-slot="{ errors }">
 
@@ -199,7 +199,7 @@
                                       </div>
                                       <div class="row p-3">
                                         <div class="col-md-4">
-                                          <ValidationProvider name="SolutionOverView" mode="eager"
+                                          <ValidationProvider name="Solution OverView" mode="eager"
                                                               rules="required"
                                                               v-slot="{ errors }">
                                             <div class="form-group ">
@@ -235,7 +235,7 @@
                                       </div>
                                       <div class="row p-3">
                                         <div class="col-md-4">
-                                          <ValidationProvider name="CostSavings" mode="eager"
+                                          <ValidationProvider name="Cost Savings" mode="eager"
                                                               rules="required"
                                                               v-slot="{ errors }">
                                             <div class="form-group ">
@@ -247,7 +247,7 @@
                                           </ValidationProvider>
                                         </div>
                                         <div class="col-md-4">
-                                          <ValidationProvider name="EstimateSavings" mode="eager"
+                                          <ValidationProvider name="Estimate Gains" mode="eager"
                                                               rules="required"
                                                               v-slot="{ errors }">
 
@@ -260,7 +260,7 @@
                                           </ValidationProvider>
                                         </div>
                                         <div class="col-md-4">
-                                          <ValidationProvider name="Gains" mode="eager"
+                                          <ValidationProvider name="Employee or Customer Impact" mode="eager"
                                                               rules="required"
                                                               v-slot="{ errors }">
 
@@ -285,7 +285,7 @@
                                       </div>
                                       <div class="row p-3">
                                         <div class="col-md-4">
-                                          <ValidationProvider name="Budget" mode="eager"
+                                          <ValidationProvider name="Budget Estimate" mode="eager"
                                                               rules="required"
                                                               v-slot="{ errors }">
                                             <div class="form-group ">
@@ -296,7 +296,7 @@
                                           </ValidationProvider>
                                         </div>
                                         <div class="col-md-4">
-                                          <ValidationProvider name="Name" mode="eager"
+                                          <ValidationProvider name="Staffing or Support" mode="eager"
                                                               rules="required"
                                                               v-slot="{ errors }">
 
@@ -308,7 +308,7 @@
                                           </ValidationProvider>
                                         </div>
                                         <div class="col-md-4">
-                                          <ValidationProvider name="Technology" mode="eager"
+                                          <ValidationProvider name="Technology or Tools" mode="eager"
                                                               rules="required"
                                                               v-slot="{ errors }">
 
