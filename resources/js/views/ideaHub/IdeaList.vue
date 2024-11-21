@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
-            <div class="datatable" v-if="this.contents.length>0">
+            <div class="datatable" v-if="contents.length>0">
               <div class="card-body">
                 <div class="table-responsive">
                   <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small" v-if="contents.length>0">
@@ -60,27 +60,23 @@
                 </div>
               </div>
             </div>
-            <div v-else-if="this.contents.length=0">
-              <div>
-                <div class="form-divider" style="text-align: center;color: #04702e">
-                  <div class="form-divider-title">
-                    <h5>It appears that no ideas have been submitted yet!</h5>
-                      <button type="submit" class="btn btn-success btn-sm"><router-link :to="{name: 'IdeaSubmissionForm'}" style="color: white;" >Submit Your Idea Here <i class="mdi mdi-arrow-down-bold"></i></router-link></button>
-
-                  </div>
+            <div v-else>
+              <div class="form-divider" style="text-align: center;color: #04702e">
+                <div class="form-divider-title">
+                  <h5>It appears that no ideas have been submitted yet!</h5>
+                  <button type="submit" class="btn btn-success btn-sm"><router-link :to="{name: 'IdeaSubmissionForm'}" style="color: white;" >Submit Your Idea Here <i class="mdi mdi-arrow-down-bold"></i></router-link></button>
                 </div>
               </div>
-
-              <skeleton-loader :row="14"/>
             </div>
-            <div v-else>
-              <skeleton-loader :row="14"/>
-            </div>
-
           </div>
 
         </div>
       </div>
+<!--      <div class="row" v-else>-->
+<!--        <div class="col-xl-12">-->
+<!--          <skeleton-loader :row="14"/>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -126,10 +122,9 @@ export default {
       axios.get(baseurl+ 'api/idea-hub?page='+ this.pagination.current_page
           + "&query=" + this.query
       ).then((response)=>{
-        this.contents = response.data.data.data
-        if (this.contents.length >0){
-          this.headers = Object.keys(response.data.data.data[0])
+        if (response.data.data.data.length >0){
           this.contents = response.data.data.data
+          this.headers = Object.keys(response.data.data.data[0])
           this.form.pagination.current_page = response.data.paginationData[0].current_page;
           this.form.pagination.from = response.data.paginationData[0].from;
           this.form.pagination.to = response.data.paginationData[0].to;
@@ -137,7 +132,6 @@ export default {
           this.form.pagination.last_page = response.data.paginationData[0].last_page;
           this.isLoading= true
         }
-        this.isLoading= false
 
       }).catch((error)=>{
 

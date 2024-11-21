@@ -34,18 +34,41 @@
                                             <p style=" width: 230px; font-size: 18px ; font-weight: bold" ><span style="color: green">Employee Information<br></span ></p>
                                           </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row pt-2">
                                         <div class="col-md-3">
-                                          <label>Name :</label> <p>{{personalInfo.EmpCode}}: {{personalInfo.EmployeeName}}</p>
+                                         <div class="row">
+                                           <label class="col-md-3  text-right">Name :</label>
+                                           <div class="col-md-9">
+                                             <div>{{personalInfo.EmpCode}}: {{personalInfo.EmployeeName}}</div>
+                                           </div>
+                                         </div>
                                         </div>
+
                                         <div class="col-md-3">
-                                          <label>Department :</label> <p>{{personalInfo.DeptName}}</p>
+                                          <div class="row">
+                                            <label class="col-md-3  text-right">Department :</label>
+                                            <div class="col-md-9">
+                                              <div>{{personalInfo.DeptName}}</div>
+                                            </div>
+                                          </div>
                                         </div>
+
                                         <div class="col-md-3">
-                                          <label>Position :</label> <p>{{personalInfo.DesgName}}</p>
+                                          <div class="row">
+                                            <label class="col-md-3  text-right">Position :</label>
+                                            <div class="col-md-9">
+                                              <div>{{personalInfo.DesgName}}</div>
+                                            </div>
+                                          </div>
                                         </div>
+
                                         <div class="col-md-3">
-                                          <label>Contact Email :</label> <p>{{list.Email}}</p>
+                                          <div class="row">
+                                            <label class="col-md-3 text-right">Contact Email :</label>
+                                            <div class="col-md-9">
+                                              <div>{{list.Email}}</div>
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -58,64 +81,64 @@
                                             <p style=" width: 110px; font-size: 18px; ; font-weight: bold" ><span style="color: green">Details<br></span ></p>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <h5 style="color: #10a1b9">Problem Statement :</h5>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <label>Current Issue :</label> <p>{{list.CurrentIssue}}</p>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <label>Impact of the Issue :</label> <p>{{list.ImpactOfTheIssue}}</p>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <h5 style="color: #10a1b9">Proposed Solution</h5>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <label>Solution Overview :</label> <p>{{list.SolutionOverView}}</p>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <label>Why This Solution Works :</label> <p>{{list.Reason}}</p>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <h5 style="color: #10a1b9">Expected Benefits</h5>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <label>Cost Savings or Revenue Generation :</label> <p>{{list.CostSavings}}</p>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                       <div class="col-md-12">
                                         <label>Efficiency Gains :</label> <p>{{list.Gains}}</p>
                                       </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <label>Employee or Customer Impact :</label> <p>{{list.Impact}}</p>
                                         </div>
                                       </div>
 
 
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <h5 style="color: #10a1b9">Resource Requirements</h5>
                                         </div>
                                       </div>
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-4">
                                           <label>Budget Estimate (if any) :</label> <p>{{list.Budget}}</p>
                                         </div>
@@ -128,12 +151,12 @@
                                       </div>
 
 
-                                      <div class="row p-2">
+                                      <div class="row ">
                                         <div class="col-md-12">
                                           <h5 style="color: #10a1b9">Additional Comments or Supporting Information</h5>
                                         </div>
                                       </div>
-                                      <div class="row p-2" >
+                                      <div class="row " >
 
                                         <div class="col-md-4" v-for="(item , index) in attachment">
                                           <label>Attachment {{++index}}: </label>
@@ -315,7 +338,6 @@ label {
   padding: 6px 20px 5px 20px;
   border: 1px solid green;
   border-radius: 13px;
-  margin: 0 auto;
 }
 .form-divider-title {
   position: relative;
