@@ -61,7 +61,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="taxPart" v-if="isTaxPrintPart">
+                                    <div class="taxPart" v-if="isTaxPrintPart" >
                                         <div class="row">
                                           <div class="col-md-12"
                                                  :style="{position:'',textAlign: `${companyDesignTemplate.LogoAlignment}`}">
@@ -173,11 +173,11 @@
                                                                   <label for="E-tin" class="col-lg-3 col-form-label">E-TIN : </label>
                                                                   <div class="col-lg-9">
                                                                     <input type="text" class="form-control"
+                                                                           :readonly ="TinNo.length>5"
                                                                            id="E-tin"
-                                                                           readonly
                                                                            v-model="form.Etin"
                                                                            data-required="true" name="E-tin"
-                                                                           placeholder="E-tin" min="12">
+                                                                           placeholder="E-tin" min="8">
                                                                     <span class="error-message"> {{ errors[0] }}</span>
                                                                   </div>
                                                                 </div>
@@ -332,6 +332,8 @@ export default {
             TaxYear:'',
           }),
 
+            TinNo: '',
+            empCode: '',
             thisYear: '',
             NextYear: '',
             Mobile: '',
@@ -353,37 +355,24 @@ export default {
       this.form.TaxYear = `${this.thisYear}-${this.NextYear}`;
     },
     mounted() {
-        this.getSupportingData()
+        this.getAllEmpInfo()
     },
     methods: {
-
-        getSupportingData() {
-            axios.post(baseurl + 'api/me').then((response) => {
-              if (response.data){
-                this.form.Name = response.data.personal.personal.Name
-                this.form.Mobile = response.data.personal.personal.MobileNo
-                this.form.JoiningDate =(response.data.personal.JoiningDate.substring(0,10))
-                this.form.Department = response.data.personal.email.Department
-                this.form.Designation = response.data.personal.email.Designation
-                this.TaxYear = moment().year()  ;
-                this.getAcknowledgement();
-                this.getTaxData();
-                this.getTaxZone();
-              }else {
-                this.personal = ''
-              }
-            }).catch((error) => {
-
-            })
-        },
-      getTaxData() {
-        axios.get(baseurl + 'api/get-tax-data').then((response) => {
-          this.form.Etin = response.data.TaxCertificate.TinNo
+      getAllEmpInfo(){
+        axios.get(baseurl + 'api/get-emp-data').then((response) => {
+          this.form.Name = response.data.EmployeeName;
+          this.form.Designation = response.data.DesgName;
+          this.form.Department = response.data.DeptName;
+          this.form.JoiningDate =moment(response.data.JoiningDate).format('YYYY-MM-DD');
+          this.form.Mobile = response.data.MobileNo
+          this.form.Etin = response.data.TinNo
+          this.TinNo = response.data.TinNo
+          this.getAcknowledgement()
+          this.getTaxZone()
         }).catch((error) => {
 
         })
       },
-
         sendOTP() {
             axios.get(baseurl + 'api/send-otp?ModuleName='+this.ModuleName).then((response) => {
                 this.Mobile = response.data.mobileNo
@@ -403,7 +392,7 @@ export default {
                     this.$toaster.success(response.data.message);
                     this.isOTPVerification = true;
                     this.isTaxPrintPart = true
-                    this.getTaxZone()
+                    this.TaxYear = moment().year()  ;
                 } else {
                     this.$toaster.error(response.data.message);
                 }
@@ -440,11 +429,12 @@ export default {
       store(){
         this.form.busy = true;
         this.form.post(baseurl+ "api/store-tax-return").then(response => {
-          if (response.data.status == 'Success'){
+          if (response.data.status === 'Success'){
             this.isLoading = false;
             this.$toaster.success(response.data.message);
-            location.reload();
+            // location.reload()
           }else{
+
             this.$toaster.error(response.data.message);
           }
 

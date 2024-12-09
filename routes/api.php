@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActionPlanController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\IdeaHubController;
 use App\Http\Controllers\JobDescriptionController;
 use App\Http\Controllers\MDPChartController;
 use App\Http\Controllers\MDPController;
@@ -166,5 +167,13 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::post('store-tax-return', [TRAController::class,'storeTaxReturn']);
     Route::post('get-tra-report', [TRAController::class,'index']);
     Route::get('get-tra-emp-list/{Year}/{Dept}/{Status}', [TRAController::class,'taxableEmp']);
+
+    Route::get('get-emp-data', [TRAController::class,'getViewEmpData']);
+
+    Route::get('idea-hub', [IdeaHubController::class,'index']);
+    Route::get('idea-hub-details/{ID}', [IdeaHubController::class,'show']);
+    Route::post('store-idea', [IdeaHubController::class,'store']);
+
+
 
 });

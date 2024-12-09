@@ -477,7 +477,8 @@ class MDPController extends Controller
             }
 
             $mdp = ManagementDevelopmentPlane::where('StaffID',$empcode)->get()->pluck('ID');
-            $doneTraining = MDPTraining::query()->whereIn('MDPID',$mdp)->select('MDPTraining.ID','MDPTraining.TrainingTitle','MDPTrainingFeedback.Status')
+            $doneTraining = MDPTraining::query()->whereIn('MDPID',$mdp)
+                ->select('MDPTraining.ID','MDPTraining.TrainingTitle','MDPTrainingFeedback.Status')
                 ->leftJoin('MDPTrainingFeedback','MDPTrainingFeedback.TrainingID','=','MDPTraining.ID')
                 ->where('MDPTrainingFeedback.Status','=', 'done')
                 ->get();

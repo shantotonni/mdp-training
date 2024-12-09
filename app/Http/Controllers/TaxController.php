@@ -116,8 +116,8 @@ class TaxController extends Controller
                 $otp_verify->Status = 1;
                 $otp_verify->save();
 
-                $checkCompany = TaxCertificate::select('Company')->where('EmpCode',$EmpCode)->first();
-                $companyName = $checkCompany->Company;
+                //$checkCompany = TaxCertificate::select('Company')->where('EmpCode',$EmpCode)->first();
+                //$companyName = $checkCompany->Company;
 
                 $TaxCertificate =  TaxCertificate::where('EmpCode',$EmpCode)->first();
                 $TaxDeposit =  TaxDeposit::where('EmpCode',$EmpCode)->get();
@@ -127,8 +127,8 @@ class TaxController extends Controller
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Successfully Verify',
-                    'TaxCertificate' => $TaxCertificate[0],
+                    //'message' => 'Successfully Verify',
+                    //'TaxCertificate' => $TaxCertificate[0],
                     'message' => 'Successfully Verified',
                     'TaxCertificate' => $TaxCertificate,
                     'TaxDeposit' => $TaxDeposit,

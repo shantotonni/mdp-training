@@ -106,6 +106,21 @@
               </li>
             </ul>
           </li>
+          <li>
+            <a href="javascript:void(0);" class="waves-effect">
+              <i class="mdi mdi-format-list-numbered"></i>
+              <span>Idea Hub<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
+            </a>
+            <ul class="submenu">
+              <li @click="hideSideBar()">
+                <router-link :to="{name: 'IdeaSubmissionForm'}" ><i class="mdi mdi-floor-plan"></i>Idea Submission</router-link>
+              </li>
+              <li @click="hideSideBar()">
+                <router-link :to="{name: 'IdeaHub'}" ><i class="mdi mdi-checkbox-multiple-marked-outline"></i>Ideas</router-link>
+              </li>
+            </ul>
+          </li>
+
 
         </ul>
       </div>

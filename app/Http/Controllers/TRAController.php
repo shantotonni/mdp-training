@@ -1,19 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\TaxCertificate;
 use App\Models\TaxCircle;
 use App\Models\TaxZone;
 use App\Models\TRA;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TRAController extends Controller
 {
-
     public function index(Request $request){
 
        $TaxYear =$request->TaxYear;
@@ -30,7 +28,7 @@ class TRAController extends Controller
                     $q->where('A.TaxYear',$TaxYear);
                 })
                 ->where('P.Active','=','Y')
-                ->groupBy('D.DeptCode','D.DeptName')->get();
+                ->groupBy('D.DeptCode','D.DeptName')->paginate(15);
 
 
             return response()->json([
@@ -58,7 +56,7 @@ class TRAController extends Controller
             ->leftjoin('TaxZone as tz ','tz.TaxZoneId','=','a.TaxZoneId')
             ->leftjoin('TaxCircle as tc ','tc.TaxCircleId','=','a.TaxCircleId')
             ->where('p.Active','Y')->where('e.DeptCode',$Dept);
-        if ($Status ==='Submitted'){
+        if ($Status ==='submitted'){
             $list->whereRaw("a.EmpCode is not null")
                 ->select(DB::raw("CONCAT(e.EmpCode,': ',p.Name) as Employee"),'p.MobileNo','a.Etin', 'd.DeptName as Department','tz.TaxZoneName',
                     'tc.TaxCircleName', DB::raw("FORMAT(a.DateOfReturnSubmission, 'dd-MM-yyyy') AS DateOfReturnSubmission"), 'a.ReturnSerialNumber','a.TaxYear');
@@ -69,9 +67,8 @@ class TRAController extends Controller
                 ->select(DB::raw("CONCAT(e.EmpCode,': ',p.Name) as Employee"),'p.MobileNo' ,'p.PAddress as PermanentAddress','d.DeptName as Department','p.CAddress as CurrentAddress'
                    , DB::raw("FORMAT(e.JoiningDate, 'dd-MM-yyyy') AS JoiningDate"),'e.Location','dg.DesgName as Designation', 'a.TaxYear');
         }
-
         return response()->json([
-           'data'=>$list ->orderBy('e.EmpCode','ASC')->get()
+           'data'=>$list ->orderBy('e.EmpCode','ASC')->paginate(10)
         ]);
     }
     public function getPeriods(){
@@ -80,7 +77,6 @@ class TRAController extends Controller
          'data'=>$list
      ]);
     }
-
    public function getTaxZone(){
        $zone = TaxZone::all();
        return response()->json([
@@ -105,38 +101,44 @@ class TRAController extends Controller
    }
    public function storeTaxReturn(Request $request){
 
+        DB::beginTransaction();
+       $validator = Validator::make($request->all(), [
+           'Etin'=>'required|min:8',
+           'Zone'=>'required',
+           'Serial'=>'required',
+           'ReturnDate'=>'required',
+           'Circle'=>'required'
+       ]);
+       if ($validator->fails()) {
+           return response()->json([
+               'status' => 'error',
+               'message' => $validator->errors()->first()]);
+       }
+
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $EmpCode = $payload['EmpCode'];
-       $exist = TRA::where('EmpCode',$EmpCode)->where('TaxYear',$request->TaxYear)->first();
+        $exist = TRA::query()->where('EmpCode',$EmpCode)->where('TaxYear',$request->TaxYear)->exists();
        try {
-           if (empty($exist)){
-               DB::beginTransaction();
-               $list = new TRA();
-               $list->EmpCode = $EmpCode;
-               $list->ETIN = $request->Etin;
-               $list->TaxZoneId = $request->Zone;
-               $list->TaxCircleId = $request->Circle;
-               $list->DateOfReturnSubmission = $request->ReturnDate;
-               $list->ReturnSerialNumber = $request->Serial;
-               $list->EntryIpAddress = $request->ip();
-               $list->EntryDate = Carbon::now();
-               $list->TaxYear = $request->TaxYear;
-               $list->save();
-
-           }else{
-               $list = TRA::where('EmpCode',$EmpCode)->where('TaxYear',$request->TaxYear)->first();
-               $list->EmpCode = $EmpCode;
-               $list->ETIN = $request->Etin;
-               $list->TaxZoneId = $request->Zone;
-               $list->TaxCircleId = $request->Circle;
-               $list->DateOfReturnSubmission = $request->ReturnDate;
-               $list->ReturnSerialNumber = $request->Serial;
+           if ($exist){
+               $list = TRA::query()->where('EmpCode',$EmpCode)->where('TaxYear',$request->TaxYear)->first();
                $list->EditedIpAddress = $request->ip();
                $list->EditedDate = Carbon::now();
-               $list->TaxYear = $request->TaxYear;
-               $list->save();
+
+
+           }else{
+               $list = new TRA();
+               $list->EntryIpAddress = $request->ip();
+               $list->EntryDate = Carbon::now();
            }
+           $list->EmpCode = $EmpCode;
+           $list->ETIN = $request->Etin;
+           $list->TaxZoneId = $request->Zone;
+           $list->TaxCircleId = $request->Circle;
+           $list->DateOfReturnSubmission = $request->ReturnDate;
+           $list->ReturnSerialNumber = $request->Serial;
+           $list->TaxYear = $request->TaxYear;
+           $list->save();
            DB::commit();
            return response()->json([
                'status'=>'Success',
@@ -152,4 +154,17 @@ class TRAController extends Controller
        }
 
 }
+    public function getViewEmpData(Request $request){
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $empcode = $payload['EmpCode'];
+
+        $list = DB::table('ViewAllData as v')
+            ->select('v.EmpCode','v.EmployeeName','v.DesgName','v.DeptName','v.MobileNo','t.TinNo','v.JoiningDate')
+            ->leftJoin('TaxCertificate as t','t.empcode','=','v.EmpCode')
+            ->where('v.EmpCode',$empcode)
+            ->first();
+        return $list;
+    }
+
 }
