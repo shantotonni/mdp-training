@@ -144,6 +144,7 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::get('mdp-organized-pending-ptc-details/{Period}/{Status}', [MDPChartController::class,'getOrganizedPendingPTCDetails']);
     Route::post('mdp-pending-ptc-report', [MDPChartController::class,'getPendingPTCReport']);
     Route::post('mdp-approved-ptc-report', [MDPChartController::class,'getApprovedPTCReport']);
+    Route::post('mdp-total-report', [MDPChartController::class,'mdpTotalReport']);
     Route::post('mdp-organized-pending-ptc-title-wise-employee', [MDPChartController::class,'getOrganizedPendingPTCTitleWiseEmployee']);
 
     //Learning Transfer

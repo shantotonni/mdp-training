@@ -60,6 +60,7 @@ import FeedbackDetails from '../views/chart/training_feedback/FeedbackDetails.vu
 //report
 import PendingPTCReport from '../views/report/PendingPTCReport.vue'
 import ApprovedPTCReport from '../views/report/ApprovedPTCReport.vue'
+import TotalReport from '../views/report/TotalReport.vue'
 
 import NotFound from '../views/404/Index';
 import {baseurl} from '../base_url'
@@ -142,6 +143,7 @@ const routes = [
             //report PendingPTCReport
             {path: baseurl + 'pending-PTC-report', name: 'PendingPTCReport', component: PendingPTCReport},
             {path: baseurl + 'approved-PTC-report', name: 'ApprovedPTCReport', component: ApprovedPTCReport},
+            {path: baseurl + 'total-report', name: 'TotalReport', component: TotalReport},
             //tax TaxCertificate
             {path: baseurl + 'tax-certificate', name: 'TaxCertificate', component: TaxCertificate},
             {path: baseurl + 'tax-return-acknowledgement', name: 'TaxReturnAcknowledgement', component: TaxReturnAcknowledgement},

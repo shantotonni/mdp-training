@@ -49,7 +49,7 @@ class TaxController extends Controller
 
                 if ($Mobile) {
                     $OTP = rand(100000, 999999);
-                    $smscontent = "Your OTP for ".$request->ModuleName." is  - " . $OTP. " Please enter this on the verification \n Thanks \n ACI Tax Department";
+                    $smscontent = "Your OTP for ".$request->ModuleName." is  - " . $OTP. " Please enter this on the verification  \n Thanks \n  \n ACI Tax Department";
                     $otp = new SendOTP();
                     $otp->Mobile = $Mobile;
                     $otp->OTPCode = $OTP;
@@ -169,6 +169,7 @@ class TaxController extends Controller
         $TaxCertificate =  TaxCertificate::where('EmpCode',$EmpCode)->first();
         $TaxDeposit =  TaxDeposit::where('EmpCode',$EmpCode)->where('taxYear',$fiscalYear)->get();
 
+
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully Verify',
@@ -206,23 +207,30 @@ class TaxController extends Controller
 
     function getFiscalYear(Carbon $date = null)
     {
-        // Default to the current date if no date is provided
-        $date = $date ?: Carbon::now();
+    // Default to the current date if no date is provided
+            $date = $date ?: Carbon::now();
 
-        // Define the start of the fiscal year
-        $fiscalYearStartMonth = 7; // April
-        $fiscalYearStartDay = 1;   // 1st of April
+    // Define the start of the fiscal year (July 1st)
+            $fiscalYearStartMonth = 7; // July
+            $fiscalYearStartDay = 1;   // 1st of July
 
-        // Determine the fiscal year based on the given date
-        if ($date->month >= $fiscalYearStartMonth && $date->day >= $fiscalYearStartDay) {
-            $startYear = $date->year;
-            $endYear = $date->addYear()->year;
-        } else {
-            $startYear = $date->subYear()->year;
-            $endYear = $date->year;
-        }
+    // Clone the date to calculate fiscal year start
+            $fiscalYearStartDate = Carbon::create($date->year, $fiscalYearStartMonth, $fiscalYearStartDay);
 
-        return "{$startYear}-{$endYear}";
+    // Determine the fiscal year based on the given date
+            if ($date->lt($fiscalYearStartDate)) {
+                // If the date is before the fiscal year start, the start year is the previous year
+                $startYear = $date->copy()->subYear()->year;
+                $endYear = $date->year;
+            } else {
+                // Otherwise, it's the current fiscal year
+                $startYear = $date->year;
+                $endYear = $date->copy()->addYear()->year;
+            }
+
+            return "{$startYear}-{$endYear}";
+
+
     }
 
     function getLastFiscalYear(Carbon $date = null)

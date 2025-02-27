@@ -74,6 +74,7 @@
                 <router-link :to="{name: 'MDPChartReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Echart Report</router-link>
                 <router-link :to="{name: 'PendingPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Pending PTC Report</router-link>
                 <router-link :to="{name: 'ApprovedPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Approved PTC Report</router-link>
+                <router-link :to="{name: 'TotalReport'}" ><i class="mdi mdi-floor-plan"></i>Total Report</router-link>
               </li>
             </ul>
           </li>

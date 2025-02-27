@@ -78,7 +78,7 @@ class TRAController extends Controller
      ]);
     }
    public function getTaxZone(){
-       $zone = TaxZone::all();
+       $zone = TaxZone::where('Status','=',1)->get();
        return response()->json([
           'data'=>$zone
        ]);
