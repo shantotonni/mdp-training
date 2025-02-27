@@ -31,6 +31,7 @@ class TaxController extends Controller
             'Name' => $Name,
         ]);
     }
+
     public function sendOTP(Request $request)
     {
         $token = $request->bearerToken();
@@ -178,7 +179,6 @@ class TaxController extends Controller
         ]);
     }
 
-
     public static function sendSmsQ($to, $sId, $applicationName, $moduleName, $otherInfo, $userId, $vendor, $message)
     {
         $curl = curl_init();
@@ -203,6 +203,7 @@ class TaxController extends Controller
         curl_close($curl);
         return $response;
     }
+
     function getFiscalYear(Carbon $date = null)
     {
         // Default to the current date if no date is provided
@@ -223,6 +224,7 @@ class TaxController extends Controller
 
         return "{$startYear}-{$endYear}";
     }
+
     function getLastFiscalYear(Carbon $date = null)
     {
         $currentDate = Carbon::now();

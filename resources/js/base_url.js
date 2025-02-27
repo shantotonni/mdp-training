@@ -1,2 +1,2 @@
-export const baseurl = "/";
+export const baseurl = "/mdp-training/";
 
