@@ -1,1 +1,1 @@
-export const baseurl = "/m";
+export const baseurl = "/";
