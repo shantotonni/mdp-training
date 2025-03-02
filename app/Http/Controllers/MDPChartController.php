@@ -147,7 +147,7 @@ class MDPChartController extends Controller
             $CurrentPage = '%';
         }
 
-        $sql = "exec SP_doLoadMDPTotalReport '$Period','$EmpCode','$PerPage','$CurrentPage','' ";
+        $sql = "exec SP_doLoadMDPTotalReportNew '$Period','$EmpCode','$PerPage','$CurrentPage','' ";
 
         $conn = DB::connection('sqlsrv');
         $pdo = $conn->getPdo()->prepare($sql);
