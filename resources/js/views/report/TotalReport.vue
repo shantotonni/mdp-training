@@ -34,6 +34,14 @@
                           <input type="text" class="form-control" name="empcode" v-model="form.EmpCode" placeholder="Enter Employee Code">
                         </div>
                       </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <select name="TrainingTypeStatus" id="TrainingTypeStatus" v-model="form.TrainingTypeStatus" class="form-control">
+                            <option value="">Select Option</option>
+                            <option value="additional">Additional</option>
+                          </select>
+                        </div>
+                      </div>
                       <div class="col-md-3">
                         <button type="submit" @click="MDPTotalReport" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                         <button type="submit" @click="exportReport" class="btn btn-success"><i class="mdi mdi-database-export"></i>Export</button>
@@ -109,6 +117,7 @@ export default {
         Period:'',
         EmpCode:'',
         Query :'',
+        TrainingTypeStatus :'',
         Export :'',
         pagination: {
           current_page: 1,

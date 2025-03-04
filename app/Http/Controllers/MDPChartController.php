@@ -140,6 +140,7 @@ class MDPChartController extends Controller
     public function mdpTotalReport(Request $request){
         $Period = $request->Period;
         $EmpCode = $request->EmpCode;
+        $TrainingTypeStatus = $request->TrainingTypeStatus;
         $CurrentPage = $request->pagination['current_page'];
         $PerPage = 20;
         $Export = $request->Export;
@@ -147,7 +148,7 @@ class MDPChartController extends Controller
             $CurrentPage = '%';
         }
 
-        $sql = "exec SP_doLoadMDPTotalReportNew '$Period','$EmpCode','$PerPage','$CurrentPage','' ";
+        $sql = "exec SP_doLoadMDPTotalReportNew '$Period','$EmpCode','$TrainingTypeStatus','$PerPage','$CurrentPage','' ";
 
         $conn = DB::connection('sqlsrv');
         $pdo = $conn->getPdo()->prepare($sql);
