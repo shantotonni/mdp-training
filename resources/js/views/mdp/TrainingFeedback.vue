@@ -46,7 +46,7 @@
                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                   <thead>
                   <tr>
-                    <th style="width: 10%">Title</th>
+                    <th style="width: 10%">Current Training</th>
                     <th>Status</th>
                     <th>Done Date</th>
                     <th>Offer Date One</th>
