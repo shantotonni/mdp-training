@@ -75,7 +75,7 @@
                                           <div class="col-md-12" :style="{position:'',textAlign: `${companyDesignTemplate.LogoAlignment}`}">
                                               <div style="font-family:'Nunito' !important;font-size: 17px; font-weight: 300;">
                                                 <h4 style="text-align: center;font-weight: bold">
-                                                  Information of Income Tax Return Submission ({{this.form.TaxYear}})
+                                                  Information of Income Tax Return Submission ({{ config('taxYear') }})
                                                   <br>
 <!--                                                  <span style="font-size: 16px">(আয়কর রিটার্ন জমাদান সংক্রান্ত তথ্য বিবরণী)</span>-->
                                                 </h4>
@@ -312,6 +312,7 @@
 import {baseurl} from '../../base_url'
 import printJS from 'print-this'
 import moment from "moment";
+import config from "vue/src/core/config";
 
 export default {
     name: "List",
@@ -358,6 +359,9 @@ export default {
         this.getAllEmpInfo()
     },
     methods: {
+      config() {
+        return config
+      },
       getAllEmpInfo(){
         axios.get(baseurl + 'api/get-emp-data').then((response) => {
           this.form.Name = response.data.EmployeeName;
