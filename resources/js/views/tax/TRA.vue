@@ -75,7 +75,7 @@
                                           <div class="col-md-12" :style="{position:'',textAlign: `${companyDesignTemplate.LogoAlignment}`}">
                                               <div style="font-family:'Nunito' !important;font-size: 17px; font-weight: 300;">
                                                 <h4 style="text-align: center;font-weight: bold">
-                                                  Information of Income Tax Return Submission ({{this.form.TaxYear}})
+                                                  Information of Income Tax Return Submission({{form.TaxYear}})
                                                   <br>
 <!--                                                  <span style="font-size: 16px">(আয়কর রিটার্ন জমাদান সংক্রান্ত তথ্য বিবরণী)</span>-->
                                                 </h4>
@@ -349,10 +349,11 @@ export default {
         }
     },
     created() {
+
       const currentYear = new Date().getFullYear();
       this.thisYear = currentYear ;
       this.NextYear = currentYear + 1;
-      this.form.TaxYear = `${this.thisYear}-${this.NextYear}`;
+      // this.form.TaxYear = `${this.thisYear}-${this.NextYear}`;
     },
     mounted() {
         this.getAllEmpInfo()
@@ -373,7 +374,7 @@ export default {
 
         })
       },
-        sendOTP() {
+      sendOTP() {
             axios.get(baseurl + 'api/send-otp?ModuleName='+this.ModuleName).then((response) => {
                 this.Mobile = response.data.mobileNo
                 this.$toaster.success(response.data.message);
@@ -382,7 +383,6 @@ export default {
                 }
 
             }).catch((error) => {
-
             })
         },
         verifyOTP() {
@@ -392,7 +392,7 @@ export default {
                     this.$toaster.success(response.data.message);
                     this.isOTPVerification = true;
                     this.isTaxPrintPart = true
-                    this.TaxYear = moment().year()  ;
+                    this.form.TaxYear = response.data.TaxYear ;
                 } else {
                     this.$toaster.error(response.data.message);
                 }
@@ -416,6 +416,7 @@ export default {
           },
       getAcknowledgement(){
             axios.get(baseurl+'api/get-acknowledgement?taxYear='+this.form.TaxYear).then((response)=>{
+
               this.form.Circle = response.data.data.TaxCircleId
               this.form.Zone = response.data.data.TaxZoneId
               this.form.ReturnDate =   moment(response.data.data.DateOfReturnSubmission).format('YYYY-MM-DD')
