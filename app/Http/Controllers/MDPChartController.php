@@ -137,6 +137,52 @@ class MDPChartController extends Controller
         ]);
     }
 
+    public function mdpTotalReport(Request $request){
+        $Period = $request->Period;
+        $EmpCode = $request->EmpCode;
+        $TrainingTypeStatus = $request->TrainingTypeStatus;
+        $CurrentPage = $request->pagination['current_page'];
+        $PerPage = 20;
+        $Export = $request->Export;
+        if ($Export == 'Y'){
+            $CurrentPage = '%';
+        }
+
+        $sql = "exec SP_doLoadMDPTotalReportNew '$Period','$EmpCode','$TrainingTypeStatus','$PerPage','$CurrentPage','' ";
+
+        $conn = DB::connection('sqlsrv');
+        $pdo = $conn->getPdo()->prepare($sql);
+        $pdo->execute();
+        $res = array();
+        do {
+            $rows = $pdo->fetchAll(\PDO::FETCH_ASSOC);
+            $res[] = $rows;
+        } while ($pdo->nextRowset());
+
+        $NUmberOfRecord = $res[1][0]['NUmberOfRecord'];
+        $pages_count = ceil($NUmberOfRecord / $PerPage);
+        $last_page  = $pages_count;
+        $from = 1;
+        $to = 20;
+        if ($Export != 'Y'){
+            $from = (($CurrentPage * $PerPage) + 1) - $PerPage;
+            $to = ($CurrentPage * $PerPage);
+        }
+
+        $paginationData [] = [
+            'current_page' => $CurrentPage,
+            'last_page' => $last_page,
+            'total' => (int)$NUmberOfRecord,
+            'from' => $from,
+            'to' => $to,
+        ];
+
+        return response()->json([
+            'data' => $res[0],
+            'paginationData' => $paginationData
+        ]);
+    }
+
     public function getOrganizedPendingPTCTitleWiseEmployee(Request $request){
         $Period = $request->data['Period'];
         $Status = $request->data['Status'];
@@ -163,6 +209,7 @@ class MDPChartController extends Controller
            'ptc' => $ptc ,
         ]);
     }
+
     public function MDPPeriodWiseTraining($Period){
         $list = DB::select("select MDP.AppraisalPeriod, MDPT.TrainingTitle,SUM(MDPF.LearningTransfer) / COUNT(MDPF.TrainingID) as AVGLEarningTransfer, COUNT(MDPT.TrainingTitle) as Total
             from MDPTrainingFeedback MDPF
@@ -200,7 +247,6 @@ class MDPChartController extends Controller
             'data'=>$list
         ]);
     }
-
 
     public function MDPPeriodWiseFeedback($Period){
 

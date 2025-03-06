@@ -22,6 +22,20 @@
               <li @click="hideSideBar()" v-if="EmpCode === 'admin'"><router-link :to="{name: 'employeeWiseReport'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Training Title Wise Employee List</router-link></li>
             </ul>
           </li>
+          <li v-if="EmpCode === 'admin'">
+            <a href="javascript:void(0);" class="waves-effect">
+              <i class="mdi mdi-twitch"></i>
+              <span>Report<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
+            </a>
+            <ul class="submenu">
+              <li @click="hideSideBar()">
+                <router-link :to="{name: 'MDPChartReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Echart Report</router-link>
+                <router-link :to="{name: 'PendingPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Pending PTC Report</router-link>
+                <router-link :to="{name: 'ApprovedPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Approved PTC Report</router-link>
+                <router-link :to="{name: 'TotalReport'}" ><i class="mdi mdi-floor-plan"></i>Total Report</router-link>
+              </li>
+            </ul>
+          </li>
           <li>
             <a href="javascript:void(0);" class="waves-effect">
               <i class="mdi mdi-clipboard-arrow-up-outline"></i>
@@ -33,6 +47,7 @@
               </li>
             </ul>
           </li>
+
           <li>
             <a href="javascript:void(0);" class="waves-effect">
               <i class="mdi mdi-twitch"></i>
@@ -61,30 +76,6 @@
               </li>
               <li @click="hideSideBar()">
                 <router-link :to="{name: 'SEPAutomation'}" ><i class="mdi mdi-floor-plan"></i>SEP Automation List</router-link>
-              </li>
-            </ul>
-          </li>
-          <li v-if="EmpCode === 'admin'">
-            <a href="javascript:void(0);" class="waves-effect">
-              <i class="mdi mdi-twitch"></i>
-              <span>Report<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
-            </a>
-            <ul class="submenu">
-              <li @click="hideSideBar()">
-                <router-link :to="{name: 'MDPChartReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Echart Report</router-link>
-                <router-link :to="{name: 'PendingPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Pending PTC Report</router-link>
-                <router-link :to="{name: 'ApprovedPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Approved PTC Report</router-link>
-              </li>
-            </ul>
-          </li>
-          <li v-if="EmpCode === 'admin'">
-            <a href="javascript:void(0);" class="waves-effect">
-              <i class="mdi mdi-clipboard-arrow-up-outline"></i>
-              <span>Admin User<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
-            </a>
-            <ul class="submenu">
-              <li>
-                <router-link :to="{name: 'UserList'}" ><i class="mdi mdi-floor-plan"></i>User List</router-link>
               </li>
             </ul>
           </li>
@@ -121,6 +112,17 @@
             </ul>
           </li>
 
+          <li v-if="EmpCode === 'admin'">
+            <a href="javascript:void(0);" class="waves-effect">
+              <i class="mdi mdi-clipboard-arrow-up-outline"></i>
+              <span>Admin User<span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span></span>
+            </a>
+            <ul class="submenu">
+              <li>
+                <router-link :to="{name: 'UserList'}" ><i class="mdi mdi-floor-plan"></i>User List</router-link>
+              </li>
+            </ul>
+          </li>
 
         </ul>
       </div>
