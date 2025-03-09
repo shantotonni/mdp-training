@@ -14,6 +14,7 @@ use App\Models\JobDescription;
 use App\Models\JobResponsibilities;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -121,8 +122,13 @@ class JobDescriptionController extends Controller
                     $details->save();
                 }
                 $email = $request->SuppervisorEmail;
-                $data = 'Job Description Submitted Mail';
-                Mail::to($email)->send(new JOBDescriptionMail($data, $request->EmployeeName, $request->Designation ));
+
+//                $explode = explode('@', $email);
+//                if ($explode[1] === 'aci-bd.com') {
+//                    //Config::set('mail.mailers.smtp.host', 'mail.aci-bd.com');
+//                    $data = 'Job Description Submitted Mail';
+//                    Mail::to($email)->send(new JOBDescriptionMail($data, $request->EmployeeName, $request->Designation ));
+//                }
 
                 DB::commit();
                 return response()->json([
