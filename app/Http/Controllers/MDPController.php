@@ -22,6 +22,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Monolog\Handler\IFTTTHandler;
 use Symfony\Component\Console\Input\Input;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Mail;
@@ -466,7 +467,8 @@ class MDPController extends Controller
             $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education','emphist')->first();
             $dateFrom =  Carbon::now()->year -5;
             $dateTo =  Carbon::now()->year;
-            $training_history = DB::select("EXEC SP_TrainingUserReport '$empcode','$dateFrom','$dateTo' ");
+            //prev
+//            $training_history = DB::select("EXEC SP_TrainingUserReport '$empcode','$dateFrom','$dateTo' ");
 
             $training_list = MDPEmployeeTrainingList::where('StaffID', $empcode)->where('isDropDown','Y')->first();
 
@@ -482,6 +484,14 @@ class MDPController extends Controller
                 ->leftJoin('MDPTrainingFeedback','MDPTrainingFeedback.TrainingID','=','MDPTraining.ID')
                 ->where('MDPTrainingFeedback.Status','=', 'done')
                 ->get();
+
+//            $training_history = MDPTraining::query()->whereIn('MDPID',$mdp)
+//                ->select('MDPTraining.TrainingTitle','MDPTraining.TrainingType',DB::raw(" '' as CompetencyType"),'MDPTrainingFeedback.DoneDate')
+//                ->leftJoin('MDPTrainingFeedback','MDPTrainingFeedback.TrainingID','=','MDPTraining.ID')
+//                ->whereBetween(DB::raw("LEFT(MDPTrainingFeedback.DoneDate,4)"),[date('Y', strtotime('-4 year')),date('Y')])
+//                ->where('MDPTrainingFeedback.Status','=', 'done')
+//                ->orderBy('MDPTrainingFeedback.DoneDate','desc')
+//                ->get();
 
             $training_list_by_empcode = MDPEmployeeTrainingList::where('StaffID', $empcode)->get();
 
@@ -502,12 +512,22 @@ class MDPController extends Controller
             }else{
                 $dup = $training_list_by_empcode;
             }
+            $MDPAppraisalPeriod = ManagementDevelopmentPlane::select(DB::raw("Right(AppraisalPeriod,4) as AppraisalPeriod "))->where('StaffID', $empcode)->orderby('ID','DESC')->first();
+            if (!empty($MDPAppraisalPeriod)){
+                $nextYear=($MDPAppraisalPeriod->AppraisalPeriod)+1;
+                $period = ($MDPAppraisalPeriod->AppraisalPeriod).'-'.$nextYear;
+            }else{
+                $nextYear=date('Y', strtotime('+1 year'));
+                $period=date('Y').'-'.$nextYear;
+            }
 
+            $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
             return response()->json([
                 'employee'=>new EmployeeResource($employee),
                 'training_history'=>$training_history,
                 'training_list'=>$dup,
                 'dropDown'=>$dropDown,
+                'period'=>$period
             ]);
         }else{
             return response()->json([
@@ -516,6 +536,37 @@ class MDPController extends Controller
             ]);
         }
     }
+    public function getExportTrainingHistory(Request $request){
+        $empcode= $request->empcode;
+        $result= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
+//        dd($result);
+        $export = $this->exportexcel($result,'exportFile');
+        return response()->json([
+            'training_history'=>$export,
+        ]);
+    }
+    function exportexcel($result, $filename){
+
+        $arrayheading[0] = !empty($result) ? array_keys((array) $result[0]) : [];
+        $dataRows = array_map(fn($row) => (array) $row, $result);
+        $result = array_merge($arrayheading, $dataRows);
+
+        header("Content-Disposition: attachment; filename=\"{$filename}.xls\"");
+        header("Content-Type: application/vnd.ms-excel;");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        $out = fopen("php://output", 'w');
+
+        foreach ($result as $data) {
+            fputcsv($out, $data, "\t"); // \t makes it Excel-friendly
+        }
+
+        fclose($out);
+        exit();
+
+    }
+
 
     public function getSupervisorByEmployeeCode(Request $request){
         $first_character = mb_substr($request->SuperVisorEmpCode, 0, 1);

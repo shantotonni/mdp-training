@@ -15,7 +15,7 @@
       </breadcrumb>
       <div class="row">
         <div class="col-xl-12">
-          <form @submit.prevent="store()" @keydown="form.onKeydown($event)">
+          <form @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()">
             <div class="row">
               <div class="col-md-7">
                 <div class="card">
@@ -120,17 +120,36 @@
                               <div class="error" v-if="form.errors.has('Qualification')" v-html="form.errors.get('Qualification')" />
                             </div>
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-8" >
                             <div class="form-group">
-                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
-                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">
+                              <label>Signature (<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
+
+<!--                              <input type="file" @change="onFileChange" accept="image/*" />-->
+
+<!--                              <div v-if="imageUrl" class="mt-4">-->
+<!--                                <img ref="image" :src="imageUrl" alt="Selected" class="max-w-full" />-->
+<!--                              </div>-->
+<!--                              <button v-if="imageUrl" @click="cropImage" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Crop to 200x60 </button>-->
+<!--                              <div class="mt-4">-->
+<!--                                <canvas ref="canvas" width="200" height="60" class="border"></canvas>-->
+<!--                              </div>-->
+                              <input @change="changeImage($event)" type="file"
+                                     name="Signature" class="form-control"
+                                     :class="{ 'is-invalid': form.errors.has('Signature') }">
                               <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
                               <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">
                             </div>
+
+<!--                            <div class="form-group">-->
+<!--                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>-->
+<!--                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">-->
+<!--                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>-->
+<!--                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">-->
+<!--                            </div>-->
                           </div>
-                          <div class="col-md-4">
-                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>
-                          </div>
+<!--                          <div class="col-md-4">-->
+<!--                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>-->
+<!--                          </div>-->
                         </div>
                         <hr>
                        </div>
@@ -188,7 +207,7 @@
                           </div>
                           <div class="col-3 col-md-3">
                             <div class="form-group">
-                              <label>Type</label>
+                              <label>Competency Type</label>
                               <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }">
                                 <option value="">Select Type</option>
                                 <option value="Knowledge">Knowledge</option>
@@ -220,7 +239,7 @@
 
                           <div class="col-4 col-md-4" v-if="dropDown==='YES'">
                             <div class="form-group">
-                              <label>Select Training</label>
+                              <label>Select Training Title</label>
                               <select v-model="train.TrainingTitle" name="Type" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }">
                                 <option value="">Select Type</option>
                                 <option :value="list.TrainingTitle" v-for="(list,i) in training_list" :key="i">{{list.TrainingTitle}}</option>
@@ -231,7 +250,7 @@
 
                           <div class="col-4 col-md-4" v-else>
                             <div class="form-group">
-                              <label>Select Training</label>
+                              <label>Select Training Title</label>
                               <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Type Or Copy From Suggestive List">
                               <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
                             </div>
@@ -239,7 +258,7 @@
 
                           <div class="col-3 col-md-3">
                             <div class="form-group">
-                              <label>Type</label>
+                              <label>Competency Type</label>
                               <select v-model="train.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }">
                                 <option value="">Select Type</option>
                                 <option value="Knowledge">Knowledge</option>
@@ -273,16 +292,24 @@
                             <div class="row">
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Training One</label>
-                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }" style="height: 90px" name="AreaOne" placeholder="Title" required>
-                                  <div class="error" v-if="form.errors.has('AreaOneName')" v-html="form.errors.get('AreaOneName')" />
+                                  <label>Future Training One</label>
+                                  <input v-model="form.FutureTrainingOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('futureTrainingOne') }"  name="Title" placeholder="Title" required>
+                                  <br>
+                                  <small>Explain how this training one will help the company <b>(within 30 words)</b></small>
+                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }" style="height: 90px" name="Reason" placeholder="Why this training..." @change="countSpace(form.AreaOne,'futureTrainingOne')" required>
+                                  <div class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
+                                  <small class="error" v-if="form.TrainingOne!==''"> {{form.TrainingOne}}</small>
                                 </div>
                               </div>
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Training Two</label>
-                                  <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }" style="height: 90px" name="AreaTwo" placeholder="Title" required>
+                                  <label>Future Training Two</label>
+                                  <input v-model="form.FutureTrainingTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('futureTrainingTwo') }"  name="Title" placeholder="Title" maxlength="100" required>
+                                   <br>
+                                  <small>Explain how this training two will help the company <b>(within 30 words)</b></small>
+                                  <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }" style="height: 90px" name="Reason" placeholder="Why this training..."  maxlength="100" @change="countSpace(form.AreaTwo,'futureTrainingTwo')"  required>
                                   <div class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
+                                  <small class="error" v-if="form.TrainingTwo!==''"> {{form.TrainingTwo}}</small>
                                 </div>
                               </div>
                             </div>
@@ -291,31 +318,56 @@
 
                           <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <button  class="btn btn-secondary" @click="clearFormDataState">Clear Data</button>
+
                           </div>
                         </div>
                       </div>
                   </div>
                 </div>
               </div>
+
+
+
+<!--              Last Five Years Training History-->
+
+
               <div class="col-md-5">
                 <div class="card">
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
                       <div class="col-md-12">
-                        <p>Last Five Years Training History</p>
+                        <div class="row">
+                          <div class="col-md-9" style="color: #0f6674"><p>Last Five Years Training History</p> </div>
+                          <div class="col-md-3">
+                            <button class="btn btn-info btn-sm" @click="downloadTraining"> <i class="fas fa-download"></i> Download</button>
+                          </div>
+                        </div>
+
                         <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                           <thead>
                             <tr>
-                              <th>Organized By</th>
-                              <th>Training Category</th>
-                              <th>Training Name</th>
+<!--                              <th>Organized By</th>-->
+<!--                              <th>Training Category</th>-->
+<!--                              <th>Training Name</th>  -->
+                              <th>SN</th>
+                              <th>Training Title</th>
+                              <th>Training Type</th>
+                              <th>Competency Type</th>
+                              <th style="width: 70px">Done Date</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr v-for="(training, i) in training_history" :key="i" v-if="training_history.length">
-                                <td>{{ training.Organized_By }}</td>
-                                <td>{{ training.Tranning_Category }}</td>
-                                <td>{{ training.Tranning_Name }}</td>
+<!--                                <td>{{ training.Organized_By }}</td>-->
+<!--                                <td>{{ training.Tranning_Category }}</td>-->
+<!--                                <td>{{ training.Tranning_Name }}</td>   -->
+
+                                <td>{{ ++i }}</td>
+                                <td>{{ training.TrainingTitle }}</td>
+                                <td>{{ training.TrainingType }}</td>
+                                <td>{{ training.CompetencyType }}</td>
+                                <td>{{ training.DoneDate }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -372,8 +424,21 @@ import moment from "moment";
 import {Common} from "../../mixins/common";
 // Basic Use - Covers most scenarios
 import { VueEditor } from "vue2-editor";
+// Define the lifetime of the form data in milliseconds (72 hours)
+const DATA_LIFETIME = 72 * 60 * 60 * 1000; // 72 hours in milliseconds
+import Cropper from 'cropperjs';
+import {bus} from "../../app";
+import * as events from "events";
+
+
+
 export default {
   name: "List",
+  computed: {
+    events() {
+      return events
+    }
+  },
   mixins: [Common],
   components: {
     Datepicker,
@@ -381,6 +446,8 @@ export default {
   },
   data() {
     return {
+      imageUrl: null,
+      cropper: null,
       training_history: [],
       training_list: [],
       employee: [],
@@ -388,7 +455,7 @@ export default {
       suggestive_list: [],
       form: new Form({
         ID :'',
-        AppraisalPeriod :'2024-2025',
+        AppraisalPeriod :'',
         StaffID :'',
         EmployeeName :'',
         Designation :'',
@@ -408,7 +475,9 @@ export default {
         SuppervisorEmail:'',
         SuppervisorMobile:'',
         AreaOne:'',
+        FutureTrainingOne:'',
         AreaTwo:'',
+        FutureTrainingTwo:'',
         initiative: [{ Name: '' , Type: '', Date: ''}],
         training: [
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
@@ -417,6 +486,8 @@ export default {
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
         ],
+        TrainingOne: '',
+        TrainingTwo: '',
       }),
       isLoading: false,
       dropDown:'',
@@ -431,9 +502,111 @@ export default {
   },
   created() {
     this.getUserData()
+    this.initFormDataState();
     //this.getData()
   },
   methods: {
+    onFileChange(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageUrl = reader.result;
+
+        this.$nextTick(() => {
+          if (this.cropper) {
+            this.cropper.destroy();
+          }
+
+          const image = this.$refs.image;
+          this.cropper = new Cropper(image, {
+            aspectRatio: 200 / 60,
+            viewMode: 1,
+          });
+        });
+      };
+      reader.readAsDataURL(file);
+    },
+    cropImage() {
+      if (!this.cropper) return;
+
+      const croppedCanvas = this.cropper.getCroppedCanvas({
+        width: 200,
+        height: 60,
+      });
+
+      const canvas = this.$refs.canvas;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(croppedCanvas, 0, 0);
+    },
+
+    //keep data in the localstorage as cache till 72h
+    initFormDataState() {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const storedData = localStorage.getItem('formData');
+          if (storedData) {
+            const { formData, timestamp } = JSON.parse(storedData);
+
+            // Check if the data is still valid (within the lifetime of 72 hours)
+            if (Date.now() - timestamp < DATA_LIFETIME) {
+              this.prevForm = new Form(formData); // Initialize the form with the stored data
+              this.form.fill(this.prevForm)
+
+            } else {
+              // Clear the outdated data from localStorage
+              localStorage.removeItem('formData');
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error parsing form data from localStorage:", error);
+      }
+    },
+
+    // Function to save the form data state to localStorage
+    saveFormDataState() {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const formData = JSON.stringify({
+            formData: this.form, // Save the form data
+            timestamp: Date.now(), // Save the current timestamp
+          });
+          console.log('saveform',formData)
+          localStorage.setItem('formData', formData); // Store in localStorage
+        }
+      } catch (error) {
+        console.error("Error saving form data to localStorage:", error);
+      }
+    },
+    clearFormDataState() {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('formData'); // Remove the form data from localStorage
+          this.form = new Form({}); // Reset the form to its initial state
+          console.log('clearform',this.form)
+        }
+      } catch (error) {
+        console.error("Error clearing form data from localStorage:", error);
+      }
+    },
+    //30words limit count
+   countSpace(val,type){
+      const count = val.match(/\s+/g)?.length || 0;
+      if (count>3){
+        if (type==='futureTrainingOne'){
+          this.form.TrainingOne = 'Max word limit 30!'
+        }else {
+          this.form.TrainingTwo = 'Max word limit 30!'
+        }
+      }else{
+        this.form.TrainingOne = '';
+        this.form.TrainingTwo = '';
+      }
+    },
+
     store(){
       this.form.busy = true;
       this.PreLoader = true;
@@ -454,14 +627,14 @@ export default {
       axios.post(baseurl +'api/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
       }).then((response)=>{
-        console.log(response)
+        // console.log(response)
         this.training_history = response.data.training_history;
         this.form.EmployeeName = response.data.employee.EmployeeName;
         this.form.Designation = response.data.employee.Designation;
         this.form.Department = response.data.employee.Department;
         this.form.Business = response.data.employee.Business;
         this.form.OfficialEmail = response.data.employee.OfficialEmail;
-        this.form.Mobile = response.data.employee.Mobile;
+        // this.form.Mobile = response.data.employee.Mobile;
         this.form.DateOfBirth = response.data.employee.DateOfBirth;
         this.form.JoiningDate = response.data.employee.JoiningDate;
         this.form.CurrentPosition = response.data.employee.CurrentPosition;
@@ -470,16 +643,36 @@ export default {
         this.form.StaffID = response.data.employee.StaffID;
         this.dropDown = response.data.dropDown;
         this.training_list = response.data.training_list;
+        this.form.AppraisalPeriod = response.data.period;
       }).catch((error)=>{
 
       })
     },
+    downloadTraining(){
+      axios.get(baseurl +'api/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
+        let dataSets = response.data.training_history;
+        if (dataSets.length > 0) {
+          let columns = Object.keys(dataSets[0]);
+          columns = columns.filter((item) => item !== 'row_num');
+          let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+          columns = columns.map((item) => {
+            let title = item.replace(rex, '$1$4 $2$3$5')
+            return {title, key: item}
+          });
+
+          bus.$emit('data-table-import', dataSets, columns, 'MDP Five Years Training List')
+        }
+      }).catch((error)=>{
+        console.log(response)
+      })
+    },
+
     getSupervisorByStaffID(){
       axios.post(baseurl +'api/get-supervisor-by-employee-code/', {
         EmpCode: this.form.StaffID,
         SuperVisorEmpCode: this.form.SuppervisorStaffID,
       }).then((response)=>{
-        console.log(response)
+        // console.log(response)
         if (response.data.status === 'error'){
           this.errorNoti(response.data.message);
         }else {
@@ -510,7 +703,6 @@ export default {
     },
     getData() {
       axios.get(baseurl+'api/get-agree-business-user').then((response)=>{
-        console.log(response)
         this.dropDown = response.data.dropDown
       }).catch((error)=>{
 
@@ -520,7 +712,6 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
         this.$store.commit('me', response);
-        console.log(response)
         if(response.payload.Type ==='employee'){
           this.form.StaffID = response.payload.EmpCode;
           this.getEmployeeByStaffID()
@@ -571,6 +762,12 @@ export default {
 </script>
 
 <style scoped>
+img {
+  max-width: 100%;
+}
+canvas {
+  border: 1px solid #ccc;
+}
 .side_note label{
   font-size: 11px!important;
   margin-bottom: 0;

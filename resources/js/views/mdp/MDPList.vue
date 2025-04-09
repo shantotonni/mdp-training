@@ -9,10 +9,10 @@
                         <i class="fas fa-plus"></i>
                         Add Management Development Plan
                       </router-link>
-                      <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">
-                        <i class="mdi mdi-database-export"></i>
-                        Feedback Export
-                      </button>
+<!--                      <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">-->
+<!--                        <i class="mdi mdi-database-export"></i>-->
+<!--                        Feedback Export-->
+<!--                      </button>-->
                       <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
                         <i class="fas fa-sync"></i>
                         Export
@@ -34,7 +34,7 @@
                                     <div class="flex-grow-1">
                                         <div class="row">
                                             <div class="col-md-2" v-if="type === 'admin'">
-                                                <input v-model="query" type="text" class="form-control" placeholder="Search">
+                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">
                                             </div>
                                           <div class="col-md-2">
                                             <div class="form-group">
@@ -69,6 +69,11 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
+                                  <div class="row" v-if="mdplist.length>0">
+                                    <div class="col-md-12 text-left" style="background-color: #cfdef6; color: black">
+                                      <span>No. of Submitted MDPs: <b>{{mdplist.length}}</b> </span>
+                                    </div>
+                                  </div>
                                     <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                         <thead>
                                           <tr>
@@ -183,7 +188,7 @@ export default {
     methods: {
         getAllMDPList(){
             axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
-                + "&query=" + this.query
+                // + "&query=" + this.query
                 + "&Department=" + JSON.stringify(this.Department)
                 + "&sessionP=" + this.sessionP
             ).then((response)=>{

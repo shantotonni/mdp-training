@@ -66,6 +66,9 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     //individual tarining
     Route::get('mdp/get-employee-individual-training', [MDPController::class,'getEmployeeIndividualTraining']);
 
+    //bnaglaexport
+    Route::get('get-export-training-history', [MDPController::class,'getExportTrainingHistory']);
+
     //feedback
     Route::get('empcode-wise-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseTrainingList']);
     Route::get('empcode-wise-single-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseSingleTrainingList']);

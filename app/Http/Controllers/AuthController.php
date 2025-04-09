@@ -6,6 +6,7 @@ use App\Models\ActionPlan;
 use App\Models\Admin;
 use App\Models\Employee;
 use App\Models\jwt\JWT;
+use App\Models\ManagementDevelopmentPlane;
 use App\Models\Personal;
 use App\Models\User;
 use App\Models\UserLog;
@@ -132,7 +133,6 @@ class AuthController extends Controller
         $empcode = $payload['EmpCode'];
 
         $personal = Employee::where('EmpCode', $empcode)->with('email','personal')->first();
-
         $departments = [];
         $divisions = [];
         if (!$personal) {
@@ -143,7 +143,7 @@ class AuthController extends Controller
             'personal' => $personal,
             'payload' => $payload,
             'departments' => $departments,
-            'divisions' => $divisions
+            'divisions' => $divisions,
         ]);
     }
 
