@@ -538,33 +538,29 @@ class MDPController extends Controller
     }
     public function getExportTrainingHistory(Request $request){
         $empcode= $request->empcode;
+
         $result= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
-//        dd($result);
-        $export = $this->exportexcel($result,'exportFile');
+        //$result = collect($result);
+        //dd($result);
+        //$export = $this->exportexcel($result,'exportFile');
         return response()->json([
-            'training_history'=>$export,
+            'training_history' => $result,
         ]);
     }
+
     function exportexcel($result, $filename){
-
-        $arrayheading[0] = !empty($result) ? array_keys((array) $result[0]) : [];
-        $dataRows = array_map(fn($row) => (array) $row, $result);
-        $result = array_merge($arrayheading, $dataRows);
-
+        $arrayheading[0] = !empty($result) ? array_keys($result[0]) : [];
+        $result = array_merge($arrayheading, $result);
         header("Content-Disposition: attachment; filename=\"{$filename}.xls\"");
         header("Content-Type: application/vnd.ms-excel;");
         header("Pragma: no-cache");
         header("Expires: 0");
-
         $out = fopen("php://output", 'w');
-
         foreach ($result as $data) {
-            fputcsv($out, $data, "\t"); // \t makes it Excel-friendly
+            fputcsv($out, $data, "\t");
         }
-
         fclose($out);
         exit();
-
     }
 
 

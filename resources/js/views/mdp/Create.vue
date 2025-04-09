@@ -15,9 +15,11 @@
       </breadcrumb>
       <div class="row">
         <div class="col-xl-12">
-          <form @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()">
+
             <div class="row">
+
               <div class="col-md-7">
+                <form @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()">
                 <div class="card">
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
@@ -325,12 +327,8 @@
                       </div>
                   </div>
                 </div>
+                </form>
               </div>
-
-
-
-<!--              Last Five Years Training History-->
-
 
               <div class="col-md-5">
                 <div class="card">
@@ -377,7 +375,7 @@
                 </div>
               </div>
             </div>
-          </form>
+
         </div>
       </div>
     </div>
@@ -409,7 +407,7 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
-
+    <data-export/>
     <div>
       <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
     </div>
@@ -649,6 +647,7 @@ export default {
       })
     },
     downloadTraining(){
+      alert('ok')
       axios.get(baseurl +'api/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
         let dataSets = response.data.training_history;
         if (dataSets.length > 0) {
@@ -659,8 +658,8 @@ export default {
             let title = item.replace(rex, '$1$4 $2$3$5')
             return {title, key: item}
           });
-
-          bus.$emit('data-table-import', dataSets, columns, 'MDP Five Years Training List')
+          //this.generateExport(dataSets, columns, 'Job Card Report')
+          bus.$emit('data-table-import', dataSets, columns, 'Last Five Years Training History')
         }
       }).catch((error)=>{
         console.log(response)
