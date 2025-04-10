@@ -86,7 +86,9 @@
 <!--                                 <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ Area[i] !== undefined ? Area[i].AreaOneName: '' }}</span>-->
 <!--                                </p>-->
                                 <span style="font-size: 20px">1.</span> <p style="font-size: 20px">
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ mdplist.AreaOne }}</span>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">
+                                    <b v-if="mdplist.FutureTrainingOne">{{mdplist.FutureTrainingOne}}: </b>
+                                    {{ mdplist.AreaOne }}</span>
                                 </p>
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
@@ -106,8 +108,12 @@
                               </div>
                               <br>
                               <div class="fifth_part">
-                                <span style="font-size: 20px">2.</span><p>
-                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;font-size: 20px">{{ mdplist.AreaTwo }}</span>
+                                <span style="font-size: 20px">2.</span>
+                                <p>
+                                  <span style="display: inline-block;border-bottom: 1px solid;width: 940px;font-size: 20px">
+                                    <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">
+                                      <b v-if="mdplist.FutureTrainingTwo">{{mdplist.FutureTrainingTwo}}: </b>{{ mdplist.AreaOne }}</span>
+                                  </span>
                                 </p>
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>

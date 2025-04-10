@@ -21,9 +21,9 @@ class ManagementDevelopmentPlaneCollection extends ResourceCollection
                     $superVisor  = 'N';
                 }
                 return [
+                    'ID'                          => $mdp->ID,
                     'SubmittedDateAndTime'         => date('Y-m-d H:i:s', strtotime($mdp->CreatedDate)),
                     'AppraisalPeriod'              => $mdp->AppraisalPeriod,
-//                    'ID'                          => $mdp->ID,
                     'StaffID'                       => $mdp->StaffID,
                     'EmployeeName'      => $mdp->EmployeeName,
                     'Designation'       => $mdp->Designation,
@@ -31,7 +31,7 @@ class ManagementDevelopmentPlaneCollection extends ResourceCollection
                     'Business'          => $mdp->Business,
                     'OfficialEmail'     => $mdp->OfficialEmail,
                     'Contact Number'    => $mdp->Mobile,
-//                    'Mobile'            => $mdp->Mobile,
+                    'Mobile'            => $mdp->Mobile,
                     'DateOfBirth'       => $mdp->DateOfBirth,
                     'JoiningDate'       => $mdp->JoiningDate,
                     'CurrentPosition'   => $mdp->CurrentPosition,
@@ -58,7 +58,7 @@ class ManagementDevelopmentPlaneCollection extends ResourceCollection
                     'C3'   => $mdp->FutureTrainingTwo,
                     'C4'   => $mdp->AreaTwo,
                     'MDPStatus'         => $mdp->MDPStatus,
-//                    'Supervisor'        => $superVisor,
+                    'Supervisor'        => $superVisor,
                 ];
             })
         ];

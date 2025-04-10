@@ -15,9 +15,11 @@
       </breadcrumb>
       <div class="row">
         <div class="col-xl-12">
-          <form @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()">
+
             <div class="row">
+
               <div class="col-md-7">
+                <form @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()">
                 <div class="card">
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
@@ -200,7 +202,7 @@
                         <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
                           <div class="col-3 col-md-3">
                             <div class="form-group">
-                              <label>Title</label>
+                              <label>Training Title</label>
                               <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title" required>
                               <div class="error" v-if="form.errors.has('Name')" v-html="form.errors.get('Name')" />
                             </div>
@@ -325,12 +327,8 @@
                       </div>
                   </div>
                 </div>
+                </form>
               </div>
-
-
-
-<!--              Last Five Years Training History-->
-
 
               <div class="col-md-5">
                 <div class="card">
@@ -377,7 +375,7 @@
                 </div>
               </div>
             </div>
-          </form>
+
         </div>
       </div>
     </div>
@@ -409,7 +407,7 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
-
+    <data-export/>
     <div>
       <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
     </div>
@@ -422,14 +420,12 @@ import {baseurl} from '../../base_url'
 import Datepicker from 'vuejs-datepicker';
 import moment from "moment";
 import {Common} from "../../mixins/common";
-// Basic Use - Covers most scenarios
 import { VueEditor } from "vue2-editor";
-// Define the lifetime of the form data in milliseconds (72 hours)
-const DATA_LIFETIME = 72 * 60 * 60 * 1000; // 72 hours in milliseconds
-import Cropper from 'cropperjs';
 import {bus} from "../../app";
 import * as events from "events";
+const DATA_LIFETIME = 72 * 60 * 60 * 1000;
 
+import Cropper from 'cropperjs';
 
 
 export default {
@@ -523,6 +519,9 @@ export default {
           this.cropper = new Cropper(image, {
             aspectRatio: 200 / 60,
             viewMode: 1,
+            autoCropArea: 1,
+            responsive: true,
+            background: false,
           });
         });
       };
@@ -535,6 +534,11 @@ export default {
         width: 200,
         height: 60,
       });
+
+      if (!croppedCanvas) {
+        console.warn('Failed to get cropped canvas');
+        return;
+      }
 
       const canvas = this.$refs.canvas;
       const ctx = canvas.getContext('2d');
@@ -595,7 +599,7 @@ export default {
     //30words limit count
    countSpace(val,type){
       const count = val.match(/\s+/g)?.length || 0;
-      if (count>3){
+      if (count>30){
         if (type==='futureTrainingOne'){
           this.form.TrainingOne = 'Max word limit 30!'
         }else {
@@ -659,8 +663,8 @@ export default {
             let title = item.replace(rex, '$1$4 $2$3$5')
             return {title, key: item}
           });
-
-          bus.$emit('data-table-import', dataSets, columns, 'MDP Five Years Training List')
+          //this.generateExport(dataSets, columns, 'Job Card Report')
+          bus.$emit('data-table-import', dataSets, columns, 'Last Five Years Training History')
         }
       }).catch((error)=>{
         console.log(response)

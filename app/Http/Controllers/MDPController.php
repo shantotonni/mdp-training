@@ -6,10 +6,11 @@ use App\Http\Requests\ManagementDevelopmentPlaneRequest;
 use App\Http\Requests\ManagementDevelopmentPlaneUpdateRequest;
 use App\Http\Resources\ContSupervisorResource;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\Export\ExportManagementDevelopmentPlaneCollection;
+use App\Http\Resources\Export\ExportManagementDevelopmentPlaneDetailsCollection;
 use App\Http\Resources\ManagementDevelopmentPlaneCollection;
 use App\Http\Resources\ManagementDevelopmentPlaneResource;
 use App\Http\Resources\SupervisorResource;
-use App\Mail\MDPCreateMail;
 use App\Models\ContactPersonal;
 use App\Models\Employee;
 use App\Models\ManagementDevelopmentPlane;
@@ -18,16 +19,9 @@ use App\Models\MDPPersonalInitiative;
 use App\Models\MDPTraining;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Monolog\Handler\IFTTTHandler;
-use Symfony\Component\Console\Input\Input;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Mail;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class MDPController extends Controller
 {
@@ -153,6 +147,8 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             $ManagementDevelopmentPlane->MDPStatus = 'Pending';
             $ManagementDevelopmentPlane->Signature = $name;
+            $ManagementDevelopmentPlane->FutureTrainingOne = $request->FutureTrainingOne;
+            $ManagementDevelopmentPlane->FutureTrainingTwo = $request->FutureTrainingTwo;
             if ($ManagementDevelopmentPlane->save()){
                 foreach ($initiative as $value){
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
@@ -173,12 +169,12 @@ class MDPController extends Controller
 
                 $email = $request->SuppervisorEmail;
                 $explode = explode('@', $email);
-                if ($explode[1] === 'aci-bd.com') {
-                    Config::set('mail.mailers.smtp.host', 'mail.aci-bd.com');
-
-                    $data = 'MDP Submitted!';
-                    Mail::to($email)->send(new MDPCreateMail($data, $request->EmployeeName, $request->Designation ));
-                }
+//                if ($explode[1] === 'aci-bd.com') {
+//                    Config::set('mail.mailers.smtp.host', 'mail.aci-bd.com');
+//
+//                    $data = 'MDP Submitted!';
+//                    Mail::to($email)->send(new MDPCreateMail($data, $request->EmployeeName, $request->Designation ));
+//                }
                 //else {
 //                    Artisan::call('config:clear');
 //                    Artisan::call('cache:clear');
@@ -376,8 +372,57 @@ class MDPController extends Controller
             $mdp_list = $mdp_list->whereIn('Department',$DeptName);
         }
         $mdp_list = $mdp_list->where('AppraisalPeriod',$session)->orderBy('Department','asc')->get();
-        return new ManagementDevelopmentPlaneCollection($mdp_list);
+        return new ExportManagementDevelopmentPlaneCollection($mdp_list);
     }
+    public function mdpDetailsExport(Request $request){
+        $session = $request->sessionP;
+        $Department = json_decode($request->Department);
+        $mdp_list = ManagementDevelopmentPlane::query()->with('initiative','training','training.feedback');
+        if (!empty($Department) && isset($Department)){
+            $Department = collect($Department);
+            $DeptName = $Department->pluck('DeptName');
+            $mdp_list = $mdp_list->whereIn('Department',$DeptName);
+        }
+        $mdp_list = $mdp_list->where('AppraisalPeriod',$session)->orderBy('Department','asc')->get();
+        return new ExportManagementDevelopmentPlaneDetailsCollection($mdp_list);
+    }
+//    public function mdpDetailsExport(Request $request){
+//        $staffID    = $request->staffId;
+//        $appraisalPeriod = $request->sessionP;
+//        $val = ManagementDevelopmentPlane::select('ID')->where('StaffID','=',$staffID)->where('AppraisalPeriod','=',$appraisalPeriod)->first();
+//        $mdpId = $val->ID;
+//
+//        $sql = "SP_doLoadMDPDetailsWTraining '$mdpId'";
+//        $conn = DB::connection('sqlsrv');
+//        $pdo = $conn->getPdo()->prepare($sql);
+//        $pdo->execute();
+//
+//        $res = array();
+//
+//        do {
+//            $rows = $pdo->fetchAll(\PDO::FETCH_ASSOC);
+//            $res[] = $rows;
+//
+//        } while ($pdo->nextRowset());
+//
+//        if (!empty($res[0])){
+//            return response()->json([
+//                'data' =>[
+//                    'MDPDetails'=>$res[0],
+//                    'PersonalTraining'=>$res[1],
+//                    'RequiredTraining'=>$res[2],
+//                    'FutureTraining'=>$res[3]
+//                ] ,
+//            ]);
+//        }else{
+//            return response()->json([
+//                'status' => '0',
+//                'message' => 'No Data Found',
+//            ]);
+//        }
+//
+//
+//    }
 
     public function mdpFeedbackExport(Request $request){
         $feedback = DB::select(" SELECT MDP.AppraisalPeriod,MDP.StaffID,MDP.EmployeeName,MDP.Designation,MDP.Department, t.TrainingTitle,T.TrainingType,
@@ -538,16 +583,30 @@ class MDPController extends Controller
     }
     public function getExportTrainingHistory(Request $request){
         $empcode= $request->empcode;
+
         $result= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
-        $export = $this->exportexcel($result,'exportFile');
+        //$result = collect($result);
+        //dd($result);
+        //$export = $this->exportexcel($result,'exportFile');
         return response()->json([
-            'training_history'=>$export,
+            'training_history' => $result,
         ]);
     }
-    function exportexcel($result, $filename){
 
-        $arrayheading[0] = !empty($result) ? array_keys((array) $result[0]) : [];
- 
+
+    function exportexcel($result, $filename){
+        $arrayheading[0] = !empty($result) ? array_keys($result[0]) : [];
+        $result = array_merge($arrayheading, $result);
+        header("Content-Disposition: attachment; filename=\"{$filename}.xls\"");
+        header("Content-Type: application/vnd.ms-excel;");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        $out = fopen("php://output", 'w');
+        foreach ($result as $data) {
+            fputcsv($out, $data, "\t");
+        }
+        fclose($out);
+        exit();
     }
 
 

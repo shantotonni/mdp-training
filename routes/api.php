@@ -57,6 +57,7 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::post('get-supervisor-by-employee-code', [MDPController::class,'getSupervisorByEmployeeCode']);
     Route::get('get-level-wise-suggestive-list/{StaffID}', [MDPController::class,'getLevelWiseSuggestiveList']);
     Route::get('export-mdp-list', [MDPController::class,'mdpExport']);
+    Route::get('export-mdp-details-list', [MDPController::class,'mdpDetailsExport']);
     Route::get('export-mdp-feedback', [MDPController::class,'mdpFeedbackExport']);
     Route::get('mdp/get-top-ranked-training', [MDPController::class,'getTopRankedTraining']);
     Route::get('mdp/get-all-mdp-department', [MDPController::class,'getAllMDPDepartment']);

@@ -67,7 +67,7 @@ export default {
 
             posWS["!cols"] = columnWidth;
             let wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, posWS, "AMS");
+            XLSX.utils.book_append_sheet(wb, posWS, "MDP");
             XLSX.writeFile(wb, name);
             this.$emit("resetExport", false);
         },
