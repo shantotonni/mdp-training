@@ -126,18 +126,26 @@
                             <div class="form-group">
                               <label>Signature (<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
 
-<!--                              <input type="file" @change="onFileChange" accept="image/*" />-->
+                              <input type="file" @change="onFileChange" accept="image/*" />
 
-<!--                              <div v-if="imageUrl" class="mt-4">-->
-<!--                                <img ref="image" :src="imageUrl" alt="Selected" class="max-w-full" />-->
-<!--                              </div>-->
-<!--                              <button v-if="imageUrl" @click="cropImage" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Crop to 200x60 </button>-->
-<!--                              <div class="mt-4">-->
-<!--                                <canvas ref="canvas" width="200" height="60" class="border"></canvas>-->
-<!--                              </div>-->
-                              <input @change="changeImage($event)" type="file"
-                                     name="Signature" class="form-control"
-                                     :class="{ 'is-invalid': form.errors.has('Signature') }">
+                              <div v-if="imageUrl" class="mt-4">
+                                <img ref="image" :src="imageUrl" alt="Selected" class="max-w-full" />
+                              </div>
+
+                              <button
+                                  v-if="imageUrl"
+                                  @click="cropImage"
+                                  class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+                                Crop to 200x60
+                              </button>
+
+                              <div class="mt-4">
+                                <canvas ref="canvas" width="200" height="60" class="border"></canvas>
+                              </div>
+
+<!--                              <input @change="changeImage($event)" type="file"-->
+<!--                                     name="Signature" class="form-control"-->
+<!--                                     :class="{ 'is-invalid': form.errors.has('Signature') }">-->
                               <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
                               <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">
                             </div>
@@ -428,6 +436,8 @@ const DATA_LIFETIME = 72 * 60 * 60 * 1000;
 import Cropper from 'cropperjs';
 
 
+
+
 export default {
   name: "List",
   computed: {
@@ -516,17 +526,35 @@ export default {
           }
 
           const image = this.$refs.image;
+
           this.cropper = new Cropper(image, {
-            aspectRatio: 200 / 60,
             viewMode: 1,
-            autoCropArea: 1,
-            responsive: true,
+            aspectRatio: 200 / 60,
+            dragMode: 'none',
+            cropBoxResizable: false,
+            cropBoxMovable: false,
+            autoCrop: true,
             background: false,
+            ready: () => {
+              setTimeout(() => {
+                const cropper = this.cropper;
+                const containerData = cropper.getContainerData();
+
+                cropper.setCropBoxData({
+                  width: 200,
+                  height: 60,
+                  left: (containerData.width - 200) / 2,
+                  top: (containerData.height - 60) / 2,
+                });
+              }, 100); // small delay to ensure DOM/layout is ready
+            }
+
           });
         });
       };
       reader.readAsDataURL(file);
     },
+
     cropImage() {
       if (!this.cropper) return;
 
@@ -534,11 +562,6 @@ export default {
         width: 200,
         height: 60,
       });
-
-      if (!croppedCanvas) {
-        console.warn('Failed to get cropped canvas');
-        return;
-      }
 
       const canvas = this.$refs.canvas;
       const ctx = canvas.getContext('2d');
@@ -578,7 +601,6 @@ export default {
             formData: this.form, // Save the form data
             timestamp: Date.now(), // Save the current timestamp
           });
-          console.log('saveform',formData)
           localStorage.setItem('formData', formData); // Store in localStorage
         }
       } catch (error) {
@@ -590,7 +612,6 @@ export default {
         if (typeof localStorage !== 'undefined') {
           localStorage.removeItem('formData'); // Remove the form data from localStorage
           this.form = new Form({}); // Reset the form to its initial state
-          console.log('clearform',this.form)
         }
       } catch (error) {
         console.error("Error clearing form data from localStorage:", error);
@@ -611,22 +632,23 @@ export default {
       }
     },
 
-    store(){
-      this.form.busy = true;
-      this.PreLoader = true;
-      this.form.post(baseurl + "api/mdp/store").then(response => {
-        if (response.data.status === 'error'){
-          this.errorNoti(response.data.message);
-        }else {
-          this.redirect(this.mainOrigin + 'mdp-list')
-          this.successNoti(response.data.message);
-        }
-        this.PreLoader = false;
-      }).catch(e => {
-        this.isLoading = false;
-        this.PreLoader = false;
-      });
-    },
+    // store(){
+    //   this.form.busy = true;
+    //   this.PreLoader = true;
+    //   this.form.post(baseurl + "api/mdp/store").then(response => {
+    //     if (response.data.status === 'error'){
+    //       this.errorNoti(response.data.message);
+    //     }else {
+    //       this.redirect(this.mainOrigin + 'mdp-list')
+    //       this.successNoti(response.data.message);
+    //       this.clearFormDataState()
+    //     }
+    //     this.PreLoader = false;
+    //   }).catch(e => {
+    //     this.isLoading = false;
+    //     this.PreLoader = false;
+    //   });
+    // },
     getEmployeeByStaffID(){
       axios.post(baseurl +'api/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
