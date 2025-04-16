@@ -122,44 +122,17 @@
                               <div class="error" v-if="form.errors.has('Qualification')" v-html="form.errors.get('Qualification')" />
                             </div>
                           </div>
-                          <div class="col-md-8" >
+                          <div class="col-md-4" >
                             <div class="form-group">
-                              <label>Signature (<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
-
-                              <input type="file" @change="onFileChange" accept="image/*" />
-
-                              <div v-if="imageUrl" class="mt-4">
-                                <img ref="image" :src="imageUrl" alt="Selected" class="max-w-full" />
-                              </div>
-
-                              <button
-                                  v-if="imageUrl"
-                                  @click="cropImage"
-                                  class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-                                Crop to 200x60
-                              </button>
-
-                              <div class="mt-4">
-                                <canvas ref="canvas" width="200" height="60" class="border"></canvas>
-                              </div>
-
-<!--                              <input @change="changeImage($event)" type="file"-->
-<!--                                     name="Signature" class="form-control"-->
-<!--                                     :class="{ 'is-invalid': form.errors.has('Signature') }">-->
+                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
+                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">
                               <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
                               <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">
                             </div>
-
-<!--                            <div class="form-group">-->
-<!--                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>-->
-<!--                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">-->
-<!--                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>-->
-<!--                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">-->
-<!--                            </div>-->
                           </div>
-<!--                          <div class="col-md-4">-->
-<!--                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>-->
-<!--                          </div>-->
+                          <div class="col-md-4">
+                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>
+                          </div>
                         </div>
                         <hr>
                        </div>
@@ -433,11 +406,6 @@ import {bus} from "../../app";
 import * as events from "events";
 const DATA_LIFETIME = 72 * 60 * 60 * 1000;
 
-import Cropper from 'cropperjs';
-
-
-
-
 export default {
   name: "List",
   computed: {
@@ -512,62 +480,6 @@ export default {
     //this.getData()
   },
   methods: {
-    onFileChange(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageUrl = reader.result;
-
-        this.$nextTick(() => {
-          if (this.cropper) {
-            this.cropper.destroy();
-          }
-
-          const image = this.$refs.image;
-
-          this.cropper = new Cropper(image, {
-            viewMode: 1,
-            aspectRatio: 200 / 60,
-            dragMode: 'none',
-            cropBoxResizable: false,
-            cropBoxMovable: false,
-            autoCrop: true,
-            background: false,
-            ready: () => {
-              setTimeout(() => {
-                const cropper = this.cropper;
-                const containerData = cropper.getContainerData();
-
-                cropper.setCropBoxData({
-                  width: 200,
-                  height: 60,
-                  left: (containerData.width - 200) / 2,
-                  top: (containerData.height - 60) / 2,
-                });
-              }, 100); // small delay to ensure DOM/layout is ready
-            }
-
-          });
-        });
-      };
-      reader.readAsDataURL(file);
-    },
-
-    cropImage() {
-      if (!this.cropper) return;
-
-      const croppedCanvas = this.cropper.getCroppedCanvas({
-        width: 200,
-        height: 60,
-      });
-
-      const canvas = this.$refs.canvas;
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(croppedCanvas, 0, 0);
-    },
 
     //keep data in the localstorage as cache till 72h
     initFormDataState() {
@@ -786,7 +698,6 @@ export default {
   },
 }
 </script>
-
 <style scoped>
 img {
   max-width: 100%;

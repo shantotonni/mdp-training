@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
+use Monolog\Handler\IFTTTHandler;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class MDPController extends Controller
@@ -42,6 +43,12 @@ class MDPController extends Controller
                 $Department = collect($Department);
                 $DeptName = $Department->pluck('DeptName');
                 $mdp = $mdp->whereIn('Department',$DeptName);
+            }
+            $EmployeeList= json_decode($request->EmployeeList);
+            if (!empty($EmployeeList) && isset($EmployeeList)){
+                $EmployeeList = collect($EmployeeList);
+                $EmployeeIDs = $EmployeeList->pluck('StaffID');
+                $mdp = $mdp->whereIn('StaffID',$EmployeeIDs);
             }
             if ($session){
                 $mdp = $mdp->where('AppraisalPeriod',$session);
@@ -363,8 +370,6 @@ class MDPController extends Controller
     }
 
     public function mdpExport(Request $request){
-        $staffId = $request->query;
-        dd($staffId);
         $session = $request->sessionP;
         $Department = json_decode($request->Department);
         $mdp_list = ManagementDevelopmentPlane::query()->with('initiative','training','training.feedback');
@@ -372,32 +377,68 @@ class MDPController extends Controller
             $Department = collect($Department);
             $DeptName = $Department->pluck('DeptName');
             $mdp_list = $mdp_list->whereIn('Department',$DeptName);
+
+        }
+        $EmployeeList= json_decode($request->EmployeeList);
+        if (!empty($EmployeeList) && isset($EmployeeList)){
+            $EmployeeList = collect($EmployeeList);
+            $EmployeeIDs = $EmployeeList->pluck('StaffID');
+            $mdp_list = $mdp_list->whereIn('StaffID',$EmployeeIDs);
         }
         $mdp_list = $mdp_list->where('AppraisalPeriod',$session)
-            
-            ->orderBy('Department','asc')
-            ->get();
+            ->orderBy('Department','asc')->get();
+
         return new ExportManagementDevelopmentPlaneCollection($mdp_list);
     }
-    public function mdpDetailsExport(Request $request){
-        $session = $request->sessionP;
-        $Department = json_decode($request->Department);
-        $mdp_list = ManagementDevelopmentPlane::query()->with('initiative','training','training.feedback');
-        if (!empty($Department) && isset($Department)){
-            $Department = collect($Department);
-            $DeptName = $Department->pluck('DeptName');
-            $mdp_list = $mdp_list->whereIn('Department',$DeptName);
-        }
-        $mdp_list = $mdp_list->where('AppraisalPeriod',$session)->orderBy('Department','asc')->get();
-        return new ExportManagementDevelopmentPlaneDetailsCollection($mdp_list);
-    }
 //    public function mdpDetailsExport(Request $request){
-//        $staffID    = $request->staffId;
-//        $appraisalPeriod = $request->sessionP;
-//        $val = ManagementDevelopmentPlane::select('ID')->where('StaffID','=',$staffID)->where('AppraisalPeriod','=',$appraisalPeriod)->first();
-//        $mdpId = $val->ID;
 //
-//        $sql = "SP_doLoadMDPDetailsWTraining '$mdpId'";
+//
+//        $session = $request->sessionP;
+//        $Department = json_decode($request->Department);
+//        $mdp_list = ManagementDevelopmentPlane::query()->with('initiative','training','training.feedback');
+//        if (!empty($Department) && isset($Department)){
+//            $Department = collect($Department);
+//            $DeptName = $Department->pluck('DeptName');
+//            $mdp_list = $mdp_list->whereIn('Department',$DeptName);
+//        }
+//        $EmployeeList= json_decode($request->EmployeeList);
+//        if (!empty($EmployeeList) && isset($EmployeeList)){
+//            $EmployeeList = collect($EmployeeList);
+//            $EmployeeIDs = $EmployeeList->pluck('StaffID');
+//            $mdp_list = $mdp_list->whereIn('StaffID',$EmployeeIDs);
+//        }
+//
+//        $mdp_list = $mdp_list->where('AppraisalPeriod',$session)
+//
+//            ->orderBy('Department','asc')->get();
+//        return new ExportManagementDevelopmentPlaneDetailsCollection($mdp_list);
+//    }
+    public function mdpDetailsExport(Request $request){
+
+        $appraisalPeriod = $request->sessionP;
+        $EmployeeList= json_decode($request->EmployeeList);
+        $val = ManagementDevelopmentPlane::select('ID');
+        if (!empty($EmployeeList) && isset($EmployeeList)){
+            $EmployeeList = collect($EmployeeList);
+            $EmployeeIDs = $EmployeeList->pluck('StaffID');
+            $val = $val->whereIn('StaffID',$EmployeeIDs);
+        }
+        if (!empty($appraisalPeriod)){
+            $val = $val->where('AppraisalPeriod','=',$appraisalPeriod);
+
+        }
+        $val =  $val->get();
+        $mdps =[];
+        foreach ($val as $value){
+            array_push($mdps,$value->ID);
+        }
+        $mdpIDS= implode(",", $mdps);
+
+        $sql = "SP_doLoadMDPDetailsWTraining '$mdpIDS'";
+        $mdps = DB::select($sql);
+        return response()->json([
+           'data'=>$mdps
+        ]);
 //        $conn = DB::connection('sqlsrv');
 //        $pdo = $conn->getPdo()->prepare($sql);
 //        $pdo->execute();
@@ -413,10 +454,10 @@ class MDPController extends Controller
 //        if (!empty($res[0])){
 //            return response()->json([
 //                'data' =>[
-//                    'MDPDetails'=>$res[0],
-//                    'PersonalTraining'=>$res[1],
-//                    'RequiredTraining'=>$res[2],
-//                    'FutureTraining'=>$res[3]
+//                    'MDP Details'=>$res[0],
+//                    'Personal Training'=>$res[1],
+//                    'Required Training'=>$res[2],
+//                    'Future Training'=>$res[3]
 //                ] ,
 //            ]);
 //        }else{
@@ -425,9 +466,9 @@ class MDPController extends Controller
 //                'message' => 'No Data Found',
 //            ]);
 //        }
-//
-//
-//    }
+
+
+    }
 
     public function mdpFeedbackExport(Request $request){
         $feedback = DB::select(" SELECT MDP.AppraisalPeriod,MDP.StaffID,MDP.EmployeeName,MDP.Designation,MDP.Department, t.TrainingTitle,T.TrainingType,
@@ -486,6 +527,25 @@ class MDPController extends Controller
         $departments = DB::select('select distinct Department as DeptName from ManagementDevelopmentPlane');
         return response()->json([
             'departments'=>$departments
+        ]);
+    }
+    public function getAllMDPEmployee(Request $request){
+        $staffId = $request->staffId;
+        $session = $request->sessionP;
+        $Department = json_decode($request->Department);
+        $emp_List = ManagementDevelopmentPlane::select('StaffID',DB::raw("CONCAT(StaffID, '- ', EmployeeName) AS Employee"));
+            if (!empty($session)){
+                $emp_List ->where(function ($q) use ($session) {
+                    $q->where('AppraisalPeriod', 'like', '%' . $session . '%');
+                });
+            }
+            if (!empty($Department) && isset($Department)){
+                $Department = collect($Department);
+                $DeptName = $Department->pluck('DeptName');
+                $emp_List = $emp_List->whereIn('Department',$DeptName);
+            }
+            return response()->json([
+            'employees'=>$emp_List->orderby('ID','DESC')->get()
         ]);
     }
 
@@ -590,9 +650,6 @@ class MDPController extends Controller
         $empcode= $request->empcode;
 
         $result= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
-        //$result = collect($result);
-        //dd($result);
-        //$export = $this->exportexcel($result,'exportFile');
         return response()->json([
             'training_history' => $result,
         ]);

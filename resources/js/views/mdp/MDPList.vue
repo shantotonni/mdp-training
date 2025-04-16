@@ -37,23 +37,16 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <div class="row">
-                                            <div class="col-md-2" v-if="type === 'admin'">
-                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">
-                                            </div>
                                           <div class="col-md-2">
                                             <div class="form-group">
-                                              <select id="sessionP" class="form-control" v-model="sessionP">
+                                              <select id="sessionP" class="form-control" v-model="sessionP"   @click="getAllEmpID" >
                                                 <option value="">Select Session</option>
-                                                <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>
+                                                <option v-for="(session,index) in sessions" :value="session.Name"
+                                                     :key="index">{{session.Name}}</option>
                                               </select>
                                             </div>
                                           </div>
-                                          <div class="col-md-4">
-                                            <div class="form-group">
-<!--                                              <select id="Department" class="form-control" v-model="Department">-->
-<!--                                                <option value="">Select Department</option>-->
-<!--                                                <option v-for="(dept,index) in departments" :value="dept.DeptName" :key="index">{{dept.DeptName}}</option>-->
-<!--                                              </select>-->
+                                            <div class="col-md-4" v-if="type === 'admin'">
                                               <multiselect
                                                   v-model="Department"
                                                   :options="departments"
@@ -63,7 +56,27 @@
                                                   :show-labels="true"
                                                   label="DeptName"
                                                   track-by="DeptName"
-                                                  placeholder="Pick a value"></multiselect>
+                                                  @click="getAllEmpID"
+                                                  placeholder="Pick a Department"></multiselect>
+<!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
+                                            </div>
+
+                                          <div class="col-md-4">
+                                            <div class="form-group">
+<!--                                              <select id="Department" class="form-control" v-model="Department">-->
+<!--                                                <option value="">Select Department</option>-->
+<!--                                                <option v-for="(dept,index) in departments" :value="dept.DeptName" :key="index">{{dept.DeptName}}</option>-->
+<!--                                              </select>-->
+                                              <multiselect
+                                                  v-model="EmployeeList"
+                                                  :options="employees"
+                                                  :multiple="true"
+                                                  :searchable="true"
+                                                  :close-on-select="true"
+                                                  :show-labels="true"
+                                                  label="Employee"
+                                                  track-by="StaffID"
+                                                  placeholder="Pick a Employee"></multiselect>
                                             </div>
                                           </div>
                                           <div class="col-md-2">
@@ -154,6 +167,7 @@ import {bus} from "../../app";
 import Multiselect from 'vue-multiselect';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import moment from "moment";
 
 
 export default {
@@ -165,6 +179,7 @@ export default {
           mdplist: [],
           type: '',
           departments: [],
+          employees: [],
           sessions: '',
           pagination: {
               current_page: 1
@@ -172,6 +187,7 @@ export default {
           isMessage : false,
           query: "",
           Department: [],
+          EmployeeList: [],
           sessionP: "",
           editMode: false,
           isLoading: false,
@@ -194,64 +210,13 @@ export default {
         this.getData();
     },
     methods: {
-
-      exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
-  const wb = XLSX.utils.book_new();
-  const wsData = [];
-
-  Object.entries(data).forEach(([sectionTitle, rows]) => {
-    if (!Array.isArray(rows) || rows.length === 0) return;
-
-    // Section Header
-    wsData.push([sectionTitle.toUpperCase()]);
-
-    // Column Headers
-    const headers = Object.keys(rows[0]);
-    wsData.push(headers);
-
-    // Row Data
-    rows.forEach(row => {
-      const rowData = headers.map(h => row[h]);
-      wsData.push(rowData);
-    });
-
-    // Add an empty row for spacing
-    wsData.push([]);
-  });
-
-  const ws = XLSX.utils.aoa_to_sheet(wsData);
-  XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
-
-  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
-},
-      // exportMultipleSheetsToExcel(responseData, fileName = 'MDP_Export.xlsx') {
-      //   const wb = XLSX.utils.book_new();
-      //   Object.entries(responseData).forEach(([sheetName, data]) => {
-      //     // Skip non-array fields like "status"
-      //     if (!Array.isArray(data) || data.length === 0) return;
-      //     console.log('dataara',data)
-      //
-      //     // Create worksheet
-      //     const ws = XLSX.utils.json_to_sheet(data);
-      //
-      //     // Add worksheet to workbook
-      //     XLSX.utils.book_append_sheet(wb, ws, sheetName);
-      //   });
-      //
-      //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      //   const blob = new Blob([wbout], { type: 'application/octet-stream' });
-      //   saveAs(blob, 'MDP_Export.xlsx');
-      // },
-
-
         getAllMDPList(){
-            axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
-                // + "&query=" + this.query
+            axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page+
+                "&EmployeeList=" +  JSON.stringify(this.EmployeeList)
                 + "&Department=" + JSON.stringify(this.Department)
                 + "&sessionP=" + this.sessionP
             ).then((response)=>{
-              // console.log(response)
+              this.getAllEmpID()
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
             }).catch((error)=>{
@@ -281,6 +246,15 @@ export default {
 
           })
         },
+        getAllEmpID(){
+              axios.get(baseurl + 'api/mdp/get-all-mdp-employee?sessionP=' + this.sessionP
+                  + "&Department=" + JSON.stringify(this.Department)
+              ).then((response)=>{
+                this.employees = response.data.employees;
+              }).catch((error)=>{
+
+              })
+          },
         getAllSession(){
           axios.get(baseurl + 'api/get-all-session/').then((response) => {
             this.sessions = response.data.sessions;
@@ -315,8 +289,9 @@ export default {
             }
           })
         },
-        exportMDPList(){
-          axios.get(baseurl + 'api/export-mdp-list?query=' +  this.query
+
+      exportMDPList(){
+          axios.get(baseurl + 'api/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
               + "&Department=" + JSON.stringify(this.Department)
               + "&sessionP=" + this.sessionP
           ).then((response)=>{
@@ -336,7 +311,7 @@ export default {
           })
         },
       exportMDPDetailsList(){
-          axios.get(baseurl + 'api/export-mdp-details-list?query=' +  this.query
+          axios.get(baseurl + 'api/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
               + "&Department=" + JSON.stringify(this.Department)
               + "&sessionP=" + this.sessionP
           ).then((response)=>{
@@ -349,26 +324,123 @@ export default {
                     let title = item.replace(rex, '$1$4 $2$3$5')
                     return {title, key: item}
                   });
-                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export Details Report')
+                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export Details Report-'+moment().format('DD_MM_YYYY-h-mm a'))
                 }
               }).catch((error)=>{
             console.log(response)
           })
         },
-        // exportMDPDetailsList(){
-        //   console.log(this.query)
-        //   axios.get(baseurl + 'api/export-mdp-details-list?staffId=' +  this.query
-        //       + "&Department=" + JSON.stringify(this.Department)
-        //       + "&sessionP=" + this.sessionP
-        //   ).then((response)=>{
-        //     console.log(response.data)
-        //     this.exportAllDataInOneSheet(response.data.data);
-        //     // this.exportMultipleSheetsToExcel(response.data.data);
-        //       }).catch((error)=>{
-        //     console.log(response)
-        //   })
-        // },
-        exportFeedback(){
+      // exportMDPDetailsList(){
+      //   console.log(this.query)
+      //   axios.get(baseurl + 'api/export-mdp-details-list?staffId=' +  this.query
+      //       + "&Department=" + JSON.stringify(this.Department)
+      //       + "&sessionP=" + this.sessionP
+      //   ).then((response)=>{
+      //     console.log(response.data)
+      //     this.exportAllDataInOneSheet(response.data.data);
+      //     // this.exportMultipleSheetsToExcel(response.data.data);
+      //   }).catch((error)=>{
+      //     console.log(response)
+      //   })
+      // },
+      exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
+        const wb = XLSX.utils.book_new();
+        const wsData = [];
+
+        let maxRows = 0;
+        const sectionArrays = [];
+
+        // Prepare each section horizontally
+        Object.entries(data).forEach(([sectionTitle, rows]) => {
+          if (!Array.isArray(rows) || rows.length === 0) return;
+
+          const headers = Object.keys(rows[0]);
+          const section = [];
+
+          // Section Title (merged-like with empty cells)
+          section.push([sectionTitle.toUpperCase(), ...Array(headers.length - 1).fill('')]);
+
+          // Column Headers
+          section.push(headers);
+
+          // Row Data
+          rows.forEach(row => {
+            const rowData = headers.map(h => row[h]);
+            section.push(rowData);
+          });
+
+          maxRows = Math.max(maxRows, section.length);
+          sectionArrays.push(section);
+        });
+
+        // Combine sections side-by-side
+        for (let i = 0; i < maxRows; i++) {
+          const row = [];
+          sectionArrays.forEach(section => {
+            row.push(...(section[i] || Array(section[0].length).fill('')));
+          });
+          wsData.push(row);
+        }
+
+        const ws = XLSX.utils.aoa_to_sheet(wsData);
+        XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
+
+        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+      },
+
+
+      // exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
+      //   const wb = XLSX.utils.book_new();
+      //   const wsData = [];
+      //
+      //   Object.entries(data).forEach(([sectionTitle, rows]) => {
+      //     if (!Array.isArray(rows) || rows.length === 0) return;
+      //
+      //     // Section Header
+      //     wsData.push([sectionTitle.toUpperCase()]);
+      //
+      //     // Column Headers
+      //     const headers = Object.keys(rows[0]);
+      //     wsData.push(headers);
+      //
+      //     // Row Data
+      //     rows.forEach(row => {
+      //       const rowData = headers.map(h => row[h]);
+      //       wsData.push(rowData);
+      //     });
+      //
+      //     // Add an empty row for spacing
+      //     wsData.push([]);
+      //   });
+      //
+      //   const ws = XLSX.utils.aoa_to_sheet(wsData);
+      //   XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
+      //
+      //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      //   saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+      // },
+      // exportMultipleSheetsToExcel(responseData, fileName = 'MDP_Export.xlsx') {
+      //   const wb = XLSX.utils.book_new();
+      //   Object.entries(responseData).forEach(([sheetName, data]) => {
+      //     // Skip non-array fields like "status"
+      //     if (!Array.isArray(data) || data.length === 0) return;
+      //     console.log('dataara',data)
+      //
+      //     // Create worksheet
+      //     const ws = XLSX.utils.json_to_sheet(data);
+      //
+      //     // Add worksheet to workbook
+      //     XLSX.utils.book_append_sheet(wb, ws, sheetName);
+      //   });
+      //
+      //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      //   const blob = new Blob([wbout], { type: 'application/octet-stream' });
+      //   saveAs(blob, 'MDP_Export.xlsx');
+      // },
+
+
+      exportFeedback(){
             axios.get(baseurl + 'api/export-mdp-feedback?query=' +  this.query
                 + "&Department=" + JSON.stringify(this.Department)
                 + "&sessionP=" + this.sessionP
