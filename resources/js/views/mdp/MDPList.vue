@@ -40,7 +40,7 @@
                                           <div class="col-md-2">
                                             <div class="form-group">
                                               <select id="sessionP" class="form-control" v-model="sessionP"   @click="getAllEmpID" >
-                                                <option value="">Select Session</option>
+                                                <option value="">Select Appraisal Period</option>
                                                 <option v-for="(session,index) in sessions" :value="session.Name"
                                                      :key="index">{{session.Name}}</option>
                                               </select>
@@ -61,7 +61,7 @@
 <!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
                                             </div>
 
-                                          <div class="col-md-4">
+                                          <div class="col-md-4" v-if="type === 'admin'">
                                             <div class="form-group">
 <!--                                              <select id="Department" class="form-control" v-model="Department">-->
 <!--                                                <option value="">Select Department</option>-->
@@ -211,8 +211,8 @@ export default {
     },
     methods: {
         getAllMDPList(){
-            axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page+
-                "&EmployeeList=" +  JSON.stringify(this.EmployeeList)
+            axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
+                + "&EmployeeList=" +  JSON.stringify(this.EmployeeList)
                 + "&Department=" + JSON.stringify(this.Department)
                 + "&sessionP=" + this.sessionP
             ).then((response)=>{

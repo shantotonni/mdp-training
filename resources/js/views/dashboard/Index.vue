@@ -4,16 +4,57 @@
       <div class="page-title-box">
         <div class="row align-items-center">
           <div class="col-sm-12">
-            <h4 class="page-title" style="font-size: 30px">Dashboard</h4>
+            <h4 class="page-title" style="font-size: 30px;color:rgb(49 118 225)">Connect</h4>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item active" style="font-size: 26px;color:rgb(10, 106, 255)">Tax Certificate, Management Development Plan, Action Plan, Job Description</li>
+              <li class="breadcrumb-item active" style="font-size: 20px;color:rgb(5 55 132)">
+              MDP, Action Plan, Tax Certificate, Job Description
+                <sub> <span id="dots">...</span>
+                <span id="more"> <br>
+                Management Development Plan (MDP) at ACI is an annual learning and development commitment made by each management staff,
+                  recommended and cross checked by the Supervisor.
+                  The plan will be executed during the particular fiscal year by
+                  means of formal training programs & several self-initiatives to enable the employee for improved performance
+                  in his present and future job responsibilities.</span>
+                <span @click="mdpInfoDetails()" id="myBtn">Read more</span>
+              </sub>
+              </li>
+
             </ol>
           </div>
-          <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 80px">
+          <div class="col-md-12" style="display: -webkit-inline-box;margin-top: 80px">
             <div class="d-none d-md-block" style="margin: 0 auto">
-              <router-link :to="{name: 'MDPCreate'}" class="btn btn-success" style="color: white;padding: 22px">
-                <i class="fas fa-plus"></i>
-                Click To Fillup The Management Development Plan
+                <router-link :to="{name: 'MDPList'}" class="btn btn-success" style="color: white">
+                  <div style="padding: 5px 100px;">
+                    <h4>MDP</h4>
+                  Management Development Plan
+                </div>
+              </router-link>
+            </div>
+          </div>
+          <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 5px">
+            <div class="d-none d-md-block" style="margin: 0 auto">
+              <router-link :to="{name: 'ActionPlanList'}" class="btn btn-success" style="color: white;padding: 22px">
+                <div style="padding: 2px 130px;">
+                  <h4>Action Plan</h4>
+                </div>
+              </router-link>
+            </div>
+          </div>
+          <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 5px">
+            <div class="d-none d-md-block" style="margin: 0 auto">
+              <router-link :to="{name: 'TaxCertificate'}" class="btn btn-success" style="color: white;padding: 22px">
+                <div style="padding: 2px 113px;">
+                  <h4>Tax Certificate</h4>
+                </div>
+              </router-link>
+            </div>
+          </div>
+          <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 5px">
+            <div class="d-none d-md-block" style="margin: 0 auto">
+              <router-link :to="{name: 'JobDescriptionList'}" class="btn btn-success" style="color: white;padding: 22px">
+                <div style="padding: 2px 108px;">
+                  <h4>Job Description</h4>
+                </div>
               </router-link>
             </div>
           </div>
@@ -22,20 +63,10 @@
       <!-- end row -->
       <div class="row">
         <div class="col-sm-12">
-          <p style="font-size:16px;color:#0a6aff">
-            Management Development Plan (MDP) at ACI is an annual learning and development commitment made by each management staff, recommended and cross checked by the Supervisor.
-            The plan will be executed during the particular fiscal year by means of formal training programs & several self-initiatives to enable the employee for improved performance in his present and future job responsibilities.
-          </p>
-        </div>
-      </div>
-      <div class="row align-items-center">
-        <div class="col-sm-12" style="margin-top: 30px">
-          <div class="d-none d-md-block" style="margin: 0 auto;text-align: center">
-            <router-link :to="{name: 'ActionPlanCreate'}" class="btn btn-primary" style="color: white;padding: 22px">
-              <i class="fas fa-plus"></i>
-              Click To Fillup The Action Plan
-            </router-link>
-          </div>
+<!--          <p style="font-size:16px;color:#0a6aff">-->
+<!--            Management Development Plan (MDP) at ACI is an annual learning and development commitment made by each management staff, recommended and cross checked by the Supervisor.-->
+<!--            The plan will be executed during the particular fiscal year by means of formal training programs & several self-initiatives to enable the employee for improved performance in his present and future job responsibilities.-->
+<!--          </p>-->
         </div>
       </div>
 
@@ -50,13 +81,29 @@ export default {
   mixins: [Common],
   data() {
     return {
-      isLoading: true
+      isLoading: true,
+      mdpDetails:false
     }
   },
   created() {
     // this.getData();
   },
   methods: {
+    mdpInfoDetails(){
+      let dots = document.getElementById("dots");
+      let moreText = document.getElementById("more");
+      let btnText = document.getElementById("myBtn");
+
+      if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "Read more";
+        moreText.style.display = "none";
+      } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "Read less";
+        moreText.style.display = "inline";
+      }
+    },
     getData() {
       // this.axiosGet('dashboard-data', (response) => {
       //    this.total_pending = response.total_pending;
@@ -129,4 +176,5 @@ export default {
   font-weight: bold;
   text-transform: uppercase;
 }
+#more {display: none;}
 </style>

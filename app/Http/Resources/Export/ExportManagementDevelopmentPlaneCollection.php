@@ -65,8 +65,8 @@ class ExportManagementDevelopmentPlaneCollection extends ResourceCollection
 //                    'RequiredCompetencyType'            => isset($mdp->training[0]) ? $mdp->training[0]->TrainingType: '',
 //                    'RequiredPlannedDate'               => isset($mdp->training[0]) ? $mdp->training[0]->TrainingDate: '',
 
-                    'FutureTrainingTitle'   => $mdp->FutureTrainingOne,
-                    'FutureTrainingDetails'   => $mdp->AreaOne,
+                    'FutureTrainingTitle'   => $mdp->AreaOne,
+                    'FutureTrainingDetails'   => $mdp->FutureTrainingOneDetails,
 
                 ];
             })

@@ -92,10 +92,7 @@ export default {
       departments: [],
       periods: [],
       pagination: {
-        current_page: 1,
-        from: 1,
-        to: 1,
-        total: 1,
+        current_page: 1
       },
       ZeroData:'',
       Status:'',
@@ -116,9 +113,10 @@ export default {
   methods: {
     getTRAEmp(ex) {
       axios.get(baseurl + `api/get-tra-emp-list/${this.$route.params.Year}/${this.$route.params.Dept}/${this.$route.params.Status}`).then((response)=>{
-        if (response.data.data.length > 0){
+        console.log('sds',response)
+        if (response.data.data.data.length > 0){
           if (ex === 'Y') {
-            let dataSets = response.data.data;
+            let dataSets = response.data.data.data;
             if (dataSets.length > 0) {
               let columns = Object.keys(dataSets[0]);
               columns = columns.filter((item) => item !== 'row_num');
@@ -135,8 +133,10 @@ export default {
 
             }
           } else {
-            this.headers = Object.keys(response.data.data[0])
-            this.contents = response.data.data;
+            this.headers = Object.keys(response.data.data.data[0])
+            this.contents = response.data.data.data;
+            this.pagination = response.data.data.meta;
+
           }
         }else {
           this.ZeroData = "No Data Found!"

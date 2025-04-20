@@ -68,7 +68,7 @@ class CommonController extends Controller
     }
 
     public function department(){
-        $list = Department::select('DeptCode','DeptName')->where('Active','Y')->get();
+        $list = Department::select('DeptCode','DeptName', 'DeptUnit')->where('Active','Y')->get();
         return response()->json([
            'data'=>$list
         ]);

@@ -53,7 +53,7 @@ class MDPController extends Controller
             if ($session){
                 $mdp = $mdp->where('AppraisalPeriod',$session);
             }
-            $mdp = $mdp->orderBy('ID','desc')->paginate(15);
+            $mdp = $mdp->orderBy('ID','desc')->whereNotNull('StaffID')->paginate(15);
         }else{
             $mdp = ManagementDevelopmentPlane::query();
             $Department = json_decode($request->Department);
@@ -70,6 +70,7 @@ class MDPController extends Controller
                     $query->where('StaffID',$empcode);
                     $query->orWhere('SuppervisorStaffID', $empcode);
                 })
+                ->whereNotNull('StaffID')
                 ->paginate(15);
         }
         return new ManagementDevelopmentPlaneCollection($mdp);
@@ -154,8 +155,8 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             $ManagementDevelopmentPlane->MDPStatus = 'Pending';
             $ManagementDevelopmentPlane->Signature = $name;
-            $ManagementDevelopmentPlane->FutureTrainingOne = $request->FutureTrainingOne;
-            $ManagementDevelopmentPlane->FutureTrainingTwo = $request->FutureTrainingTwo;
+            $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
+            $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
             if ($ManagementDevelopmentPlane->save()){
                 foreach ($initiative as $value){
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
@@ -533,7 +534,7 @@ class MDPController extends Controller
         $staffId = $request->staffId;
         $session = $request->sessionP;
         $Department = json_decode($request->Department);
-        $emp_List = ManagementDevelopmentPlane::select('StaffID',DB::raw("CONCAT(StaffID, '- ', EmployeeName) AS Employee"));
+        $emp_List = ManagementDevelopmentPlane::select(DB::raw("Distinct StaffID,CONCAT(StaffID, '- ', EmployeeName) AS Employee"));
             if (!empty($session)){
                 $emp_List ->where(function ($q) use ($session) {
                     $q->where('AppraisalPeriod', 'like', '%' . $session . '%');
@@ -545,7 +546,7 @@ class MDPController extends Controller
                 $emp_List = $emp_List->whereIn('Department',$DeptName);
             }
             return response()->json([
-            'employees'=>$emp_List->orderby('ID','DESC')->get()
+            'employees'=>$emp_List->whereNotNull('StaffID')->orderby('StaffID','ASC')->get()
         ]);
     }
 

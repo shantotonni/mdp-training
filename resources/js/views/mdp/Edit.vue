@@ -242,24 +242,34 @@
                         </div>
 
                         <hr>
+
                         <div class="row">
-                          <p style="font-weight: bold;font-size: 13px;color:#0000B9"> B. For development to take future responsibilities
+                          <p style="font-size: 13px;font-weight: bold;color:#0000B9"> B. For development to take future responsibilities
                             Other than those mentioned in A, list below two areas of personal development/training that you would like to see
-                            happen in your case in the coming years and explain how those trainings will help the company</p>
+                            happen in your case in the coming years and explain how those trainings will help the company
+                          </p>
                           <div class="col-md-12">
                             <div class="row">
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Training One</label>
-                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }" style="height: 90px" name="AreaOne" placeholder="Title" required>
-                                  <div class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
+                                  <label>Future Training One</label>
+                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"  name="Title" placeholder="Title" required>
+                                  <br>
+                                  <small>Explain how this training one will help the company <b>(within 30 words)</b></small>
+                                  <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }" style="height: 90px" name="Reason" placeholder="Why this training..." @change="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne')" required>
+                                  <div class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
+                                  <small class="error" v-if="form.TrainingOne!==''"> {{form.TrainingOne}}</small>
                                 </div>
                               </div>
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Training Two</label>
-                                  <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }" style="height: 90px" name="AreaTwo" placeholder="Title" required>
-                                  <div class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
+                                  <label>Future Training Two</label>
+                                  <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }"  name="Title" placeholder="Title" maxlength="100" required>
+                                  <br>
+                                  <small>Explain how this training two will help the company <b>(within 30 words)</b></small>
+                                  <input v-model="form.FutureTrainingTwoDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }" style="height: 90px" name="Reason" placeholder="Why this training..."  maxlength="100" @change="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo')"  required>
+                                  <div class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />
+                                  <small class="error" v-if="form.TrainingTwo!==''"> {{form.TrainingTwo}}</small>
                                 </div>
                               </div>
                             </div>
@@ -282,32 +292,45 @@
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
                       <div class="col-md-12">
-                        <h5>Last Five Years Training History</h5>
+                        <div class="row">
+                          <div class="col-md-9" style="color: #0f6674"><p>Last Five Years Training History</p> </div>
+                          <div class="col-md-3">
+                            <button class="btn btn-info btn-sm" @click="downloadTraining"> <i class="fas fa-download"></i> Download</button>
+                          </div>
+                        </div>
+
                         <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                           <thead>
-                            <tr>
-                              <th>Organized By</th>
-                              <th>Training Category</th>
-                              <th>Training Name</th>
-                            </tr>
+                          <tr>
+                            <!--                              <th>Organized By</th>-->
+                            <!--                              <th>Training Category</th>-->
+                            <!--                              <th>Training Name</th>  -->
+                            <th>SN</th>
+                            <th>Training Title</th>
+                            <th>Training Type</th>
+                            <th>Competency Type</th>
+                            <th style="width: 70px">Done Date</th>
+                          </tr>
                           </thead>
                           <tbody>
-                            <tr v-for="(training, i) in training_history" :key="i" v-if="training_history.length">
-                                <td>{{ training.Organized_By }}</td>
-                                <td>{{ training.Tranning_Category }}</td>
-                                <td>{{ training.Tranning_Name }}</td>
-                            </tr>
+                          <tr v-for="(training, i) in training_history" :key="i" v-if="training_history.length">
+                            <!--                                <td>{{ training.Organized_By }}</td>-->
+                            <!--                                <td>{{ training.Tranning_Category }}</td>-->
+                            <!--                                <td>{{ training.Tranning_Name }}</td>   -->
+
+                            <td>{{ ++i }}</td>
+                            <td>{{ training.TrainingTitle }}</td>
+                            <td>{{ training.TrainingType }}</td>
+                            <td>{{ training.CompetencyType }}</td>
+                            <td>{{ training.DoneDate }}</td>
+                          </tr>
                           </tbody>
                         </table>
                       </div>
                     </div>
                   </div>
-                  <div v-else>
-                    <skeleton-loader :row="14"/>
-                  </div>
                 </div>
-              </div>
-            </div>
+              </div>            </div>
           </form>
         </div>
       </div>
@@ -385,7 +408,9 @@ export default {
         SuppervisorEmail:'',
         SuppervisorMobile:'',
         AreaOne:'',
+        FutureTrainingOneDetails:'',
         AreaTwo:'',
+        FutureTrainingTwoDetails:'',
         initiative: [{ Name: '' , Type: '', Date: ''}],
         training: [
           { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
@@ -394,6 +419,8 @@ export default {
           { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
           { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
         ],
+        TrainingOne: '',
+        TrainingTwo: '',
         //area: [{ AreaOneName: '', AreaTwoName: ''}],
       }),
       isLoading: false,
@@ -406,7 +433,6 @@ export default {
   },
   created() {
     axios.get(baseurl + `api/mdp/edit/${this.$route.params.ID}`).then((response)=>{
-      console.log(response)
       this.form.fill(response.data.data);
        //this.getEmployeeByStaffID();
       // this.getSupervisorByStaffID();

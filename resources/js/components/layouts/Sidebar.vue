@@ -92,7 +92,7 @@
               <li @click="hideSideBar()">
                 <router-link :to="{name: 'TaxReturnAcknowledgement'}" ><i class="mdi mdi-checkbox-multiple-marked-outline"></i>Tax Return Acknowledgement</router-link>
               </li>
-              <li @click="hideSideBar()" v-if="EmpCode === '30068'">
+              <li @click="hideSideBar()" v-if="EmpCode === 'admin'">
                 <router-link :to="{name: 'TaxReturnAcknowledgementReport'}" ><i class="mdi mdi-table-large"></i>Tax Return Acknowledgement Report</router-link>
               </li>
             </ul>

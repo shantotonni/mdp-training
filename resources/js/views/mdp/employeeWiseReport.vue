@@ -13,13 +13,18 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <select id="sessionP" class="form-control" v-model="sessionP">
-                            <option value="">Select Session</option>
+                            <option value="">Select Appraisal Period</option>
                             <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>
                           </select>
                         </div>
                       </div>
-
-                      <div class="col-md-4">
+<!--                      <div class="col-md-2">-->
+<!--                        <div class="form-group">-->
+<!--                          <input type="text" class="form-control" placeholder="Enter EmpCode"-->
+<!--                                 v-model="EmpCode">-->
+<!--                        </div>-->
+<!--                      </div>-->
+                      <div class="col-md-3">
                         <div class="form-group">
                           <multiselect
                               v-model="TrainingTitle"
@@ -30,16 +35,27 @@
                               :show-labels="true"
                               label="TrainingTitle"
                               track-by="TrainingTitle"
-                              placeholder="Pick a value"></multiselect>
+                              placeholder="Pick a Training Title"></multiselect>
                         </div>
                       </div>
 
                       <div class="col-md-2">
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Enter EmpCode"
-                            v-model="EmpCode">
+                          <multiselect
+                              v-model="task"
+                              :options="taskProgressList"
+                              :multiple="true"
+                              :searchable="true"
+                              :close-on-select="true"
+                              :show-labels="true"
+                              label="task"
+                              track-by="task"
+                              placeholder="Pick a Training Title"></multiselect>
                         </div>
                       </div>
+
+
+
                       <div class="col-md-3">
                         <button type="submit" @click="getEmployeeIndividualTraining" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                         <button type="submit" @click="getEmployeeIndividualTrainingExport" class="btn btn-success"><i class="mdi mdi-database-export"></i>Export</button>
@@ -106,11 +122,18 @@ export default {
     return {
       individual_training: [],
       sessions: [],
+      departments: [],
       isLoading: false,
       sessionP: '',
       EmpCode: '',
+      task: '',
       TrainingTitle: [],
       trainingTitlesList: [],
+      taskProgressList: [
+        {task:'Done'},
+        {task:'Offered'},
+        {task:'Pending'},
+      ],
     }
   },
   mounted() {
@@ -129,6 +152,14 @@ export default {
     getAllSession(){
       axios.get(baseurl + 'api/get-all-session/').then((response) => {
         this.sessions = response.data.sessions;
+        //this.getAllTrainingTitle();
+      }).catch((error) => {
+
+      })
+    },
+    getAllDepartment(){
+      axios.get(baseurl + 'api/get-departments').then((response) => {
+        this.departments = response.data.data;
         //this.getAllTrainingTitle();
       }).catch((error) => {
 

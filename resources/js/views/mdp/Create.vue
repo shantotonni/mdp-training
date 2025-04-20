@@ -38,7 +38,7 @@
                             <div class="form-group">
                               <div class="form-group">
                                 <label>Staff ID</label>
-                                <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID">
+                                <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID" required>
                                 <div class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -46,42 +46,42 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Employee Name</label>
-                              <input type="text" name="EmployeeName" v-model="form.EmployeeName" readonly class="form-control" :class="{ 'is-invalid': form.errors.has('EmployeeName') }">
+                              <input type="text" name="EmployeeName" v-model="form.EmployeeName" readonly class="form-control" :class="{ 'is-invalid': form.errors.has('EmployeeName') }" required>
                               <div class="error" v-if="form.errors.has('EmployeeName')" v-html="form.errors.get('EmployeeName')" />
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Designation</label>
-                              <input type="text" name="Designation" readonly v-model="form.Designation" class="form-control" :class="{ 'is-invalid': form.errors.has('Designation') }">
+                              <input type="text" name="Designation" readonly v-model="form.Designation" class="form-control" :class="{ 'is-invalid': form.errors.has('Designation') }" required>
                               <div class="error" v-if="form.errors.has('Designation')" v-html="form.errors.get('Designation')" />
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Department</label>
-                              <input type="text" name="Department" readonly v-model="form.Department" class="form-control" :class="{ 'is-invalid': form.errors.has('Department') }">
+                              <input type="text" name="Department" readonly v-model="form.Department" class="form-control" :class="{ 'is-invalid': form.errors.has('Department') }" required>
                               <div class="error" v-if="form.errors.has('Department')" v-html="form.errors.get('Department')" />
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Business</label>
-                              <input type="text" name="Business" readonly v-model="form.Business" class="form-control" :class="{ 'is-invalid': form.errors.has('Business') }">
+                              <input type="text" name="Business" readonly v-model="form.Business" class="form-control" :class="{ 'is-invalid': form.errors.has('Business') }" required>
                               <div class="error" v-if="form.errors.has('Business')" v-html="form.errors.get('Business')" />
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Official Email</label>
-                              <input type="text" name="OfficialEmail" v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }">
+                              <input type="text" name="OfficialEmail" v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }" required>
                               <div class="error" v-if="form.errors.has('OfficialEmail')" v-html="form.errors.get('OfficialEmail')" />
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Mobile</label>
-                              <input type="text" name="Mobile" v-model="form.Mobile" class="form-control" :class="{ 'is-invalid': form.errors.has('Mobile') }">
+                              <input type="text" name="Mobile" v-model="form.Mobile" class="form-control" :class="{ 'is-invalid': form.errors.has('Mobile') }" required>
                               <div class="error" v-if="form.errors.has('Mobile')" v-html="form.errors.get('Mobile')" />
                             </div>
                           </div>
@@ -110,7 +110,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Present Job Started On</label>
-                              <datepicker v-model="form.PresentJobStartedOn" :format="customFormatter" input-class="form-control"></datepicker>
+                              <datepicker v-model="form.PresentJobStartedOn" :format="customFormatter" input-class="form-control" ></datepicker>
 <!--                              <input type="text" name="PresentJobStartedOn" v-model="form.PresentJobStartedOn" class="form-control" :class="{ 'is-invalid': form.errors.has('PresentJobStartedOn') }">-->
                               <div class="error" v-if="form.errors.has('PresentJobStartedOn')" v-html="form.errors.get('PresentJobStartedOn')" />
                             </div>
@@ -191,7 +191,7 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Competency Type</label>
-                              <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }">
+                              <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }" required>
                                 <option value="">Select Type</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
@@ -204,7 +204,7 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Planned Date</label>
-                              <datepicker v-model="initiat.Date" :format="customFormatter" placeholder="Enter Date" input-class="form-control"></datepicker>
+                              <datepicker v-model="initiat.Date" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required></datepicker>
                               <div class="error" v-if="form.errors.has('Date')" v-html="form.errors.get('Date')" />
                             </div>
                           </div>
@@ -223,7 +223,7 @@
                           <div class="col-4 col-md-4" v-if="dropDown==='YES'">
                             <div class="form-group">
                               <label>Select Training Title</label>
-                              <select v-model="train.TrainingTitle" name="Type" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }">
+                              <select v-model="train.TrainingTitle" name="Type" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }" required>
                                 <option value="">Select Type</option>
                                 <option :value="list.TrainingTitle" v-for="(list,i) in training_list" :key="i">{{list.TrainingTitle}}</option>
                               </select>
@@ -234,7 +234,7 @@
                           <div class="col-4 col-md-4" v-else>
                             <div class="form-group">
                               <label>Select Training Title</label>
-                              <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Type Or Copy From Suggestive List">
+                              <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Type Or Copy From Suggestive List" required>
                               <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
                             </div>
                           </div>
@@ -242,7 +242,7 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Competency Type</label>
-                              <select v-model="train.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }">
+                              <select v-model="train.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }" required>
                                 <option value="">Select Type</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
@@ -254,7 +254,7 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Planned Date</label>
-                              <datepicker v-model="train.TrainingDate" :format="customFormatter" placeholder="Enter Date" input-class="form-control"></datepicker>
+                              <datepicker v-model="train.TrainingDate" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required></datepicker>
                               <div class="error" v-if="form.errors.has('TrainingDate')" v-html="form.errors.get('TrainingDate')" />
                             </div>
                           </div>
@@ -276,22 +276,22 @@
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
                                   <label>Future Training One</label>
-                                  <input v-model="form.FutureTrainingOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('futureTrainingOne') }"  name="Title" placeholder="Title" required>
+                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"  name="Title" placeholder="Title" required>
                                   <br>
                                   <small>Explain how this training one will help the company <b>(within 30 words)</b></small>
-                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }" style="height: 90px" name="Reason" placeholder="Why this training..." @change="countSpace(form.AreaOne,'futureTrainingOne')" required>
-                                  <div class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
+                                  <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }" style="height: 90px" name="Reason" placeholder="Why this training..." @change="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne')" required>
+                                  <div class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
                                   <small class="error" v-if="form.TrainingOne!==''"> {{form.TrainingOne}}</small>
                                 </div>
                               </div>
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
                                   <label>Future Training Two</label>
-                                  <input v-model="form.FutureTrainingTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('futureTrainingTwo') }"  name="Title" placeholder="Title" maxlength="100" required>
+                                  <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }"  name="Title" placeholder="Title" maxlength="100" required>
                                    <br>
                                   <small>Explain how this training two will help the company <b>(within 30 words)</b></small>
-                                  <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }" style="height: 90px" name="Reason" placeholder="Why this training..."  maxlength="100" @change="countSpace(form.AreaTwo,'futureTrainingTwo')"  required>
-                                  <div class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
+                                  <input v-model="form.FutureTrainingTwoDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }" style="height: 90px" name="Reason" placeholder="Why this training..."  maxlength="100" @change="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo')"  required>
+                                  <div class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />
                                   <small class="error" v-if="form.TrainingTwo!==''"> {{form.TrainingTwo}}</small>
                                 </div>
                               </div>
@@ -392,7 +392,14 @@
     <div>
       <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
     </div>
-
+<!--    <div id="app">-->
+<!--      <cropper-->
+<!--          class="cropper" -->
+<!--          :src="form.Signature"-->
+<!--          :stencil-props="{  aspectRatio: 200/60  }"-->
+<!--          @change="change"-->
+<!--      ></cropper>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -405,6 +412,11 @@ import { VueEditor } from "vue2-editor";
 import {bus} from "../../app";
 import * as events from "events";
 const DATA_LIFETIME = 72 * 60 * 60 * 1000;
+//------------ for image crop-----------------
+
+import Vue from 'vue'
+import { Cropper } from 'vue-advanced-cropper'
+import 'vue-advanced-cropper/dist/style.css';
 
 export default {
   name: "List",
@@ -416,7 +428,8 @@ export default {
   mixins: [Common],
   components: {
     Datepicker,
-    VueEditor
+    VueEditor,
+    Cropper
   },
   data() {
     return {
@@ -449,9 +462,9 @@ export default {
         SuppervisorEmail:'',
         SuppervisorMobile:'',
         AreaOne:'',
-        FutureTrainingOne:'',
+        FutureTrainingOneDetails:'',
         AreaTwo:'',
-        FutureTrainingTwo:'',
+        FutureTrainingTwoDetails:'',
         initiative: [{ Name: '' , Type: '', Date: ''}],
         training: [
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
@@ -480,6 +493,9 @@ export default {
     //this.getData()
   },
   methods: {
+    change({coordinates, canvas}) {
+      console.log(coordinates, canvas)
+    },
 
     //keep data in the localstorage as cache till 72h
     initFormDataState() {
@@ -544,23 +560,23 @@ export default {
       }
     },
 
-    // store(){
-    //   this.form.busy = true;
-    //   this.PreLoader = true;
-    //   this.form.post(baseurl + "api/mdp/store").then(response => {
-    //     if (response.data.status === 'error'){
-    //       this.errorNoti(response.data.message);
-    //     }else {
-    //       this.redirect(this.mainOrigin + 'mdp-list')
-    //       this.successNoti(response.data.message);
-    //       this.clearFormDataState()
-    //     }
-    //     this.PreLoader = false;
-    //   }).catch(e => {
-    //     this.isLoading = false;
-    //     this.PreLoader = false;
-    //   });
-    // },
+    store(){
+      this.form.busy = true;
+      this.PreLoader = true;
+      this.form.post(baseurl + "api/mdp/store").then(response => {
+        if (response.data.status === 'error'){
+          this.errorNoti(response.data.message);
+        }else {
+          this.redirect(this.mainOrigin + 'mdp-list')
+          this.successNoti(response.data.message);
+          this.clearFormDataState()
+        }
+        this.PreLoader = false;
+      }).catch(e => {
+        this.isLoading = false;
+        this.PreLoader = false;
+      });
+    },
     getEmployeeByStaffID(){
       axios.post(baseurl +'api/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
@@ -699,11 +715,9 @@ export default {
 }
 </script>
 <style scoped>
-img {
-  max-width: 100%;
-}
-canvas {
-  border: 1px solid #ccc;
+.cropper {
+  height: 600px;
+  background: #DDD;
 }
 .side_note label{
   font-size: 11px!important;
