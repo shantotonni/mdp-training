@@ -94,7 +94,9 @@ class TRAController extends Controller
        ]);
    }
    public function getTaxCircle(Request $request){
-       $circle = TaxCircle::where('TaxZoneId',$request->id)->where('ActiveStatus','Y')->orderby('TaxCircleId','ASC')->get();
+
+       $circle = TaxCircle::select('TaxCircleId','TaxZoneId','TaxCircleName')->where('TaxZoneId',$request->id)
+           ->where('ActiveStatus','Y')->orderby('TaxCircleId','ASC')->get();
        return response()->json([
           'data'=>$circle
        ]);
@@ -113,10 +115,10 @@ class TRAController extends Controller
         DB::beginTransaction();
        $validator = Validator::make($request->all(), [
            'Etin'=>'required|min:8',
-           'Zone'=>'required',
+           'ZoneId'=>'required',
            'Serial'=>'required',
            'ReturnDate'=>'required',
-           'Circle'=>'required'
+           'CircleId'=>'required'
        ]);
        if ($validator->fails()) {
            return response()->json([
@@ -142,11 +144,11 @@ class TRAController extends Controller
            }
            $list->EmpCode = $EmpCode;
            $list->ETIN = $request->Etin;
-           $list->TaxZoneId = $request->Zone;
-           $list->TaxCircleId = $request->Circle;
+           $list->TaxZoneId = $request->ZoneId;
+           $list->TaxCircleId = $request->CircleId;
            $list->DateOfReturnSubmission = $request->ReturnDate;
            $list->ReturnSerialNumber = $request->Serial;
-           $list->TaxYear = $request->TaxYear;
+           $list->TaxYear = config('app.taxYear');
            $list->save();
            DB::commit();
            return response()->json([

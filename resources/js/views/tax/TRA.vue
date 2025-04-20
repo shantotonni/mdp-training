@@ -61,7 +61,7 @@
                                         </div>
                                     </div>
 <!--                                  v-if="isTaxPrintPart"-->
-                                    <div class="taxPart" v-if="isTaxPrintPart">
+                                    <div class="taxPart"  v-if="isTaxPrintPart">
                                         <div class="row">
                                           <div class="col-md-12"
                                                  :style="{position:'',textAlign: `${companyDesignTemplate.LogoAlignment}`}">
@@ -178,7 +178,7 @@
                                                                 <div class="form-group row">
                                                                   <label class="col-lg-3 col-form-label">Tax Zone : </label>
                                                                   <div class="col-lg-9">
-                                                                    <select id="Zone" class="form-control" v-model="form.Zone" @change="getTaxCircle(form.Zone)"  >
+                                                                    <select id="Zone" class="form-control" v-model="form.ZoneId" @change="getTaxCircle"  >
                                                                       <option value="">Select Tax Zone</option>
                                                                       <option :value="div.TaxZoneId" v-for="(div,index) in Zones" :key="index" >{{div.TaxZoneName}}</option>
                                                                     </select>
@@ -212,7 +212,7 @@
                                                                 <div class="form-group row">
                                                                   <label class="col-lg-3 col-form-label">Tax Circle : </label>
                                                                   <div class="col-lg-9">
-                                                                    <select id="Circle" class="form-control" v-model="form.Circle" >
+                                                                    <select id="Circle" class="form-control" v-model="form.CircleId" >
                                                                       <option value="">Select Tax Circle</option>
                                                                       <option :value="div.TaxCircleId" v-for="(div,index) in Circles" :key="index" >{{div.TaxCircleName}}</option>
                                                                     </select>
@@ -303,8 +303,8 @@ export default {
             Department:'',
             JoiningDate:'',
             Etin:'',
-            Zone:'',
-            Circle:'',
+            ZoneId:'',
+            CircleId:'',
             Mobile:'',
             ReturnDate:moment().format('YYYY-MM-DD'),
             Serial:'',
@@ -328,13 +328,15 @@ export default {
         }
     },
     created() {
-      const currentYear = new Date().getFullYear();
-      this.thisYear = currentYear ;
-      this.NextYear = currentYear + 1;
+      // const currentYear = new Date().getFullYear();
+      // this.thisYear = currentYear ;
+      // this.NextYear = currentYear + 1;
       // this.form.TaxYear = `${this.thisYear}-${this.NextYear}`;
     },
     mounted() {
-        this.getAllEmpInfo()
+      this.getAllEmpInfo()
+      this.getTaxZone()
+      this.getAcknowledgement()
     },
     methods: {
       getAllEmpInfo(){
@@ -346,8 +348,6 @@ export default {
           this.form.Mobile = response.data.MobileNo
           this.form.Etin = response.data.TinNo
           this.TinNo = response.data.TinNo
-          this.getAcknowledgement()
-          this.getTaxZone()
         }).catch((error) => {
 
         })
@@ -388,19 +388,20 @@ export default {
             }
             })
         },
-        getTaxCircle(val){
-            axios.get(baseurl+'api/get-tax-circle?id='+ val).then((response)=>{
-              this.Circles = response.data.data
-            })
-          },
+        getTaxCircle(circleID){
+          axios.get(baseurl+'api/get-tax-circle?id='+ this.form.ZoneId).then((response)=>{
+            this.Circles = response.data.data
+            if(circleID){
+              this.form.CircleId = circleID;
+            }
+          })
+        },
       getAcknowledgement(){
             axios.get(baseurl+'api/get-acknowledgement?taxYear='+this.form.TaxYear).then((response)=>{
-              console.log(response)
-              this.form.Circle = response.data.data.TaxCircleId
-              this.form.Zone = response.data.data.TaxZoneId
-              this.form.ReturnDate =   moment(response.data.data.DateOfReturnSubmission).format('YYYY-MM-DD')
+              this.form.ZoneId = response.data.data.TaxZoneId
+              this.getTaxCircle(response.data.data.TaxCircleId);
+              this.form.ReturnDate =  moment(response.data.data.DateOfReturnSubmission).format('YYYY-MM-DD')
               this.form.Serial = response.data.data.ReturnSerialNumber
-              this.getTaxCircle( this.form.Zone);
             })
           },
       customFormatter(date) {
