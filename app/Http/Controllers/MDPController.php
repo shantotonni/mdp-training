@@ -632,6 +632,7 @@ class MDPController extends Controller
             }
 
             $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
+
             return response()->json([
                 'employee'=>new EmployeeResource($employee),
                 'training_history'=>$training_history,
@@ -646,6 +647,7 @@ class MDPController extends Controller
             ]);
         }
     }
+
     public function getExportTrainingHistory(Request $request){
         $empcode= $request->empcode;
 
@@ -654,7 +656,6 @@ class MDPController extends Controller
             'training_history' => $result,
         ]);
     }
-
 
     function exportexcel($result, $filename){
         $arrayheading[0] = !empty($result) ? array_keys($result[0]) : [];
@@ -670,7 +671,6 @@ class MDPController extends Controller
         fclose($out);
         exit();
     }
-
 
     public function getSupervisorByEmployeeCode(Request $request){
         $first_character = mb_substr($request->SuperVisorEmpCode, 0, 1);

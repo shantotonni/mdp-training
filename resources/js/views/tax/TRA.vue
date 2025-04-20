@@ -60,8 +60,8 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="taxPart" v-if="isTaxPrintPart" >
+<!--                                  v-if="isTaxPrintPart"-->
+                                    <div class="taxPart" v-if="isTaxPrintPart">
                                         <div class="row">
                                           <div class="col-md-12"
                                                  :style="{position:'',textAlign: `${companyDesignTemplate.LogoAlignment}`}">
@@ -86,9 +86,7 @@
                                                       <div class="col-md-6">
                                                         <div class="row">
                                                           <div class="col-md-12">
-                                                            <ValidationProvider name="Name" mode="eager"
-                                                                                rules="required"
-                                                                                v-slot="{ errors }">
+                                                            <ValidationProvider name="Name" mode="eager" rules="required" v-slot="{ errors }">
                                                               <div class="form-group row">
                                                                 <label for="Name" class="col-lg-3 col-form-label">Name : </label>
                                                                 <div class="col-lg-9">
@@ -105,9 +103,7 @@
                                                             </ValidationProvider>
                                                           </div>
                                                           <div class="col-md-12">
-                                                            <ValidationProvider name="Department" mode="eager"
-                                                                                rules="required"
-                                                                                v-slot="{ errors }">
+                                                            <ValidationProvider name="Department" mode="eager" rules="required" v-slot="{ errors }">
                                                               <div class="form-group row">
                                                                 <label for="Department" class="col-lg-3 col-form-label">Department : </label>
                                                                 <div class="col-lg-9">
@@ -127,9 +123,7 @@
                                                       <div class="col-md-6">
                                                           <div class="row">
                                                             <div class="col-md-12">
-                                                              <ValidationProvider name="Designation" mode="eager"
-                                                                                  rules="required"
-                                                                                  v-slot="{ errors }">
+                                                              <ValidationProvider name="Designation" mode="eager" rules="required" v-slot="{ errors }">
                                                                 <div class="form-group row">
                                                                   <label for="Designation" class="col-lg-3 col-form-label">Designation : </label>
                                                                   <div class="col-lg-9">
@@ -145,9 +139,7 @@
                                                               </ValidationProvider>
                                                             </div>
                                                             <div class="col-md-12">
-                                                              <ValidationProvider name="Joining Date" mode="eager"
-                                                                                  rules="required"
-                                                                                  v-slot="{ errors }">
+                                                              <ValidationProvider name="Joining Date" mode="eager" rules="required" v-slot="{ errors }">
                                                                 <div class="form-group row">
                                                                   <label for="JoiningDate" class="col-lg-3 col-form-label">Joining Date : </label>
                                                                   <div class="col-lg-9">
@@ -166,9 +158,7 @@
                                                       <div class="col-md-6">
                                                           <div class="row">
                                                             <div class="col-md-12">
-                                                              <ValidationProvider name="E-tin" mode="eager"
-                                                                                  rules="required"
-                                                                                  v-slot="{ errors }">
+                                                              <ValidationProvider name="E-tin" mode="eager" rules="required" v-slot="{ errors }">
                                                                 <div class="form-group row">
                                                                   <label for="E-tin" class="col-lg-3 col-form-label">E-TIN : </label>
                                                                   <div class="col-lg-9">
@@ -184,11 +174,9 @@
                                                               </ValidationProvider>
                                                             </div>
                                                             <div class="col-md-12">
-                                                              <ValidationProvider name="Zone" mode="eager"
-                                                                                  rules="required"
-                                                                                  v-slot="{ errors }">
+                                                              <ValidationProvider name="Zone" mode="eager" rules="required" v-slot="{ errors }">
                                                                 <div class="form-group row">
-                                                                  <label for="Zone" class="col-lg-3 col-form-label">Tax Zone : </label>
+                                                                  <label class="col-lg-3 col-form-label">Tax Zone : </label>
                                                                   <div class="col-lg-9">
                                                                     <select id="Zone" class="form-control" v-model="form.Zone" @change="getTaxCircle(form.Zone)"  >
                                                                       <option value="">Select Tax Zone</option>
@@ -204,9 +192,7 @@
                                                       <div class="col-md-6">
                                                           <div class="row">
                                                             <div class="col-md-12">
-                                                            <ValidationProvider name="Mobile" mode="eager"
-                                                                                rules="required"
-                                                                                v-slot="{ errors }">
+                                                            <ValidationProvider name="Mobile" mode="eager" rules="required" v-slot="{ errors }">
                                                               <div class="form-group row">
                                                                 <label for="Mobile" class="col-lg-3 col-form-label">Mobile No : </label>
                                                                 <div class="col-lg-9">
@@ -222,11 +208,9 @@
                                                             </ValidationProvider>
                                                           </div>
                                                             <div class="col-md-12">
-                                                              <ValidationProvider name="Circle" mode="eager"
-                                                                                  rules="required"
-                                                                                  v-slot="{ errors }">
+                                                              <ValidationProvider name="Circle" mode="eager" rules="required" v-slot="{ errors }">
                                                                 <div class="form-group row">
-                                                                  <label for="Circle" class="col-lg-3 col-form-label">Tax Circle : </label>
+                                                                  <label class="col-lg-3 col-form-label">Tax Circle : </label>
                                                                   <div class="col-lg-9">
                                                                     <select id="Circle" class="form-control" v-model="form.Circle" >
                                                                       <option value="">Select Tax Circle</option>
@@ -243,9 +227,7 @@
                                                       <div class="col-md-6">
                                                           <div class="row">
                                                             <div class="col-md-12">
-                                                              <ValidationProvider name="returnDate" mode="eager"
-                                                                                  rules="required"
-                                                                                  v-slot="{ errors }">
+                                                              <ValidationProvider name="returnDate" mode="eager" rules="required" v-slot="{ errors }">
                                                                 <div class="form-group row">
                                                                   <label for="returnDate" class="col-lg-3 col-form-label">Tax return Submission Date : </label>
                                                                   <div class="col-lg-9">
@@ -264,9 +246,7 @@
                                                       <div class="col-md-6">
                                                           <div class="row">
                                                             <div class="col-md-12">
-                                                              <ValidationProvider name="Serial" mode="eager"
-                                                                                  rules="required"
-                                                                                  v-slot="{ errors }">
+                                                              <ValidationProvider name="Serial" mode="eager" rules="required" v-slot="{ errors }">
                                                                 <div class="form-group row">
                                                                   <label for="Serial" class="col-lg-3 col-form-label"> Provided serial number from the Income tax authority  : </label>
                                                                   <div class="col-lg-9">
@@ -292,7 +272,6 @@
                                               </div>
                                           </div>
                                           <br>
-
 
                                         </div>
 
@@ -349,7 +328,6 @@ export default {
         }
     },
     created() {
-
       const currentYear = new Date().getFullYear();
       this.thisYear = currentYear ;
       this.NextYear = currentYear + 1;
@@ -393,6 +371,7 @@ export default {
                     this.isOTPVerification = true;
                     this.isTaxPrintPart = true
                     this.form.TaxYear = response.data.TaxYear ;
+                    this.getAcknowledgement()
                 } else {
                     this.$toaster.error(response.data.message);
                 }
@@ -416,7 +395,7 @@ export default {
           },
       getAcknowledgement(){
             axios.get(baseurl+'api/get-acknowledgement?taxYear='+this.form.TaxYear).then((response)=>{
-
+              console.log(response)
               this.form.Circle = response.data.data.TaxCircleId
               this.form.Zone = response.data.data.TaxZoneId
               this.form.ReturnDate =   moment(response.data.data.DateOfReturnSubmission).format('YYYY-MM-DD')
