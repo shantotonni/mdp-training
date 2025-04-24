@@ -169,11 +169,11 @@ export default {
           } else {
             this.headers = Object.keys(response.data.data.data[0])
             this.contents = response.data.data.data;
-            this.pagination.current_page = response.data.data.current_page;
-            this.pagination.from = response.data.data.from;
-            this.pagination.to = response.data.data.to;
-            this.pagination.total = response.data.data.total;
-            this.pagination.last_page = response.data.data.last_page;
+            // this.pagination.current_page = response.data.data.current_page;
+            // this.pagination.from = response.data.data.from;
+            // this.pagination.to = response.data.data.to;
+            // this.pagination.total = response.data.data.total;
+            // this.pagination.last_page = response.data.data.last_page;
           }
         }else {
           this.$toaster.error('No Data Found!');

@@ -68,9 +68,15 @@ class CommonController extends Controller
     }
 
     public function department(){
-        $list = Department::select('DeptCode','DeptName', 'DeptUnit')->where('Active','Y')->get();
+        $list = Department::select('DeptCode','DeptName', 'DeptUnit')->where('Active','Y')->distinct()->get();
         return response()->json([
            'data'=>$list
+        ]);
+    }
+    public function getSBU(){
+        $list = Department::select('DeptUnit')->where('Active','Y')->distinct()->get();
+        return response()->json([
+            'data'=>$list
         ]);
     }
 

@@ -74,7 +74,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Official Email</label>
-                              <input type="text" name="OfficialEmail" v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }" required>
+                              <input type="text" name="OfficialEmail" readonly v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }" required>
                               <div class="error" v-if="form.errors.has('OfficialEmail')" v-html="form.errors.get('OfficialEmail')" />
                             </div>
                           </div>
@@ -118,7 +118,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Qualification</label>
-                              <input type="text" name="Qualification" v-model="form.Qualification" class="form-control" :class="{ 'is-invalid': form.errors.has('Qualification') }">
+                              <input type="text" name="Qualification" readonly v-model="form.Qualification" class="form-control" :class="{ 'is-invalid': form.errors.has('Qualification') }">
                               <div class="error" v-if="form.errors.has('Qualification')" v-html="form.errors.get('Qualification')" />
                             </div>
                           </div>
@@ -163,14 +163,14 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor Email</label>
-                              <input type="text" name="SuppervisorEmail" v-model="form.SuppervisorEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorEmail') }">
+                              <input type="text" name="SuppervisorEmail" readonly v-model="form.SuppervisorEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorEmail') }">
                               <div class="error" v-if="form.errors.has('SuppervisorEmail')" v-html="form.errors.get('SuppervisorEmail')" />
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor Mobile</label>
-                              <input type="text" name="SuppervisorMobile" v-model="form.SuppervisorMobile" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorMobile') }">
+                              <input type="text" name="SuppervisorMobile" readonly v-model="form.SuppervisorMobile" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorMobile') }">
                               <div class="error" v-if="form.errors.has('SuppervisorMobile')" v-html="form.errors.get('SuppervisorMobile')" />
                             </div>
                           </div>
@@ -193,9 +193,10 @@
                               <label>Competency Type</label>
                               <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }" required>
                                 <option value="">Select Type</option>
+                                <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
-                                <option value="Behavior">Behavior</option>
+
 <!--                                <option :value="category.id" v-for="(category,index) in categories" :key="index">{{category.name}}</option>-->
                               </select>
                               <div class="error" v-if="form.errors.has('Type')" v-html="form.errors.get('Type')" />
@@ -244,9 +245,10 @@
                               <label>Competency Type</label>
                               <select v-model="train.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }" required>
                                 <option value="">Select Type</option>
+                                <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
-                                <option value="Behavior">Behavior</option>
+
                               </select>
                               <div class="error" v-if="form.errors.has('TrainingType')" v-html="form.errors.get('TrainingType')" />
                             </div>
@@ -278,8 +280,8 @@
                                   <label>Future Training One</label>
                                   <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"  name="Title" placeholder="Title" required>
                                   <br>
-                                  <small>Explain how this training one will help the company <b>(within 30 words)</b></small>
-                                  <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }" style="height: 90px" name="Reason" placeholder="Why this training..." @change="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne')" required>
+                                  <small>Explain how this training one will help the company.</small>
+                                  <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }" style="height: 90px" name="Reason" placeholder="Max 30 words" @change="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne')" required>
                                   <div class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
                                   <small class="error" v-if="form.TrainingOne!==''"> {{form.TrainingOne}}</small>
                                 </div>
@@ -289,8 +291,8 @@
                                   <label>Future Training Two</label>
                                   <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }"  name="Title" placeholder="Title" maxlength="100" required>
                                    <br>
-                                  <small>Explain how this training two will help the company <b>(within 30 words)</b></small>
-                                  <input v-model="form.FutureTrainingTwoDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }" style="height: 90px" name="Reason" placeholder="Why this training..."  maxlength="100" @change="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo')"  required>
+                                  <small>Explain how this training two will help the company.</small>
+                                  <input v-model="form.FutureTrainingTwoDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }" style="height: 90px" name="Reason" placeholder="Max 30 words"  maxlength="100" @change="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo')"  required>
                                   <div class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />
                                   <small class="error" v-if="form.TrainingTwo!==''"> {{form.TrainingTwo}}</small>
                                 </div>

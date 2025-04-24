@@ -5,6 +5,10 @@
                 <div class="col-sm-6">
                   <div class="float-right d-none d-md-block">
                     <div class="card-tools">
+                      <button class="btn btn-outline-dark btn-sm" v-if="type ==='admin'">
+                        <i class="fas fa-address-card"></i>
+                        MDP Count- {{this.mdpNo}}
+                      </button>
                       <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">
                         <i class="fas fa-plus"></i>
                         Add Management Development Plan
@@ -13,14 +17,15 @@
 <!--                        <i class="mdi mdi-database-export"></i>-->
 <!--                        Feedback Export-->
 <!--                      </button>-->
-                      <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
-                        <i class="fas fa-download"></i>
-                        Export
-                      </button>
                       <button type="button" class="btn btn-info btn-sm" @click="exportMDPDetailsList" v-if="type ==='admin'">
                         <i class="fas fa-download"></i>
-                        Export Details
+                        Export-1
                       </button>
+                      <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
+                        <i class="fas fa-download"></i>
+                        Export-2
+                      </button>
+
                       <button type="button" class="btn btn-primary btn-sm" @click="reload">
                         <i class="fas fa-sync"></i>
                         Reload
@@ -39,14 +44,14 @@
                                         <div class="row">
                                           <div class="col-md-2">
                                             <div class="form-group">
-                                              <select id="sessionP" class="form-control" v-model="sessionP"   @click="getAllEmpID" >
-                                                <option value="">Select Appraisal Period</option>
+                                              <select id="sessionP" class="form-control defineHeight"   v-model="sessionP"   @click="getAllEmpID" >
+                                                <option value="">Period</option>
                                                 <option v-for="(session,index) in sessions" :value="session.Name"
                                                      :key="index">{{session.Name}}</option>
                                               </select>
                                             </div>
                                           </div>
-                                            <div class="col-md-4" v-if="type === 'admin'">
+                                            <div class="col-md-3" v-if="type === 'admin'" >
                                               <multiselect
                                                   v-model="Department"
                                                   :options="departments"
@@ -57,11 +62,11 @@
                                                   label="DeptName"
                                                   track-by="DeptName"
                                                   @click="getAllEmpID"
-                                                  placeholder="Pick a Department"></multiselect>
+                                                  placeholder="Department"></multiselect>
 <!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
                                             </div>
 
-                                          <div class="col-md-4" v-if="type === 'admin'">
+                                          <div class="col-md-3" v-if="type === 'admin'">
                                             <div class="form-group">
 <!--                                              <select id="Department" class="form-control" v-model="Department">-->
 <!--                                                <option value="">Select Department</option>-->
@@ -76,21 +81,21 @@
                                                   :show-labels="true"
                                                   label="Employee"
                                                   track-by="StaffID"
-                                                  placeholder="Pick a Employee"></multiselect>
+                                                  placeholder="Employee"></multiselect>
                                             </div>
                                           </div>
                                           <div class="col-md-2">
-                                            <button type="submit" @click="getAllMDPList" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
+                                            <button type="submit" @click="getAllMDPList" class="btn btn-success defineHeight"><i class="mdi mdi-filter"></i>Filter</button>
                                           </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                  <div class="row" v-if="mdplist.length>0">
-                                    <div class="col-md-12 text-left" style="background-color: #cfdef6; color: black">
-                                      <span>No. of Submitted MDPs: <b>{{mdplist.length}}</b> </span>
-                                    </div>
-                                  </div>
+<!--                                  <div class="row" v-if="mdplist.length>0">-->
+<!--                                    <div class="col-md-12 text-left" style="background-color: #cfdef6; color: black">-->
+<!--                                      <span>No. of Submitted MDPs: <b>{{mdplist.length}}</b> </span>-->
+<!--                                    </div>-->
+<!--                                  </div>-->
                                     <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                         <thead>
                                           <tr>
@@ -188,6 +193,7 @@ export default {
           query: "",
           Department: [],
           EmployeeList: [],
+          mdpNo: "",
           sessionP: "",
           editMode: false,
           isLoading: false,
@@ -219,6 +225,7 @@ export default {
               this.getAllEmpID()
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
+                this.mdpNo = response.data.meta.last_page
             }).catch((error)=>{
 
             })
@@ -227,6 +234,7 @@ export default {
             axios.get(baseurl + "api/search/mdp/list/" + this.query + "?page=" + this.pagination.current_page).then(response => {
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
+               this.mdpNo = response.data.meta.last_page
             }).catch(e => {
                 this.isLoading = false;
             });
@@ -500,5 +508,9 @@ export default {
     .title:hover .delete {
         display: block
     }
+
+}
+.defineHeight{
+  height: 43px;
 }
 </style>

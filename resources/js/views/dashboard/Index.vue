@@ -23,8 +23,8 @@
           </div>
           <div class="col-md-12" style="display: -webkit-inline-box;margin-top: 80px">
             <div class="d-none d-md-block" style="margin: 0 auto">
-                <router-link :to="{name: 'MDPList'}" class="btn btn-success" style="color: white">
-                  <div style="padding: 5px 100px;">
+                <router-link :to="{name: 'MDPCreate'}" class="btn btn-success" style="color: white">
+                  <div style="padding: 0px 100px;">
                     <h4>MDP</h4>
                   Management Development Plan
                 </div>
@@ -33,8 +33,8 @@
           </div>
           <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 5px">
             <div class="d-none d-md-block" style="margin: 0 auto">
-              <router-link :to="{name: 'ActionPlanList'}" class="btn btn-success" style="color: white;padding: 22px">
-                <div style="padding: 2px 130px;">
+              <router-link :to="{name: 'ActionPlanCreate'}" class="btn btn-success" style="color: white;padding: 22px">
+                <div style="padding: 0px 130px;">
                   <h4>Action Plan</h4>
                 </div>
               </router-link>
@@ -43,7 +43,7 @@
           <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 5px">
             <div class="d-none d-md-block" style="margin: 0 auto">
               <router-link :to="{name: 'TaxCertificate'}" class="btn btn-success" style="color: white;padding: 22px">
-                <div style="padding: 2px 113px;">
+                <div style="padding: 0px 113px;">
                   <h4>Tax Certificate</h4>
                 </div>
               </router-link>
@@ -52,7 +52,7 @@
           <div class="col-sm-12" style="display: -webkit-inline-box;margin-top: 5px">
             <div class="d-none d-md-block" style="margin: 0 auto">
               <router-link :to="{name: 'JobDescriptionList'}" class="btn btn-success" style="color: white;padding: 22px">
-                <div style="padding: 2px 108px;">
+                <div style="padding: 0px 108px;">
                   <h4>Job Description</h4>
                 </div>
               </router-link>

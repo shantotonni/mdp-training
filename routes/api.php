@@ -142,6 +142,7 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::get('get-agree-business-user', [CommonController::class,'getAgreeBusinessUser']);
     Route::get('get-all-session', [CommonController::class,'getAllSession']);
     Route::get('get-departments', [CommonController::class,'department']);
+    Route::get('get-strategic-business-unit', [CommonController::class,'getSBU']);
 
     //chart report mdp-organized-pending-ptc
     Route::get('get-all-chart-report', [MDPChartController::class,'getAllChartReport']);

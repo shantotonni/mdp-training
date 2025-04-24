@@ -78,7 +78,7 @@ class TRAController extends Controller
         }
 //        dd($list->toSql());
         return response()->json([
-           'data'=>$list ->orderBy('e.StaffID','ASC')->paginate(15)
+           'data'=>$list ->orderBy('e.StaffID','ASC')->get()
         ]);
     }
     public function getPeriods(){

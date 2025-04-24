@@ -22,7 +22,7 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     $superVisor  = 'N';
                 }
                 $array =  [
-                    'SubmittedDateAndTime'         => date('Y-m-d H:i:s', strtotime($mdp->CreatedDate)),
+                    'SubmittedDateAndTime'         =>date("m/d/Y ", strtotime($mdp->CreatedDate)),
                     'AppraisalPeriod'              => $mdp->AppraisalPeriod,
                     'StaffID'                       => $mdp->StaffID,
                     'EmployeeName'      => $mdp->EmployeeName,
@@ -32,10 +32,10 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     'OfficialEmail'     => $mdp->OfficialEmail,
                     'Contact Number'    => $mdp->Mobile,
                     'Mobile'            => $mdp->Mobile,
-                    'DateOfBirth'       => $mdp->DateOfBirth,
-                    'JoiningDate'       => $mdp->JoiningDate,
+                    'DateOfBirth'       =>  date("m/d/Y ", strtotime($mdp->DateOfBirth)),
+                    'JoiningDate'       =>  date("m/d/Y ", strtotime($mdp->JoiningDate)),
                     'CurrentPosition'   => $mdp->CurrentPosition,
-                    'PresentJobStartedOn'   => $mdp->PresentJobStartedOn,
+                    'PresentJobStartedOn'   =>  date("m/d/Y ", strtotime($mdp->PresentJobStartedOn)),
                     'SuppervisorStaffID'    => $mdp->SuppervisorStaffID,
                     'SuppervisorName'       => $mdp->SuppervisorName,
                     'SuppervisorDesignation'   => $mdp->SuppervisorDesignation,
@@ -49,13 +49,13 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     $count++;
                     $array['PersonalTrainingTitle' .'-'. $count]     = isset($row['Name'])?$row['Name']:'';
                     $array['PersonalCompetencyType' .'-'. $count]    = isset($row['Type'])?$row['Type']:'';
-                    $array['PersonalPlannedDate' .'-'. $count]     =isset($row['Date'])?$row['Date']:'';
+                    $array['PersonalPlannedDate' .'-'. $count]      =isset($row['Date'])?date("m/d/Y ", strtotime($row['Date'])):'';
                 }
                 foreach ($mdp->training as $row){
                     $count++;
-                    $array['RequiredTrainingTitle' .'-'.$count]     = $row['TrainingTitle'];
-                    $array['RequiredCompetencyType' .'-'. $count]   = $row['TrainingType'];
-                    $array['RequiredPlannedDate' .'-'. $count]      = $row['TrainingDate'];
+                    $array['RequiredTrainingTitle' .'-'.$count]     = isset($row['TrainingTitle'])?$row['TrainingTitle']:'';
+                    $array['RequiredCompetencyType' .'-'. $count]   = isset($row['TrainingType'])?$row['TrainingType']:'';
+                    $array['RequiredPlannedDate' .'-'. $count]      = isset($row['TrainingDate'])?date("m/d/y",strtotime($row['TrainingDate'])):'';
                 }
 
                 $array['FutureTrainingTitle-1']   = $mdp->FutureTrainingOne;

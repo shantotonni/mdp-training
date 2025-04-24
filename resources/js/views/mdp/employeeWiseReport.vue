@@ -1,7 +1,17 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <breadcrumb :options="['Training Title Wise Employee List']"/>
+      <breadcrumb :options="['Training Title Wise Employee List']">
+        <div class="col-sm-6">
+          <div class="float-right d-none d-md-block">
+            <div class="card-tools">
+              <button class="btn btn-outline-warning"><i class="mdi mdi-star-circle"></i> {{Ranking}}</button>
+              <button class="btn btn-outline-info"><i class="mdi mdi-account-multiple"></i> {{TrnCount }}</button>
+              <button type="submit" @click="getEmployeeIndividualTraining('Y')" class="btn btn-outline-primary"><i class="mdi mdi-database-export"></i>Export</button>
+            </div>
+          </div>
+        </div>
+      </breadcrumb>
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
@@ -12,37 +22,44 @@
                     <div class="row">
                       <div class="col-md-2">
                         <div class="form-group">
-                          <select id="sessionP" class="form-control" v-model="sessionP">
+                          <select id="sessionP" class="form-control" v-model="sessionP" style="  height: 43px;" required>
                             <option value="">Select Appraisal Period</option>
                             <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>
                           </select>
                         </div>
                       </div>
-<!--                      <div class="col-md-2">-->
-<!--                        <div class="form-group">-->
-<!--                          <input type="text" class="form-control" placeholder="Enter EmpCode"-->
-<!--                                 v-model="EmpCode">-->
-<!--                        </div>-->
-<!--                      </div>-->
                       <div class="col-md-3">
                         <div class="form-group">
                           <multiselect
                               v-model="TrainingTitle"
                               :options="trainingTitlesList"
-                              :multiple="true"
+                              :multiple="false"
                               :searchable="true"
                               :close-on-select="true"
                               :show-labels="true"
                               label="TrainingTitle"
                               track-by="TrainingTitle"
-                              placeholder="Pick a Training Title"></multiselect>
+                              placeholder="Pick a Training Title" required></multiselect>
                         </div>
                       </div>
-
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <multiselect
-                              v-model="task"
+                              v-model="Departments"
+                              :options="Department_List"
+                              :multiple="true"
+                              :searchable="true"
+                              :close-on-select="true"
+                              :show-labels="true"
+                              label="DeptUnit"
+                              track-by="DeptCode"
+                              placeholder="Pick a SBU's" required></multiselect>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <multiselect
+                              v-model="Tasks"
                               :options="taskProgressList"
                               :multiple="true"
                               :searchable="true"
@@ -50,16 +67,11 @@
                               :show-labels="true"
                               label="task"
                               track-by="task"
-                              placeholder="Pick a Training Title"></multiselect>
+                              placeholder="Task Progress" required></multiselect>
                         </div>
                       </div>
-
-
-
-                      <div class="col-md-3">
-                        <button type="submit" @click="getEmployeeIndividualTraining" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
-                        <button type="submit" @click="getEmployeeIndividualTrainingExport" class="btn btn-success"><i class="mdi mdi-database-export"></i>Export</button>
-<!--                        <button type="submit" @click="getEmployeeIndividualTrainingPrint" class="btn btn-success"><i class="mdi mdi-printer"></i>Print</button>-->
+                      <div class="col-md-1">
+                        <button type="submit" @click="getEmployeeIndividualTraining('N')" class="btn btn-success"  style="  height: 43px;"><i class="mdi mdi-filter"></i>Filter</button>
                       </div>
                     </div>
                   </div>
@@ -68,28 +80,28 @@
                   <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                     <thead>
                     <tr>
-                      <th>SN</th>
+                      <th>Select</th>
+                      <th>SL.No</th>
                       <th>Staff ID</th>
                       <th>Name</th>
-                      <th>Appraisal Period</th>
-                      <th>Training Title</th>
-                      <th>Area Of Improvement</th>
-                      <th>Action Plan</th>
-                      <th>Ranked</th>
-                      <th>No. of Requirement</th>
+                      <th>Designation</th>
+                      <th>Department</th>
+                      <th>Business</th>
+                      <th>TaskProgress</th>
+                      <th>Done Date Or Offered Date</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(training, i) in individual_training" :key="training.StaffID" v-if="individual_training.length">
+                    <tr v-for="(training, i) in individual_training"  v-if="individual_training.length">
+                      <th><mark></mark></th>
                       <th>{{ ++i }}</th>
                       <td>{{ training.StaffID }}</td>
-                      <td>{{ training.Name }}</td>
-                      <td>{{ training.AppraisalPeriod }}</td>
-                      <td>{{ training.TrainingTitle }}</td>
-                      <td>{{ training.TrainingType }}</td>
-                      <td>{{ training.Action }}</td>
-                      <td class="text-right">{{ training.ranking }}</td>
-                      <td class="text-right">{{ training.Total }}</td>
+                      <td>{{ training.EmployeeName }}</td>
+                      <td>{{ training.Designation }}</td>
+                      <td>{{ training.Department }}</td>
+                      <td>{{ training.Business }}</td>
+                      <td>{{ training.TaskProgress }}</td>
+                      <td>{{ training.DoneDateOrOfferedDate }}</td>
                     </tr>
                     </tbody>
                   </table>
@@ -122,11 +134,15 @@ export default {
     return {
       individual_training: [],
       sessions: [],
-      departments: [],
+      Department_List: [],
+      Departments: [],
       isLoading: false,
       sessionP: '',
       EmpCode: '',
-      task: '',
+      Ranking: '',
+      TrnCount: '',
+      Tasks: [],
+      score: [],
       TrainingTitle: [],
       trainingTitlesList: [],
       taskProgressList: [
@@ -139,9 +155,45 @@ export default {
   mounted() {
     document.title = 'Training Title Wise Employee List | MDP,Action Plan,JD';
     this.getAllSession(); 
-    this.getAllTrainingTitle();   
+    this.getAllTrainingTitle();
+    this.getAllSBU();
+
   },
   methods: {
+    getEmployeeIndividualTraining(val){
+      axios.post(baseurl + 'api/mdp/get-employee-wise-report',{
+        sessionP: this.sessionP,
+        // EmpCode: this.EmpCode,
+        Tasks:  JSON.stringify(this.Tasks),
+        TrainingTitle:  JSON.stringify(this.TrainingTitle),
+        SBUs: JSON.stringify(this.Departments)
+      }).then((response)=>{
+        if (response.data.status=='success'){
+          if (val==='Y'){
+            let dataSets = response.data.data.List;
+            if (dataSets.length > 0) {
+              let columns = Object.keys(dataSets[0]);
+              columns = columns.filter((item) => item !== 'row_num');
+              let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+              columns = columns.map((item) => {
+                let title = item.replace(rex, '$1$4 $2$3$5')
+                return {title, key: item}
+              });
+              bus.$emit('data-table-import', dataSets, columns, 'Training Title Wise Employee Wise Report')
+            }
+          }else {
+            console.log(response.data.data.UserCount[0].UserCount)
+            this.individual_training = response.data.data.List;
+            this.Ranking = response.data.data.Ranking[0].Ranking;
+            this.TrnCount = response.data.data.UserCount[0].UserCount;
+          }
+        }else {
+          this.errorNoti(response.data.message);
+        }
+      }).catch((error)=>{
+
+      })
+    },
     getAllTrainingTitle(){
       axios.get(baseurl + 'api/mdp/get-all-training-title').then((response)=>{
         this.trainingTitlesList = response.data.trainingtitle;
@@ -157,37 +209,11 @@ export default {
 
       })
     },
-    getAllDepartment(){
-      axios.get(baseurl + 'api/get-departments').then((response) => {
-        this.departments = response.data.data;
-        //this.getAllTrainingTitle();
+    getAllSBU(){
+      axios.get(baseurl + 'api/get-strategic-business-unit').then((response) => {
+        this.Department_List = response.data.data;
       }).catch((error) => {
 
-      })
-    },
-    getEmployeeIndividualTraining(){
-      axios.post(baseurl + 'api/mdp/get-employee-wise-report',{sessionP: this.sessionP,EmpCode: this.EmpCode,TrainingTitle: this.TrainingTitle}).then((response)=>{
-        console.log(response)
-        this.individual_training = response.data.individual_training;
-      }).catch((error)=>{
-
-      })
-    },
-    
-    getEmployeeIndividualTrainingExport(){
-      axios.post(baseurl + 'api/mdp/get-employee-wise-report',{sessionP: this.sessionP,EmpCode: this.EmpCode,TrainingTitle: this.TrainingTitle}).then((response)=>{
-        let dataSets = response.data.individual_training;
-        if (dataSets.length > 0) {
-          let columns = Object.keys(dataSets[0]);
-          columns = columns.filter((item) => item !== 'row_num');
-          let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-          columns = columns.map((item) => {
-            let title = item.replace(rex, '$1$4 $2$3$5')
-            return {title, key: item}
-          });
-          bus.$emit('data-table-import', dataSets, columns, 'Training Title Wise Employee Wise Report')
-        }
-      }).catch((error)=>{
       })
     },
 

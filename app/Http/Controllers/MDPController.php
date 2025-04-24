@@ -73,6 +73,7 @@ class MDPController extends Controller
                 ->whereNotNull('StaffID')
                 ->paginate(15);
         }
+
         return new ManagementDevelopmentPlaneCollection($mdp);
     }
 
@@ -389,7 +390,7 @@ class MDPController extends Controller
         $mdp_list = $mdp_list->where('AppraisalPeriod',$session)
             ->orderBy('Department','asc')->get();
 
-        return new ExportManagementDevelopmentPlaneCollection($mdp_list);
+        return new ExportManagementDevelopmentPlaneDetailsCollection($mdp_list);
     }
 //    public function mdpDetailsExport(Request $request){
 //
@@ -502,14 +503,70 @@ class MDPController extends Controller
     
     public function getEmployeeWiseReport(Request $request){
         $session = $request->sessionP;
-        $EmpCode = $request->EmpCode;
-        $TrainingTitle = collect($request->TrainingTitle);
-        $TrainingTitleString = "";
-        foreach($TrainingTitle as $row){
-            $TrainingTitleString = $TrainingTitleString . $row['TrainingTitle'] . '##';
+//        $EmpCode = $request->EmpCode;
+//        $TrainingTitle = collect($request->TrainingTitle);
+//        $TrainingTitleString = "";
+
+        $Training= json_decode($request->TrainingTitle);
+        $TrainingTitle = $Training->TrainingTitle;
+
+
+        $Tasks = json_decode($request->Tasks);
+        if (!empty($Tasks) && isset($Tasks)){
+            $Tasks = collect($Tasks);
+            $taskName= $Tasks->pluck('task');
         }
-        $TrainingTitleString = substr($TrainingTitleString,0,strlen($TrainingTitleString) - 2);
-        $individual_training = DB::select("EXEC doLoadEmployeeWiseReport '$session','$EmpCode','$TrainingTitleString' ");
+        $taskList =[];
+        foreach ($taskName as $value){
+            array_push($taskList,$value);
+        }
+        $taskToString= implode(",", $taskList);
+
+        $Department = json_decode($request->SBUs);
+
+        if (!empty($Department) && isset($Department)){
+            $Department = collect($Department);
+            $DeptUnit = $Department->pluck('DeptUnit');
+        }
+        $DeptUnitList =[];
+        foreach ($DeptUnit as $value){
+            array_push($DeptUnitList,$value);
+        }
+        $DeptUnitListString= implode(",", $DeptUnitList);
+
+        $sql= "EXEC usp_doLoadMDPTrainingWiseEmployeeList '$session','$TrainingTitle','$taskToString','$DeptUnitListString' ";
+        $conn = DB::connection('sqlsrv');
+        $pdo = $conn->getPdo()->prepare($sql);
+        $pdo->execute();
+
+        $res = array();
+
+        do {
+            $rows = $pdo->fetchAll(\PDO::FETCH_ASSOC);
+            $res[] = $rows;
+
+        } while ($pdo->nextRowset());
+        if (!empty($res[0])){
+            return response()->json([
+                'status' => 'success',
+                'data' =>[
+                    'List'=>$res[0],
+                    'Ranking'=>$res[1],
+                     'UserCount'=> $res[2]
+                ],
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No Data Found',
+            ]);
+        }
+//
+//        foreach($TrainingTitle as $row){
+//            $TrainingTitleString = $TrainingTitleString . $row['TrainingTitle'] . '##';
+//        }
+//        $TrainingTitleString = substr($TrainingTitleString,0,strlen($TrainingTitleString) - 2);
+//        $individual_training = DB::select("EXEC doLoadEmployeeWiseReport '$session','$EmpCode','$TrainingTitleString' ");
         return response()->json([
            'individual_training' => $individual_training
         ]);

@@ -5,7 +5,7 @@
         <ul class="metismenu" id="side-menu">
           <li class="menu-title">Main</li>
           <li @click="hideSideBar()">
-            <router-link :to="{name : 'Dashboard'}" class="waves-effect"><i class="ti-home"></i> <span>Dashboard</span></router-link>
+            <router-link :to="{name : 'Dashboard'}" class="waves-effect"><i class="ti-home"></i> <span>Connect</span></router-link>
           </li>
           <li>
             <a href="javascript:void(0);" class="waves-effect">
