@@ -161,9 +161,9 @@
                                                               <ValidationProvider name="E-tin" mode="eager" rules="required" v-slot="{ errors }">
                                                                 <div class="form-group row">
                                                                   <label for="E-tin" class="col-lg-3 col-form-label">E-TIN : </label>
-                                                                  <div class="col-lg-9">
+                                                                  <div class="col-lg-9" >
                                                                     <input type="text" class="form-control"
-                                                                           :readonly ="TinNo.length>5"
+                                                                           :readonly="!!TinNo"
                                                                            id="E-tin"
                                                                            v-model="form.Etin"
                                                                            data-required="true" name="E-tin"
@@ -408,20 +408,22 @@ export default {
         return moment(date).format('YYYY-MM-DD');
       },
       store(){
-        this.form.busy = true;
-        this.form.post(baseurl+ "api/store-tax-return").then(response => {
-          if (response.data.status === 'Success'){
+          this.form.busy = true;
+          this.form.post(baseurl+ "api/store-tax-return").then(response => {
+            if (response.data.status === 'Success'){
+              this.isLoading = false;
+              this.$toaster.success(response.data.message);
+              // location.reload()
+            }else{
+
+              this.$toaster.error(response.data.message);
+            }
+
+          }).catch(e => {
             this.isLoading = false;
-            this.$toaster.success(response.data.message);
-            // location.reload()
-          }else{
+          });
 
-            this.$toaster.error(response.data.message);
-          }
 
-        }).catch(e => {
-          this.isLoading = false;
-        });
       },
 
 

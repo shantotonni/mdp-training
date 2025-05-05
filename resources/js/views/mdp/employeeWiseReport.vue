@@ -23,7 +23,7 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <select id="sessionP" class="form-control" v-model="sessionP" style="  height: 43px;" required>
-                            <option value="">Select Appraisal Period</option>
+                            <option value="">Period</option>
                             <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>
                           </select>
                         </div>
@@ -39,7 +39,7 @@
                               :show-labels="true"
                               label="TrainingTitle"
                               track-by="TrainingTitle"
-                              placeholder="Pick a Training Title" required></multiselect>
+                              placeholder="Training Title" required></multiselect>
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -53,7 +53,7 @@
                               :show-labels="true"
                               label="DeptUnit"
                               track-by="DeptCode"
-                              placeholder="Pick a SBU's" required></multiselect>
+                              placeholder="SBU's" required></multiselect>
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -182,7 +182,6 @@ export default {
               bus.$emit('data-table-import', dataSets, columns, 'Training Title Wise Employee Wise Report')
             }
           }else {
-            console.log(response.data.data.UserCount[0].UserCount)
             this.individual_training = response.data.data.List;
             this.Ranking = response.data.data.Ranking[0].Ranking;
             this.TrnCount = response.data.data.UserCount[0].UserCount;

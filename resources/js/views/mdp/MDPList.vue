@@ -101,7 +101,7 @@
                                           <tr>
                                               <th>SN</th>
                                               <th>Staff ID</th>
-                                              <th>Employee Name</th>
+                                              <th>Name</th>
                                               <th>Designation</th>
                                               <th>Department</th>
                                               <th>Business</th>
@@ -193,7 +193,7 @@ export default {
           query: "",
           Department: [],
           EmployeeList: [],
-          mdpNo: "",
+          mdpNo: 0,
           sessionP: "",
           editMode: false,
           isLoading: false,
@@ -222,10 +222,11 @@ export default {
                 + "&Department=" + JSON.stringify(this.Department)
                 + "&sessionP=" + this.sessionP
             ).then((response)=>{
+              console.log(response.data)
               this.getAllEmpID()
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
-                this.mdpNo = response.data.meta.last_page
+                this.mdpNo = response.data.meta.total
             }).catch((error)=>{
 
             })
