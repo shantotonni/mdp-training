@@ -51,11 +51,12 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     $array['PersonalCompetencyType' .'-'. $count]    = isset($row['Type'])?$row['Type']:'';
                     $array['PersonalPlannedDate' .'-'. $count]      =isset($row['Date'])?date("m/d/Y ", strtotime($row['Date'])):'';
                 }
+                $countRe = 0;
                 foreach ($mdp->training as $row){
-                    $count++;
-                    $array['RequiredTrainingTitle' .'-'.$count]     = isset($row['TrainingTitle'])?$row['TrainingTitle']:'';
-                    $array['RequiredCompetencyType' .'-'. $count]   = isset($row['TrainingType'])?$row['TrainingType']:'';
-                    $array['RequiredPlannedDate' .'-'. $count]      = isset($row['TrainingDate'])?date("m/d/y",strtotime($row['TrainingDate'])):'';
+                    $countRe++;
+                    $array['RequiredTrainingTitle' .'-'.$countRe]     = isset($row['TrainingTitle'])?$row['TrainingTitle']:'';
+                    $array['RequiredCompetencyType' .'-'. $countRe]   = isset($row['TrainingType'])?$row['TrainingType']:'';
+                    $array['RequiredPlannedDate' .'-'. $countRe]      = isset($row['TrainingDate'])?date("m/d/y",strtotime($row['TrainingDate'])):'';
                 }
 
                 $array['FutureTrainingTitle-1']   = $mdp->FutureTrainingOne;

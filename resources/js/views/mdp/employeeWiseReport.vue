@@ -5,8 +5,8 @@
         <div class="col-sm-6">
           <div class="float-right d-none d-md-block">
             <div class="card-tools">
-              <button class="btn btn-outline-warning"><i class="mdi mdi-star-circle"></i> {{Ranking}}</button>
               <button class="btn btn-outline-info"><i class="mdi mdi-account-multiple"></i> {{TrnCount }}</button>
+              <button class="btn btn-outline-warning"><i class="mdi mdi-star-circle"></i> {{Ranking}}</button>
               <button type="submit" @click="getEmployeeIndividualTraining('Y')" class="btn btn-outline-primary"><i class="mdi mdi-database-export"></i>Export</button>
             </div>
           </div>
@@ -20,7 +20,7 @@
                 <div class="d-flex">
                   <div class="flex-grow-1">
                     <div class="row">
-                      <div class="col-md-2">
+                      <div class="col-md-1">
                         <div class="form-group">
                           <select id="sessionP" class="form-control" v-model="sessionP" style="  height: 43px;" required>
                             <option value="">Period</option>
@@ -28,7 +28,7 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <multiselect
                               v-model="TrainingTitle"
@@ -80,20 +80,20 @@
                   <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                     <thead>
                     <tr>
-                      <th>Select</th>
-                      <th>SL.No</th>
+<!--                      <th>Select</th>-->
+                      <th>S/N</th>
                       <th>Staff ID</th>
                       <th>Name</th>
                       <th>Designation</th>
                       <th>Department</th>
                       <th>Business</th>
-                      <th>TaskProgress</th>
-                      <th>Done Date Or Offered Date</th>
+                      <th>Task Progress</th>
+                      <th>Done/Offered Date</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(training, i) in individual_training"  v-if="individual_training.length">
-                      <th><mark></mark></th>
+<!--                      <th><mark></mark></th>-->
                       <th>{{ ++i }}</th>
                       <td>{{ training.StaffID }}</td>
                       <td>{{ training.EmployeeName }}</td>

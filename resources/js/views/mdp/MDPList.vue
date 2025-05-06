@@ -42,7 +42,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <div class="row">
-                                          <div class="col-md-2">
+                                          <div class="col-md-1">
                                             <div class="form-group">
                                               <select id="sessionP" class="form-control defineHeight"   v-model="sessionP"   @click="getAllEmpID" >
                                                 <option value="">Period</option>

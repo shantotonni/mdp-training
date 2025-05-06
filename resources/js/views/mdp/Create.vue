@@ -181,10 +181,10 @@
                         <hr>
                         <h4 style="font-size: 18px">Personal Initiative</h4>
                         <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
-                          <div class="col-3 col-md-3">
+                          <div class="col-4 col-md-4">
                             <div class="form-group">
                               <label>Training Title</label>
-                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title" required>
+                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title"  minlength="70" required>
                               <div class="error" v-if="form.errors.has('Name')" v-html="form.errors.get('Name')" />
                             </div>
                           </div>
@@ -221,7 +221,7 @@
                         <hr>
                         <div class="row" v-for="(train,index2) in form.training" v-if="dropDown">
 
-                          <div class="col-4 col-md-4" v-if="dropDown==='YES'">
+                          <div class="col-5 col-md-5" v-if="dropDown==='YES'">
                             <div class="form-group">
                               <label>Select Training Title</label>
                               <select v-model="train.TrainingTitle" name="Type" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }" required>
@@ -278,7 +278,7 @@
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
                                   <label>Future Training One</label>
-                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"  name="Title" placeholder="Title" required>
+                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"  name="Title" placeholder="Title" minlength="70" required>
                                   <br>
                                   <small>Explain how this training one will help the company.</small>
                                   <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }" style="height: 90px" name="Reason" placeholder="Max 30 words" @change="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne')" required>
@@ -685,8 +685,14 @@ export default {
     },
     //for initiative
     addFind: function () {
-      this.form.initiative.push({ Name: '' , Type: '', Date: ''});
+      if (this.form.initiative.length < 5) {
+        console.log(this.form.initiative.length + 1);
+        this.form.initiative.push({ Name: '', Type: '', Date: '' });
+      } else {
+        this.errorNoti('No more than 5 training entries can be added!');
+      }
     },
+
     deleteFind: function (index) {
       this.form.initiative.splice(index, 1);
     },
