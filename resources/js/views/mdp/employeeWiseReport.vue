@@ -53,7 +53,7 @@
                               :show-labels="true"
                               label="DeptUnit"
                               track-by="DeptCode"
-                              placeholder="SBU's" required></multiselect>
+                              placeholder="SBU's" ></multiselect>
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -67,7 +67,7 @@
                               :show-labels="true"
                               label="task"
                               track-by="task"
-                              placeholder="Task Progress" required></multiselect>
+                              placeholder="Task Progress" ></multiselect>
                         </div>
                       </div>
                       <div class="col-md-1">

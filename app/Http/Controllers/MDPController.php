@@ -35,11 +35,13 @@ class MDPController extends Controller
         $role = $payload['Type'];
 
         $session = $request->sessionP;
-
+        dd($request->Department);
         if ($role == 'admin'){
             $mdp = ManagementDevelopmentPlane::query();
             $Department = json_decode($request->Department);
+
             if (!empty($Department) && isset($Department)){
+
                 $Department = collect($Department);
                 $DeptName = $Department->pluck('DeptName');
                 $mdp = $mdp->whereIn('Department',$DeptName);
@@ -55,6 +57,7 @@ class MDPController extends Controller
             }
             $mdp = $mdp->orderBy('ID','desc')->whereNotNull('StaffID')->paginate(15);
         }else{
+
             $mdp = ManagementDevelopmentPlane::query();
             $Department = json_decode($request->Department);
             if (!empty($Department) && isset($Department)){
@@ -502,6 +505,7 @@ class MDPController extends Controller
     }
     
     public function getEmployeeWiseReport(Request $request){
+
         $session = $request->sessionP;
 //        $EmpCode = $request->EmpCode;
 //        $TrainingTitle = collect($request->TrainingTitle);
@@ -509,32 +513,40 @@ class MDPController extends Controller
 
         $Training= json_decode($request->TrainingTitle);
         $TrainingTitle = $Training->TrainingTitle;
-
-
         $Tasks = json_decode($request->Tasks);
-        if (!empty($Tasks) && isset($Tasks)){
-            $Tasks = collect($Tasks);
-            $taskName= $Tasks->pluck('task');
+        if (!empty($Tasks)){
+
+            if (!empty($Tasks) && isset($Tasks)){
+                $Tasks = collect($Tasks);
+                $taskName= $Tasks->pluck('task');
+            }
+            $taskList =[];
+            foreach ($taskName as $value){
+                array_push($taskList,$value);
+            }
+            $taskToString= implode(",", $taskList);
+        }else{
+            $taskToString='';
         }
-        $taskList =[];
-        foreach ($taskName as $value){
-            array_push($taskList,$value);
-        }
-        $taskToString= implode(",", $taskList);
 
         $Department = json_decode($request->SBUs);
+        if (!empty($Department)){
+            if (!empty($Department) && isset($Department)){
+                $Department = collect($Department);
+                $DeptUnit = $Department->pluck('DeptUnit');
+            }
+            $DeptUnitList =[];
+            foreach ($DeptUnit as $value){
+                array_push($DeptUnitList,$value);
+            }
+            $DeptUnitListString= implode(",", $DeptUnitList);
+        }else{
+            $DeptUnitListString='';
+        }
 
-        if (!empty($Department) && isset($Department)){
-            $Department = collect($Department);
-            $DeptUnit = $Department->pluck('DeptUnit');
-        }
-        $DeptUnitList =[];
-        foreach ($DeptUnit as $value){
-            array_push($DeptUnitList,$value);
-        }
-        $DeptUnitListString= implode(",", $DeptUnitList);
 
         $sql= "EXEC usp_doLoadMDPTrainingWiseEmployeeList '$session','$TrainingTitle','$taskToString','$DeptUnitListString' ";
+
         $conn = DB::connection('sqlsrv');
         $pdo = $conn->getPdo()->prepare($sql);
         $pdo->execute();
