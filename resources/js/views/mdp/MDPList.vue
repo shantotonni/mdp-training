@@ -109,7 +109,7 @@
                                               <th>Mobile</th>
                                               <th>Appraisal Period</th>
                                               <th>MDP Status</th>
-                                              <th class="text-center">Action</th>
+                                              <th class="text-center" >Action</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -127,7 +127,7 @@
                                                 <span v-if="mdp.MDPStatus === 'Pending' " class="badge badge-danger"> Pending</span>
                                                 <span v-if="mdp.MDPStatus === 'Approved' " class="badge badge-success"> Approved</span>
                                               </td>
-                                              <td class="text-center">
+                                              <td class="text-center" style="white-space: nowrap" >
                                                 <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm" ><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
                                                 <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm" v-if="mdp.MDPStatus === 'Approved' || type === 'admin'">
                                                   <i class="mdi mdi-printer"></i> MDP</router-link>

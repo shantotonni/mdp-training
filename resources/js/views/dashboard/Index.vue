@@ -14,7 +14,7 @@
                   recommended and cross checked by the Supervisor.
                   The plan will be executed during the particular fiscal year by
                   means of formal training programs & several self-initiatives to enable the employee for improved performance
-                  in his present and future job responsibilities.</span>
+                  in his present and future job responsibilities</span>
                 <span @click="mdpInfoDetails()" id="myBtn">Read more</span>
               </sub>
               </li>
@@ -100,7 +100,7 @@ export default {
         moreText.style.display = "none";
       } else {
         dots.style.display = "none";
-        btnText.innerHTML = "Read less";
+        btnText.innerHTML = "...Read less";
         moreText.style.display = "inline";
       }
     },

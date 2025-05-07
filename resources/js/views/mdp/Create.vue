@@ -38,7 +38,8 @@
                             <div class="form-group">
                               <div class="form-group">
                                 <label>Staff ID</label>
-                                <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID" class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID" required>
+                                <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID" required>
                                 <div class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -181,14 +182,14 @@
                         <hr>
                         <h4 style="font-size: 18px">Personal Initiative</h4>
                         <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
-                          <div class="col-4 col-md-4">
+                          <div class="col-6 col-md-6">
                             <div class="form-group">
                               <label>Training Title</label>
-                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title"  minlength="70" required>
+                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title"  minlength="100" required>
                               <div class="error" v-if="form.errors.has('Name')" v-html="form.errors.get('Name')" />
                             </div>
                           </div>
-                          <div class="col-3 col-md-3">
+                          <div class="col-2 col-md-2">
                             <div class="form-group">
                               <label>Competency Type</label>
                               <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }" required>
@@ -202,7 +203,7 @@
                               <div class="error" v-if="form.errors.has('Type')" v-html="form.errors.get('Type')" />
                             </div>
                           </div>
-                          <div class="col-3 col-md-3">
+                          <div class="col-2 col-md-2">
                             <div class="form-group">
                               <label>Planned Date</label>
                               <datepicker v-model="initiat.Date" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required></datepicker>
@@ -221,7 +222,7 @@
                         <hr>
                         <div class="row" v-for="(train,index2) in form.training" v-if="dropDown">
 
-                          <div class="col-5 col-md-5" v-if="dropDown==='YES'">
+                          <div class="col-6 col-md-6" v-if="dropDown==='YES'">
                             <div class="form-group">
                               <label>Select Training Title</label>
                               <select v-model="train.TrainingTitle" name="Type" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }" required>
@@ -232,7 +233,7 @@
                             </div>
                           </div>
 
-                          <div class="col-4 col-md-4" v-else>
+                          <div class="col-6 col-md-6" v-else>
                             <div class="form-group">
                               <label>Select Training Title</label>
                               <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Type Or Copy From Suggestive List" required>
@@ -240,7 +241,7 @@
                             </div>
                           </div>
 
-                          <div class="col-3 col-md-3">
+                          <div class="col-2 col-md-2">
                             <div class="form-group">
                               <label>Competency Type</label>
                               <select v-model="train.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }" required>
@@ -253,7 +254,7 @@
                               <div class="error" v-if="form.errors.has('TrainingType')" v-html="form.errors.get('TrainingType')" />
                             </div>
                           </div>
-                          <div class="col-3 col-md-3">
+                          <div class="col-2 col-md-2">
                             <div class="form-group">
                               <label>Planned Date</label>
                               <datepicker v-model="train.TrainingDate" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required></datepicker>
@@ -278,7 +279,7 @@
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
                                   <label>Future Training One</label>
-                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"  name="Title" placeholder="Title" minlength="70" required>
+                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"  name="Title" placeholder="Title" minlength="100" required>
                                   <br>
                                   <small>Explain how this training one will help the company.</small>
                                   <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }" style="height: 90px" name="Reason" placeholder="Max 30 words" @change="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne')" required>

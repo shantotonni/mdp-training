@@ -601,7 +601,10 @@ class MDPController extends Controller
     }
 
     public function getAllMDPDepartment(){
-        $departments = DB::select("select distinct replace(Department,'&','and' ) as DeptName from ManagementDevelopmentPlane");
+        $departments = DB::select("SELECT DISTINCT replace(Department,'&','and' ) as DeptName 
+                                            FROM ManagementDevelopmentPlane 
+                                            WHERE Department IS NOT NULL OR Department<>'' 
+                                            ORDER BY replace(Department,'&','and' ) ASC");
         return response()->json([
             'departments'=>$departments
         ]);
