@@ -233,6 +233,7 @@ export default {
                 this.mdpNo = response.data.meta.total
                 this.PreLoader = false;
             }).catch((error)=>{
+              this.PreLoader = false;
 
             })
         },
