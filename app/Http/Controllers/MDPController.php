@@ -6,7 +6,6 @@ use App\Http\Requests\ManagementDevelopmentPlaneRequest;
 use App\Http\Requests\ManagementDevelopmentPlaneUpdateRequest;
 use App\Http\Resources\ContSupervisorResource;
 use App\Http\Resources\EmployeeResource;
-use App\Http\Resources\Export\ExportManagementDevelopmentPlaneCollection;
 use App\Http\Resources\Export\ExportManagementDevelopmentPlaneDetailsCollection;
 use App\Http\Resources\ManagementDevelopmentPlaneCollection;
 use App\Http\Resources\ManagementDevelopmentPlaneResource;
@@ -21,7 +20,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
-use Monolog\Handler\IFTTTHandler;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class MDPController extends Controller
@@ -35,17 +33,26 @@ class MDPController extends Controller
         $role = $payload['Type'];
 
         $session = $request->sessionP;
-        dd($request->Department);
+
         if ($role == 'admin'){
             $mdp = ManagementDevelopmentPlane::query();
             $Department = json_decode($request->Department);
 
-            if (!empty($Department) && isset($Department)){
-
+            if (!empty($Department) && isset($Department)) {
                 $Department = collect($Department);
+
+                // Optional: clean up DeptName values if needed
+                $Department = $Department->map(function ($item) {
+                    $item->DeptName = preg_replace('/\s+and\s+/i', ' & ', $item->DeptName);
+                    $item->DeptName = preg_replace('/\s+/', ' ', $item->DeptName);
+                    $item->DeptName = trim($item->DeptName);
+                    return $item;
+                });
                 $DeptName = $Department->pluck('DeptName');
-                $mdp = $mdp->whereIn('Department',$DeptName);
+
+                $mdp = $mdp->whereIn('Department', $DeptName->toArray());
             }
+
             $EmployeeList= json_decode($request->EmployeeList);
             if (!empty($EmployeeList) && isset($EmployeeList)){
                 $EmployeeList = collect($EmployeeList);
@@ -594,7 +601,7 @@ class MDPController extends Controller
     }
 
     public function getAllMDPDepartment(){
-        $departments = DB::select('select distinct Department as DeptName from ManagementDevelopmentPlane');
+        $departments = DB::select("select distinct replace(Department,'&','and' ) as DeptName from ManagementDevelopmentPlane");
         return response()->json([
             'departments'=>$departments
         ]);
