@@ -42,7 +42,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1">
                                         <div class="row">
-                                          <div class="col-md-1">
+                                          <div class="col-md-2">
                                             <div class="form-group">
                                               <select id="sessionP" class="form-control defineHeight"   v-model="sessionP"   @click="getAllEmpID" >
                                                 <option value="">Period</option>
@@ -162,6 +162,9 @@
                 </div>
             </div>
         </div>
+      <div>
+        <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
+      </div>
     </div>
 </template>
 
@@ -197,6 +200,7 @@ export default {
           sessionP: "",
           editMode: false,
           isLoading: false,
+          PreLoader: false,
         }
     },
     watch: {
@@ -217,27 +221,31 @@ export default {
     },
     methods: {
         getAllMDPList(){
+          this.PreLoader = true;
             axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
                 + "&EmployeeList=" +  JSON.stringify(this.EmployeeList)
                 + "&Department=" + JSON.stringify(this.Department)
                 + "&sessionP=" + this.sessionP
             ).then((response)=>{
-              console.log(response.data)
               this.getAllEmpID()
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
                 this.mdpNo = response.data.meta.total
+                this.PreLoader = false;
             }).catch((error)=>{
 
             })
         },
         searchData(){
+          this.PreLoader = true;
             axios.get(baseurl + "api/search/mdp/list/" + this.query + "?page=" + this.pagination.current_page).then(response => {
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
-               this.mdpNo = response.data.meta.last_page
+                this.mdpNo = response.data.meta.last_page
+                this.PreLoader = true;
             }).catch(e => {
                 this.isLoading = false;
+              this.PreLoader = false;
             });
         },
         getData() {
@@ -274,6 +282,7 @@ export default {
         reload(){
             this.getAllMDPList();
             this.query = "";
+             window.location.reload();
             // this.$toaster.success('Data Successfully Refresh');
         },
         approvedMDP(mdpID) {
@@ -298,8 +307,8 @@ export default {
             }
           })
         },
-
       exportMDPList(){
+        this.PreLoader = true;
           axios.get(baseurl + 'api/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
               + "&Department=" + JSON.stringify(this.Department)
               + "&sessionP=" + this.sessionP
@@ -314,12 +323,15 @@ export default {
                     return {title, key: item}
                   });
                   bus.$emit('data-table-import', dataSets, columns, 'MDP Export Report')
+                  this.PreLoader = false;
                 }
               }).catch((error)=>{
             console.log(response)
+            this.PreLoader = false;
           })
         },
       exportMDPDetailsList(){
+        this.PreLoader = true;
           axios.get(baseurl + 'api/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
               + "&Department=" + JSON.stringify(this.Department)
               + "&sessionP=" + this.sessionP
@@ -334,9 +346,11 @@ export default {
                     return {title, key: item}
                   });
                   bus.$emit('data-table-import', dataSets, columns, 'MDP Export Details Report-'+moment().format('DD_MM_YYYY-h-mm a'))
+                  this.PreLoader = false;
                 }
               }).catch((error)=>{
             console.log(response)
+            this.PreLoader = false;
           })
         },
       // exportMDPDetailsList(){

@@ -182,14 +182,14 @@
                         <hr>
                         <h4 style="font-size: 18px">Personal Initiative</h4>
                         <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
-                          <div class="col-6 col-md-6">
+                          <div class="col-4 col-md-4">
                             <div class="form-group">
                               <label>Training Title</label>
                               <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title"  minlength="100" required>
                               <div class="error" v-if="form.errors.has('Name')" v-html="form.errors.get('Name')" />
                             </div>
                           </div>
-                          <div class="col-2 col-md-2">
+                          <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Competency Type</label>
                               <select v-model="initiat.Type" name="Type" id="catId" class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }" required>
@@ -203,7 +203,7 @@
                               <div class="error" v-if="form.errors.has('Type')" v-html="form.errors.get('Type')" />
                             </div>
                           </div>
-                          <div class="col-2 col-md-2">
+                          <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Planned Date</label>
                               <datepicker v-model="initiat.Date" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required></datepicker>
@@ -233,7 +233,7 @@
                             </div>
                           </div>
 
-                          <div class="col-6 col-md-6" v-else>
+                          <div class="col-4 col-md-4" v-else>
                             <div class="form-group">
                               <label>Select Training Title</label>
                               <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Type Or Copy From Suggestive List" required>
@@ -241,7 +241,7 @@
                             </div>
                           </div>
 
-                          <div class="col-2 col-md-2">
+                          <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Competency Type</label>
                               <select v-model="train.TrainingType" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }" required>
@@ -254,7 +254,7 @@
                               <div class="error" v-if="form.errors.has('TrainingType')" v-html="form.errors.get('TrainingType')" />
                             </div>
                           </div>
-                          <div class="col-2 col-md-2">
+                          <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Planned Date</label>
                               <datepicker v-model="train.TrainingDate" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required></datepicker>

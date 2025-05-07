@@ -20,7 +20,7 @@
                 <div class="d-flex">
                   <div class="flex-grow-1">
                     <div class="row">
-                      <div class="col-md-1">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <select id="sessionP" class="form-control" v-model="sessionP" style="  height: 43px;" required>
                             <option value="">Period</option>
@@ -42,7 +42,7 @@
                               placeholder="Training Title" required></multiselect>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <multiselect
                               v-model="Departments"
@@ -117,6 +117,9 @@
         </div>
       </div>
     </div>
+    <div>
+      <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
+    </div>
   </div>
 </template>
 
@@ -137,6 +140,7 @@ export default {
       Department_List: [],
       Departments: [],
       isLoading: false,
+      PreLoader: false,
       sessionP: '',
       EmpCode: '',
       Ranking: '',
@@ -161,6 +165,7 @@ export default {
   },
   methods: {
     getEmployeeIndividualTraining(val){
+      this.PreLoader = true;
       axios.post(baseurl + 'api/mdp/get-employee-wise-report',{
         sessionP: this.sessionP,
         // EmpCode: this.EmpCode,
@@ -180,14 +185,17 @@ export default {
                 return {title, key: item}
               });
               bus.$emit('data-table-import', dataSets, columns, 'Training Title Wise Employee Wise Report')
+              this.PreLoader = false;
             }
           }else {
             this.individual_training = response.data.data.List;
             this.Ranking = response.data.data.Ranking[0].Ranking;
             this.TrnCount = response.data.data.UserCount[0].UserCount;
+            this.PreLoader = false;
           }
         }else {
           this.errorNoti(response.data.message);
+          this.PreLoader = false;
         }
       }).catch((error)=>{
 

@@ -21,7 +21,9 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                 }else{
                     $superVisor  = 'N';
                 }
+                $i=0;
                 $array =  [
+                    'ID'=>  $mdp->ID,
                     'SubmittedDateAndTime'         =>date("m/d/Y ", strtotime($mdp->CreatedDate)),
                     'AppraisalPeriod'              => $mdp->AppraisalPeriod,
                     'StaffID'                       => $mdp->StaffID,
@@ -30,7 +32,7 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     'Department'        => $mdp->Department,
                     'Business'          => $mdp->Business,
                     'OfficialEmail'     => $mdp->OfficialEmail,
-                    'Contact Number'    => $mdp->Mobile,
+//                    'Contact Number'    => $mdp->Mobile,
                     'Mobile'            => $mdp->Mobile,
                     'DateOfBirth'       =>  date("m/d/Y ", strtotime($mdp->DateOfBirth)),
                     'JoiningDate'       =>  date("m/d/Y ", strtotime($mdp->JoiningDate)),
