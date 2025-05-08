@@ -62,7 +62,7 @@
                                                   label="DeptName"
                                                   track-by="DeptName"
                                                   @click="getAllEmpID"
-                                                  placeholder="Department"></multiselect>
+                                                  placeholder="SBU's"></multiselect>
 <!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
                                             </div>
 
@@ -308,183 +308,179 @@ export default {
             }
           })
         },
-      exportMDPList(){
-        this.PreLoader = true;
-          axios.get(baseurl + 'api/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
-              + "&Department=" + JSON.stringify(this.Department)
-              + "&sessionP=" + this.sessionP
-          ).then((response)=>{
-                let dataSets = response.data.data;
-                if (dataSets.length > 0) {
-                  let columns = Object.keys(dataSets[0]);
-                  columns = columns.filter((item) => item !== 'row_num');
-                  let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-                  columns = columns.map((item) => {
-                    let title = item.replace(rex, '$1$4 $2$3$5')
-                    return {title, key: item}
-                  });
-                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export Report')
-                  this.PreLoader = false;
-                }
-              }).catch((error)=>{
-            console.log(response)
-            this.PreLoader = false;
-          })
-        },
-      exportMDPDetailsList(){
-        this.PreLoader = true;
-          axios.get(baseurl + 'api/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
-              + "&Department=" + JSON.stringify(this.Department)
-              + "&sessionP=" + this.sessionP
-          ).then((response)=>{
-                let dataSets = response.data.data;
-                if (dataSets.length > 0) {
-                  let columns = Object.keys(dataSets[0]);
-                  columns = columns.filter((item) => item !== 'row_num');
-                  let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-                  columns = columns.map((item) => {
-                    let title = item.replace(rex, '$1$4 $2$3$5')
-                    return {title, key: item}
-                  });
-                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export Details Report-'+moment().format('DD_MM_YYYY-h-mm a'))
-                  this.PreLoader = false;
-                }
-              }).catch((error)=>{
-            console.log(response)
-            this.PreLoader = false;
-          })
-        },
-      // exportMDPDetailsList(){
-      //   console.log(this.query)
-      //   axios.get(baseurl + 'api/export-mdp-details-list?staffId=' +  this.query
-      //       + "&Department=" + JSON.stringify(this.Department)
-      //       + "&sessionP=" + this.sessionP
-      //   ).then((response)=>{
-      //     console.log(response.data)
-      //     this.exportAllDataInOneSheet(response.data.data);
-      //     // this.exportMultipleSheetsToExcel(response.data.data);
-      //   }).catch((error)=>{
-      //     console.log(response)
-      //   })
-      // },
-      exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
-        const wb = XLSX.utils.book_new();
-        const wsData = [];
+        exportMDPList(){
+      this.PreLoader = true;
+        axios.get(baseurl + 'api/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
+            + "&Department=" + JSON.stringify(this.Department)
+            + "&sessionP=" + this.sessionP
+        ).then((response)=>{
+              let dataSets = response.data.data;
+              if (dataSets.length > 0) {
+                let columns = Object.keys(dataSets[0]);
+                columns = columns.filter((item) => item !== 'row_num');
+                let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                columns = columns.map((item) => {
+                  let title = item.replace(rex, '$1$4 $2$3$5')
+                  return {title, key: item}
+                });
+                bus.$emit('data-table-import', dataSets, columns, 'MDP Export 2')
+                this.PreLoader = false;
+              }
+            }).catch((error)=>{
+          console.log(response)
+          this.PreLoader = false;
+        })
+      },
+        exportMDPDetailsList(){
+      this.PreLoader = true;
+        axios.get(baseurl + 'api/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
+            + "&Department=" + JSON.stringify(this.Department)
+            + "&sessionP=" + this.sessionP
+        ).then((response)=>{
+              let dataSets = response.data.data;
+              if (dataSets.length > 0) {
+                let columns = Object.keys(dataSets[0]);
+                columns = columns.filter((item) => item !== 'row_num');
+                let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                columns = columns.map((item) => {
+                  let title = item.replace(rex, '$1$4 $2$3$5')
+                  return {title, key: item}
+                });
+                bus.$emit('data-table-import', dataSets, columns, 'MDP Export 1')
+                this.PreLoader = false;
+              }
+            }).catch((error)=>{
+          console.log(response)
+          this.PreLoader = false;
+        })
+      },
+    // exportMDPDetailsList(){
+    //   console.log(this.query)
+    //   axios.get(baseurl + 'api/export-mdp-details-list?staffId=' +  this.query
+    //       + "&Department=" + JSON.stringify(this.Department)
+    //       + "&sessionP=" + this.sessionP
+    //   ).then((response)=>{
+    //     console.log(response.data)
+    //     this.exportAllDataInOneSheet(response.data.data);
+    //     // this.exportMultipleSheetsToExcel(response.data.data);
+    //   }).catch((error)=>{
+    //     console.log(response)
+    //   })
+    // },
+    exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
+      const wb = XLSX.utils.book_new();
+      const wsData = [];
 
-        let maxRows = 0;
-        const sectionArrays = [];
+      let maxRows = 0;
+      const sectionArrays = [];
 
-        // Prepare each section horizontally
-        Object.entries(data).forEach(([sectionTitle, rows]) => {
-          if (!Array.isArray(rows) || rows.length === 0) return;
+      // Prepare each section horizontally
+      Object.entries(data).forEach(([sectionTitle, rows]) => {
+        if (!Array.isArray(rows) || rows.length === 0) return;
 
-          const headers = Object.keys(rows[0]);
-          const section = [];
+        const headers = Object.keys(rows[0]);
+        const section = [];
 
-          // Section Title (merged-like with empty cells)
-          section.push([sectionTitle.toUpperCase(), ...Array(headers.length - 1).fill('')]);
+        // Section Title (merged-like with empty cells)
+        section.push([sectionTitle.toUpperCase(), ...Array(headers.length - 1).fill('')]);
 
-          // Column Headers
-          section.push(headers);
+        // Column Headers
+        section.push(headers);
 
-          // Row Data
-          rows.forEach(row => {
-            const rowData = headers.map(h => row[h]);
-            section.push(rowData);
-          });
-
-          maxRows = Math.max(maxRows, section.length);
-          sectionArrays.push(section);
+        // Row Data
+        rows.forEach(row => {
+          const rowData = headers.map(h => row[h]);
+          section.push(rowData);
         });
 
-        // Combine sections side-by-side
-        for (let i = 0; i < maxRows; i++) {
-          const row = [];
-          sectionArrays.forEach(section => {
-            row.push(...(section[i] || Array(section[0].length).fill('')));
-          });
-          wsData.push(row);
-        }
+        maxRows = Math.max(maxRows, section.length);
+        sectionArrays.push(section);
+      });
 
-        const ws = XLSX.utils.aoa_to_sheet(wsData);
-        XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
+      // Combine sections side-by-side
+      for (let i = 0; i < maxRows; i++) {
+        const row = [];
+        sectionArrays.forEach(section => {
+          row.push(...(section[i] || Array(section[0].length).fill('')));
+        });
+        wsData.push(row);
+      }
 
-        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
-      },
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
 
-
-      // exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
-      //   const wb = XLSX.utils.book_new();
-      //   const wsData = [];
-      //
-      //   Object.entries(data).forEach(([sectionTitle, rows]) => {
-      //     if (!Array.isArray(rows) || rows.length === 0) return;
-      //
-      //     // Section Header
-      //     wsData.push([sectionTitle.toUpperCase()]);
-      //
-      //     // Column Headers
-      //     const headers = Object.keys(rows[0]);
-      //     wsData.push(headers);
-      //
-      //     // Row Data
-      //     rows.forEach(row => {
-      //       const rowData = headers.map(h => row[h]);
-      //       wsData.push(rowData);
-      //     });
-      //
-      //     // Add an empty row for spacing
-      //     wsData.push([]);
-      //   });
-      //
-      //   const ws = XLSX.utils.aoa_to_sheet(wsData);
-      //   XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
-      //
-      //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      //   saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
-      // },
-      // exportMultipleSheetsToExcel(responseData, fileName = 'MDP_Export.xlsx') {
-      //   const wb = XLSX.utils.book_new();
-      //   Object.entries(responseData).forEach(([sheetName, data]) => {
-      //     // Skip non-array fields like "status"
-      //     if (!Array.isArray(data) || data.length === 0) return;
-      //     console.log('dataara',data)
-      //
-      //     // Create worksheet
-      //     const ws = XLSX.utils.json_to_sheet(data);
-      //
-      //     // Add worksheet to workbook
-      //     XLSX.utils.book_append_sheet(wb, ws, sheetName);
-      //   });
-      //
-      //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      //   const blob = new Blob([wbout], { type: 'application/octet-stream' });
-      //   saveAs(blob, 'MDP_Export.xlsx');
-      // },
-
-
-      exportFeedback(){
-            axios.get(baseurl + 'api/export-mdp-feedback?query=' +  this.query
-                + "&Department=" + JSON.stringify(this.Department)
-                + "&sessionP=" + this.sessionP
-            ).then((response)=>{
-              // console.log(response)
-                  let dataSets = response.data.data;
-                  if (dataSets.length > 0) {
-                    let columns = Object.keys(dataSets[0]);
-                    columns = columns.filter((item) => item !== 'row_num');
-                    let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-                    columns = columns.map((item) => {
-                      let title = item.replace(rex, '$1$4 $2$3$5')
-                      return {title, key: item}
-                    });
-                    bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
-                  }
-                }).catch((error)=>{
-              console.log(response)
-            })
-          },
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+    },
+    // exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
+    //   const wb = XLSX.utils.book_new();
+    //   const wsData = [];
+    //
+    //   Object.entries(data).forEach(([sectionTitle, rows]) => {
+    //     if (!Array.isArray(rows) || rows.length === 0) return;
+    //
+    //     // Section Header
+    //     wsData.push([sectionTitle.toUpperCase()]);
+    //
+    //     // Column Headers
+    //     const headers = Object.keys(rows[0]);
+    //     wsData.push(headers);
+    //
+    //     // Row Data
+    //     rows.forEach(row => {
+    //       const rowData = headers.map(h => row[h]);
+    //       wsData.push(rowData);
+    //     });
+    //
+    //     // Add an empty row for spacing
+    //     wsData.push([]);
+    //   });
+    //
+    //   const ws = XLSX.utils.aoa_to_sheet(wsData);
+    //   XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
+    //
+    //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    //   saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+    // },
+    // exportMultipleSheetsToExcel(responseData, fileName = 'MDP_Export.xlsx') {
+    //   const wb = XLSX.utils.book_new();
+    //   Object.entries(responseData).forEach(([sheetName, data]) => {
+    //     // Skip non-array fields like "status"
+    //     if (!Array.isArray(data) || data.length === 0) return;
+    //     console.log('dataara',data)
+    //
+    //     // Create worksheet
+    //     const ws = XLSX.utils.json_to_sheet(data);
+    //
+    //     // Add worksheet to workbook
+    //     XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    //   });
+    //
+    //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    //   const blob = new Blob([wbout], { type: 'application/octet-stream' });
+    //   saveAs(blob, 'MDP_Export.xlsx');
+    // },
+    exportFeedback(){
+          axios.get(baseurl + 'api/export-mdp-feedback?query=' +  this.query
+              + "&Department=" + JSON.stringify(this.Department)
+              + "&sessionP=" + this.sessionP
+          ).then((response)=>{
+            // console.log(response)
+                let dataSets = response.data.data;
+                if (dataSets.length > 0) {
+                  let columns = Object.keys(dataSets[0]);
+                  columns = columns.filter((item) => item !== 'row_num');
+                  let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                  columns = columns.map((item) => {
+                    let title = item.replace(rex, '$1$4 $2$3$5')
+                    return {title, key: item}
+                  });
+                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
+                }
+              }).catch((error)=>{
+            console.log(response)
+          })
+        },
         destroy(id){
           Swal.fire({
               title: 'Are you sure?',

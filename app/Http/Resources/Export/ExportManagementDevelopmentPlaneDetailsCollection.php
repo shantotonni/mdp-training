@@ -38,10 +38,12 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     'JoiningDate'       =>  date("m/d/Y ", strtotime($mdp->JoiningDate)),
                     'CurrentPosition'   => $mdp->CurrentPosition,
                     'PresentJobStartedOn'   =>  date("m/d/Y ", strtotime($mdp->PresentJobStartedOn)),
-                    'SuppervisorStaffID'    => $mdp->SuppervisorStaffID,
-                    'SuppervisorName'       => $mdp->SuppervisorName,
-                    'SuppervisorDesignation'   => $mdp->SuppervisorDesignation,
+                    'Qualification'    => $mdp->Qualification,
+                    'SupervisorStaffID'    => $mdp->SuppervisorStaffID,
+                    'SupervisorName'       => $mdp->SuppervisorName,
+                    'SupervisorDesignation'   => $mdp->SuppervisorDesignation,
                     'SupervisorEmail'   => $mdp->SuppervisorEmail,
+                    'SupervisorMobile'   => $mdp->SuppervisorMobile,
                     'MDPStatus'         => $mdp->MDPStatus,
 
                 ];

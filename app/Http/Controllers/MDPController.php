@@ -540,7 +540,7 @@ class MDPController extends Controller
         if (!empty($Department)){
             if (!empty($Department) && isset($Department)){
                 $Department = collect($Department);
-                $DeptUnit = $Department->pluck('DeptUnit');
+                $DeptUnit = $Department->pluck('DeptName');
             }
             $DeptUnitList =[];
             foreach ($DeptUnit as $value){

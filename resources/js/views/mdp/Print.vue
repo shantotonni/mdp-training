@@ -1,6 +1,18 @@
 <template>
     <div class="content" id="mdp">
         <div class="container-fluid">
+          <breadcrumb :options="['Management Development Plan Print']">
+            <div class="col-sm-6">
+              <div class="float-right d-none d-md-block">
+                <div class="card-tools">
+                  <router-link :to="{name: 'MDPList'}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-sync"></i>
+                    Back
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </breadcrumb>
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">

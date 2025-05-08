@@ -330,7 +330,8 @@
                     </div>
                   </div>
                 </div>
-              </div>            </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -374,6 +375,7 @@ import moment from "moment";
 import {Common} from "../../mixins/common";
 // Basic Use - Covers most scenarios
 import { VueEditor } from "vue2-editor";
+import {bus} from "../../app";
 export default {
   name: "List",
   mixins: [Common],
@@ -456,6 +458,24 @@ export default {
       }).catch(e => {
         this.isLoading = false;
       });
+    },
+    downloadTraining(){
+      axios.get(baseurl +'api/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
+        let dataSets = response.data.training_history;
+        if (dataSets.length > 0) {
+          let columns = Object.keys(dataSets[0]);
+          columns = columns.filter((item) => item !== 'row_num');
+          let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+          columns = columns.map((item) => {
+            let title = item.replace(rex, '$1$4 $2$3$5')
+            return {title, key: item}
+          });
+          //this.generateExport(dataSets, columns, 'Job Card Report')
+          bus.$emit('data-table-import', dataSets, columns, 'Last Five Years Training History')
+        }
+      }).catch((error)=>{
+        console.log(response)
+      })
     },
     getEmployeeByStaffID(){
       axios.post(baseurl +'api/get-employee-by-employee-code/', {

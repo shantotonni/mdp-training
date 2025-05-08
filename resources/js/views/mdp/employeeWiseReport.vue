@@ -8,6 +8,10 @@
               <button class="btn btn-outline-info"><i class="mdi mdi-account-multiple"></i> {{TrnCount }}</button>
               <button class="btn btn-outline-warning"><i class="mdi mdi-star-circle"></i> {{Ranking}}</button>
               <button type="submit" @click="getEmployeeIndividualTraining('Y')" class="btn btn-outline-primary"><i class="mdi mdi-database-export"></i>Export</button>
+              <button type="button" class="btn btn-primary btn-sm" @click="reload">
+                <i class="fas fa-sync"></i>
+                Reload
+              </button>
             </div>
           </div>
         </div>
@@ -42,21 +46,33 @@
                               placeholder="Training Title" required></multiselect>
                         </div>
                       </div>
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <multiselect
-                              v-model="Departments"
-                              :options="Department_List"
-                              :multiple="true"
-                              :searchable="true"
-                              :close-on-select="true"
-                              :show-labels="true"
-                              label="DeptUnit"
-                              track-by="DeptCode"
-                              placeholder="SBU's" ></multiselect>
-                        </div>
+                      <div class="col-md-3" >
+                        <multiselect
+                            v-model="Departments"
+                            :options="Department_List"
+                            :multiple="true"
+                            :searchable="true"
+                            :close-on-select="true"
+                            :show-labels="true"
+                            label="DeptName"
+                            track-by="DeptName"
+                            placeholder="SBU's"></multiselect>
                       </div>
-                      <div class="col-md-3">
+<!--                      <div class="col-md-2">-->
+<!--                        <div class="form-group">-->
+<!--                          <multiselect-->
+<!--                              v-model="Departments"-->
+<!--                              :options="Department_List"-->
+<!--                              :multiple="true"-->
+<!--                              :searchable="true"-->
+<!--                              :close-on-select="true"-->
+<!--                              :show-labels="true"-->
+<!--                              label="DeptUnit"-->
+<!--                              track-by="DeptCode"-->
+<!--                              placeholder="SBU's" ></multiselect>-->
+<!--                        </div>-->
+<!--                      </div>-->
+                      <div class="col-md-2">
                         <div class="form-group">
                           <multiselect
                               v-model="Tasks"
@@ -81,14 +97,14 @@
                     <thead>
                     <tr>
 <!--                      <th>Select</th>-->
-                      <th>S/N</th>
+                      <th>SN</th>
                       <th>Staff ID</th>
                       <th>Name</th>
                       <th>Designation</th>
                       <th>Department</th>
                       <th>Business</th>
                       <th>Task Progress</th>
-                      <th>Done/Offered Date</th>
+                      <th>Done / Last Offered Date</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -160,7 +176,7 @@ export default {
     document.title = 'Training Title Wise Employee List | MDP,Action Plan,JD';
     this.getAllSession(); 
     this.getAllTrainingTitle();
-    this.getAllSBU();
+    this.getAllDepartment();
 
   },
   methods: {
@@ -198,8 +214,15 @@ export default {
           this.PreLoader = false;
         }
       }).catch((error)=>{
+        this.PreLoader = false;
 
       })
+    },
+    reload(){
+      this.getEmployeeIndividualTraining()
+      this.query = "";
+      window.location.reload();
+      // this.$toaster.success('Data Successfully Refresh');
     },
     getAllTrainingTitle(){
       axios.get(baseurl + 'api/mdp/get-all-training-title').then((response)=>{
@@ -216,10 +239,17 @@ export default {
 
       })
     },
-    getAllSBU(){
-      axios.get(baseurl + 'api/get-strategic-business-unit').then((response) => {
-        this.Department_List = response.data.data;
-      }).catch((error) => {
+    // getAllSBU(){
+    //   axios.get(baseurl + 'api/get-strategic-business-unit').then((response) => {
+    //     this.Department_List = response.data.data;
+    //   }).catch((error) => {
+    //
+    //   })
+    // },
+    getAllDepartment(){
+      axios.get(baseurl + 'api/mdp/get-all-mdp-department').then((response)=>{
+        this.Department_List = response.data.departments;
+      }).catch((error)=>{
 
       })
     },
