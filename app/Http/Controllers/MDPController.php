@@ -217,49 +217,6 @@ class MDPController extends Controller
         }
     }
 
-    public function testsendemail(){
-
-        //$data = array();
-        //$data['to'] = $to;
-        //$data['emailbody'] = $emailbody;
-        //$html = $this->load->view('email_body', $data, TRUE);
-        $html = 'Test email';
-        //print_r($to); exit();
-        $this->load->library('phpmailer');
-        //$to = 'faysalahmed@aci-bd.com';
-        //$to = 'faysal.ahmed7212@gmail.com';
-        $to = 'sandip@acilogistics.net';
-        $subject = "ACI Approval System";
-
-        $this->email = new PHPMailer(true);
-        $this->email->IsSMTP(true); // telling the class to use SMTP
-        $this->email->IsHTML(true); // telling the class to use HTML
-        //$this->email->Host = "smtp.agni.com"; // SMTP server
-
-        $emailext = explode('@',$to);
-        if($emailext[1] == 'aci-bd.com'){
-            $this->email->Host = "192.168.1.30"; // SMTP server
-        }else{
-            $this->email->Host = "smtp.agni.com"; // SMTP server
-        }
-        $this->email->Port = 25;
-
-        $this->email->SetFrom('faysalahmed@aci-bd.com', $subject);
-        $this->email->AddReplyTo('faysalahmed@aci-bd.com', $subject);
-
-
-        $this->email->AddAddress($to);
-
-        $this->email->Subject = $subject;
-        $this->email->MsgHTML($html);
-        //print_r($this->email->Send()); exit();
-        if ($this->email->Send()) {
-            //print "Done";
-        } else {
-            //print "Failed";
-        }
-
-    }
 
     public function update(ManagementDevelopmentPlaneUpdateRequest $request){
 
@@ -296,6 +253,8 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->SuppervisorMobile = $request->SuppervisorMobile;
             $ManagementDevelopmentPlane->AreaOne = $request->AreaOne;
             $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
+            $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
+            $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             if ($ManagementDevelopmentPlane->save()){
                 foreach ($initiative as $value){
@@ -345,7 +304,8 @@ class MDPController extends Controller
 
         $dateFrom =  Carbon::now()->year -5;
         $dateTo =  Carbon::now()->year;
-        $training_history = DB::select("EXEC SP_TrainingUserReport '$mdp->StaffID','$dateFrom','$dateTo' ");
+//        $training_history = DB::select("EXEC SP_TrainingUserReport '$mdp->StaffID','$dateFrom','$dateTo' ");
+        $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$mdp->StaffID'");
 
         return response()->json([
             'training_list'=>$training_list_by_empcode,
@@ -353,6 +313,49 @@ class MDPController extends Controller
             'dropDown'=>$dropDown,
             'data'=>new ManagementDevelopmentPlaneResource($mdp)
         ]);
+    }
+    public function testsendemail(){
+
+        //$data = array();
+        //$data['to'] = $to;
+        //$data['emailbody'] = $emailbody;
+        //$html = $this->load->view('email_body', $data, TRUE);
+        $html = 'Test email';
+        //print_r($to); exit();
+        $this->load->library('phpmailer');
+        //$to = 'faysalahmed@aci-bd.com';
+        //$to = 'faysal.ahmed7212@gmail.com';
+        $to = 'sandip@acilogistics.net';
+        $subject = "ACI Approval System";
+
+        $this->email = new PHPMailer(true);
+        $this->email->IsSMTP(true); // telling the class to use SMTP
+        $this->email->IsHTML(true); // telling the class to use HTML
+        //$this->email->Host = "smtp.agni.com"; // SMTP server
+
+        $emailext = explode('@',$to);
+        if($emailext[1] == 'aci-bd.com'){
+            $this->email->Host = "192.168.1.30"; // SMTP server
+        }else{
+            $this->email->Host = "smtp.agni.com"; // SMTP server
+        }
+        $this->email->Port = 25;
+
+        $this->email->SetFrom('faysalahmed@aci-bd.com', $subject);
+        $this->email->AddReplyTo('faysalahmed@aci-bd.com', $subject);
+
+
+        $this->email->AddAddress($to);
+
+        $this->email->Subject = $subject;
+        $this->email->MsgHTML($html);
+        //print_r($this->email->Send()); exit();
+        if ($this->email->Send()) {
+            //print "Done";
+        } else {
+            //print "Failed";
+        }
+
     }
 
     public function delete($id){

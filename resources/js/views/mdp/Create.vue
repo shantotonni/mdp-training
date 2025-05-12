@@ -6,9 +6,13 @@
           <div class="float-right d-none d-md-block">
             <div class="card-tools">
               <router-link :to="{name: 'MDPList'}" class="btn btn-primary btn-sm">
-                <i class="fas fa-sync"></i>
+                <i class="fas fa-backward"></i>
                 Back
               </router-link>
+              <button type="button" class="btn btn-primary btn-sm" @click="reload">
+                <i class="fas fa-sync"></i>
+                Reload
+              </button>
             </div>
           </div>
         </div>
@@ -75,14 +79,21 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Official Email</label>
-                              <input type="text" name="OfficialEmail" readonly v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }" required>
+                              <input type="email" name="OfficialEmail" readonly v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }" required>
+                              <small v-if="form.OfficialEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.OfficialEmail)" class="text-danger">
+                                Invalid email format.
+                              </small>
                               <div class="error" v-if="form.errors.has('OfficialEmail')" v-html="form.errors.get('OfficialEmail')" />
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Mobile</label>
-                              <input type="text" name="Mobile" v-model="form.Mobile" class="form-control" :class="{ 'is-invalid': form.errors.has('Mobile') }" required>
+                              <input type="text" name="Mobile" v-model="form.Mobile" class="form-control" :class="{ 'is-invalid': form.errors.has('Mobile') }"   maxlength="11"
+                                     pattern="01[0-9]{9}" required>
+                              <small v-if="form.Mobile && !/^01[0-9]{9}$/.test(form.Mobile)" class="text-danger">
+                                Invalid mobile number. Must start with 01 and be 11 digits long.
+                              </small>
                               <div class="error" v-if="form.errors.has('Mobile')" v-html="form.errors.get('Mobile')" />
                             </div>
                           </div>
@@ -189,7 +200,10 @@
                           <div class="col-4 col-md-4">
                             <div class="form-group">
                               <label>Training Title</label>
-                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title"  maxlength="90" required>
+                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title"  maxlength="90"    @input="countSpace(initiat.Name,'personal','personal',index)"  required>
+                              <small v-if="errors.PersonalIN && errors.PersonalIN[index]" class="error">
+                                {{ errors.PersonalIN[index].Name }}
+                              </small>
                               <div class="error" v-if="form.errors.has('Name')" v-html="form.errors.get('Name')" />
                             </div>
                           </div>
@@ -284,14 +298,14 @@
                                 <div class="form-group">
                                   <label>Future Training One</label>
                                   <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"
-                                         @change="countSpace(form.AreaOne,'AreaOne','area')"   name="Title" placeholder="Title"  required>
+                                         @input="countSpace(form.AreaOne,'AreaOne','area')"   name="Title" placeholder="Title"  required>
                                   <small v-if="errors.AreaOne" class="error">{{ errors.AreaOne }}</small>
                                   <div class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
 
                                   <br>
                                   <small>Explain how this training one will help the company.</small>
                                   <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }"
-                                         style="height: 90px" name="Reason" placeholder="Max 30 words" @change="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne','future')"  required>
+                                         style="height: 90px" name="Reason" placeholder="Max 30 words" @input="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne','future')"  required>
                                   <div class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
                                   <small v-if="errors.FutureTrainingOneDetails" class="error">{{ errors.FutureTrainingOneDetails }}</small>
                                   <div class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
@@ -302,7 +316,7 @@
                                 <div class="form-group">
                                   <label>Future Training Two</label>
                                   <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }"
-                                         @change="countSpace(form.AreaTwo,'AreaTwo','area')"   name="Title" placeholder="Title"  required>
+                                         @input="countSpace(form.AreaTwo,'AreaTwo','area')"   name="Title" placeholder="Title"  required>
                                   <small v-if="errors.AreaTwo" class="error">{{ errors.AreaTwo }}</small>
                                   <div class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
 
@@ -310,7 +324,7 @@
                                   <br>
                                   <small>Explain how this training one will help the company.</small>
                                   <input v-model="form.FutureTrainingTwoDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }"
-                                         style="height: 90px" name="Reason" placeholder="Max 30 words" @change="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo','future')" required>
+                                         style="height: 90px" name="Reason" placeholder="Max 30 words" @input="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo','future')" required>
                                   <div class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />
                                   <small v-if="errors.FutureTrainingTwoDetails" class="error">{{ errors.FutureTrainingTwoDetails }}</small>
                                   <div class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />
@@ -323,7 +337,7 @@
 
                           <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button  class="btn btn-secondary" @click="clearFormDataState">Clear Data</button>
+<!--                            <button  class="btn btn-secondary" @click="clearFormDataState">Clear Data</button>-->
 
                           </div>
                         </div>
@@ -508,6 +522,7 @@ export default {
         FutureTrainingTwoDetails: '',
         AreaOne:'',
         AreaTwo:'',
+        PersonalIN:{},
       }
     }
   },
@@ -521,90 +536,6 @@ export default {
     //this.getData()
   },
   methods: {
-
-   countSpace(val,type,module){
-     try {
-       const count = val.match(/\s+/g)?.length || 0;
-       if (module==='future'){
-         if (count>30){
-           if (type==='futureTrainingOne'){
-             this.errors.TrainingOne = 'Max word limit 30!'
-             this.errorNoti(this.errors.TrainingOne);
-           }else {
-             this.errors.TrainingTwo = 'Max word limit 30!'
-             this.errorNoti(this.errors.TrainingTwo );
-           }
-         }else{
-           this.errors.TrainingOne = '';
-           this.errors.TrainingTwo = '';
-         }
-       }else {
-         if (count>10){
-           if (type==='AreaOne'){
-             this.errors.AreaOne = 'Max word limit 10!'
-             this.errorNoti(this.errors.AreaOne);
-           }else {
-             this.errors.AreaTwo = 'Max word limit 10!'
-             this.errorNoti(this.errors.AreaTwo );
-           }
-         }else{
-           this.errors.AreaOne = '';
-           this.errors.AreaTwo = '';
-         }
-       }
-
-     } catch (error) {
-       console.error("Max word limit crossed", error);
-     }
-    },
-
-    store() {
-      // Correct word count logic
-      const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
-      const twoWordCount = this.form.FutureTrainingTwoDetails.trim().split(/\s+/).filter(Boolean).length;
-      const AreaTwoCount = this.form. AreaTwo.trim().split(/\s+/).filter(Boolean).length;
-      const AreaOneCount = this.form.AreaOne.trim().split(/\s+/).filter(Boolean).length;
-
-      // Reset errors
-      this.errors = {};
-
-      // Validate
-      if (oneWordCount > 30 || twoWordCount > 30 || AreaOneCount > 10 || AreaTwoCount > 10) {
-        if (oneWordCount > 30) {
-          this.errors.FutureTrainingOneDetails = `Future Training One must not exceed 30 words. Currently: ${oneWordCount}`;
-        }
-        if (twoWordCount > 30) {
-          this.errors.FutureTrainingTwoDetails = `Future Training Two must not exceed 30 words. Currently: ${twoWordCount}`;
-        }
-        if (AreaOneCount > 30) {
-          this.errors.AreaOne = `Title One must not exceed 10 words. Currently: ${AreaOneCount}`;
-        }
-        if (AreaTwoCount > 30) {
-          this.errors.AreaTwo = `Title Two must not exceed 10 words. Currently: ${AreaTwoCount}`;
-        }
-        return; // Stop form submission
-      }else{
-
-        this.form.busy = true;
-        this.PreLoader = true;
-
-        this.form.post(baseurl + "api/mdp/store").then(response => {
-          if (response.data.status === 'error') {
-            this.errorNoti(response.data.message);
-          } else {
-            this.redirect(this.mainOrigin + 'mdp-list');
-            this.successNoti(response.data.message);
-            this.clearFormDataState();
-          }
-          this.PreLoader = false;
-        }).catch(e => {
-          this.isLoading = false;
-          this.PreLoader = false;
-        });
-      }
-
-    },
-
     getEmployeeByStaffID(){
       axios.post(baseurl +'api/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
@@ -630,6 +561,121 @@ export default {
 
       })
     },
+    countSpace(val, type, module, index) {
+      try {
+        const wordCount = val.trim().split(/\s+/).length;
+
+        if (module === 'future') {
+          if (wordCount > 30) {
+            if (type === 'futureTrainingOne') {
+              this.errors.FutureTrainingOneDetails = 'Max word limit 30!';
+              this.errorNoti(this.errors.FutureTrainingOneDetails);
+            } else if (type === 'futureTrainingTwo') {
+              this.errors.FutureTrainingTwoDetails = 'Max word limit 30!';
+              this.errorNoti(this.errors.FutureTrainingTwoDetails);
+            }
+          } else {
+            this.errors.FutureTrainingOneDetails = '';
+            this.errors.FutureTrainingTwoDetails = '';
+          }
+        } else {
+          if (wordCount > 10) {
+            if (type === 'personal') {
+              if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
+                this.errors.PersonalIN = {};
+              }
+              this.errors.PersonalIN[index].Name = 'Max word limit 10!';
+              this.errorNoti(this.errors.PersonalIN[index].Name);
+            } else if (type === 'AreaOne') {
+              this.errors.AreaOne = 'Max word limit 10!';
+              this.errorNoti(this.errors.AreaOne);
+            } else if (type === 'AreaTwo') {
+              this.errors.AreaTwo = 'Max word limit 10!';
+              this.errorNoti(this.errors.AreaTwo);
+            }
+          } else {
+            // Clear errors safely
+            if (type === 'personal' && this.errors.PersonalIN && typeof this.errors.PersonalIN === 'object') {
+              this.errors.PersonalIN[index].Name = '';
+            }
+            if (type === 'AreaOne') this.errors.AreaOne = '';
+            if (type === 'AreaTwo') this.errors.AreaTwo = '';
+          }
+        }
+
+      } catch (error) {
+        console.error("Max word limit crossed", error);
+      }
+    },
+
+    store() {
+      // Correct word count logic
+      const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
+      const twoWordCount = this.form.FutureTrainingTwoDetails.trim().split(/\s+/).filter(Boolean).length;
+      const AreaTwoCount = this.form.AreaTwo.trim().split(/\s+/).filter(Boolean).length;
+      const AreaOneCount = this.form.AreaOne.trim().split(/\s+/).filter(Boolean).length;
+
+      // Reset errors
+      this.errors = {};
+
+      if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
+        this.errors.PersonalIN = {};
+      }
+      this.form.initiative.forEach((item, index) => {
+        if (!this.errors.PersonalIN[index]) {
+          this.errors.PersonalIN[index] = {};
+        }
+
+        console.log(this.errors.PersonalIN[index])
+        const nameWords = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
+
+        if (nameWords > 10) {
+          console.log('length',this.errors.PersonalIN[index].length)
+          this.errors.PersonalIN[index].Name = `Title must not exceed 10 words.`;
+        }
+        return;
+      });
+
+
+      // Validate
+      if (oneWordCount > 30 || twoWordCount > 30 || AreaOneCount > 10 || AreaTwoCount > 10) {
+        if (oneWordCount > 30) {
+          this.errors.FutureTrainingOneDetails = `Future Training One must not exceed 30 words. Currently: ${oneWordCount}`;
+        }
+        if (twoWordCount > 30) {
+          this.errors.FutureTrainingTwoDetails = `Future Training Two must not exceed 30 words. Currently: ${twoWordCount}`;
+        }
+        if (AreaOneCount > 30) {
+          this.errors.AreaOne = `Title One must not exceed 10 words. Currently: ${AreaOneCount}`;
+        }
+        if (AreaTwoCount > 30) {
+          this.errors.AreaTwo = `Title Two must not exceed 10 words. Currently: ${AreaTwoCount}`;
+        }
+
+        return; // Stop form submission
+      }else{
+
+        this.form.busy = true;
+        this.PreLoader = true;
+
+        this.form.post(baseurl + "api/mdp/store").then(response => {
+          if (response.data.status === 'error') {
+            this.errorNoti(response.data.message);
+          } else {
+            this.redirect(this.mainOrigin + 'mdp-list');
+            this.successNoti(response.data.message);
+            this.clearFormDataState();
+          }
+          this.PreLoader = false;
+        }).catch(e => {
+          this.isLoading = false;
+          this.PreLoader = false;
+        });
+      }
+
+    },
+
+
     change({coordinates, canvas}) {
       console.log(coordinates, canvas)
     },
@@ -780,6 +826,10 @@ export default {
     },
     Training_deleteFind: function (index2) {
       this.form.training.splice(index2, 1);
+    },
+    reload(){
+      this.clearFormDataState()
+      window.location.reload();
     },
     changeImage(event) {
       let file = event.target.files[0];

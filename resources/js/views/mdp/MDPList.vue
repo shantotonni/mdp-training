@@ -308,7 +308,7 @@ export default {
             }
           })
         },
-        exportMDPList(){
+      exportMDPList(){
       this.PreLoader = true;
         axios.get(baseurl + 'api/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
             + "&Department=" + JSON.stringify(this.Department)
@@ -331,7 +331,7 @@ export default {
           this.PreLoader = false;
         })
       },
-        exportMDPDetailsList(){
+      exportMDPDetailsList(){
       this.PreLoader = true;
         axios.get(baseurl + 'api/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
             + "&Department=" + JSON.stringify(this.Department)
