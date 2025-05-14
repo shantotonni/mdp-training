@@ -320,7 +320,7 @@
 
 
                                   <br>
-                                  <small>Explain how this training one will help the company.</small>
+                                  <small>Explain how this training two will help the company.</small>
                                   <input v-model="form.FutureTrainingTwoDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }"
                                          style="height: 90px" name="Reason" placeholder="Max 30 words" @input="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo','future')" required>
                                   <div class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />

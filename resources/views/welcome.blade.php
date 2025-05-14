@@ -101,7 +101,7 @@
 <script src="{{ asset('assets/pages/form-repeater.int.js') }}"></script>
 
 <!-- App js -->
-<script src="{{ asset('js/app.js?v=1.29') }}" defer></script>
+<script src="{{ asset('js/app.js?v=1.30') }}" defer></script>
 <script src="{{ asset('assets/js/app.js') }}"></script>
 </body>
 </html>
