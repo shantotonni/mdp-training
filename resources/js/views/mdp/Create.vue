@@ -134,23 +134,83 @@
                               <div class="error" v-if="form.errors.has('Qualification')" v-html="form.errors.get('Qualification')" />
                             </div>
                           </div>
+<!--                          signature-->
                           <div class="col-md-4" >
                             <div class="form-group">
-                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
-                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }" required>
-                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
-                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">
+                              <label>Signature
+<!--                                (<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)-->
+                              </label>
+                              <!-- Trigger -->
+                              <input type="file" @change="onFileChange" />
+
+                              <!-- Modal -->
+                              <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-xl" role="document">
+                                  <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                      <h5 class="modal-title">Crop Image</h5>
+                                      <button type="button" class="close" data-dismiss="modal" @click="resetCropper">
+                                        <span>&times;</span>
+                                      </button>
+                                    </div>
+
+                                    <!-- Modal Body (Flex Grow) -->
+                                    <div class="modal-body p-0" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                                      <div v-if="imageUrl" style="flex: 1; position: relative;">
+                                        <cropper
+                                            ref="cropper"
+                                            :src="imageUrl"
+                                            :aspect-ratio="10 / 3"
+                                            :auto-crop-area="1"
+                                            :view-mode="1"
+                                            :min-crop-box-width="200"
+                                            :min-crop-box-height="60"
+                                            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
+                                        />
+                                      </div>
+                                    </div>
+                                   <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
+<!--                                     Modal Footer -->
+                                    <div class="modal-footer">
+                                      <button class="btn btn-secondary btn-sm" data-dismiss="modal" @click="resetCropper">Cancel</button>
+                                      <button class="btn btn-info btn-sm" @click="prepareCrop">Crop</button>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                        </div>
+                          <div class="col-md-4" >
+                            <div class="form-group">
+                              <div v-if="previewUrl">
+                                <label>Preview:</label> <span><button type="button" class="btn btn-danger btn-sm" @click="resetCropper">x</button>&nbsp;</span>
+                                <img :src="previewUrl" style="width: 200px; height: 60px;" />
+                              </div>
                             </div>
                           </div>
-                          <div class="col-md-4">
-                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>
-                          </div>
+<!--                          <div class="col-md-4" >-->
+<!--                            <div class="form-group">-->
+<!--                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>-->
+<!--                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" -->
+<!--                                     :class="{ 'is-invalid': form.errors.has('Signature') }" required>-->
+<!--                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>-->
+<!--                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">-->
+<!--                            </div>-->
+<!--                          </div>-->
+<!--                          <div class="col-md-4">-->
+<!--                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>-->
+<!--                          </div>-->
                         </div>
                         <hr>
                        </div>
-
+<!--                    supervisor and training-->
                       <div class="col-md-12">
                         <div class="row">
+<!--                          supervisor-->
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor Staff ID</label>
@@ -192,9 +252,11 @@
                           </div>
                         </div>
                         <hr>
+<!--                        training-->
                         <p style="font-size: 13px;font-weight:bold;color:#0000B9">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
                           Which you will acquire at your personal initiative:</p>
                         <hr>
+<!--                        Personal-->
                         <h4 style="font-size: 18px">Personal Initiative</h4>
                         <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
                           <div class="col-4 col-md-4">
@@ -215,8 +277,6 @@
                                 <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
-
-<!--                                <option :value="category.id" v-for="(category,index) in categories" :key="index">{{category.name}}</option>-->
                               </select>
                               <div class="error" v-if="form.errors.has('Type')" v-html="form.errors.get('Type')" />
                             </div>
@@ -234,6 +294,7 @@
                           </div>
                         </div>
                         <hr>
+<!--                        Required-->
                         <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'" style="width: 230px;height: 45px">Suggestive List</button>
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
@@ -279,14 +340,14 @@
                               <div class="error" v-if="form.errors.has('TrainingDate')" v-html="form.errors.get('TrainingDate')" />
                             </div>
                           </div>
-<!--                          <div class="col-2" style="padding-top: 30px">-->
-<!--                            <button type="button" class="btn btn-danger btn-sm" @click="Training_deleteFind(index2)">x</button>&nbsp;-->
-<!--                            <button type="button" class="btn btn-success btn-sm" @click="Training_addFind">+</button>-->
-<!--                          </div>-->
+                          <div class="col-2" style="padding-top: 30px">
+                            <button type="button" class="btn btn-danger btn-sm" @click="Training_deleteFind(index2)" v-show="index2>2 && index2<5" >x</button>&nbsp;
+                            <button type="button" class="btn btn-success btn-sm" @click="Training_addFind">+</button>
+                          </div>
                         </div>
 
                         <hr>
-
+<!--                        future-->
                         <div class="row">
                           <p style="font-size: 13px;font-weight: bold;color:#0000B9"> B. For development to take future responsibilities
                             Other than those mentioned in A, list below two areas of personal development/training that you would like to see
@@ -334,7 +395,7 @@
                             </div>
                           </div>
                         </div>
-
+<!--                        submit-->
                           <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Submit</button>
 <!--                            <button  class="btn btn-secondary" @click="clearFormDataState">Clear Data</button>-->
@@ -450,10 +511,11 @@ import * as events from "events";
 const DATA_LIFETIME = 72 * 60 * 60 * 1000;
 //------------ for image crop-----------------
 
-import Vue from 'vue'
-import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css';
 
+import Cropper from 'vue-cropperjs'
+import 'cropperjs/dist/cropper.css'
+import Login from "../auth/Login.vue";
 export default {
   name: "List",
   computed: {
@@ -469,6 +531,9 @@ export default {
   },
   data() {
     return {
+
+      previewUrl: null,
+      croppedBlob: null,
       imageUrl: null,
       cropper: null,
       training_history: [],
@@ -491,7 +556,7 @@ export default {
         CurrentPosition:'',
         PresentJobStartedOn:'',
         Qualification:'',
-        Signature: '',
+        Signature: null,
         SuppervisorStaffID:'',
         SuppervisorName:'',
         SuppervisorDesignation:'',
@@ -501,16 +566,14 @@ export default {
         FutureTrainingOneDetails:'',
         AreaTwo:'',
         FutureTrainingTwoDetails:'',
-        initiative: [{ Name: '' , Type: '', Date: ''}],
+        initiative: [
+            {Name: '' , Type: '', Date: ''}
+        ],
         training: [
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
             { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
-            { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
-            { TrainingTitle: '' , TrainingType: '', TrainingDate: ''},
         ],
-        TrainingOne: '',
-        TrainingTwo: '',
       }),
       isLoading: false,
       dropDown:'',
@@ -528,6 +591,9 @@ export default {
   },
   mounted() {
     document.title = 'MDP Create | MDP';
+    $('#cropperModal').on('shown.bs.modal', () => {
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+    });
     //this.getAllEmployeeTrainingList()
   },
   created() {
@@ -607,6 +673,91 @@ export default {
         console.error("Max word limit crossed", error);
       }
     },
+    onFileChange(e) {
+      this.resetCropper()
+      const file = e.target.files[0]
+      if (file) {
+        this.imageUrl = URL.createObjectURL(file)
+        this.previewUrl = null
+        this.croppedBlob = null
+
+        // Open the modal
+        $('#cropperModal').modal('show')
+      }
+    },
+    prepareCrop() {
+      const canvas = this.$refs.cropper.getCroppedCanvas({
+        width: 200,
+        height: 60,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+      });
+
+      if (!canvas) {
+        alert("Something went wrong! Image source not readable");
+        return;
+      }
+
+      canvas.toBlob(blob => {
+        if (!blob) {
+          alert("Failed to generate cropped image.");
+          return;
+        }
+
+        this.croppedBlob = blob;
+
+        // Optional: Preview base64 image from the blob
+        const reader = new FileReader();
+        reader.onload = e => {
+          this.form.Signature = e.target.result; // for preview or hidden input
+        };
+        reader.readAsDataURL(blob);
+        this.previewUrl = URL.createObjectURL(blob)
+        // Or directly upload/send this blob:
+        // this.uploadImage(blob);
+      }, 'image/jpeg', 0.95); // high quality
+      $('#cropperModal').modal('hide')
+    },
+
+    // prepareCrop() {
+    //   const canvas = this.$refs.cropper.getCroppedCanvas({ width: 200, height: 60 })
+    //   canvas.toBlob(blob => {
+    //     this.croppedBlob = blob
+    //     console.log('dfd',this.croppedBlob )
+    //
+    //     this.previewUrl = URL.createObjectURL(blob)
+    //     console.log('dasfd',this.previewUrl )
+    //     $('#cropperModal').modal('hide') // Close modal
+    //   })
+    //   console.log(' this.croppedBlob ', this.croppedBlob )
+    //
+    // },
+    resetCropper() {
+      this.imageUrl = null
+      this.previewUrl = null
+      this.croppedBlob = null
+      $('#cropperModal').modal('hide')
+    },
+    changeImage(event) {
+      let file = event.target.files[0];
+      let reader = new FileReader();
+      reader.onload = event => {
+        this.form.Signature = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    showImage() {
+      let img = this.form.Signature;
+      if (img.length > 100) {
+        return this.form.Signature;
+      } else {
+        return window.location.origin + "/signature/" + this.form.Signature;
+      }
+    },
+    change({coordinates, canvas}) {
+      console.log(coordinates, canvas)
+    },
+
 
     store() {
       // Correct word count logic
@@ -655,96 +806,33 @@ export default {
         return; // Stop form submission
       }else{
 
-        this.form.busy = true;
-        this.PreLoader = true;
+        if (!this.croppedBlob) {
+          console.log('CROP',this.form.Signature);
+          this.errorNoti('Please crop the image first.')
+          return
+        }
+        console.log('form',this.croppedBlob);
+        const formData = new FormData()
+        formData.append('image', this.croppedBlob, 'cropped.jpg')
+        this.form.Signature = formData.get('image')
 
+        this.PreLoader = true
         this.form.post(baseurl + "api/mdp/store").then(response => {
           if (response.data.status === 'error') {
-            this.errorNoti(response.data.message);
+            this.errorNoti(response.data.message)
           } else {
-            this.redirect(this.mainOrigin + 'mdp-list');
-            this.successNoti(response.data.message);
-            this.clearFormDataState();
+            this.redirect(this.mainOrigin + 'mdp-list')
+            this.successNoti(response.data.message)
+            this.clearFormDataState()
           }
-          this.PreLoader = false;
+          this.PreLoader = false
         }).catch(e => {
-          this.isLoading = false;
-          this.PreLoader = false;
-        });
+          this.PreLoader = false
+          this.errorNoti('Upload failed.')
+          console.error(e)
+        })
       }
 
-    },
-
-
-    change({coordinates, canvas}) {
-      console.log(coordinates, canvas)
-    },
-
-    //keep data in the localstorage as cache till 72h
-    initFormDataState() {
-      try {
-        if (typeof localStorage !== 'undefined') {
-          const storedData = localStorage.getItem('formData');
-          if (storedData) {
-            const { formData, timestamp } = JSON.parse(storedData);
-
-            // Check if the data is still valid (within the lifetime of 72 hours)
-            if (Date.now() - timestamp < DATA_LIFETIME) {
-              this.prevForm = new Form(formData); // Initialize the form with the stored data
-              this.form.fill(this.prevForm)
-
-            } else {
-              // Clear the outdated data from localStorage
-              localStorage.removeItem('formData');
-            }
-          }
-        }
-      } catch (error) {
-        console.error("Error parsing form data from localStorage:", error);
-      }
-    },
-
-    // Function to save the form data state to localStorage
-    saveFormDataState() {
-      try {
-        if (typeof localStorage !== 'undefined') {
-          const formData = JSON.stringify({
-            formData: this.form, // Save the form data
-            timestamp: Date.now(), // Save the current timestamp
-          });
-          localStorage.setItem('formData', formData); // Store in localStorage
-        }
-      } catch (error) {
-        console.error("Error saving form data to localStorage:", error);
-      }
-    },
-    clearFormDataState() {
-      try {
-        if (typeof localStorage !== 'undefined') {
-          localStorage.removeItem('formData'); // Remove the form data from localStorage
-          this.form = new Form({}); // Reset the form to its initial state
-        }
-      } catch (error) {
-        console.error("Error clearing form data from localStorage:", error);
-      }
-    },
-    downloadTraining(){
-      axios.get(baseurl +'api/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
-        let dataSets = response.data.training_history;
-        if (dataSets.length > 0) {
-          let columns = Object.keys(dataSets[0]);
-          columns = columns.filter((item) => item !== 'row_num');
-          let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-          columns = columns.map((item) => {
-            let title = item.replace(rex, '$1$4 $2$3$5')
-            return {title, key: item}
-          });
-          //this.generateExport(dataSets, columns, 'Job Card Report')
-          bus.$emit('data-table-import', dataSets, columns, 'Last Five Years Training History')
-        }
-      }).catch((error)=>{
-        console.log(response)
-      })
     },
 
     getSupervisorByStaffID(){
@@ -801,6 +889,71 @@ export default {
         this.errorNoti(error);
       });
     },
+    //keep data in the localstorage as cache till 72h
+    initFormDataState() {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const storedData = localStorage.getItem('formData');
+          if (storedData) {
+            const { formData, timestamp } = JSON.parse(storedData);
+
+            // Check if the data is still valid (within the lifetime of 72 hours)
+            if (Date.now() - timestamp < DATA_LIFETIME) {
+              this.prevForm = new Form(formData); // Initialize the form with the stored data
+              this.form.fill(this.prevForm)
+
+            } else {
+              // Clear the outdated data from localStorage
+              localStorage.removeItem('formData');
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error parsing form data from localStorage:", error);
+      }
+    },
+    // Function to save the form data state to localStorage
+    saveFormDataState() {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const formData = JSON.stringify({
+            formData: this.form, // Save the form data
+            timestamp: Date.now(), // Save the current timestamp
+          });
+          localStorage.setItem('formData', formData); // Store in localStorage
+        }
+      } catch (error) {
+        console.error("Error saving form data to localStorage:", error);
+      }
+    },
+    clearFormDataState() {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('formData'); // Remove the form data from localStorage
+          this.form = new Form({}); // Reset the form to its initial state
+        }
+      } catch (error) {
+        console.error("Error clearing form data from localStorage:", error);
+      }
+    },
+    downloadTraining(){
+      axios.get(baseurl +'api/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
+        let dataSets = response.data.training_history;
+        if (dataSets.length > 0) {
+          let columns = Object.keys(dataSets[0]);
+          columns = columns.filter((item) => item !== 'row_num');
+          let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+          columns = columns.map((item) => {
+            let title = item.replace(rex, '$1$4 $2$3$5')
+            return {title, key: item}
+          });
+          //this.generateExport(dataSets, columns, 'Job Card Report')
+          bus.$emit('data-table-import', dataSets, columns, 'Last Five Years Training History')
+        }
+      }).catch((error)=>{
+        console.log(response)
+      })
+    },
     modalHide(){
       $("#suggestiveModal").modal("hide");
     },
@@ -810,7 +963,6 @@ export default {
     //for initiative
     addFind: function () {
       if (this.form.initiative.length < 5) {
-        console.log(this.form.initiative.length + 1);
         this.form.initiative.push({ Name: '', Type: '', Date: '' });
       } else {
         this.errorNoti('No more than 5 training entries can be added!');
@@ -822,7 +974,13 @@ export default {
     },
     //for training
     Training_addFind: function () {
-      this.form.training.push({ TrainingTitle: '' , TrainingType: '', TrainingDate: ''});
+      if (this.form.training.length < 5) {
+        this.form.training.push({ TrainingTitle: '' , TrainingType: '', TrainingDate: '' });
+        console.log('this.form.training',this.form.training)
+      } else {
+        this.errorNoti('No more than 5 training entries can be added!');
+      }
+      // this.form.training.push({ TrainingTitle: '' , TrainingType: '', TrainingDate: ''});
     },
     Training_deleteFind: function (index2) {
       this.form.training.splice(index2, 1);
@@ -831,22 +989,7 @@ export default {
       this.clearFormDataState()
       window.location.reload();
     },
-    changeImage(event) {
-      let file = event.target.files[0];
-      let reader = new FileReader();
-      reader.onload = event => {
-        this.form.Signature = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
-    showImage() {
-      let img = this.form.Signature;
-      if (img.length > 100) {
-        return this.form.Signature;
-      } else {
-        return window.location.origin + "/signature/" + this.form.Signature;
-      }
-    },
+
   },
 }
 </script>
