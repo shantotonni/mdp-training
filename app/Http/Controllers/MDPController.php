@@ -19,6 +19,7 @@ use App\Models\MDPTraining;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -88,13 +89,16 @@ class MDPController extends Controller
     }
 
     public function store(ManagementDevelopmentPlaneRequest $request){
+
         DB::beginTransaction();
+
         try {
             $token = $request->bearerToken();
             $payload = JWTAuth::setToken($token)->getPayload();
-            $empcode = $payload['EmpCode'];
-            $role = $payload['Type'];
+            $empcode = $payload->get('EmpCode');
+            $role = $payload->get('Type');
             if ($role != 'admin'){
+
                 if ($empcode != $request->StaffID){
                     return response()->json([
                         'status' => 'error',
@@ -102,6 +106,7 @@ class MDPController extends Controller
                     ]);
                 }
             }
+
             if ($request->StaffID == 'admin'){
                 if ($empcode != $request->StaffID){
                     return response()->json([
@@ -111,6 +116,7 @@ class MDPController extends Controller
                 }
             }
 
+
             $exist_check = ManagementDevelopmentPlane::where('AppraisalPeriod',$request->AppraisalPeriod)->where('StaffID',$request->StaffID)->exists();
             if ($exist_check){
                 return response()->json([
@@ -118,12 +124,10 @@ class MDPController extends Controller
                     'message' => 'Data Already Exists.'
                 ]);
             }
-
             $initiative = $request->initiative;
             $training = $request->training;
-
             // Validate image dimensions
-            $imageDimantion = Image::make($request->Signature);
+            $imageDimantion = Image::make($request->file('Signature'));
             if ($imageDimantion->width() != 200 || $imageDimantion->height() != 60) {
                 return response()->json([
                     'status' => 'error',
@@ -131,13 +135,20 @@ class MDPController extends Controller
                 ]);
             }
 
-            //FOR IMAGE
-            if ($request->Signature) {
-                $image   = $request->Signature;
-                $name    = uniqid().time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-                Image::make($image)->save(public_path('signature/').$name);
+            if ($request->hasFile('Signature')) {
+                $file = $request->file('Signature');
+
+                // Create a unique name with extension
+                $filename = 'signature_' . time() . '.' . $file->getClientOriginalExtension();
+                $destination = public_path('signature');
+
+                if (!file_exists($destination)) {
+                    mkdir($destination, 0755, true);
+                }
+                Image::make($file)->encode('jpeg', 95)->save(public_path('signature/').$filename);
+
             } else {
-                $name = '';
+                $filename = '';
             }
 
             $ManagementDevelopmentPlane = new ManagementDevelopmentPlane();
@@ -154,7 +165,6 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
             $ManagementDevelopmentPlane->PresentJobStartedOn = $request->PresentJobStartedOn;
             $ManagementDevelopmentPlane->Qualification = $request->Qualification;
-
             $ManagementDevelopmentPlane->SuppervisorStaffID = $request->SuppervisorStaffID;
             $ManagementDevelopmentPlane->SuppervisorName = $request->SuppervisorName;
             $ManagementDevelopmentPlane->SuppervisorDesignation = $request->SuppervisorDesignation;
@@ -165,11 +175,13 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->CreatedBy = $empcode;
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             $ManagementDevelopmentPlane->MDPStatus = 'Pending';
-            $ManagementDevelopmentPlane->Signature = $name;
+            $ManagementDevelopmentPlane->Signature = $filename;
             $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
             $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
             if ($ManagementDevelopmentPlane->save()){
+
                 foreach ($initiative as $value){
+
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
@@ -212,7 +224,8 @@ class MDPController extends Controller
         } catch (\Exception $exception) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Something went wrong! '.$exception->getMessage()
+                'message' => 'Something went wrong! '.$exception->getMessage(),
+
             ],500);
         }
     }

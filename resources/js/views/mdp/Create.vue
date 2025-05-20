@@ -141,7 +141,7 @@
 <!--                                (<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)-->
                               </label>
                               <!-- Trigger -->
-                              <input type="file" @change="onFileChange" />
+                              <input type="file" @change="onFileChange" required/>
 
                               <!-- Modal -->
                               <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog">
@@ -167,7 +167,7 @@
                                             :view-mode="1"
                                             :min-crop-box-width="200"
                                             :min-crop-box-height="60"
-                                            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
+                                            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;" required
                                         />
                                       </div>
                                     </div>
@@ -262,7 +262,7 @@
                           <div class="col-4 col-md-4">
                             <div class="form-group">
                               <label>Training Title</label>
-                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title"  maxlength="90"    @input="countSpace(initiat.Name,'personal','personal',index)"  required>
+                              <input v-model="initiat.Name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title" @input="countSpace(initiat.Name,'personal','personal',index)"  required>
                               <small v-if="errors.PersonalIN && errors.PersonalIN[index]" class="error">
                                 {{ errors.PersonalIN[index].Name }}
                               </small>
@@ -357,14 +357,14 @@
                             <div class="row">
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Future Training One</label>
+                                  <label>Future Training 1</label>
                                   <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"
                                          @input="countSpace(form.AreaOne,'AreaOne','area')"   name="Title" placeholder="Title"  required>
                                   <small v-if="errors.AreaOne" class="error">{{ errors.AreaOne }}</small>
                                   <div class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
 
                                   <br>
-                                  <small>Explain how this training one will help the company.</small>
+                                  <small>Explain how this training 1 will help the company.</small>
                                   <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }"
                                          style="height: 90px" name="Reason" placeholder="Max 30 words" @input="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne','future')"  required>
                                   <div class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
@@ -375,7 +375,7 @@
                               </div>
                               <div class="col-6 col-md-6">
                                 <div class="form-group">
-                                  <label>Future Training Two</label>
+                                  <label>Future Training 2</label>
                                   <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }"
                                          @input="countSpace(form.AreaTwo,'AreaTwo','area')"   name="Title" placeholder="Title"  required>
                                   <small v-if="errors.AreaTwo" class="error">{{ errors.AreaTwo }}</small>
@@ -383,7 +383,7 @@
 
 
                                   <br>
-                                  <small>Explain how this training Two will help the company.</small>
+                                  <small>Explain how this training 2 will help the company.</small>
                                   <input v-model="form.FutureTrainingTwoDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }"
                                          style="height: 90px" name="Reason" placeholder="Max 30 words" @input="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo','future')" required>
                                   <div class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />
@@ -414,8 +414,8 @@
                     <div class="card-body">
                       <div class="col-md-12">
                         <div class="row">
-                          <div class="col-md-9" style="color: #0f6674"><p>Last Five Years Training History</p> </div>
-                          <div class="col-md-3">
+                          <div class="col-md-10" style="color: #0f6674"><p>Last Five Years Training History</p> </div>
+                          <div class="col-md-2">
                             <button class="btn btn-info btn-sm" @click="downloadTraining"> <i class="fas fa-download"></i> Download</button>
                           </div>
                         </div>
@@ -634,10 +634,10 @@ export default {
         if (module === 'future') {
           if (wordCount > 30) {
             if (type === 'futureTrainingOne') {
-              this.errors.FutureTrainingOneDetails = 'Max word limit 30!';
+              this.errors.FutureTrainingOneDetails = 'Maximum 30 Words!';
               this.errorNoti(this.errors.FutureTrainingOneDetails);
             } else if (type === 'futureTrainingTwo') {
-              this.errors.FutureTrainingTwoDetails = 'Max word limit 30!';
+              this.errors.FutureTrainingTwoDetails = 'Maximum 30 Words!';
               this.errorNoti(this.errors.FutureTrainingTwoDetails);
             }
           } else {
@@ -647,16 +647,21 @@ export default {
         } else {
           if (wordCount > 10) {
             if (type === 'personal') {
+              console.log('didnt come')
               if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
                 this.errors.PersonalIN = {};
               }
-              this.errors.PersonalIN[index].Name = 'Max word limit 10!';
+              if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
+                this.errors.PersonalIN[index] = {};
+              }
+              this.errors.PersonalIN[index].Name = 'Maximum 10 Words!';
               this.errorNoti(this.errors.PersonalIN[index].Name);
+
             } else if (type === 'AreaOne') {
-              this.errors.AreaOne = 'Max word limit 10!';
+              this.errors.AreaOne = 'Maximum 10 Words!';
               this.errorNoti(this.errors.AreaOne);
             } else if (type === 'AreaTwo') {
-              this.errors.AreaTwo = 'Max word limit 10!';
+              this.errors.AreaTwo = 'Maximum 10 Words!';
               this.errorNoti(this.errors.AreaTwo);
             }
           } else {
@@ -758,82 +763,147 @@ export default {
       console.log(coordinates, canvas)
     },
 
-
-    store() {
-      // Correct word count logic
-      const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
-      const twoWordCount = this.form.FutureTrainingTwoDetails.trim().split(/\s+/).filter(Boolean).length;
-      const AreaTwoCount = this.form.AreaTwo.trim().split(/\s+/).filter(Boolean).length;
-      const AreaOneCount = this.form.AreaOne.trim().split(/\s+/).filter(Boolean).length;
-
-      // Reset errors
-      this.errors = {};
-
-      if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
-        this.errors.PersonalIN = {};
-      }
-      this.form.initiative.forEach((item, index) => {
-        if (!this.errors.PersonalIN[index]) {
-          this.errors.PersonalIN[index] = {};
+      store() {
+        // Reset errors
+        this.errors = {};
+        if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
+          this.errors.PersonalIN = {};
         }
 
-        console.log(this.errors.PersonalIN[index])
-        const nameWords = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
+        // Run validations
+        const wordErrors = this.validateWordCounts();
+        const initiativeErrors = this.validateInitiatives();
 
-        if (nameWords > 10) {
-          console.log('length',this.errors.PersonalIN[index].length)
-          this.errors.PersonalIN[index].Name = `Title must not exceed 10 words.`;
+        if (wordErrors || initiativeErrors || !this.validateFormFields()) {
+          return;
         }
-        return;
-      });
 
+        const formData = this.buildFormData();
 
-      // Validate
-      if (oneWordCount > 30 || twoWordCount > 30 || AreaOneCount > 10 || AreaTwoCount > 10) {
+        // Submit
+        axios.post(baseurl + 'api/mdp/store', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }).then(response => {
+          this.successNoti(response.data.message);
+          this.redirect(this.mainOrigin + 'mdp-list');
+          this.clearFormDataState();
+        }).catch(error => {
+          this.errorNoti('Upload failed.');
+          console.error(error);
+        });
+      },
+
+      validateWordCounts() {
+        let hasError = false;
+
+        const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
+        const twoWordCount = this.form.FutureTrainingTwoDetails.trim().split(/\s+/).filter(Boolean).length;
+        const AreaOneCount = this.form.AreaOne.trim().split(/\s+/).filter(Boolean).length;
+        const AreaTwoCount = this.form.AreaTwo.trim().split(/\s+/).filter(Boolean).length;
+
         if (oneWordCount > 30) {
-          this.errors.FutureTrainingOneDetails = `Future Training One must not exceed 30 words. Currently: ${oneWordCount}`;
+          this.errors.FutureTrainingOneDetails = `Maximum 30 Words. Currently: ${oneWordCount}`;
+          this.errorNoti(this.errors.FutureTrainingOneDetails);
+          hasError = true;
         }
         if (twoWordCount > 30) {
-          this.errors.FutureTrainingTwoDetails = `Future Training Two must not exceed 30 words. Currently: ${twoWordCount}`;
+          this.errors.FutureTrainingTwoDetails = `Maximum 30 Words. Currently: ${twoWordCount}`;
+          this.errorNoti(this.errors.FutureTrainingTwoDetails);
+          hasError = true;
         }
-        if (AreaOneCount > 30) {
-          this.errors.AreaOne = `Title One must not exceed 10 words. Currently: ${AreaOneCount}`;
+        if (AreaOneCount > 10) {
+          this.errors.AreaOne = `Maximum 10 Words. Currently: ${AreaOneCount}`;
+          this.errorNoti(this.errors.AreaOne);
+          hasError = true;
         }
-        if (AreaTwoCount > 30) {
-          this.errors.AreaTwo = `Title Two must not exceed 10 words. Currently: ${AreaTwoCount}`;
+        if (AreaTwoCount > 10) {
+          this.errors.AreaTwo = `Maximum 10 Words. Currently: ${AreaTwoCount}`;
+          this.errorNoti(this.errors.AreaTwo);
+          hasError = true;
         }
 
-        return; // Stop form submission
-      }else{
+        return hasError;
+      },
+
+      validateInitiatives() {
+        let hasError = false;
+
+        this.form.initiative.forEach((item, index) => {
+          const wordCount = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
+          if (wordCount > 10) {
+            if (!this.errors.PersonalIN[index]) this.errors.PersonalIN[index] = {};
+            this.errors.PersonalIN[index].Name = `Maximum 10 Words.`;
+            this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
+            hasError = true;
+          }
+        });
+
+        return hasError;
+      },
+
+      validateFormFields() {
+        const requiredFields = [
+          'AppraisalPeriod', 'StaffID', 'EmployeeName', 'Designation', 'OfficialEmail', 'Mobile',
+          'SuppervisorStaffID', 'AreaOne',
+          'FutureTrainingOneDetails', 'AreaTwo', 'FutureTrainingTwoDetails'
+        ];
+
+        for (const field of requiredFields) {
+          if (!this.form[field]) {
+            this.errorNoti(`${field} is required.`);
+            return false;
+          }
+        }
+
+        for (const [i, item] of this.form.initiative.entries()) {
+          if (!item.Name || !item.Type || !item.Date) {
+            this.errorNoti(`Initiative ${i + 1} is incomplete.`);
+            return false;
+          }
+        }
+
+        for (const [i, item] of this.form.training.entries()) {
+          if (!item.TrainingTitle || !item.TrainingType || !item.TrainingDate) {
+            this.errorNoti(`Training ${i + 1} is incomplete.`);
+            return false;
+          }
+        }
 
         if (!this.croppedBlob) {
-          console.log('CROP',this.form.Signature);
-          this.errorNoti('Please crop the image first.')
-          return
+          this.errorNoti('Please crop the signature image.');
+          return false;
         }
-        console.log('form',this.croppedBlob);
-        const formData = new FormData()
-        formData.append('image', this.croppedBlob, 'cropped.jpg')
-        this.form.Signature = formData.get('image')
 
-        this.PreLoader = true
-        this.form.post(baseurl + "api/mdp/store").then(response => {
-          if (response.data.status === 'error') {
-            this.errorNoti(response.data.message)
-          } else {
-            this.redirect(this.mainOrigin + 'mdp-list')
-            this.successNoti(response.data.message)
-            this.clearFormDataState()
-          }
-          this.PreLoader = false
-        }).catch(e => {
-          this.PreLoader = false
-          this.errorNoti('Upload failed.')
-          console.error(e)
-        })
-      }
+        return true;
+      },
 
-    },
+      buildFormData() {
+        const formData = new FormData();
+
+        if (this.croppedBlob) {
+          formData.append('Signature', this.croppedBlob, 'signature.jpg');
+        }
+
+        for (const key in this.form) {
+          if (['initiative', 'training', 'Signature'].includes(key)) continue;
+          formData.append(key, this.form[key]);
+        }
+
+        this.form.initiative.forEach((item, index) => {
+          formData.append(`initiative[${index}][Name]`, item.Name);
+          formData.append(`initiative[${index}][Type]`, item.Type);
+          formData.append(`initiative[${index}][Date]`, item.Date);
+        });
+
+        this.form.training.forEach((item, index) => {
+          formData.append(`training[${index}][TrainingTitle]`, item.TrainingTitle);
+          formData.append(`training[${index}][TrainingType]`, item.TrainingType);
+          formData.append(`training[${index}][TrainingDate]`, item.TrainingDate);
+        });
+
+        return formData;
+      },
+
 
     getSupervisorByStaffID(){
       axios.post(baseurl +'api/get-supervisor-by-employee-code/', {
@@ -963,6 +1033,9 @@ export default {
     //for initiative
     addFind: function () {
       if (this.form.initiative.length < 5) {
+          if (!Array.isArray(this.form.initiative)) {
+            this.form.initiative = [];
+          }
         this.form.initiative.push({ Name: '', Type: '', Date: '' });
       } else {
         this.errorNoti('No more than 5 training entries can be added!');
@@ -975,7 +1048,11 @@ export default {
     //for training
     Training_addFind: function () {
       if (this.form.training.length < 5) {
-        this.form.training.push({ TrainingTitle: '' , TrainingType: '', TrainingDate: '' });
+        if (!Array.isArray(this.form.initiative)) {
+          this.form.training = [];
+        }
+
+        this.form.training.push({ TrainingTitle: '', TrainingType: '', TrainingDate: '' });
         console.log('this.form.training',this.form.training)
       } else {
         this.errorNoti('No more than 5 training entries can be added!');

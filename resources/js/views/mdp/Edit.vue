@@ -514,10 +514,10 @@ export default {
         if (module === 'future') {
           if (wordCount > 30) {
             if (type === 'futureTrainingOne') {
-              this.errors.FutureTrainingOneDetails = 'Max word limit 30!';
+              this.errors.FutureTrainingOneDetails = 'Maximum 30 Words!';
               this.errorNoti(this.errors.FutureTrainingOneDetails);
             } else if (type === 'futureTrainingTwo') {
-              this.errors.FutureTrainingTwoDetails = 'Max word limit 30!';
+              this.errors.FutureTrainingTwoDetails = 'Maximum 30 Words!';
               this.errorNoti(this.errors.FutureTrainingTwoDetails);
             }
           } else {
@@ -527,16 +527,21 @@ export default {
         } else {
           if (wordCount > 10) {
             if (type === 'personal') {
+              console.log('didnt come')
               if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
                 this.errors.PersonalIN = {};
               }
-              this.errors.PersonalIN[index].Name = 'Max word limit 10!';
+              if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
+                this.errors.PersonalIN[index] = {};
+              }
+              this.errors.PersonalIN[index].Name = 'Maximum 10 Words!';
               this.errorNoti(this.errors.PersonalIN[index].Name);
+
             } else if (type === 'AreaOne') {
-              this.errors.AreaOne = 'Max word limit 10!';
+              this.errors.AreaOne = 'Maximum 10 Words!';
               this.errorNoti(this.errors.AreaOne);
             } else if (type === 'AreaTwo') {
-              this.errors.AreaTwo = 'Max word limit 10!';
+              this.errors.AreaTwo = 'Maximum 10 Words!';
               this.errorNoti(this.errors.AreaTwo);
             }
           } else {
@@ -554,67 +559,143 @@ export default {
       }
     },
     update(){
-      const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
-      const twoWordCount = this.form.FutureTrainingTwoDetails.trim().split(/\s+/).filter(Boolean).length;
-      const AreaTwoCount = this.form. AreaTwo.trim().split(/\s+/).filter(Boolean).length;
-      const AreaOneCount = this.form.AreaOne.trim().split(/\s+/).filter(Boolean).length;
-
-      // Reset errors
       this.errors = {};
-
       if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
         this.errors.PersonalIN = {};
       }
-      this.form.initiative.forEach((item, index) => {
-        if (!this.errors.PersonalIN[index]) {
-          this.errors.PersonalIN[index] = {};
-        }
 
-        console.log(this.errors.PersonalIN[index])
-        const nameWords = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
+      // Run validations
+      const wordErrors = this.validateWordCounts();
+      const initiativeErrors = this.validateInitiatives();
 
-        if (nameWords > 10) {
-          console.log('length',this.errors.PersonalIN[index].length)
-          this.errors.PersonalIN[index].Name = `Title must not exceed 10 words.`;
-        }
+      if (wordErrors || initiativeErrors || !this.validateFormFields()) {
         return;
-      });
-
-      // Validate
-      if (oneWordCount > 30 || twoWordCount > 30 || AreaOneCount > 10 || AreaTwoCount > 10) {
-        if (oneWordCount > 30) {
-          this.errors.FutureTrainingOneDetails = `Future Training One must not exceed 30 words. Currently: ${oneWordCount}`;
-        }
-        if (twoWordCount > 30) {
-          this.errors.FutureTrainingTwoDetails = `Future Training Two must not exceed 30 words. Currently: ${twoWordCount}`;
-        }
-        if (AreaOneCount > 30) {
-          this.errors.AreaOne = `Title One must not exceed 10 words. Currently: ${AreaOneCount}`;
-        }
-        if (AreaTwoCount > 30) {
-          this.errors.AreaTwo = `Title Two must not exceed 10 words. Currently: ${AreaTwoCount}`;
-        }
-
-
-        return; // Stop form submission
-      }else {
-        this.form.busy = true;
-        this.PreLoader = true;
-        this.form.post(baseurl + "api/mdp/update").then(response => {
-          if (response.data.status === 'error') {
-            this.errorNoti(response.data.message);
-          } else {
-            this.redirect(this.mainOrigin + 'mdp-list');
-            this.successNoti(response.data.message);
-            this.clearFormDataState();
-          }
-          this.PreLoader = false;
-        }).catch(e => {
-          this.isLoading = false;
-          this.PreLoader = false;
-        });
       }
+
+      const formData = this.buildFormData();
+
+      // Submit
+      axios.post(baseurl + 'api/mdp/update', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then(response => {
+        this.successNoti(response.data.message);
+        this.redirect(this.mainOrigin + 'mdp-list');
+        this.clearFormDataState();
+      }).catch(error => {
+        this.errorNoti('Upload failed.');
+        console.error(error);
+      });
     },
+   validateWordCounts() {
+    let hasError = false;
+
+    const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
+    const twoWordCount = this.form.FutureTrainingTwoDetails.trim().split(/\s+/).filter(Boolean).length;
+    const AreaOneCount = this.form.AreaOne.trim().split(/\s+/).filter(Boolean).length;
+    const AreaTwoCount = this.form.AreaTwo.trim().split(/\s+/).filter(Boolean).length;
+
+    if (oneWordCount > 30) {
+      this.errors.FutureTrainingOneDetails = `Maximum 30 Words. Currently: ${oneWordCount}`;
+      this.errorNoti(this.errors.FutureTrainingOneDetails);
+      hasError = true;
+    }
+    if (twoWordCount > 30) {
+      this.errors.FutureTrainingTwoDetails = `Maximum 30 Words. Currently: ${twoWordCount}`;
+      this.errorNoti(this.errors.FutureTrainingTwoDetails);
+      hasError = true;
+    }
+    if (AreaOneCount > 10) {
+      this.errors.AreaOne = `Maximum 10 Words. Currently: ${AreaOneCount}`;
+      this.errorNoti(this.errors.AreaOne);
+      hasError = true;
+    }
+    if (AreaTwoCount > 10) {
+      this.errors.AreaTwo = `Maximum 10 Words. Currently: ${AreaTwoCount}`;
+      this.errorNoti(this.errors.AreaTwo);
+      hasError = true;
+    }
+
+    return hasError;
+  },
+
+   validateInitiatives() {
+    let hasError = false;
+
+    this.form.initiative.forEach((item, index) => {
+      const wordCount = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
+      if (wordCount > 10) {
+        if (!this.errors.PersonalIN[index]) this.errors.PersonalIN[index] = {};
+        this.errors.PersonalIN[index].Name = `Maximum 10 Words.`;
+        this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
+        hasError = true;
+      }
+    });
+
+    return hasError;
+  },
+
+   validateFormFields() {
+    const requiredFields = [
+      'AppraisalPeriod', 'StaffID', 'EmployeeName', 'Designation', 'OfficialEmail', 'Mobile',
+      'SuppervisorStaffID', 'AreaOne',
+      'FutureTrainingOneDetails', 'AreaTwo', 'FutureTrainingTwoDetails'
+    ];
+
+    for (const field of requiredFields) {
+      if (!this.form[field]) {
+        this.errorNoti(`${field} is required.`);
+        return false;
+      }
+    }
+
+    for (const [i, item] of this.form.initiative.entries()) {
+      if (!item.Name || !item.Type || !item.Date) {
+        this.errorNoti(`Initiative ${i + 1} is incomplete.`);
+        return false;
+      }
+    }
+
+    for (const [i, item] of this.form.training.entries()) {
+      if (!item.TrainingTitle || !item.TrainingType || !item.TrainingDate) {
+        this.errorNoti(`Training ${i + 1} is incomplete.`);
+        return false;
+      }
+    }
+
+    if (!this.croppedBlob) {
+      this.errorNoti('Please crop the signature image.');
+      return false;
+    }
+
+    return true;
+  },
+
+   buildFormData() {
+    const formData = new FormData();
+
+    // if (this.croppedBlob) {
+    //   formData.append('Signature', this.croppedBlob, 'signature.jpg');
+    // }
+
+    for (const key in this.form) {
+      if (['initiative', 'training'].includes(key)) continue;
+      formData.append(key, this.form[key]);
+    }
+
+    this.form.initiative.forEach((item, index) => {
+      formData.append(`initiative[${index}][Name]`, item.Name);
+      formData.append(`initiative[${index}][Type]`, item.Type);
+      formData.append(`initiative[${index}][Date]`, item.Date);
+    });
+
+    this.form.training.forEach((item, index) => {
+      formData.append(`training[${index}][TrainingTitle]`, item.TrainingTitle);
+      formData.append(`training[${index}][TrainingType]`, item.TrainingType);
+      formData.append(`training[${index}][TrainingDate]`, item.TrainingDate);
+    });
+
+    return formData;
+  },
     downloadTraining(){
       axios.get(baseurl +'api/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
         let dataSets = response.data.training_history;

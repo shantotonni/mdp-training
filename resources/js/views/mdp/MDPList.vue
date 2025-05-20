@@ -286,7 +286,7 @@ export default {
              window.location.reload();
             // this.$toaster.success('Data Successfully Refresh');
         },
-        approvedMDP(mdpID) {
+      approvedMDP(mdpID) {
           Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
