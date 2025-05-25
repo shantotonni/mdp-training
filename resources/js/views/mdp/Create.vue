@@ -142,46 +142,6 @@
                               </label>
                               <!-- Trigger -->
                               <input type="file" @change="onFileChange" accept="image/*" required/>
-
-                              <!-- Modal -->
-                              <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog">
-                                <div class="modal-dialog modal-xl" role="document">
-                                  <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
-
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                      <h5 class="modal-title">Crop Image</h5>
-                                      <button type="button" class="close" data-dismiss="modal" @click="resetCropper">
-                                        <span>&times;</span>
-                                      </button>
-                                    </div>
-
-                                    <!-- Modal Body (Flex Grow) -->
-                                    <div class="modal-body p-0" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
-                                      <div v-if="imageUrl" style="flex: 1; position: relative;">
-                                        <cropper
-                                            ref="cropper"
-                                            :src="imageUrl"
-                                            :aspect-ratio="10 / 3"
-                                            :auto-crop-area="1"
-                                            :view-mode="1"
-                                            :min-crop-box-width="200"
-                                            :min-crop-box-height="60"
-                                            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;" required
-                                        />
-                                      </div>
-                                    </div>
-                                   <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
-<!--                                     Modal Footer -->
-                                    <div class="modal-footer">
-                                      <button class="btn btn-secondary btn-sm" data-dismiss="modal" @click="resetCropper">Cancel</button>
-                                      <button class="btn btn-info btn-sm" @click="prepareCrop">Crop</button>
-                                    </div>
-
-                                  </div>
-                                </div>
-                              </div>
-
                             </div>
                         </div>
                           <div class="col-md-4" >
@@ -474,7 +434,47 @@
         </div>
       </div>
     </div>
-<!--    modal-->
+
+    <!-- signature Modal -->
+    <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h5 class="modal-title">Crop Image</h5>
+            <button type="button" class="close" data-dismiss="modal" @click="resetCropper">
+              <span>&times;</span>
+            </button>
+          </div>
+
+          <!-- Modal Body (Flex Grow) -->
+          <div class="modal-body p-0" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+            <div v-if="imageUrl" style="flex: 1; position: relative;">
+              <cropper
+                  ref="cropper"
+                  :src="imageUrl"
+                  :aspect-ratio="10 / 3"
+                  :auto-crop-area="1"
+                  :view-mode="1"
+                  :min-crop-box-width="200"
+                  :min-crop-box-height="60"
+                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;" required
+              />
+            </div>
+          </div>
+          <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
+          <!--                                     Modal Footer -->
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" data-dismiss="modal" @click="resetCropper">Cancel</button>
+            <button class="btn btn-info btn-sm" @click="prepareCrop">Crop</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--    modal-->
 
     <div class="modal fade bs-example-modal-lg" id="suggestiveModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -532,7 +532,6 @@ import 'vue-advanced-cropper/dist/style.css';
 
 import Cropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
-import Login from "../auth/Login.vue";
 export default {
   name: "List",
   computed: {
