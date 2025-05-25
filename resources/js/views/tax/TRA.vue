@@ -371,7 +371,7 @@ export default {
                     this.isOTPVerification = true;
                     this.isTaxPrintPart = true
                     this.form.TaxYear = response.data.TaxYear ;
-                    this.getAcknowledgement()
+                  this.getAcknowledgement()
                 } else {
                     this.$toaster.error(response.data.message);
                 }
