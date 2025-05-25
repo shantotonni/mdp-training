@@ -7,8 +7,9 @@ use App\Http\Requests\ManagementDevelopmentPlaneUpdateRequest;
 use App\Http\Resources\ContSupervisorResource;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\Export\ExportManagementDevelopmentPlaneDetailsCollection;
-use App\Http\Resources\ManagementDevelopmentPlaneCollection;
-use App\Http\Resources\ManagementDevelopmentPlaneResource;
+use App\Http\Resources\MDP\ManagementDevelopmentPlaneCollection;
+use App\Http\Resources\MDP\ManagementDevelopmentPlaneResource;
+use App\Http\Resources\MDP\ManagementDevelopmentPlanPrintCollection;
 use App\Http\Resources\SupervisorResource;
 use App\Models\ContactPersonal;
 use App\Models\Employee;
@@ -19,7 +20,6 @@ use App\Models\MDPTraining;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -63,7 +63,7 @@ class MDPController extends Controller
             if ($session){
                 $mdp = $mdp->where('AppraisalPeriod',$session);
             }
-            $mdp = $mdp->orderBy('ID','desc')->whereNotNull('StaffID')->paginate(15);
+            $mdp = $mdp->orderBy('ID','desc')->whereNotNull('StaffID');
         }else{
 
             $mdp = ManagementDevelopmentPlane::query();
@@ -81,15 +81,15 @@ class MDPController extends Controller
                     $query->where('StaffID',$empcode);
                     $query->orWhere('SuppervisorStaffID', $empcode);
                 })
-                ->whereNotNull('StaffID')
-                ->paginate(15);
+                ->whereNotNull('StaffID');
         }
 
-        return new ManagementDevelopmentPlaneCollection($mdp);
+        $mdpIds = $mdp->pluck('ID')->implode(',');
+
+        return new ManagementDevelopmentPlaneCollection($mdp->paginate(15),$mdpIds);
     }
 
     public function store(ManagementDevelopmentPlaneRequest $request){
-
         DB::beginTransaction();
 
         try {
@@ -173,7 +173,9 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->AreaOne = $request->AreaOne;
             $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
             $ManagementDevelopmentPlane->CreatedBy = $empcode;
+            $ManagementDevelopmentPlane->CreatedDate = Carbon::now();
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
+            $ManagementDevelopmentPlane->UpdatedDate =  Carbon::now();
             $ManagementDevelopmentPlane->MDPStatus = 'Pending';
             $ManagementDevelopmentPlane->Signature = $filename;
             $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
@@ -186,7 +188,7 @@ class MDPController extends Controller
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
                     $MDPPersonalInitiative->Type  = $value['Type'];
-                    $MDPPersonalInitiative->Date  = $value['Date'];
+                    $MDPPersonalInitiative->Date  = date("Y-m-d H:i:s", strtotime($value['Date'])) ;
                     $MDPPersonalInitiative->save();
                 }
                 foreach ($training as $item){
@@ -194,7 +196,7 @@ class MDPController extends Controller
                     $MDPTraining->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPTraining->TrainingTitle = $item['TrainingTitle'];
                     $MDPTraining->TrainingType = $item['TrainingType'];
-                    $MDPTraining->TrainingDate = $item['TrainingDate'];
+                    $MDPTraining->TrainingDate = date('Y-m-d H:i:s', strtotime($item['TrainingDate']))  ;
                     $MDPTraining->save();
                 }
 
@@ -269,13 +271,15 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
             $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
+            $ManagementDevelopmentPlane->UpdatedDate = Carbon::now();
             if ($ManagementDevelopmentPlane->save()){
                 foreach ($initiative as $value){
+
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
                     $MDPPersonalInitiative->Type  = $value['Type'];
-                    $MDPPersonalInitiative->Date  = $value['Date'];
+                    $MDPPersonalInitiative->Date  = date("d-m-Y", strtotime($value['Date'])) ;
                     $MDPPersonalInitiative->save();
                 }
                 foreach ($training as $item){
@@ -283,7 +287,7 @@ class MDPController extends Controller
                     $MDPTraining->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPTraining->TrainingTitle = $item['TrainingTitle'];
                     $MDPTraining->TrainingType = $item['TrainingType'];
-                    $MDPTraining->TrainingDate = $item['TrainingDate'];
+                    $MDPTraining->TrainingDate = date('Y-m-d', strtotime($item['TrainingDate']))  ;
                     $MDPTraining->save();
                 }
 
@@ -396,6 +400,22 @@ class MDPController extends Controller
         $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
         return new ManagementDevelopmentPlaneResource($mdp);
     }
+    public function allMDPPrint(Request $request){
+        $mdpIds = array_map('intval', explode(',', $request->mdpIds));
+
+        $allMdp = collect();
+
+        foreach (array_chunk($mdpIds, 1000) as $chunk) {
+            $mdp = ManagementDevelopmentPlane::whereIn('ID', $chunk)
+                ->with('initiative', 'training')
+                ->get();
+            $allMdp = $allMdp->merge($mdp);
+        }
+
+        return new ManagementDevelopmentPlanPrintCollection($allMdp);
+
+    }
+
 
     public function mdpExport(Request $request){
         $session = $request->sessionP;

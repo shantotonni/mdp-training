@@ -567,8 +567,9 @@ export default {
       // Run validations
       const wordErrors = this.validateWordCounts();
       const initiativeErrors = this.validateInitiatives();
+      const requiredErrors = this.validateRequiredTraining();
 
-      if (wordErrors || initiativeErrors || !this.validateFormFields()) {
+      if (wordErrors || initiativeErrors ||requiredErrors || !this.validateFormFields()) {
         return;
       }
 
@@ -617,58 +618,126 @@ export default {
 
     return hasError;
   },
+    validateInitiatives() {
+      let hasError = false;
 
-   validateInitiatives() {
-    let hasError = false;
+      this.form.initiative.forEach((item, index) => {
+        const wordCount = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
+        if (wordCount > 10) {
+          if (!this.errors.PersonalIN[index]) this.errors.PersonalIN[index] = {};
+          this.errors.PersonalIN[index].Name = `Maximum 10 Words.`;
+          this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
+          hasError = true;
+        }
+        if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
+          this.errors.PersonalIN[index] = {};
+        }
 
-    this.form.initiative.forEach((item, index) => {
-      const wordCount = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
-      if (wordCount > 10) {
-        if (!this.errors.PersonalIN[index]) this.errors.PersonalIN[index] = {};
-        this.errors.PersonalIN[index].Name = `Maximum 10 Words.`;
-        this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
-        hasError = true;
+        if (!item.Name) {
+          this.errors.PersonalIN[index].Name = 'Name is required.';
+          this.errorNoti(this.errors.PersonalIN[index].Name);
+          hasError = false;
+        }
+
+        if (!item.Type) {
+          this.errors.PersonalIN[index].Type = 'Type is required.';
+          this.errorNoti(this.errors.PersonalIN[index].Type);
+          hasError = false;
+        }
+
+        if (!item.Date) {
+          this.errors.PersonalIN[index].Date = 'Date is required.';
+          this.errorNoti(this.errors.PersonalIN[index].Date);
+          hasError = false;
+        }
+      });
+
+      return hasError;
+    },
+    validateRequiredTraining() {
+      let hasError = false;
+
+      // Ensure outer error object exists
+      if (!this.errors.RequiredIN || typeof this.errors.RequiredIN !== 'object') {
+        this.errors.RequiredIN = {};
       }
-    });
 
-    return hasError;
-  },
+      this.form.training.forEach((item, index2) => {
+        // Ensure nested error object exists
+        if (!this.errors.RequiredIN[index2] || typeof this.errors.RequiredIN[index2] !== 'object') {
+          this.errors.RequiredIN[index2] = {};
+        }
 
-   validateFormFields() {
-    const requiredFields = [
-      'AppraisalPeriod', 'StaffID', 'EmployeeName', 'Designation', 'OfficialEmail', 'Mobile',
-      'SuppervisorStaffID', 'AreaOne',
-      'FutureTrainingOneDetails', 'AreaTwo', 'FutureTrainingTwoDetails'
-    ];
+        // Clear previous errors
+        this.errors.RequiredIN[index2] = {};
 
-    for (const field of requiredFields) {
-      if (!this.form[field]) {
-        this.errorNoti(`${field} is required.`);
-        return false;
+        // Required field checks
+        if (!item.TrainingTitle) {
+          this.errors.RequiredIN[index2].TrainingTitle = 'Training Title is required.';
+          this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
+          hasError = true;
+        } else {
+          const wordCount = item.TrainingTitle.trim().split(/\s+/).filter(Boolean).length;
+          if (wordCount > 10) {
+            this.errors.RequiredIN[index2].TrainingTitle = 'Maximum 10 words.';
+            this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
+            hasError = true;
+          }
+        }
+
+        if (!item.TrainingType) {
+          this.errors.RequiredIN[index2].TrainingType = 'Training Type is required.';
+          this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingType}`);
+          hasError = true;
+        }
+
+        if (!item.TrainingDate) {
+          this.errors.RequiredIN[index2].TrainingDate = 'Training Date is required.';
+          this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingDate}`);
+          hasError = true;
+        }
+      });
+
+      return hasError;
+    },
+
+
+
+    validateFormFields() {
+      const requiredFields = [
+        'AppraisalPeriod', 'StaffID', 'EmployeeName', 'Designation', 'OfficialEmail', 'Mobile',
+        'SuppervisorStaffID', 'AreaOne',
+        'FutureTrainingOneDetails', 'AreaTwo', 'FutureTrainingTwoDetails'
+      ];
+
+      for (const field of requiredFields) {
+        if (!this.form[field]) {
+          this.errorNoti(`${field} is required.`);
+          return false;
+        }
       }
-    }
 
-    for (const [i, item] of this.form.initiative.entries()) {
-      if (!item.Name || !item.Type || !item.Date) {
-        this.errorNoti(`Initiative ${i + 1} is incomplete.`);
-        return false;
+      for (const [i, item] of this.form.initiative.entries()) {
+        if (!item.Name || !item.Type || !item.Date) {
+          this.errorNoti(`Personal Initiative ${i + 1} is incomplete.`);
+          return false;
+        }
       }
-    }
 
-    for (const [i, item] of this.form.training.entries()) {
-      if (!item.TrainingTitle || !item.TrainingType || !item.TrainingDate) {
-        this.errorNoti(`Training ${i + 1} is incomplete.`);
-        return false;
+      for (const [i, item] of this.form.training.entries()) {
+        if (!item.TrainingTitle || !item.TrainingType || !item.TrainingDate) {
+          this.errorNoti(` Required Training ${i + 1} is incomplete.`);
+          return false;
+        }
       }
-    }
 
-    if (!this.croppedBlob) {
-      this.errorNoti('Please crop the signature image.');
-      return false;
-    }
+      // if (!this.croppedBlob) {
+      //   this.errorNoti('Please crop the signature image.');
+      //   return false;
+      // }
 
-    return true;
-  },
+      return true;
+    },
 
    buildFormData() {
     const formData = new FormData();

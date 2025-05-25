@@ -13,7 +13,15 @@
                         <i class="fas fa-plus"></i>
                         Add Management Development Plan
                       </router-link>
-<!--                      <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">-->
+                      <router-link :to="{name: 'AllMDPPrint'}" class="btn btn-success btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
+                        <i class="fas fa-plus"></i> All MDP
+                      </router-link>
+                      <router-link :to="{name: 'AllMDPPrintTwo'}" class="btn btn-success btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
+                        <i class="fas fa-plus"></i> All PTC
+                      </router-link>
+
+
+                      <!--                      <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">-->
 <!--                        <i class="mdi mdi-database-export"></i>-->
 <!--                        Feedback Export-->
 <!--                      </button>-->
@@ -26,10 +34,6 @@
                         Export-2
                       </button>
 
-                      <button type="button" class="btn btn-primary btn-sm" @click="reload">
-                        <i class="fas fa-sync"></i>
-                        Reload
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -84,8 +88,12 @@
                                                   placeholder="Employee"></multiselect>
                                             </div>
                                           </div>
-                                          <div class="col-md-2">
-                                            <button type="submit" @click="getAllMDPList" class="btn btn-success defineHeight"><i class="mdi mdi-filter"></i>Filter</button>
+                                          <div class="col-md-3">
+                                            <button type="submit" @click="getAllMDPList('true')" class="btn btn-success defineHeight"><i class="mdi mdi-filter"></i>Filter</button>
+                                            <button type="button" class="btn btn-primary defineHeight" @click="reload">
+                                              <i class="fas fa-sync"></i>
+                                              Reload
+                                            </button>
                                           </div>
                                         </div>
                                     </div>
@@ -175,13 +183,13 @@ import {bus} from "../../app";
 import Multiselect from 'vue-multiselect';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import moment from "moment";
 
 
 export default {
     name: "List",
     components: { Multiselect },
     mixins: [Common],
+    props: ['mdpIds'],
     data() {
         return {
           mdplist: [],
@@ -196,11 +204,13 @@ export default {
           query: "",
           Department: [],
           EmployeeList: [],
+          mdpIDList: [],
           mdpNo: 0,
           sessionP: "",
           editMode: false,
           isLoading: false,
           PreLoader: false,
+          filterStatus: false,
         }
     },
     watch: {
@@ -220,7 +230,8 @@ export default {
         this.getData();
     },
     methods: {
-        getAllMDPList(){
+        getAllMDPList(val){
+          this.filterStatus = val;
           this.PreLoader = true;
             axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
                 + "&EmployeeList=" +  JSON.stringify(this.EmployeeList)
@@ -231,7 +242,9 @@ export default {
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
                 this.mdpNo = response.data.meta.total
+                this.mdpIDList = response.data.mdpIds
                 this.PreLoader = false;
+              localStorage.setItem('mdpIds', JSON.stringify(this.mdpIDList));
             }).catch((error)=>{
               this.PreLoader = false;
 
@@ -239,7 +252,7 @@ export default {
         },
         searchData(){
           this.PreLoader = true;
-            axios.get(baseurl + "api/search/mdp/list/" + this.query + "?page=" + this.pagination.current_page).then(response => {
+            axios.get(baseurl + "api/mdp/search/list/" + this.query + "?page=" + this.pagination.current_page).then(response => {
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
                 this.mdpNo = response.data.meta.last_page
@@ -297,7 +310,7 @@ export default {
             confirmButtonText: 'Yes'
           }).then((result) => {
             if (result.isConfirmed) {
-              axios.get(baseurl + 'api/approved-mdp?mdpID=' + mdpID).then((response) => {
+              axios.get(baseurl + 'api/mdp/approved-mdp?mdpID=' + mdpID).then((response) => {
                 this.getAllMDPList();
                 Swal.fire(
                     response.data.title +'!',
@@ -310,7 +323,7 @@ export default {
         },
       exportMDPList(){
       this.PreLoader = true;
-        axios.get(baseurl + 'api/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
+        axios.get(baseurl + 'api/mdp/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
             + "&Department=" + JSON.stringify(this.Department)
             + "&sessionP=" + this.sessionP
         ).then((response)=>{
@@ -327,13 +340,12 @@ export default {
                 this.PreLoader = false;
               }
             }).catch((error)=>{
-          console.log(response)
           this.PreLoader = false;
         })
       },
       exportMDPDetailsList(){
       this.PreLoader = true;
-        axios.get(baseurl + 'api/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
+        axios.get(baseurl + 'api/mdp/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
             + "&Department=" + JSON.stringify(this.Department)
             + "&sessionP=" + this.sessionP
         ).then((response)=>{
@@ -350,7 +362,6 @@ export default {
                 this.PreLoader = false;
               }
             }).catch((error)=>{
-          console.log(response)
           this.PreLoader = false;
         })
       },

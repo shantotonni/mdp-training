@@ -141,7 +141,7 @@
 <!--                                (<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)-->
                               </label>
                               <!-- Trigger -->
-                              <input type="file" @change="onFileChange" required/>
+                              <input type="file" @change="onFileChange" accept="image/*" required/>
 
                               <!-- Modal -->
                               <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog">
@@ -278,6 +278,9 @@
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
                               </select>
+                              <small v-if="errors.PersonalIN && errors.PersonalIN[index]" class="error">
+                                {{ errors.PersonalIN[index].Type }}
+                              </small>
                               <div class="error" v-if="form.errors.has('Type')" v-html="form.errors.get('Type')" />
                             </div>
                           </div>
@@ -285,6 +288,9 @@
                             <div class="form-group">
                               <label>Planned Date</label>
                               <datepicker v-model="initiat.Date" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required></datepicker>
+                              <small v-if="errors.PersonalIN && errors.PersonalIN[index]" class="error">
+                                {{ errors.PersonalIN[index].Date }}
+                              </small>
                               <div class="error" v-if="form.errors.has('Date')" v-html="form.errors.get('Date')" />
                             </div>
                           </div>
@@ -308,6 +314,9 @@
                                 <option value="">Select Type</option>
                                 <option :value="list.TrainingTitle" v-for="(list,i) in training_list" :key="i">{{list.TrainingTitle}}</option>
                               </select>
+                              <small v-if="errors.RequiredIN && errors.RequiredIN[index2]" class="error">
+                                {{ errors.RequiredIN[index2].TrainingTitle }}
+                              </small>
                               <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
                             </div>
                           </div>
@@ -317,6 +326,9 @@
                               <label>Select Training Title</label>
                               <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Type Or Copy From Suggestive List" required>
                               <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
+                              <small  v-if="errors.RequiredIN?.[index2]?.TrainingTitle" class="error">
+                                {{ errors.RequiredIN[index2].TrainingTitle }}
+                              </small>
                             </div>
                           </div>
 
@@ -331,6 +343,9 @@
 
                               </select>
                               <div class="error" v-if="form.errors.has('TrainingType')" v-html="form.errors.get('TrainingType')" />
+                              <small  v-if="errors.RequiredIN?.[index2]?.TrainingType" class="error">
+                                {{ errors.RequiredIN[index2].TrainingType }}
+                              </small>
                             </div>
                           </div>
                           <div class="col-3 col-md-3">
@@ -338,6 +353,8 @@
                               <label>Planned Date</label>
                               <datepicker v-model="train.TrainingDate" :format="customFormatter" placeholder="Enter Date" input-class="form-control" required></datepicker>
                               <div class="error" v-if="form.errors.has('TrainingDate')" v-html="form.errors.get('TrainingDate')" />
+                              <small  v-if="errors.RequiredIN?.[index2]?.TrainingDate" class="error">
+                                {{ errors.RequiredIN[index2].TrainingDate }}</small>
                             </div>
                           </div>
                           <div class="col-2" style="padding-top: 30px">
@@ -397,7 +414,7 @@
                         </div>
 <!--                        submit-->
                           <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" :disabled="isSubmitting" >{{isSubmitting?'Submitting...':'Submit'}}</button>
 <!--                            <button  class="btn btn-secondary" @click="clearFormDataState">Clear Data</button>-->
 
                           </div>
@@ -414,9 +431,9 @@
                     <div class="card-body">
                       <div class="col-md-12">
                         <div class="row">
-                          <div class="col-md-10" style="color: #0f6674"><p>Last Five Years Training History</p> </div>
-                          <div class="col-md-2">
-                            <button class="btn btn-info btn-sm" @click="downloadTraining"> <i class="fas fa-download"></i> Download</button>
+                          <div class="col-md-9" style="color: #0f6674"><p>Last Five Years Training History</p> </div>
+                          <div class="col-md-3 text-right">
+                            <button class="btn btn-info btn-sm " @click="downloadTraining"> <i class="fas fa-download"></i> Download</button>
                           </div>
                         </div>
 
@@ -580,12 +597,14 @@ export default {
       errorMessage: '',
       imageDimensions: '',
       PreLoader: false,
+      isSubmitting: false,
       errors: {
         FutureTrainingOneDetails: '',
         FutureTrainingTwoDetails: '',
         AreaOne:'',
         AreaTwo:'',
         PersonalIN:{},
+        RequiredIN:{},
       }
     }
   },
@@ -594,11 +613,11 @@ export default {
     $('#cropperModal').on('shown.bs.modal', () => {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     });
-    //this.getAllEmployeeTrainingList()
   },
   created() {
     this.getUserData()
     this.initFormDataState();
+
     //this.getData()
   },
   methods: {
@@ -630,7 +649,7 @@ export default {
     countSpace(val, type, module, index) {
       try {
         const wordCount = val.trim().split(/\s+/).length;
-
+        // future
         if (module === 'future') {
           if (wordCount > 30) {
             if (type === 'futureTrainingOne') {
@@ -644,40 +663,320 @@ export default {
             this.errors.FutureTrainingOneDetails = '';
             this.errors.FutureTrainingTwoDetails = '';
           }
-        } else {
-          if (wordCount > 10) {
-            if (type === 'personal') {
-              console.log('didnt come')
-              if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
-                this.errors.PersonalIN = {};
-              }
-              if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
-                this.errors.PersonalIN[index] = {};
-              }
-              this.errors.PersonalIN[index].Name = 'Maximum 10 Words!';
-              this.errorNoti(this.errors.PersonalIN[index].Name);
+        }
+        //personal
+        if (type === 'personal'){
+          if (wordCount > 10){
+            if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
+              this.errors.PersonalIN = {};
+            }
+            if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
+              this.errors.PersonalIN[index] = {};
+            }
+            this.errors.PersonalIN[index].Name = 'Maximum 10 Words!';
+            this.errorNoti(this.errors.PersonalIN[index].Name);
+          }else {
+            if (type === 'personal' && this.errors.PersonalIN && typeof this.errors.PersonalIN === 'object') {
+              this.errors.PersonalIN[index].Name = '';
+            }
+          }
 
-            } else if (type === 'AreaOne') {
+        }
+        //future title
+        if (type === 'Area'){
+          if (wordCount > 10){
+            if (type === 'AreaOne') {
               this.errors.AreaOne = 'Maximum 10 Words!';
               this.errorNoti(this.errors.AreaOne);
             } else if (type === 'AreaTwo') {
               this.errors.AreaTwo = 'Maximum 10 Words!';
               this.errorNoti(this.errors.AreaTwo);
+            }else {
+              this.errors.AreaOne = '';
+              this.errors.AreaTwo = '';
             }
-          } else {
-            // Clear errors safely
-            if (type === 'personal' && this.errors.PersonalIN && typeof this.errors.PersonalIN === 'object') {
-              this.errors.PersonalIN[index].Name = '';
-            }
-            if (type === 'AreaOne') this.errors.AreaOne = '';
-            if (type === 'AreaTwo') this.errors.AreaTwo = '';
           }
+
         }
 
       } catch (error) {
         console.error("Max word limit crossed", error);
       }
     },
+
+    store() {
+      console.log('area',this.errors)
+        // Reset errors
+        this.errors = {};
+        if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
+          this.errors.PersonalIN = {};
+        }
+
+        // Run validations
+        const wordErrors = this.validateWordCounts();
+        const initiativeErrors = this.validateInitiatives();
+        const requiredErrors = this.validateRequiredTraining();
+        const futureErrors = this.validateFutureTraining();
+
+        if (wordErrors || initiativeErrors|| requiredErrors ||futureErrors || !this.validateFormFields()) {
+          return;
+        }
+        const formData = this.buildFormData();
+
+        // Submit
+        this.isSubmitting=true;
+        this.PreLoader=true;
+        axios.post(baseurl + 'api/mdp/store', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }).then(response => {
+          this.successNoti(response.data.message);
+          this.redirect(this.mainOrigin + 'mdp-list');
+          this.clearFormDataState();
+          this.PreLoader = false;
+          this.isSubmitting = false;
+        }).catch(error => {
+          this.isSubmitting = false;
+          this.PreLoader = false;
+          this.errorNoti('Upload failed.');
+          console.error(error);
+        });
+      },
+
+    validateWordCounts() {
+        let hasError = false;
+
+        const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
+        const twoWordCount = this.form.FutureTrainingTwoDetails.trim().split(/\s+/).filter(Boolean).length;
+        const AreaOneCount = this.form.AreaOne.trim().split(/\s+/).filter(Boolean).length;
+        const AreaTwoCount = this.form.AreaTwo.trim().split(/\s+/).filter(Boolean).length;
+
+        if (oneWordCount > 30) {
+          this.errors.FutureTrainingOneDetails = `Maximum 30 Words. Currently: ${oneWordCount}`;
+          this.errorNoti(this.errors.FutureTrainingOneDetails);
+          hasError = true;
+        }
+        if (twoWordCount > 30) {
+          this.errors.FutureTrainingTwoDetails = `Maximum 30 Words. Currently: ${twoWordCount}`;
+          this.errorNoti(this.errors.FutureTrainingTwoDetails);
+          hasError = true;
+        }
+        if (AreaOneCount > 10) {
+          this.errors.AreaOne = `Maximum 10 Words.Future Training 1 Currently: ${AreaOneCount}`;
+          this.errorNoti(this.errors.AreaOne);
+          hasError = true;
+        }
+        if (AreaTwoCount > 10) {
+          this.errors.AreaTwo = `Maximum 10 Words.Future Training 2 Currently: ${AreaTwoCount}`;
+          this.errorNoti(this.errors.AreaTwo);
+          hasError = true;
+        }
+      console.log('before submit',this.errors.AreaOne )
+        return hasError;
+      },
+    validateInitiatives() {
+        let hasError = false;
+        const titleSet = new Set();
+        this.form.initiative.forEach((item, index) => {
+          const title = item.Name?.trim() || '';
+          const wordCount = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
+          if (wordCount > 10) {
+            if (!this.errors.PersonalIN[index]) this.errors.PersonalIN[index] = {};
+            this.errors.PersonalIN[index].Name = `Maximum 10 Words.`;
+            this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
+            hasError = true;
+          }
+          if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
+            this.errors.PersonalIN[index] = {};
+          }
+
+          if (!item.Name) {
+            this.errors.PersonalIN[index].Name = 'Name is required.';
+            this.errorNoti(this.errors.PersonalIN[index].Name);
+            hasError = false;
+          }
+          if (titleSet.has(title.toLowerCase())) {
+            this.errors.PersonalIN[index].Name = 'Duplicate title found.';
+            this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
+            hasError = true;
+          } else {
+            titleSet.add(title.toLowerCase());
+            this.errors.PersonalIN[index].Name=''
+          }
+
+          if (!item.Type) {
+            this.errors.PersonalIN[index].Type = 'Type is required.';
+            this.errorNoti(this.errors.PersonalIN[index].Type);
+            hasError = false;
+          }else {
+            this.errors.PersonalIN[index].Type = ''
+          }
+
+          if (!item.Date) {
+            this.errors.PersonalIN[index].Date = 'Date is required.';
+            this.errorNoti(this.errors.PersonalIN[index].Date);
+            hasError = false;
+          }else {
+            this.errors.PersonalIN[index].Date = ''
+          }
+        });
+
+        return hasError;
+      },
+    validateRequiredTraining() {
+      let hasError = false;
+      const titleSet = new Set();
+
+      // Ensure outer error object exists
+      if (!this.errors.RequiredIN || typeof this.errors.RequiredIN !== 'object') {
+        this.errors.RequiredIN = {};
+      }
+
+      this.form.training.forEach((item, index2) => {
+        if (!this.errors.RequiredIN[index2]) this.errors.RequiredIN[index2] = {};
+
+        const title = item.TrainingTitle?.trim() || '';
+
+        if (!title) {
+          this.errors.RequiredIN[index2].TrainingTitle = 'Title is required.';
+          this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
+          hasError = true;
+        } else {
+          const wordCount = title.split(/\s+/).filter(Boolean).length;
+          if (wordCount > 10) {
+            this.errors.RequiredIN[index2].TrainingTitle = 'Maximum 10 words.';
+            this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
+            hasError = true;
+          }
+
+          if (titleSet.has(title.toLowerCase())) {
+            this.errors.RequiredIN[index2].TrainingTitle = 'Duplicate title found.';
+            this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
+            hasError = true;
+          } else {
+            titleSet.add(title.toLowerCase());
+            this.errors.RequiredIN[index2].TrainingTitle='';
+          }
+        }
+
+        if (!item.TrainingType) {
+          this.errors.RequiredIN[index2].TrainingType = 'Type is required.';
+          this.errorNoti(this.errors.RequiredIN[index2].TrainingType);
+          hasError = false;
+        }else{
+          this.errors.RequiredIN[index2].TrainingType = ''
+        }
+
+        if (!item.TrainingDate) {
+          this.errors.RequiredIN[index2].TrainingDate = 'Date is required.';
+          this.errorNoti(this.errors.RequiredIN[index2].TrainingDate);
+          hasError = false;
+        }else{
+          this.errors.RequiredIN[index2].TrainingDate = ''
+        }
+      });
+
+
+      return hasError;
+    },
+    validateFutureTraining() {
+      let hasError = false;
+      const titleSet = new Set();
+
+      const titles = [
+        { key: 'AreaOne', label: 'Future Training 1', value: this.form.AreaOne?.trim() || '' },
+        { key: 'AreaTwo', label: 'Future Training 2', value: this.form.AreaTwo?.trim() || '' },
+        { key: 'FutureTrainingOneDetails', label: 'Future Training Details 1', value: this.form.FutureTrainingOneDetails?.trim() || '' },
+        { key: 'FutureTrainingTwoDetails', label: 'Future Training Details 2', value: this.form.FutureTrainingTwoDetails?.trim() || '' },
+      ];
+
+      // Reset all errors first
+      for (const t of titles) {
+        this.errors[t.key] = '';
+      }
+
+      for (const t of titles) {
+        const lowerVal = t.value.toLowerCase();
+
+        if (t.value && titleSet.has(lowerVal)) {
+          this.errors[t.key] = 'Duplicate data found.';
+          this.errorNoti(`${t.label}: ${this.errors[t.key]}`);
+          hasError = true;
+        } else {
+          titleSet.add(lowerVal);
+        }
+      }
+
+      return hasError;
+    },
+    validateFormFields() {
+        const requiredFields = [
+          'AppraisalPeriod', 'StaffID', 'EmployeeName', 'Designation', 'OfficialEmail', 'Mobile',
+          'SuppervisorStaffID', 'AreaOne',
+          'FutureTrainingOneDetails', 'AreaTwo', 'FutureTrainingTwoDetails'
+        ];
+
+        for (const field of requiredFields) {
+          if (!this.form[field]) {
+            this.errorNoti(`${field} is required.`);
+            return false;
+          }
+        }
+
+        for (const [i, item] of this.form.initiative.entries()) {
+          if (!item.Name || !item.Type || !item.Date) {
+            this.errorNoti(`Personal Initiative ${i + 1} is incomplete.`);
+            return false;
+          }
+        }
+
+        for (const [i, item] of this.form.training.entries()) {
+          if (!item.TrainingTitle || !item.TrainingType || !item.TrainingDate) {
+            this.errorNoti(` Required Training ${i + 1} is incomplete.`);
+            return false;
+          }
+        }
+
+        // if (!this.croppedBlob) {
+        //   this.errorNoti('Please crop the signature image.');
+        //   return false;
+        // }
+
+        return true;
+      },
+    buildFormData() {
+        const formData = new FormData();
+
+        if (this.croppedBlob) {
+          formData.append('Signature', this.croppedBlob, 'signature.jpg');
+        }
+
+        for (const key in this.form) {
+          if (['initiative', 'training', 'Signature'].includes(key)) continue;
+          formData.append(key, this.form[key]);
+        }
+
+        this.form.initiative.forEach((item, index) => {
+          formData.append(`initiative[${index}][Name]`, item.Name);
+          formData.append(`initiative[${index}][Type]`, item.Type);
+          formData.append(`initiative[${index}][Date]`, item.Date);
+        });
+
+        this.form.training.forEach((item, index) => {
+          formData.append(`training[${index}][TrainingTitle]`, item.TrainingTitle);
+          formData.append(`training[${index}][TrainingType]`, item.TrainingType);
+          formData.append(`training[${index}][TrainingDate]`, item.TrainingDate);
+        });
+
+        return formData;
+      },
+    findDuplicateTitle(){
+      let initiative = this.form.initiative;
+      let required = this.form.training;
+      let future = [ ]
+      future.push({AreaOne: this.form.AreaOne , AreaTwo: this.form.AreaTwo})
+      console.log('list', initiative, required,future);
+    },
+
     onFileChange(e) {
       this.resetCropper()
       const file = e.target.files[0]
@@ -723,20 +1022,6 @@ export default {
       }, 'image/jpeg', 0.95); // high quality
       $('#cropperModal').modal('hide')
     },
-
-    // prepareCrop() {
-    //   const canvas = this.$refs.cropper.getCroppedCanvas({ width: 200, height: 60 })
-    //   canvas.toBlob(blob => {
-    //     this.croppedBlob = blob
-    //     console.log('dfd',this.croppedBlob )
-    //
-    //     this.previewUrl = URL.createObjectURL(blob)
-    //     console.log('dasfd',this.previewUrl )
-    //     $('#cropperModal').modal('hide') // Close modal
-    //   })
-    //   console.log(' this.croppedBlob ', this.croppedBlob )
-    //
-    // },
     resetCropper() {
       this.imageUrl = null
       this.previewUrl = null
@@ -762,148 +1047,6 @@ export default {
     change({coordinates, canvas}) {
       console.log(coordinates, canvas)
     },
-
-      store() {
-        // Reset errors
-        this.errors = {};
-        if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
-          this.errors.PersonalIN = {};
-        }
-
-        // Run validations
-        const wordErrors = this.validateWordCounts();
-        const initiativeErrors = this.validateInitiatives();
-
-        if (wordErrors || initiativeErrors || !this.validateFormFields()) {
-          return;
-        }
-
-        const formData = this.buildFormData();
-
-        // Submit
-        axios.post(baseurl + 'api/mdp/store', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(response => {
-          this.successNoti(response.data.message);
-          this.redirect(this.mainOrigin + 'mdp-list');
-          this.clearFormDataState();
-        }).catch(error => {
-          this.errorNoti('Upload failed.');
-          console.error(error);
-        });
-      },
-
-      validateWordCounts() {
-        let hasError = false;
-
-        const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
-        const twoWordCount = this.form.FutureTrainingTwoDetails.trim().split(/\s+/).filter(Boolean).length;
-        const AreaOneCount = this.form.AreaOne.trim().split(/\s+/).filter(Boolean).length;
-        const AreaTwoCount = this.form.AreaTwo.trim().split(/\s+/).filter(Boolean).length;
-
-        if (oneWordCount > 30) {
-          this.errors.FutureTrainingOneDetails = `Maximum 30 Words. Currently: ${oneWordCount}`;
-          this.errorNoti(this.errors.FutureTrainingOneDetails);
-          hasError = true;
-        }
-        if (twoWordCount > 30) {
-          this.errors.FutureTrainingTwoDetails = `Maximum 30 Words. Currently: ${twoWordCount}`;
-          this.errorNoti(this.errors.FutureTrainingTwoDetails);
-          hasError = true;
-        }
-        if (AreaOneCount > 10) {
-          this.errors.AreaOne = `Maximum 10 Words. Currently: ${AreaOneCount}`;
-          this.errorNoti(this.errors.AreaOne);
-          hasError = true;
-        }
-        if (AreaTwoCount > 10) {
-          this.errors.AreaTwo = `Maximum 10 Words. Currently: ${AreaTwoCount}`;
-          this.errorNoti(this.errors.AreaTwo);
-          hasError = true;
-        }
-
-        return hasError;
-      },
-
-      validateInitiatives() {
-        let hasError = false;
-
-        this.form.initiative.forEach((item, index) => {
-          const wordCount = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
-          if (wordCount > 10) {
-            if (!this.errors.PersonalIN[index]) this.errors.PersonalIN[index] = {};
-            this.errors.PersonalIN[index].Name = `Maximum 10 Words.`;
-            this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
-            hasError = true;
-          }
-        });
-
-        return hasError;
-      },
-
-      validateFormFields() {
-        const requiredFields = [
-          'AppraisalPeriod', 'StaffID', 'EmployeeName', 'Designation', 'OfficialEmail', 'Mobile',
-          'SuppervisorStaffID', 'AreaOne',
-          'FutureTrainingOneDetails', 'AreaTwo', 'FutureTrainingTwoDetails'
-        ];
-
-        for (const field of requiredFields) {
-          if (!this.form[field]) {
-            this.errorNoti(`${field} is required.`);
-            return false;
-          }
-        }
-
-        for (const [i, item] of this.form.initiative.entries()) {
-          if (!item.Name || !item.Type || !item.Date) {
-            this.errorNoti(`Initiative ${i + 1} is incomplete.`);
-            return false;
-          }
-        }
-
-        for (const [i, item] of this.form.training.entries()) {
-          if (!item.TrainingTitle || !item.TrainingType || !item.TrainingDate) {
-            this.errorNoti(`Training ${i + 1} is incomplete.`);
-            return false;
-          }
-        }
-
-        if (!this.croppedBlob) {
-          this.errorNoti('Please crop the signature image.');
-          return false;
-        }
-
-        return true;
-      },
-
-      buildFormData() {
-        const formData = new FormData();
-
-        if (this.croppedBlob) {
-          formData.append('Signature', this.croppedBlob, 'signature.jpg');
-        }
-
-        for (const key in this.form) {
-          if (['initiative', 'training', 'Signature'].includes(key)) continue;
-          formData.append(key, this.form[key]);
-        }
-
-        this.form.initiative.forEach((item, index) => {
-          formData.append(`initiative[${index}][Name]`, item.Name);
-          formData.append(`initiative[${index}][Type]`, item.Type);
-          formData.append(`initiative[${index}][Date]`, item.Date);
-        });
-
-        this.form.training.forEach((item, index) => {
-          formData.append(`training[${index}][TrainingTitle]`, item.TrainingTitle);
-          formData.append(`training[${index}][TrainingType]`, item.TrainingType);
-          formData.append(`training[${index}][TrainingDate]`, item.TrainingDate);
-        });
-
-        return formData;
-      },
-
 
     getSupervisorByStaffID(){
       axios.post(baseurl +'api/get-supervisor-by-employee-code/', {
@@ -1007,7 +1150,7 @@ export default {
       }
     },
     downloadTraining(){
-      axios.get(baseurl +'api/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
+      axios.get(baseurl +'api/mdp/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
         let dataSets = response.data.training_history;
         if (dataSets.length > 0) {
           let columns = Object.keys(dataSets[0]);

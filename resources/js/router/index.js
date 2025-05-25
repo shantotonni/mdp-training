@@ -6,6 +6,8 @@ import Dashboard from '../views/dashboard/Index.vue'
 import MDPList from '../views/mdp/MDPList'
 import MDPCreate from '../views/mdp/Create'
 import MDPEdit from '../views/mdp/Edit'
+import AllMDPPrint from '../views/mdp/AllMdpPrint.vue'
+import AllMDPPrintTwo from '../views/mdp/AllPrintTwo.vue'
 import MDPPrint from '../views/mdp/Print'
 import MDPPrintTwo from '../views/mdp/PrintTwo'
 import TrainingFeedback from '../views/mdp/TrainingFeedback'
@@ -104,7 +106,9 @@ const routes = [
             {path: baseurl + 'mdp-list', name: 'MDPList', component: MDPList},
             {path: baseurl + 'mdp-create', name: 'MDPCreate', component: MDPCreate},
             {path: baseurl + 'mdp-edit/:ID', name: 'MDPEdit', component: MDPEdit},
+            {path: baseurl + 'all-mdp-print', name: 'AllMDPPrint', component: AllMDPPrint},
             {path: baseurl + 'mdp-print/:ID', name: 'MDPPrint', component: MDPPrint},
+            {path: baseurl + 'all-mdp-print_two/:ID', name: 'AllMDPPrintTwo', component: AllMDPPrintTwo},
             {path: baseurl + 'mdp-print_two/:ID', name: 'MDPPrintTwo', component: MDPPrintTwo},
             {path: baseurl + 'mdp-training-feedback', name: 'TrainingFeedback', component: TrainingFeedback},
             {path: baseurl + 'mdp-training-feedback-2nd', name: 'TrainingFeedback2nd', component: TrainingFeedback2nd},

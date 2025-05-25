@@ -43,33 +43,44 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::get('search/users/{query}', [UserController::class,'search']);
 
     //mdp route
-    Route::get('mdp/list',[MDPController::class,'index']);
-    Route::post('mdp/store',[MDPController::class,'store']);
-    Route::get('mdp/edit/{ID}', [MDPController::class,'edit']);
-    //Route::get('mdp/edit/{ID}', [MDPController::class,'edit']);
-    Route::post('mdp/update', [MDPController::class,'update']);
-    Route::get('mdp/print/{ID}', [MDPController::class,'print']);
-    Route::get('search/mdp/list/{query}', [MDPController::class,'search']);
-    Route::delete('mdp/delete/{ID}', [MDPController::class,'delete']);
-    Route::get('approved-mdp', [MDPController::class,'approvedMDP']);
+    Route::group(['prefix' => 'mdp'],function () {
+        Route::get('list',[MDPController::class,'index']);
+        Route::post('store',[MDPController::class,'store']);
+        Route::get('edit/{ID}', [MDPController::class,'edit']);
+        Route::post('update', [MDPController::class,'update']);
+        Route::post('all-mdp-print', [MDPController::class,'allMDPPrint']);
+        Route::get('print/{ID}', [MDPController::class,'print']);
+        Route::get('search/list/{query}', [MDPController::class,'search']);
+        Route::delete('delete/{ID}', [MDPController::class,'delete']);
+        Route::get('approved-mdp', [MDPController::class,'approvedMDP']);
 
+        Route::get('export-mdp-list', [MDPController::class,'mdpExport']);
+        Route::get('export-mdp-details-list', [MDPController::class,'mdpDetailsExport']);
+        //bnaglaexport
+        Route::get('get-export-training-history', [MDPController::class,'getExportTrainingHistory']);
+
+        Route::get('get-top-ranked-training', [MDPController::class,'getTopRankedTraining']);
+        Route::get('get-all-mdp-department', [MDPController::class,'getAllMDPDepartment']);
+        Route::get('get-all-mdp-employee', [MDPController::class,'getAllMDPEmployee']);
+        Route::get('get-all-training-title', [MDPController::class,'getAllTrainingTitle']);
+        Route::post('get-employee-wise-report', [MDPController::class,'getEmployeeWiseReport']);
+        //individual tarining
+        Route::get('get-employee-individual-training', [MDPController::class,'getEmployeeIndividualTraining']);
+
+    });
+
+
+    //Route::get('mdp/edit/{ID}', [MDPController::class,'edit']);
     Route::post('get-employee-by-employee-code', [MDPController::class,'getEmployeeByEmployeeCode']);
     Route::post('get-supervisor-by-employee-code', [MDPController::class,'getSupervisorByEmployeeCode']);
     Route::get('get-level-wise-suggestive-list/{StaffID}', [MDPController::class,'getLevelWiseSuggestiveList']);
-    Route::get('export-mdp-list', [MDPController::class,'mdpExport']);
-    Route::get('export-mdp-details-list', [MDPController::class,'mdpDetailsExport']);
+
     Route::get('export-mdp-feedback', [MDPController::class,'mdpFeedbackExport']);
-    Route::get('mdp/get-top-ranked-training', [MDPController::class,'getTopRankedTraining']);
-    Route::get('mdp/get-all-mdp-department', [MDPController::class,'getAllMDPDepartment']);
-    Route::get('mdp/get-all-mdp-employee', [MDPController::class,'getAllMDPEmployee']);
-    Route::get('mdp/get-all-training-title', [MDPController::class,'getAllTrainingTitle']);
-    Route::post('mdp/get-employee-wise-report', [MDPController::class,'getEmployeeWiseReport']);
 
-    //individual tarining
-    Route::get('mdp/get-employee-individual-training', [MDPController::class,'getEmployeeIndividualTraining']);
 
-    //bnaglaexport
-    Route::get('get-export-training-history', [MDPController::class,'getExportTrainingHistory']);
+
+
+
 
     //feedback
     Route::get('empcode-wise-training-list', [MDPTrainigFeedbackController::class,'empCodeWiseTrainingList']);
