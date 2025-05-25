@@ -648,7 +648,7 @@ export default {
     countSpace(val, type, module, index) {
       try {
         const wordCount = val.trim().split(/\s+/).length;
-        // future
+
         if (module === 'future') {
           if (wordCount > 30) {
             if (type === 'futureTrainingOne') {
@@ -662,47 +662,43 @@ export default {
             this.errors.FutureTrainingOneDetails = '';
             this.errors.FutureTrainingTwoDetails = '';
           }
-        }
-        //personal
-        if (type === 'personal'){
-          if (wordCount > 10){
-            if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
-              this.errors.PersonalIN = {};
+        } else {
+          if (wordCount > 10) {
+            if (type === 'personal') {
+              if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
+                this.errors.PersonalIN = {};
+              }
+              if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
+                this.errors.PersonalIN[index] = {};
+              }
+              this.errors.PersonalIN[index].Name = 'Maximum 10 Words!';
+              this.errorNoti(this.errors.PersonalIN[index].Name);
+
+            } else {
+              if (type === 'AreaOne') {
+                this.errors.AreaOne = 'Maximum 10 Words!';
+                this.errorNoti(this.errors.AreaOne);
+              } else if (type === 'AreaTwo') {
+                this.errors.AreaTwo = 'Maximum 10 Words!';
+                this.errorNoti(this.errors.AreaTwo);
+              }
+
             }
-            if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
-              this.errors.PersonalIN[index] = {};
-            }
-            this.errors.PersonalIN[index].Name = 'Maximum 10 Words!';
-            this.errorNoti(this.errors.PersonalIN[index].Name);
-          }else {
+
+          } else {
+            // Clear errors safely
             if (type === 'personal' && this.errors.PersonalIN && typeof this.errors.PersonalIN === 'object') {
               this.errors.PersonalIN[index].Name = '';
             }
+            if (type === 'AreaOne') this.errors.AreaOne = '';
+            if (type === 'AreaTwo') this.errors.AreaTwo = '';
           }
-
-        }
-        //future title
-        if (type === 'Area'){
-          if (wordCount > 10){
-            if (type === 'AreaOne') {
-              this.errors.AreaOne = 'Maximum 10 Words!';
-              this.errorNoti(this.errors.AreaOne);
-            } else if (type === 'AreaTwo') {
-              this.errors.AreaTwo = 'Maximum 10 Words!';
-              this.errorNoti(this.errors.AreaTwo);
-            }else {
-              this.errors.AreaOne = '';
-              this.errors.AreaTwo = '';
-            }
-          }
-
         }
 
       } catch (error) {
         console.error("Max word limit crossed", error);
       }
     },
-
     store() {
       console.log('area',this.errors)
         // Reset errors
@@ -712,12 +708,12 @@ export default {
         }
 
         // Run validations
-        const wordErrors = this.validateWordCounts();
+        const futureWordErrors = this.validateWordCountsFuture();
         const initiativeErrors = this.validateInitiatives();
         const requiredErrors = this.validateRequiredTraining();
-        const futureErrors = this.validateFutureTraining();
+        const futureErrorsDuplicate = this.validateFutureTrainingDuplicate();
 
-        if (wordErrors || initiativeErrors|| requiredErrors ||futureErrors || !this.validateFormFields()) {
+        if (futureWordErrors || initiativeErrors|| requiredErrors ||futureErrorsDuplicate || !this.validateFormFields()) {
           return;
         }
         const formData = this.buildFormData();
@@ -741,7 +737,7 @@ export default {
         });
       },
 
-    validateWordCounts() {
+    validateWordCountsFuture() {
         let hasError = false;
 
         const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
@@ -760,12 +756,15 @@ export default {
           hasError = true;
         }
         if (AreaOneCount > 10) {
+
           this.errors.AreaOne = `Maximum 10 Words.Future Training 1 Currently: ${AreaOneCount}`;
+          console.log('validateWordCounts',this.errors.AreaOne)
           this.errorNoti(this.errors.AreaOne);
           hasError = true;
         }
         if (AreaTwoCount > 10) {
           this.errors.AreaTwo = `Maximum 10 Words.Future Training 2 Currently: ${AreaTwoCount}`;
+          console.log('validateWordCounts',this.errors.AreaTwo)
           this.errorNoti(this.errors.AreaTwo);
           hasError = true;
         }
@@ -818,7 +817,6 @@ export default {
             this.errors.PersonalIN[index].Date = ''
           }
         });
-
         return hasError;
       },
     validateRequiredTraining() {
@@ -877,7 +875,7 @@ export default {
 
       return hasError;
     },
-    validateFutureTraining() {
+    validateFutureTrainingDuplicate() {
       let hasError = false;
       const titleSet = new Set();
 
@@ -904,7 +902,7 @@ export default {
           titleSet.add(lowerVal);
         }
       }
-
+      console.log('dublicate',this.errors)
       return hasError;
     },
     validateFormFields() {
