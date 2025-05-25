@@ -93,6 +93,7 @@ export default {
       periods: [],
       pagination: {
         current_page: 1,
+        last_page: 1,
         from: 1,
         to: 1,
         total: 1,
@@ -137,6 +138,11 @@ export default {
           } else {
             this.headers = Object.keys(response.data.data[0])
             this.contents = response.data.data;
+            // this.pagination.current_page = response.data.data.current_page;
+            // this.pagination.from = response.data.data.from;
+            // this.pagination.to = response.data.data.to;
+            // this.pagination.total = response.data.data.total;
+            // this.pagination.last_page = response.data.data.last_page;
           }
         }else {
           this.ZeroData = "No Data Found!"

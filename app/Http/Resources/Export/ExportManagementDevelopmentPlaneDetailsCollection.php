@@ -21,8 +21,10 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                 }else{
                     $superVisor  = 'N';
                 }
+                $i=0;
                 $array =  [
-                    'SubmittedDateAndTime'         => date('Y-m-d H:i:s', strtotime($mdp->CreatedDate)),
+                    'ID'=>  $mdp->ID,
+                    'SubmittedDateAndTime'         =>date("m/d/Y ", strtotime($mdp->CreatedDate)),
                     'AppraisalPeriod'              => $mdp->AppraisalPeriod,
                     'StaffID'                       => $mdp->StaffID,
                     'EmployeeName'      => $mdp->EmployeeName,
@@ -30,16 +32,18 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     'Department'        => $mdp->Department,
                     'Business'          => $mdp->Business,
                     'OfficialEmail'     => $mdp->OfficialEmail,
-                    'Contact Number'    => $mdp->Mobile,
+//                    'Contact Number'    => $mdp->Mobile,
                     'Mobile'            => $mdp->Mobile,
-                    'DateOfBirth'       => $mdp->DateOfBirth,
-                    'JoiningDate'       => $mdp->JoiningDate,
+                    'DateOfBirth'       =>  date("m/d/Y ", strtotime($mdp->DateOfBirth)),
+                    'JoiningDate'       =>  date("m/d/Y ", strtotime($mdp->JoiningDate)),
                     'CurrentPosition'   => $mdp->CurrentPosition,
-                    'PresentJobStartedOn'   => $mdp->PresentJobStartedOn,
-                    'SuppervisorStaffID'    => $mdp->SuppervisorStaffID,
-                    'SuppervisorName'       => $mdp->SuppervisorName,
-                    'SuppervisorDesignation'   => $mdp->SuppervisorDesignation,
+                    'PresentJobStartedOn'   =>  date("m/d/Y ", strtotime($mdp->PresentJobStartedOn)),
+                    'Qualification'    => $mdp->Qualification,
+                    'SupervisorStaffID'    => $mdp->SuppervisorStaffID,
+                    'SupervisorName'       => $mdp->SuppervisorName,
+                    'SupervisorDesignation'   => $mdp->SuppervisorDesignation,
                     'SupervisorEmail'   => $mdp->SuppervisorEmail,
+                    'SupervisorMobile'   => $mdp->SuppervisorMobile,
                     'MDPStatus'         => $mdp->MDPStatus,
 
                 ];
@@ -49,13 +53,14 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     $count++;
                     $array['PersonalTrainingTitle' .'-'. $count]     = isset($row['Name'])?$row['Name']:'';
                     $array['PersonalCompetencyType' .'-'. $count]    = isset($row['Type'])?$row['Type']:'';
-                    $array['PersonalPlannedDate' .'-'. $count]     =isset($row['Date'])?$row['Date']:'';
+                    $array['PersonalPlannedDate' .'-'. $count]      =isset($row['Date'])?date("m/d/Y ", strtotime($row['Date'])):'';
                 }
+                $countRe = 0;
                 foreach ($mdp->training as $row){
-                    $count++;
-                    $array['RequiredTrainingTitle' .'-'.$count]     = $row['TrainingTitle'];
-                    $array['RequiredCompetencyType' .'-'. $count]   = $row['TrainingType'];
-                    $array['RequiredPlannedDate' .'-'. $count]      = $row['TrainingDate'];
+                    $countRe++;
+                    $array['RequiredTrainingTitle' .'-'.$countRe]     = isset($row['TrainingTitle'])?$row['TrainingTitle']:'';
+                    $array['RequiredCompetencyType' .'-'. $countRe]   = isset($row['TrainingType'])?$row['TrainingType']:'';
+                    $array['RequiredPlannedDate' .'-'. $countRe]      = isset($row['TrainingDate'])?date("m/d/y",strtotime($row['TrainingDate'])):'';
                 }
 
                 $array['FutureTrainingTitle-1']   = $mdp->FutureTrainingOne;

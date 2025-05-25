@@ -1,6 +1,18 @@
 <template>
     <div class="content" id="mdp">
         <div class="container-fluid">
+          <breadcrumb :options="['Management Development Plan Print']">
+            <div class="col-sm-6">
+              <div class="float-right d-none d-md-block">
+                <div class="card-tools">
+                  <router-link :to="{name: 'MDPList'}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-sync"></i>
+                    Back
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </breadcrumb>
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
@@ -87,8 +99,8 @@
 <!--                                </p>-->
                                 <span style="font-size: 20px">1.</span> <p style="font-size: 20px">
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">
-                                    <b v-if="mdplist.FutureTrainingOne">{{mdplist.FutureTrainingOne}}: </b>
-                                    {{ mdplist.AreaOne }}</span>
+                                    <b v-if="mdplist.AreaOne">{{mdplist.AreaOne}} : </b>
+                                    {{ mdplist.FutureTrainingOneDetails }}</span>
                                 </p>
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;text-align: center"></span>
@@ -112,7 +124,7 @@
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;font-size: 20px">
                                     <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">
-                                      <b v-if="mdplist.FutureTrainingTwo">{{mdplist.FutureTrainingTwo}}: </b>{{ mdplist.AreaOne }}</span>
+                                      <b v-if="mdplist.AreaTwo">{{mdplist.AreaTwo}} : </b>{{ mdplist.FutureTrainingTwoDetails }}</span>
                                   </span>
                                 </p>
                                 <p>
@@ -235,8 +247,8 @@ export default {
             {number: 2},
             {number: 3},
             {number: 4},
-            {number: 5},
-            {number: 6},
+            // {number: 5},
+            // {number: 6},
           ],
         }
     },

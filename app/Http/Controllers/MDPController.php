@@ -6,10 +6,10 @@ use App\Http\Requests\ManagementDevelopmentPlaneRequest;
 use App\Http\Requests\ManagementDevelopmentPlaneUpdateRequest;
 use App\Http\Resources\ContSupervisorResource;
 use App\Http\Resources\EmployeeResource;
-use App\Http\Resources\Export\ExportManagementDevelopmentPlaneCollection;
 use App\Http\Resources\Export\ExportManagementDevelopmentPlaneDetailsCollection;
-use App\Http\Resources\ManagementDevelopmentPlaneCollection;
-use App\Http\Resources\ManagementDevelopmentPlaneResource;
+use App\Http\Resources\MDP\ManagementDevelopmentPlaneCollection;
+use App\Http\Resources\MDP\ManagementDevelopmentPlaneResource;
+use App\Http\Resources\MDP\ManagementDevelopmentPlanPrintCollection;
 use App\Http\Resources\SupervisorResource;
 use App\Models\ContactPersonal;
 use App\Models\Employee;
@@ -21,7 +21,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
-use Monolog\Handler\IFTTTHandler;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class MDPController extends Controller
@@ -39,11 +38,22 @@ class MDPController extends Controller
         if ($role == 'admin'){
             $mdp = ManagementDevelopmentPlane::query();
             $Department = json_decode($request->Department);
-            if (!empty($Department) && isset($Department)){
+
+            if (!empty($Department) && isset($Department)) {
                 $Department = collect($Department);
+
+                // Optional: clean up DeptName values if needed
+                $Department = $Department->map(function ($item) {
+                    $item->DeptName = preg_replace('/\s+and\s+/i', ' & ', $item->DeptName);
+                    $item->DeptName = preg_replace('/\s+/', ' ', $item->DeptName);
+                    $item->DeptName = trim($item->DeptName);
+                    return $item;
+                });
                 $DeptName = $Department->pluck('DeptName');
-                $mdp = $mdp->whereIn('Department',$DeptName);
+
+                $mdp = $mdp->whereIn('Department', $DeptName->toArray());
             }
+
             $EmployeeList= json_decode($request->EmployeeList);
             if (!empty($EmployeeList) && isset($EmployeeList)){
                 $EmployeeList = collect($EmployeeList);
@@ -53,8 +63,9 @@ class MDPController extends Controller
             if ($session){
                 $mdp = $mdp->where('AppraisalPeriod',$session);
             }
-            $mdp = $mdp->orderBy('ID','desc')->paginate(15);
+            $mdp = $mdp->orderBy('ID','desc')->whereNotNull('StaffID');
         }else{
+
             $mdp = ManagementDevelopmentPlane::query();
             $Department = json_decode($request->Department);
             if (!empty($Department) && isset($Department)){
@@ -70,19 +81,24 @@ class MDPController extends Controller
                     $query->where('StaffID',$empcode);
                     $query->orWhere('SuppervisorStaffID', $empcode);
                 })
-                ->paginate(15);
+                ->whereNotNull('StaffID');
         }
-        return new ManagementDevelopmentPlaneCollection($mdp);
+
+        $mdpIds = $mdp->pluck('ID')->implode(',');
+
+        return new ManagementDevelopmentPlaneCollection($mdp->paginate(15),$mdpIds);
     }
 
     public function store(ManagementDevelopmentPlaneRequest $request){
         DB::beginTransaction();
+
         try {
             $token = $request->bearerToken();
             $payload = JWTAuth::setToken($token)->getPayload();
-            $empcode = $payload['EmpCode'];
-            $role = $payload['Type'];
+            $empcode = $payload->get('EmpCode');
+            $role = $payload->get('Type');
             if ($role != 'admin'){
+
                 if ($empcode != $request->StaffID){
                     return response()->json([
                         'status' => 'error',
@@ -90,6 +106,7 @@ class MDPController extends Controller
                     ]);
                 }
             }
+
             if ($request->StaffID == 'admin'){
                 if ($empcode != $request->StaffID){
                     return response()->json([
@@ -99,6 +116,7 @@ class MDPController extends Controller
                 }
             }
 
+
             $exist_check = ManagementDevelopmentPlane::where('AppraisalPeriod',$request->AppraisalPeriod)->where('StaffID',$request->StaffID)->exists();
             if ($exist_check){
                 return response()->json([
@@ -106,12 +124,10 @@ class MDPController extends Controller
                     'message' => 'Data Already Exists.'
                 ]);
             }
-
             $initiative = $request->initiative;
             $training = $request->training;
-
             // Validate image dimensions
-            $imageDimantion = Image::make($request->Signature);
+            $imageDimantion = Image::make($request->file('Signature'));
             if ($imageDimantion->width() != 200 || $imageDimantion->height() != 60) {
                 return response()->json([
                     'status' => 'error',
@@ -119,13 +135,20 @@ class MDPController extends Controller
                 ]);
             }
 
-            //FOR IMAGE
-            if ($request->Signature) {
-                $image   = $request->Signature;
-                $name    = uniqid().time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-                Image::make($image)->save(public_path('signature/').$name);
+            if ($request->hasFile('Signature')) {
+                $file = $request->file('Signature');
+
+                // Create a unique name with extension
+                $filename = 'signature_' . time() . '.' . $file->getClientOriginalExtension();
+                $destination = public_path('signature');
+
+                if (!file_exists($destination)) {
+                    mkdir($destination, 0755, true);
+                }
+                Image::make($file)->encode('jpeg', 95)->save(public_path('signature/').$filename);
+
             } else {
-                $name = '';
+                $filename = '';
             }
 
             $ManagementDevelopmentPlane = new ManagementDevelopmentPlane();
@@ -142,7 +165,6 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
             $ManagementDevelopmentPlane->PresentJobStartedOn = $request->PresentJobStartedOn;
             $ManagementDevelopmentPlane->Qualification = $request->Qualification;
-
             $ManagementDevelopmentPlane->SuppervisorStaffID = $request->SuppervisorStaffID;
             $ManagementDevelopmentPlane->SuppervisorName = $request->SuppervisorName;
             $ManagementDevelopmentPlane->SuppervisorDesignation = $request->SuppervisorDesignation;
@@ -151,18 +173,22 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->AreaOne = $request->AreaOne;
             $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
             $ManagementDevelopmentPlane->CreatedBy = $empcode;
+            $ManagementDevelopmentPlane->CreatedDate = Carbon::now();
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
+            $ManagementDevelopmentPlane->UpdatedDate =  Carbon::now();
             $ManagementDevelopmentPlane->MDPStatus = 'Pending';
-            $ManagementDevelopmentPlane->Signature = $name;
-            $ManagementDevelopmentPlane->FutureTrainingOne = $request->FutureTrainingOne;
-            $ManagementDevelopmentPlane->FutureTrainingTwo = $request->FutureTrainingTwo;
+            $ManagementDevelopmentPlane->Signature = $filename;
+            $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
+            $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
             if ($ManagementDevelopmentPlane->save()){
+
                 foreach ($initiative as $value){
+
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
                     $MDPPersonalInitiative->Type  = $value['Type'];
-                    $MDPPersonalInitiative->Date  = $value['Date'];
+                    $MDPPersonalInitiative->Date  = date("Y-m-d H:i:s", strtotime($value['Date'])) ;
                     $MDPPersonalInitiative->save();
                 }
                 foreach ($training as $item){
@@ -170,7 +196,7 @@ class MDPController extends Controller
                     $MDPTraining->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPTraining->TrainingTitle = $item['TrainingTitle'];
                     $MDPTraining->TrainingType = $item['TrainingType'];
-                    $MDPTraining->TrainingDate = $item['TrainingDate'];
+                    $MDPTraining->TrainingDate = date('Y-m-d H:i:s', strtotime($item['TrainingDate']))  ;
                     $MDPTraining->save();
                 }
 
@@ -200,11 +226,111 @@ class MDPController extends Controller
         } catch (\Exception $exception) {
             return response()->json([
                 'status' => 'error',
+                'message' => 'Something went wrong! '.$exception->getMessage(),
+
+            ],500);
+        }
+    }
+
+
+    public function update(ManagementDevelopmentPlaneUpdateRequest $request){
+
+        DB::beginTransaction();
+        try {
+            $token = $request->bearerToken();
+            $payload = JWTAuth::setToken($token)->getPayload();
+            $empcode = $payload['EmpCode'];
+
+            $initiative = $request->initiative;
+            $training = $request->training;
+
+            $ManagementDevelopmentPlane = ManagementDevelopmentPlane::where('ID',$request->ID)->first();
+            MDPPersonalInitiative::where('MDPID',$request->ID)->delete();
+            MDPTraining::where('MDPID',$request->ID)->delete();
+
+            $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;
+            $ManagementDevelopmentPlane->StaffID = $request->StaffID;
+            $ManagementDevelopmentPlane->EmployeeName = $request->EmployeeName;
+            $ManagementDevelopmentPlane->Designation = $request->Designation;
+            $ManagementDevelopmentPlane->Department = $request->Department;
+            $ManagementDevelopmentPlane->OfficialEmail = $request->OfficialEmail;
+            $ManagementDevelopmentPlane->Mobile = $request->Mobile;
+            $ManagementDevelopmentPlane->DateOfBirth = $request->DateOfBirth;
+            $ManagementDevelopmentPlane->JoiningDate = $request->JoiningDate;
+            $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
+            $ManagementDevelopmentPlane->PresentJobStartedOn = $request->PresentJobStartedOn;
+            $ManagementDevelopmentPlane->Qualification = $request->Qualification;
+
+            $ManagementDevelopmentPlane->SuppervisorStaffID = $request->SuppervisorStaffID;
+            $ManagementDevelopmentPlane->SuppervisorName = $request->SuppervisorName;
+            $ManagementDevelopmentPlane->SuppervisorDesignation = $request->SuppervisorDesignation;
+            $ManagementDevelopmentPlane->SuppervisorEmail = $request->SuppervisorEmail;
+            $ManagementDevelopmentPlane->SuppervisorMobile = $request->SuppervisorMobile;
+            $ManagementDevelopmentPlane->AreaOne = $request->AreaOne;
+            $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
+            $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
+            $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
+            $ManagementDevelopmentPlane->UpdatedBy = $empcode;
+            $ManagementDevelopmentPlane->UpdatedDate = Carbon::now();
+            if ($ManagementDevelopmentPlane->save()){
+                foreach ($initiative as $value){
+
+                    $MDPPersonalInitiative = new MDPPersonalInitiative();
+                    $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
+                    $MDPPersonalInitiative->Name  = $value['Name'];
+                    $MDPPersonalInitiative->Type  = $value['Type'];
+                    $MDPPersonalInitiative->Date  = date("d-m-Y", strtotime($value['Date'])) ;
+                    $MDPPersonalInitiative->save();
+                }
+                foreach ($training as $item){
+                    $MDPTraining = new MDPTraining();
+                    $MDPTraining->MDPID = $ManagementDevelopmentPlane->ID;
+                    $MDPTraining->TrainingTitle = $item['TrainingTitle'];
+                    $MDPTraining->TrainingType = $item['TrainingType'];
+                    $MDPTraining->TrainingDate = date('Y-m-d', strtotime($item['TrainingDate']))  ;
+                    $MDPTraining->save();
+                }
+
+                DB::commit();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Successfully Updated.'
+                ]);
+            }
+
+        } catch (\Exception $exception) {
+            return response()->json([
+                'status' => 'error',
                 'message' => 'Something went wrong! '.$exception->getMessage()
             ],500);
         }
     }
 
+    public function edit($id){
+        $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
+
+        $training_list = MDPEmployeeTrainingList::where('StaffID', $mdp->StaffID)->where('isDropDown','Y')->first();
+
+        if (!empty($training_list)){
+            $dropDown = 'YES';
+        }else{
+            $dropDown = 'NO';
+        }
+
+        $training_list_by_empcode = MDPEmployeeTrainingList::where('StaffID', $mdp->StaffID)->get();
+
+        $dateFrom =  Carbon::now()->year -5;
+        $dateTo =  Carbon::now()->year;
+//        $training_history = DB::select("EXEC SP_TrainingUserReport '$mdp->StaffID','$dateFrom','$dateTo' ");
+        $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$mdp->StaffID'");
+
+        return response()->json([
+            'training_list'=>$training_list_by_empcode,
+            'training_history'=>$training_history,
+            'dropDown'=>$dropDown,
+            'data'=>new ManagementDevelopmentPlaneResource($mdp)
+        ]);
+    }
     public function testsendemail(){
 
         //$data = array();
@@ -249,100 +375,6 @@ class MDPController extends Controller
 
     }
 
-    public function update(ManagementDevelopmentPlaneUpdateRequest $request){
-
-        DB::beginTransaction();
-        try {
-            $token = $request->bearerToken();
-            $payload = JWTAuth::setToken($token)->getPayload();
-            $empcode = $payload['EmpCode'];
-
-            $initiative = $request->initiative;
-            $training = $request->training;
-
-            $ManagementDevelopmentPlane = ManagementDevelopmentPlane::where('ID',$request->ID)->first();
-            MDPPersonalInitiative::where('MDPID',$request->ID)->delete();
-            MDPTraining::where('MDPID',$request->ID)->delete();
-
-            $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;
-            $ManagementDevelopmentPlane->StaffID = $request->StaffID;
-            $ManagementDevelopmentPlane->EmployeeName = $request->EmployeeName;
-            $ManagementDevelopmentPlane->Designation = $request->Designation;
-            $ManagementDevelopmentPlane->Department = $request->Department;
-            $ManagementDevelopmentPlane->OfficialEmail = $request->OfficialEmail;
-            $ManagementDevelopmentPlane->Mobile = $request->Mobile;
-            $ManagementDevelopmentPlane->DateOfBirth = $request->DateOfBirth;
-            $ManagementDevelopmentPlane->JoiningDate = $request->JoiningDate;
-            $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
-            $ManagementDevelopmentPlane->PresentJobStartedOn = $request->PresentJobStartedOn;
-            $ManagementDevelopmentPlane->Qualification = $request->Qualification;
-
-            $ManagementDevelopmentPlane->SuppervisorStaffID = $request->SuppervisorStaffID;
-            $ManagementDevelopmentPlane->SuppervisorName = $request->SuppervisorName;
-            $ManagementDevelopmentPlane->SuppervisorDesignation = $request->SuppervisorDesignation;
-            $ManagementDevelopmentPlane->SuppervisorEmail = $request->SuppervisorEmail;
-            $ManagementDevelopmentPlane->SuppervisorMobile = $request->SuppervisorMobile;
-            $ManagementDevelopmentPlane->AreaOne = $request->AreaOne;
-            $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
-            $ManagementDevelopmentPlane->UpdatedBy = $empcode;
-            if ($ManagementDevelopmentPlane->save()){
-                foreach ($initiative as $value){
-                    $MDPPersonalInitiative = new MDPPersonalInitiative();
-                    $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
-                    $MDPPersonalInitiative->Name  = $value['Name'];
-                    $MDPPersonalInitiative->Type  = $value['Type'];
-                    $MDPPersonalInitiative->Date  = $value['Date'];
-                    $MDPPersonalInitiative->save();
-                }
-                foreach ($training as $item){
-                    $MDPTraining = new MDPTraining();
-                    $MDPTraining->MDPID = $ManagementDevelopmentPlane->ID;
-                    $MDPTraining->TrainingTitle = $item['TrainingTitle'];
-                    $MDPTraining->TrainingType = $item['TrainingType'];
-                    $MDPTraining->TrainingDate = $item['TrainingDate'];
-                    $MDPTraining->save();
-                }
-
-                DB::commit();
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Successfully Updated.'
-                ]);
-            }
-
-        } catch (\Exception $exception) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Something went wrong! '.$exception->getMessage()
-            ],500);
-        }
-    }
-
-    public function edit($id){
-        $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
-
-        $training_list = MDPEmployeeTrainingList::where('StaffID', $mdp->StaffID)->where('isDropDown','Y')->first();
-
-        if (!empty($training_list)){
-            $dropDown = 'YES';
-        }else{
-            $dropDown = 'NO';
-        }
-
-        $training_list_by_empcode = MDPEmployeeTrainingList::where('StaffID', $mdp->StaffID)->get();
-
-        $dateFrom =  Carbon::now()->year -5;
-        $dateTo =  Carbon::now()->year;
-        $training_history = DB::select("EXEC SP_TrainingUserReport '$mdp->StaffID','$dateFrom','$dateTo' ");
-
-        return response()->json([
-            'training_list'=>$training_list_by_empcode,
-            'training_history'=>$training_history,
-            'dropDown'=>$dropDown,
-            'data'=>new ManagementDevelopmentPlaneResource($mdp)
-        ]);
-    }
-
     public function delete($id){
         DB::beginTransaction();
         try {
@@ -368,6 +400,22 @@ class MDPController extends Controller
         $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
         return new ManagementDevelopmentPlaneResource($mdp);
     }
+    public function allMDPPrint(Request $request){
+        $mdpIds = array_map('intval', explode(',', $request->mdpIds));
+
+        $allMdp = collect();
+
+        foreach (array_chunk($mdpIds, 1000) as $chunk) {
+            $mdp = ManagementDevelopmentPlane::whereIn('ID', $chunk)
+                ->with('initiative', 'training')
+                ->get();
+            $allMdp = $allMdp->merge($mdp);
+        }
+
+        return new ManagementDevelopmentPlanPrintCollection($allMdp);
+
+    }
+
 
     public function mdpExport(Request $request){
         $session = $request->sessionP;
@@ -388,7 +436,7 @@ class MDPController extends Controller
         $mdp_list = $mdp_list->where('AppraisalPeriod',$session)
             ->orderBy('Department','asc')->get();
 
-        return new ExportManagementDevelopmentPlaneCollection($mdp_list);
+        return new ExportManagementDevelopmentPlaneDetailsCollection($mdp_list);
     }
 //    public function mdpDetailsExport(Request $request){
 //
@@ -500,15 +548,80 @@ class MDPController extends Controller
     }
     
     public function getEmployeeWiseReport(Request $request){
+
         $session = $request->sessionP;
-        $EmpCode = $request->EmpCode;
-        $TrainingTitle = collect($request->TrainingTitle);
-        $TrainingTitleString = "";
-        foreach($TrainingTitle as $row){
-            $TrainingTitleString = $TrainingTitleString . $row['TrainingTitle'] . '##';
+//        $EmpCode = $request->EmpCode;
+//        $TrainingTitle = collect($request->TrainingTitle);
+//        $TrainingTitleString = "";
+
+        $Training= json_decode($request->TrainingTitle);
+        $TrainingTitle = $Training->TrainingTitle;
+        $Tasks = json_decode($request->Tasks);
+        if (!empty($Tasks)){
+
+            if (!empty($Tasks) && isset($Tasks)){
+                $Tasks = collect($Tasks);
+                $taskName= $Tasks->pluck('task');
+            }
+            $taskList =[];
+            foreach ($taskName as $value){
+                array_push($taskList,$value);
+            }
+            $taskToString= implode(",", $taskList);
+        }else{
+            $taskToString='';
         }
-        $TrainingTitleString = substr($TrainingTitleString,0,strlen($TrainingTitleString) - 2);
-        $individual_training = DB::select("EXEC doLoadEmployeeWiseReport '$session','$EmpCode','$TrainingTitleString' ");
+
+        $Department = json_decode($request->SBUs);
+        if (!empty($Department)){
+            if (!empty($Department) && isset($Department)){
+                $Department = collect($Department);
+                $DeptUnit = $Department->pluck('DeptName');
+            }
+            $DeptUnitList =[];
+            foreach ($DeptUnit as $value){
+                array_push($DeptUnitList,$value);
+            }
+            $DeptUnitListString= implode(",", $DeptUnitList);
+        }else{
+            $DeptUnitListString='';
+        }
+
+
+        $sql= "EXEC usp_doLoadMDPTrainingWiseEmployeeList '$session','$TrainingTitle','$taskToString','$DeptUnitListString' ";
+
+        $conn = DB::connection('sqlsrv');
+        $pdo = $conn->getPdo()->prepare($sql);
+        $pdo->execute();
+
+        $res = array();
+
+        do {
+            $rows = $pdo->fetchAll(\PDO::FETCH_ASSOC);
+            $res[] = $rows;
+
+        } while ($pdo->nextRowset());
+        if (!empty($res[0])){
+            return response()->json([
+                'status' => 'success',
+                'data' =>[
+                    'List'=>$res[0],
+                    'Ranking'=>$res[1],
+                     'UserCount'=> $res[2]
+                ],
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No Data Found',
+            ]);
+        }
+//
+//        foreach($TrainingTitle as $row){
+//            $TrainingTitleString = $TrainingTitleString . $row['TrainingTitle'] . '##';
+//        }
+//        $TrainingTitleString = substr($TrainingTitleString,0,strlen($TrainingTitleString) - 2);
+//        $individual_training = DB::select("EXEC doLoadEmployeeWiseReport '$session','$EmpCode','$TrainingTitleString' ");
         return response()->json([
            'individual_training' => $individual_training
         ]);
@@ -524,7 +637,10 @@ class MDPController extends Controller
     }
 
     public function getAllMDPDepartment(){
-        $departments = DB::select('select distinct Department as DeptName from ManagementDevelopmentPlane');
+        $departments = DB::select("SELECT DISTINCT replace(Department,'&','and' ) as DeptName 
+                                            FROM ManagementDevelopmentPlane 
+                                            WHERE Department IS NOT NULL OR Department<>'' 
+                                            ORDER BY replace(Department,'&','and' ) ASC");
         return response()->json([
             'departments'=>$departments
         ]);
@@ -533,7 +649,7 @@ class MDPController extends Controller
         $staffId = $request->staffId;
         $session = $request->sessionP;
         $Department = json_decode($request->Department);
-        $emp_List = ManagementDevelopmentPlane::select('StaffID',DB::raw("CONCAT(StaffID, '- ', EmployeeName) AS Employee"));
+        $emp_List = ManagementDevelopmentPlane::select(DB::raw("Distinct StaffID,CONCAT(StaffID, '- ', EmployeeName) AS Employee"));
             if (!empty($session)){
                 $emp_List ->where(function ($q) use ($session) {
                     $q->where('AppraisalPeriod', 'like', '%' . $session . '%');
@@ -545,7 +661,7 @@ class MDPController extends Controller
                 $emp_List = $emp_List->whereIn('Department',$DeptName);
             }
             return response()->json([
-            'employees'=>$emp_List->orderby('ID','DESC')->get()
+            'employees'=>$emp_List->whereNotNull('StaffID')->orderby('StaffID','ASC')->get()
         ]);
     }
 

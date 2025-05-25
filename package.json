@@ -40,6 +40,7 @@
         "v-toaster": "^1.0.3",
         "vee-validate": "^3.4.14",
         "vform": "^2.1.2",
+        "vue-advanced-cropper": "^1.11.7",
         "vue-chartjs": "^3.5.0",
         "vue-html2canvas": "^0.0.4",
         "vue-image-compressor": "^1.0.3",

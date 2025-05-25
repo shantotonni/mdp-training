@@ -1,7 +1,22 @@
 <template>
   <div class="content" style="margin-bottom: 300px">
     <div class="container-fluid">
-      <breadcrumb :options="['Training Feedback']"/>
+      <breadcrumb :options="['MDP Training Status']">
+        <div class="col-sm-6">
+          <div class="float-right d-none d-md-block">
+            <div class="card-tools">
+              <router-link :to="{name: 'MDPList'}" class="btn btn-primary btn-sm">
+                <i class="fas fa-backward"></i>
+                Back
+              </router-link>
+              <button type="button" class="btn btn-primary btn-sm" @click="reload">
+                <i class="fas fa-sync"></i>
+                Reload
+              </button>
+            </div>
+          </div>
+        </div>
+      </breadcrumb>
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
@@ -27,17 +42,17 @@
                   </div>
                 </div>
                 <div class="row" v-if="tableDataVisible">
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <input type="text" readonly v-model="EmployeeName" class="form-control" name="EmployeeName">
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <input type="text" readonly v-model="Designation" class="form-control" name="Designation">
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <input type="text" readonly v-model="Department" class="form-control" name="Department">
                     </div>
@@ -46,8 +61,9 @@
                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                   <thead>
                   <tr>
-                    <th style="width: 10%">Current Training</th>
-                    <th>Status</th>
+                    <th style="width: 10%">Training Title</th>
+                    <th>Training Type</th>
+                    <th>Task Progress</th>
                     <th>Done Date</th>
                     <th>Offer Date One</th>
                     <th>Offer Date Two</th>
@@ -63,6 +79,7 @@
                   <tbody>
                     <tr v-for="(training, i) in form.training_list" :key="training.ID" v-if="form.training_list.length && tableDataVisible">
                       <td>{{ training.TrainingTitle }}</td>
+                      <td>{{ training.TrainingType }}</td>
                       <td>
                         <select name="Status" id="Status" v-model="training.Status" class="form-control">
                           <option value="done">Done</option>
@@ -130,7 +147,7 @@ export default {
   },
 
   mounted() {
-    document.title = 'Training Feedback | MDP';
+    document.title = 'MDP Training Status | MDP';
     this.getData();
     this.getAllSession();
   },

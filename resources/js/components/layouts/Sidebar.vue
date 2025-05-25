@@ -5,7 +5,7 @@
         <ul class="metismenu" id="side-menu">
           <li class="menu-title">Main</li>
           <li @click="hideSideBar()">
-            <router-link :to="{name : 'Dashboard'}" class="waves-effect"><i class="ti-home"></i> <span>Dashboard</span></router-link>
+            <router-link :to="{name : 'Dashboard'}" class="waves-effect"><i class="ti-home"></i> <span>Connect</span></router-link>
           </li>
           <li>
             <a href="javascript:void(0);" class="waves-effect">
@@ -92,7 +92,7 @@
               <li @click="hideSideBar()">
                 <router-link :to="{name: 'TaxReturnAcknowledgement'}" ><i class="mdi mdi-checkbox-multiple-marked-outline"></i>Tax Return Acknowledgement</router-link>
               </li>
-              <li @click="hideSideBar()" v-if="EmpCode === '30068'">
+              <li @click="hideSideBar()" v-if="EmpCode === 'admin'">
                 <router-link :to="{name: 'TaxReturnAcknowledgementReport'}" ><i class="mdi mdi-table-large"></i>Tax Return Acknowledgement Report</router-link>
               </li>
             </ul>

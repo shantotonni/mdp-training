@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\MDPTrainigFeedbackCollection;
-use App\Http\Resources\MDPTrainigFeedbackResource;
+use App\Http\Resources\MDP\MDPTrainigFeedbackCollection;
 use App\Models\ManagementDevelopmentPlane;
 use App\Models\MDPTraining;
 use App\Models\MDPTrainingFeedback;

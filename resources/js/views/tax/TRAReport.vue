@@ -25,12 +25,27 @@
                 <div class="d-flex">
                   <div class="flex-grow-1">
                     <div class="row">
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <select id="TaxYear" class="form-control" v-model="TaxYear">
                             <option value="">Select Assessment Year</option>
                             <option :value="div.TaxYear" v-for="(div,index) in periods" :key="index">{{div.TaxYear}}</option>
                           </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <multiselect
+
+                              v-model="Department"
+                              :options="Department_List"
+                              :multiple="true"
+                              :searchable="true"
+                              :close-on-select="true"
+                              :show-labels="true"
+                              label="DeptName"
+                              track-by="DeptCode"
+                              placeholder="Pick a Department"></multiselect>
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -98,6 +113,7 @@ import moment from "moment";
 import {baseurl} from '../../base_url'
 import Multiselect from "vue-multiselect";
 import {bus} from "../../app";
+
 export default {
   name: "List",
   components: {
@@ -108,7 +124,7 @@ export default {
     return {
       headers: [],
       contents: [],
-      departments: [],
+      Department_List: [],
       periods: [],
       pagination: {
         current_page: 1,
@@ -117,6 +133,7 @@ export default {
         to: 1,
         total: 1,
       },
+      Department:[],
       TaxYear:'',
       editMode: false,
       isLoading: false,
@@ -128,16 +145,17 @@ export default {
   },
   mounted() {
     document.title = 'Tax Return Acknowledgement Report';
-    // this.getTRAReport();
     this.getAllPeriods();
   },
   methods: {
     getTRAReport(ex) {
-      axios.post(baseurl + 'api/get-tra-report?TaxYear='+this.TaxYear+'&page='+ this.pagination.current_page).then((response) => {
-        console.log(response)
+      axios.post(baseurl + 'api/get-tra-report?TaxYear='+this.TaxYear
+          +'&Department='+ JSON.stringify(this.Department)
+          +'&page='+ this.pagination.current_page
+      ).then((response) => {
         if (response.data.data.data.length > 0){
           if (ex === 'Y') {
-            let dataSets = response.data.data;
+            let dataSets = response.data.data.data;
             if (dataSets.length > 0) {
               let columns = Object.keys(dataSets[0]);
               columns = columns.filter((item) => item !== 'row_num');
@@ -151,13 +169,23 @@ export default {
           } else {
             this.headers = Object.keys(response.data.data.data[0])
             this.contents = response.data.data.data;
-            this.pagination.current_page = response.data.data.current_page;
-            this.pagination.from = response.data.data.from;
-            this.pagination.to = response.data.data.to;
-            this.pagination.total = response.data.data.total;
-            this.pagination.last_page = response.data.data.last_page;
+            // this.pagination.current_page = response.data.data.current_page;
+            // this.pagination.from = response.data.data.from;
+            // this.pagination.to = response.data.data.to;
+            // this.pagination.total = response.data.data.total;
+            // this.pagination.last_page = response.data.data.last_page;
           }
+        }else {
+          this.$toaster.error('No Data Found!');
         }
+
+      })
+    },
+    getAllDepartment(){
+      axios.get(baseurl + 'api/get-departments').then((response) => {
+        this.Department_List = response.data.data;
+        //this.getAllTrainingTitle();
+      }).catch((error) => {
 
       })
     },
@@ -169,6 +197,8 @@ export default {
     getAllPeriods(){
       axios.get(baseurl + 'api/get-periods').then((response) => {
         this.periods = response.data.data;
+        this.getAllDepartment();
+
       }).catch((error) => {
 
       })

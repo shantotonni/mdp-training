@@ -5,26 +5,35 @@
                 <div class="col-sm-6">
                   <div class="float-right d-none d-md-block">
                     <div class="card-tools">
+                      <button class="btn btn-outline-dark btn-sm" v-if="type ==='admin'">
+                        <i class="fas fa-address-card"></i>
+                        MDP Count- {{this.mdpNo}}
+                      </button>
                       <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">
                         <i class="fas fa-plus"></i>
                         Add Management Development Plan
                       </router-link>
-<!--                      <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">-->
+                      <router-link :to="{name: 'AllMDPPrint'}" class="btn btn-success btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
+                        <i class="fas fa-plus"></i> All MDP
+                      </router-link>
+                      <router-link :to="{name: 'AllMDPPrintTwo'}" class="btn btn-success btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
+                        <i class="fas fa-plus"></i> All PTC
+                      </router-link>
+
+
+                      <!--                      <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">-->
 <!--                        <i class="mdi mdi-database-export"></i>-->
 <!--                        Feedback Export-->
 <!--                      </button>-->
-                      <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
-                        <i class="fas fa-download"></i>
-                        Export
-                      </button>
                       <button type="button" class="btn btn-info btn-sm" @click="exportMDPDetailsList" v-if="type ==='admin'">
                         <i class="fas fa-download"></i>
-                        Export Details
+                        Export-1
                       </button>
-                      <button type="button" class="btn btn-primary btn-sm" @click="reload">
-                        <i class="fas fa-sync"></i>
-                        Reload
+                      <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
+                        <i class="fas fa-download"></i>
+                        Export-2
                       </button>
+
                     </div>
                   </div>
                 </div>
@@ -39,14 +48,14 @@
                                         <div class="row">
                                           <div class="col-md-2">
                                             <div class="form-group">
-                                              <select id="sessionP" class="form-control" v-model="sessionP"   @click="getAllEmpID" >
-                                                <option value="">Select Session</option>
+                                              <select id="sessionP" class="form-control defineHeight"   v-model="sessionP"   @click="getAllEmpID" >
+                                                <option value="">Period</option>
                                                 <option v-for="(session,index) in sessions" :value="session.Name"
                                                      :key="index">{{session.Name}}</option>
                                               </select>
                                             </div>
                                           </div>
-                                            <div class="col-md-4" v-if="type === 'admin'">
+                                            <div class="col-md-3" v-if="type === 'admin'" >
                                               <multiselect
                                                   v-model="Department"
                                                   :options="departments"
@@ -57,11 +66,11 @@
                                                   label="DeptName"
                                                   track-by="DeptName"
                                                   @click="getAllEmpID"
-                                                  placeholder="Pick a Department"></multiselect>
+                                                  placeholder="SBU's"></multiselect>
 <!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
                                             </div>
 
-                                          <div class="col-md-4">
+                                          <div class="col-md-3" v-if="type === 'admin'">
                                             <div class="form-group">
 <!--                                              <select id="Department" class="form-control" v-model="Department">-->
 <!--                                                <option value="">Select Department</option>-->
@@ -76,27 +85,31 @@
                                                   :show-labels="true"
                                                   label="Employee"
                                                   track-by="StaffID"
-                                                  placeholder="Pick a Employee"></multiselect>
+                                                  placeholder="Employee"></multiselect>
                                             </div>
                                           </div>
-                                          <div class="col-md-2">
-                                            <button type="submit" @click="getAllMDPList" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
+                                          <div class="col-md-3">
+                                            <button type="submit" @click="getAllMDPList('true')" class="btn btn-success defineHeight"><i class="mdi mdi-filter"></i>Filter</button>
+                                            <button type="button" class="btn btn-primary defineHeight" @click="reload">
+                                              <i class="fas fa-sync"></i>
+                                              Reload
+                                            </button>
                                           </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                  <div class="row" v-if="mdplist.length>0">
-                                    <div class="col-md-12 text-left" style="background-color: #cfdef6; color: black">
-                                      <span>No. of Submitted MDPs: <b>{{mdplist.length}}</b> </span>
-                                    </div>
-                                  </div>
+<!--                                  <div class="row" v-if="mdplist.length>0">-->
+<!--                                    <div class="col-md-12 text-left" style="background-color: #cfdef6; color: black">-->
+<!--                                      <span>No. of Submitted MDPs: <b>{{mdplist.length}}</b> </span>-->
+<!--                                    </div>-->
+<!--                                  </div>-->
                                     <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                         <thead>
                                           <tr>
                                               <th>SN</th>
                                               <th>Staff ID</th>
-                                              <th>Employee Name</th>
+                                              <th>Name</th>
                                               <th>Designation</th>
                                               <th>Department</th>
                                               <th>Business</th>
@@ -104,7 +117,7 @@
                                               <th>Mobile</th>
                                               <th>Appraisal Period</th>
                                               <th>MDP Status</th>
-                                              <th class="text-center">Action</th>
+                                              <th class="text-center" >Action</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -122,7 +135,7 @@
                                                 <span v-if="mdp.MDPStatus === 'Pending' " class="badge badge-danger"> Pending</span>
                                                 <span v-if="mdp.MDPStatus === 'Approved' " class="badge badge-success"> Approved</span>
                                               </td>
-                                              <td class="text-center">
+                                              <td class="text-center" style="white-space: nowrap" >
                                                 <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm" ><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
                                                 <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm" v-if="mdp.MDPStatus === 'Approved' || type === 'admin'">
                                                   <i class="mdi mdi-printer"></i> MDP</router-link>
@@ -157,6 +170,9 @@
                 </div>
             </div>
         </div>
+      <div>
+        <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
+      </div>
     </div>
 </template>
 
@@ -167,13 +183,13 @@ import {bus} from "../../app";
 import Multiselect from 'vue-multiselect';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import moment from "moment";
 
 
 export default {
     name: "List",
     components: { Multiselect },
     mixins: [Common],
+    props: ['mdpIds'],
     data() {
         return {
           mdplist: [],
@@ -188,9 +204,13 @@ export default {
           query: "",
           Department: [],
           EmployeeList: [],
+          mdpIDList: [],
+          mdpNo: 0,
           sessionP: "",
           editMode: false,
           isLoading: false,
+          PreLoader: false,
+          filterStatus: false,
         }
     },
     watch: {
@@ -210,25 +230,36 @@ export default {
         this.getData();
     },
     methods: {
-        getAllMDPList(){
-            axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page+
-                "&EmployeeList=" +  JSON.stringify(this.EmployeeList)
+        getAllMDPList(val){
+          this.filterStatus = val;
+          this.PreLoader = true;
+            axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
+                + "&EmployeeList=" +  JSON.stringify(this.EmployeeList)
                 + "&Department=" + JSON.stringify(this.Department)
                 + "&sessionP=" + this.sessionP
             ).then((response)=>{
               this.getAllEmpID()
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
+                this.mdpNo = response.data.meta.total
+                this.mdpIDList = response.data.mdpIds
+                this.PreLoader = false;
+              localStorage.setItem('mdpIds', JSON.stringify(this.mdpIDList));
             }).catch((error)=>{
+              this.PreLoader = false;
 
             })
         },
         searchData(){
-            axios.get(baseurl + "api/search/mdp/list/" + this.query + "?page=" + this.pagination.current_page).then(response => {
+          this.PreLoader = true;
+            axios.get(baseurl + "api/mdp/search/list/" + this.query + "?page=" + this.pagination.current_page).then(response => {
                 this.mdplist = response.data.data;
                 this.pagination = response.data.meta;
+                this.mdpNo = response.data.meta.last_page
+                this.PreLoader = true;
             }).catch(e => {
                 this.isLoading = false;
+              this.PreLoader = false;
             });
         },
         getData() {
@@ -265,9 +296,10 @@ export default {
         reload(){
             this.getAllMDPList();
             this.query = "";
+             window.location.reload();
             // this.$toaster.success('Data Successfully Refresh');
         },
-        approvedMDP(mdpID) {
+      approvedMDP(mdpID) {
           Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -278,7 +310,7 @@ export default {
             confirmButtonText: 'Yes'
           }).then((result) => {
             if (result.isConfirmed) {
-              axios.get(baseurl + 'api/approved-mdp?mdpID=' + mdpID).then((response) => {
+              axios.get(baseurl + 'api/mdp/approved-mdp?mdpID=' + mdpID).then((response) => {
                 this.getAllMDPList();
                 Swal.fire(
                     response.data.title +'!',
@@ -289,178 +321,177 @@ export default {
             }
           })
         },
-
       exportMDPList(){
-          axios.get(baseurl + 'api/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
-              + "&Department=" + JSON.stringify(this.Department)
-              + "&sessionP=" + this.sessionP
-          ).then((response)=>{
-                let dataSets = response.data.data;
-                if (dataSets.length > 0) {
-                  let columns = Object.keys(dataSets[0]);
-                  columns = columns.filter((item) => item !== 'row_num');
-                  let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-                  columns = columns.map((item) => {
-                    let title = item.replace(rex, '$1$4 $2$3$5')
-                    return {title, key: item}
-                  });
-                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export Report')
-                }
-              }).catch((error)=>{
-            console.log(response)
-          })
-        },
+      this.PreLoader = true;
+        axios.get(baseurl + 'api/mdp/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
+            + "&Department=" + JSON.stringify(this.Department)
+            + "&sessionP=" + this.sessionP
+        ).then((response)=>{
+              let dataSets = response.data.data;
+              if (dataSets.length > 0) {
+                let columns = Object.keys(dataSets[0]);
+                columns = columns.filter((item) => item !== 'row_num');
+                let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                columns = columns.map((item) => {
+                  let title = item.replace(rex, '$1$4 $2$3$5')
+                  return {title, key: item}
+                });
+                bus.$emit('data-table-import', dataSets, columns, 'MDP Export 2')
+                this.PreLoader = false;
+              }
+            }).catch((error)=>{
+          this.PreLoader = false;
+        })
+      },
       exportMDPDetailsList(){
-          axios.get(baseurl + 'api/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
-              + "&Department=" + JSON.stringify(this.Department)
-              + "&sessionP=" + this.sessionP
-          ).then((response)=>{
-                let dataSets = response.data.data;
-                if (dataSets.length > 0) {
-                  let columns = Object.keys(dataSets[0]);
-                  columns = columns.filter((item) => item !== 'row_num');
-                  let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-                  columns = columns.map((item) => {
-                    let title = item.replace(rex, '$1$4 $2$3$5')
-                    return {title, key: item}
-                  });
-                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export Details Report-'+moment().format('DD_MM_YYYY-h-mm a'))
-                }
-              }).catch((error)=>{
-            console.log(response)
-          })
-        },
-      // exportMDPDetailsList(){
-      //   console.log(this.query)
-      //   axios.get(baseurl + 'api/export-mdp-details-list?staffId=' +  this.query
-      //       + "&Department=" + JSON.stringify(this.Department)
-      //       + "&sessionP=" + this.sessionP
-      //   ).then((response)=>{
-      //     console.log(response.data)
-      //     this.exportAllDataInOneSheet(response.data.data);
-      //     // this.exportMultipleSheetsToExcel(response.data.data);
-      //   }).catch((error)=>{
-      //     console.log(response)
-      //   })
-      // },
-      exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
-        const wb = XLSX.utils.book_new();
-        const wsData = [];
+      this.PreLoader = true;
+        axios.get(baseurl + 'api/mdp/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
+            + "&Department=" + JSON.stringify(this.Department)
+            + "&sessionP=" + this.sessionP
+        ).then((response)=>{
+              let dataSets = response.data.data;
+              if (dataSets.length > 0) {
+                let columns = Object.keys(dataSets[0]);
+                columns = columns.filter((item) => item !== 'row_num');
+                let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                columns = columns.map((item) => {
+                  let title = item.replace(rex, '$1$4 $2$3$5')
+                  return {title, key: item}
+                });
+                bus.$emit('data-table-import', dataSets, columns, 'MDP Export 1')
+                this.PreLoader = false;
+              }
+            }).catch((error)=>{
+          this.PreLoader = false;
+        })
+      },
+    // exportMDPDetailsList(){
+    //   console.log(this.query)
+    //   axios.get(baseurl + 'api/export-mdp-details-list?staffId=' +  this.query
+    //       + "&Department=" + JSON.stringify(this.Department)
+    //       + "&sessionP=" + this.sessionP
+    //   ).then((response)=>{
+    //     console.log(response.data)
+    //     this.exportAllDataInOneSheet(response.data.data);
+    //     // this.exportMultipleSheetsToExcel(response.data.data);
+    //   }).catch((error)=>{
+    //     console.log(response)
+    //   })
+    // },
+    exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
+      const wb = XLSX.utils.book_new();
+      const wsData = [];
 
-        let maxRows = 0;
-        const sectionArrays = [];
+      let maxRows = 0;
+      const sectionArrays = [];
 
-        // Prepare each section horizontally
-        Object.entries(data).forEach(([sectionTitle, rows]) => {
-          if (!Array.isArray(rows) || rows.length === 0) return;
+      // Prepare each section horizontally
+      Object.entries(data).forEach(([sectionTitle, rows]) => {
+        if (!Array.isArray(rows) || rows.length === 0) return;
 
-          const headers = Object.keys(rows[0]);
-          const section = [];
+        const headers = Object.keys(rows[0]);
+        const section = [];
 
-          // Section Title (merged-like with empty cells)
-          section.push([sectionTitle.toUpperCase(), ...Array(headers.length - 1).fill('')]);
+        // Section Title (merged-like with empty cells)
+        section.push([sectionTitle.toUpperCase(), ...Array(headers.length - 1).fill('')]);
 
-          // Column Headers
-          section.push(headers);
+        // Column Headers
+        section.push(headers);
 
-          // Row Data
-          rows.forEach(row => {
-            const rowData = headers.map(h => row[h]);
-            section.push(rowData);
-          });
-
-          maxRows = Math.max(maxRows, section.length);
-          sectionArrays.push(section);
+        // Row Data
+        rows.forEach(row => {
+          const rowData = headers.map(h => row[h]);
+          section.push(rowData);
         });
 
-        // Combine sections side-by-side
-        for (let i = 0; i < maxRows; i++) {
-          const row = [];
-          sectionArrays.forEach(section => {
-            row.push(...(section[i] || Array(section[0].length).fill('')));
-          });
-          wsData.push(row);
-        }
+        maxRows = Math.max(maxRows, section.length);
+        sectionArrays.push(section);
+      });
 
-        const ws = XLSX.utils.aoa_to_sheet(wsData);
-        XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
+      // Combine sections side-by-side
+      for (let i = 0; i < maxRows; i++) {
+        const row = [];
+        sectionArrays.forEach(section => {
+          row.push(...(section[i] || Array(section[0].length).fill('')));
+        });
+        wsData.push(row);
+      }
 
-        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
-      },
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
 
-
-      // exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
-      //   const wb = XLSX.utils.book_new();
-      //   const wsData = [];
-      //
-      //   Object.entries(data).forEach(([sectionTitle, rows]) => {
-      //     if (!Array.isArray(rows) || rows.length === 0) return;
-      //
-      //     // Section Header
-      //     wsData.push([sectionTitle.toUpperCase()]);
-      //
-      //     // Column Headers
-      //     const headers = Object.keys(rows[0]);
-      //     wsData.push(headers);
-      //
-      //     // Row Data
-      //     rows.forEach(row => {
-      //       const rowData = headers.map(h => row[h]);
-      //       wsData.push(rowData);
-      //     });
-      //
-      //     // Add an empty row for spacing
-      //     wsData.push([]);
-      //   });
-      //
-      //   const ws = XLSX.utils.aoa_to_sheet(wsData);
-      //   XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
-      //
-      //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      //   saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
-      // },
-      // exportMultipleSheetsToExcel(responseData, fileName = 'MDP_Export.xlsx') {
-      //   const wb = XLSX.utils.book_new();
-      //   Object.entries(responseData).forEach(([sheetName, data]) => {
-      //     // Skip non-array fields like "status"
-      //     if (!Array.isArray(data) || data.length === 0) return;
-      //     console.log('dataara',data)
-      //
-      //     // Create worksheet
-      //     const ws = XLSX.utils.json_to_sheet(data);
-      //
-      //     // Add worksheet to workbook
-      //     XLSX.utils.book_append_sheet(wb, ws, sheetName);
-      //   });
-      //
-      //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      //   const blob = new Blob([wbout], { type: 'application/octet-stream' });
-      //   saveAs(blob, 'MDP_Export.xlsx');
-      // },
-
-
-      exportFeedback(){
-            axios.get(baseurl + 'api/export-mdp-feedback?query=' +  this.query
-                + "&Department=" + JSON.stringify(this.Department)
-                + "&sessionP=" + this.sessionP
-            ).then((response)=>{
-              // console.log(response)
-                  let dataSets = response.data.data;
-                  if (dataSets.length > 0) {
-                    let columns = Object.keys(dataSets[0]);
-                    columns = columns.filter((item) => item !== 'row_num');
-                    let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-                    columns = columns.map((item) => {
-                      let title = item.replace(rex, '$1$4 $2$3$5')
-                      return {title, key: item}
-                    });
-                    bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
-                  }
-                }).catch((error)=>{
-              console.log(response)
-            })
-          },
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+    },
+    // exportAllDataInOneSheet(data, fileName = 'MDP_Export.xlsx') {
+    //   const wb = XLSX.utils.book_new();
+    //   const wsData = [];
+    //
+    //   Object.entries(data).forEach(([sectionTitle, rows]) => {
+    //     if (!Array.isArray(rows) || rows.length === 0) return;
+    //
+    //     // Section Header
+    //     wsData.push([sectionTitle.toUpperCase()]);
+    //
+    //     // Column Headers
+    //     const headers = Object.keys(rows[0]);
+    //     wsData.push(headers);
+    //
+    //     // Row Data
+    //     rows.forEach(row => {
+    //       const rowData = headers.map(h => row[h]);
+    //       wsData.push(rowData);
+    //     });
+    //
+    //     // Add an empty row for spacing
+    //     wsData.push([]);
+    //   });
+    //
+    //   const ws = XLSX.utils.aoa_to_sheet(wsData);
+    //   XLSX.utils.book_append_sheet(wb, ws, 'MDP Summary');
+    //
+    //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    //   saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+    // },
+    // exportMultipleSheetsToExcel(responseData, fileName = 'MDP_Export.xlsx') {
+    //   const wb = XLSX.utils.book_new();
+    //   Object.entries(responseData).forEach(([sheetName, data]) => {
+    //     // Skip non-array fields like "status"
+    //     if (!Array.isArray(data) || data.length === 0) return;
+    //     console.log('dataara',data)
+    //
+    //     // Create worksheet
+    //     const ws = XLSX.utils.json_to_sheet(data);
+    //
+    //     // Add worksheet to workbook
+    //     XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    //   });
+    //
+    //   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    //   const blob = new Blob([wbout], { type: 'application/octet-stream' });
+    //   saveAs(blob, 'MDP_Export.xlsx');
+    // },
+    exportFeedback(){
+          axios.get(baseurl + 'api/export-mdp-feedback?query=' +  this.query
+              + "&Department=" + JSON.stringify(this.Department)
+              + "&sessionP=" + this.sessionP
+          ).then((response)=>{
+            // console.log(response)
+                let dataSets = response.data.data;
+                if (dataSets.length > 0) {
+                  let columns = Object.keys(dataSets[0]);
+                  columns = columns.filter((item) => item !== 'row_num');
+                  let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                  columns = columns.map((item) => {
+                    let title = item.replace(rex, '$1$4 $2$3$5')
+                    return {title, key: item}
+                  });
+                  bus.$emit('data-table-import', dataSets, columns, 'MDP Export')
+                }
+              }).catch((error)=>{
+            console.log(response)
+          })
+        },
         destroy(id){
           Swal.fire({
               title: 'Are you sure?',
@@ -500,5 +531,9 @@ export default {
     .title:hover .delete {
         display: block
     }
+
+}
+.defineHeight{
+  height: 43px;
 }
 </style>

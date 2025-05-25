@@ -14,25 +14,30 @@ class TRAController extends Controller
 {
     public function index(Request $request){
 
-       $TaxYear =$request->TaxYear;
         try {
+            $TaxYear =$request->TaxYear;
+            $Department = json_decode($request->Department);
 
-            $list = DB::table('Department as D')
-                ->select('D.DeptCode','D.DeptName',DB::raw("COUNT(P.EmpCode) AS TotalEmployee ,
-                COUNT(CASE WHEN A.EmpCode IS NOT NULL THEN 1 ELSE NULL END) Submitted,
-	            COUNT(CASE WHEN A.EmpCode IS NULL THEN 1 ELSE NULL END) NotSubmitted "))
-                ->join('Employer as E','E.DeptCode','=','D.DeptCode')
-                ->join('Personal as P','P.EmpCode','=','E.EmpCode')
+            $list = DB::table('viewEmployeeInfo as D')
+                ->select('D.DeptCode','D.DeptName',
+                    DB::raw("COUNT(D.StaffID) AS TotalEmployee ,
+                COUNT(CASE WHEN A.DateOfReturnSubmission IS NOT NULL THEN 1 ELSE NULL END) Submitted,
+	            COUNT(CASE WHEN A.DateOfReturnSubmission IS NULL THEN 1 ELSE NULL END) NotSubmitted "))
+//                ->join('Employer as E','E.DeptCode','=','D.DeptCode')
+//                ->join('Personal as P','P.EmpCode','=','E.EmpCode')
                 ->leftJoin('TaxReturnAcknowledgement as A',function ($q) use($TaxYear){
-                    $q->on('A.EmpCode','P.EmpCode');
+                    $q->on('D.StaffID','A.EmpCode');
                     $q->where('A.TaxYear',$TaxYear);
-                })
-                ->where('P.Active','=','Y')
-                ->groupBy('D.DeptCode','D.DeptName')->paginate(15);
-
-
+                });
+            if (!empty($Department) && isset($Department)){
+                $Department = collect($Department);
+                $DeptCode= $Department->pluck('DeptCode');
+                $list = $list->whereIn('D.DeptCode',$DeptCode);
+            };
+            $list->where('D.Active','=','Y')
+                ->groupBy('D.DeptCode','D.DeptName');
             return response()->json([
-                'data'=>$list
+                'data'=>$list->paginate(15)
             ]);
 
         }catch (\Exception $e) {
@@ -45,30 +50,35 @@ class TRAController extends Controller
 
     }
     public function taxableEmp($Year,$Dept,$Status){
-        $list = DB::table('Employer as e')
-            ->join('Personal as p ','p.EmpCode','=','e.EmpCode')
-            ->join('Department as d ','d.DeptCode','=','e.DeptCode')
-            ->join('Designation as dg ','dg.DesgCode','=','e.DesgCode')
+        $list = DB::table('viewEmployeeInfo as e')
+            ->join('Personal as p ','p.EmpCode','=','e.StaffID')
+//            ->join('Department as d ','d.DeptCode','=','e.DeptCode')
+//            ->join('Designation as dg ','dg.DesgCode','=','e.DesgCode')
             ->leftjoin('TaxReturnAcknowledgement as a ',function ($q) use ($Year){
-                $q->on('a.EmpCode','e.EmpCode');
+                $q->on('a.EmpCode','e.StaffID');
                 $q->where('a.TaxYear',$Year);
             })
             ->leftjoin('TaxZone as tz ','tz.TaxZoneId','=','a.TaxZoneId')
             ->leftjoin('TaxCircle as tc ','tc.TaxCircleId','=','a.TaxCircleId')
             ->where('p.Active','Y')->where('e.DeptCode',$Dept);
         if ($Status ==='submitted'){
-            $list->whereRaw("a.EmpCode is not null")
-                ->select(DB::raw("CONCAT(e.EmpCode,': ',p.Name) as Employee"),'p.MobileNo','a.Etin', 'd.DeptName as Department','tz.TaxZoneName',
-                    'tc.TaxCircleName', DB::raw("FORMAT(a.DateOfReturnSubmission, 'dd-MM-yyyy') AS DateOfReturnSubmission"), 'a.ReturnSerialNumber','a.TaxYear');
+            $list->whereRaw("a.DateOfReturnSubmission is not null")
+                ->select(DB::raw("CONCAT(e.StaffID,': ',e.Name) as Employee"),'e.MobileNo','a.Etin', 'e.DeptName as Department',
+                    'tz.TaxZoneName',
+                    'tc.TaxCircleName', DB::raw("FORMAT(a.DateOfReturnSubmission, 'dd-MM-yyyy') AS DateOfReturnSubmission"),
+                    'a.ReturnSerialNumber','a.TaxYear');
 
 
         }else{
-            $list->whereRaw("a.EmpCode is null")
-                ->select(DB::raw("CONCAT(e.EmpCode,': ',p.Name) as Employee"),'p.MobileNo' ,'p.PAddress as PermanentAddress','d.DeptName as Department','p.CAddress as CurrentAddress'
-                   , DB::raw("FORMAT(e.JoiningDate, 'dd-MM-yyyy') AS JoiningDate"),'e.Location','dg.DesgName as Designation', 'a.TaxYear');
+            $list->whereRaw("a.DateOfReturnSubmission is null")
+                ->select(DB::raw("CONCAT(e.StaffID,': ',e.Name) as Employee"),'e.MobileNo' ,'p.PAddress as PermanentAddress','e.DeptName as Department','p.CAddress as CurrentAddress'
+                   , DB::raw("FORMAT(e.JoiningDate, 'dd-MM-yyyy') AS JoiningDate"),
+//                    'e.Location',
+                    'e.DesgName as Designation','a.TaxYear');
         }
+//        dd($list->toSql());
         return response()->json([
-           'data'=>$list ->orderBy('e.EmpCode','ASC')->paginate(10)
+           'data'=>$list ->orderBy('e.StaffID','ASC')->get()
         ]);
     }
     public function getPeriods(){
@@ -84,7 +94,9 @@ class TRAController extends Controller
        ]);
    }
    public function getTaxCircle(Request $request){
-       $circle = TaxCircle::where('TaxZoneId',$request->id)->where('ActiveStatus','Y')->orderby('TaxCircleId','ASC')->get();
+
+       $circle = TaxCircle::select('TaxCircleId','TaxZoneId','TaxCircleName')->where('TaxZoneId',$request->id)
+           ->where('ActiveStatus','Y')->orderby('TaxCircleId','ASC')->get();
        return response()->json([
           'data'=>$circle
        ]);
@@ -100,14 +112,13 @@ class TRAController extends Controller
        ]);
    }
    public function storeTaxReturn(Request $request){
-
         DB::beginTransaction();
        $validator = Validator::make($request->all(), [
            'Etin'=>'required|min:8',
-           'Zone'=>'required',
+           'ZoneId'=>'required',
            'Serial'=>'required',
            'ReturnDate'=>'required',
-           'Circle'=>'required'
+           'CircleId'=>'required'
        ]);
        if ($validator->fails()) {
            return response()->json([
@@ -133,11 +144,11 @@ class TRAController extends Controller
            }
            $list->EmpCode = $EmpCode;
            $list->ETIN = $request->Etin;
-           $list->TaxZoneId = $request->Zone;
-           $list->TaxCircleId = $request->Circle;
+           $list->TaxZoneId = $request->ZoneId;
+           $list->TaxCircleId = $request->CircleId;
            $list->DateOfReturnSubmission = $request->ReturnDate;
            $list->ReturnSerialNumber = $request->Serial;
-           $list->TaxYear = $request->TaxYear;
+           $list->TaxYear = config('app.taxYear');
            $list->save();
            DB::commit();
            return response()->json([
