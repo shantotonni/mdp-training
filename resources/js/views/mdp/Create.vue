@@ -530,8 +530,8 @@ const DATA_LIFETIME = 72 * 60 * 60 * 1000;
 
 import 'vue-advanced-cropper/dist/style.css';
 
-import Cropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
+import Cropper from 'vue-cropperjs'
 import Login from "../auth/Login.vue";
 export default {
   name: "List",
