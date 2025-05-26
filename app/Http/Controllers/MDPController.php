@@ -90,6 +90,7 @@ class MDPController extends Controller
     }
 
     public function store(ManagementDevelopmentPlaneRequest $request){
+//        dd($request->all());
         DB::beginTransaction();
 
         try {
@@ -180,6 +181,7 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->Signature = $filename;
             $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
             $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
+
             if ($ManagementDevelopmentPlane->save()){
 
                 foreach ($initiative as $value){
@@ -188,7 +190,8 @@ class MDPController extends Controller
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
                     $MDPPersonalInitiative->Type  = $value['Type'];
-                    $MDPPersonalInitiative->Date  = date("Y-m-d H:i:s", strtotime($value['Date'])) ;
+                    $MDPPersonalInitiative->Date  =  date("Y-m-d H:i:s", strtotime($value['Date'])) ;
+
                     $MDPPersonalInitiative->save();
                 }
                 foreach ($training as $item){
@@ -279,7 +282,7 @@ class MDPController extends Controller
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
                     $MDPPersonalInitiative->Type  = $value['Type'];
-                    $MDPPersonalInitiative->Date  = date("d-m-Y", strtotime($value['Date'])) ;
+                    $MDPPersonalInitiative->Date  = date("Y-m-d H:i:s", strtotime($value['Date'])) ;
                     $MDPPersonalInitiative->save();
                 }
                 foreach ($training as $item){
@@ -287,7 +290,7 @@ class MDPController extends Controller
                     $MDPTraining->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPTraining->TrainingTitle = $item['TrainingTitle'];
                     $MDPTraining->TrainingType = $item['TrainingType'];
-                    $MDPTraining->TrainingDate = date('Y-m-d', strtotime($item['TrainingDate']))  ;
+                    $MDPTraining->TrainingDate = date("Y-m-d H:i:s", strtotime($value['TrainingDate'])) ;
                     $MDPTraining->save();
                 }
 

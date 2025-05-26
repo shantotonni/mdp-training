@@ -653,14 +653,16 @@ export default {
           if (wordCount > 30) {
             if (type === 'futureTrainingOne') {
               this.errors.FutureTrainingOneDetails = 'Maximum 30 Words!';
-              this.errorNoti(this.errors.FutureTrainingOneDetails);
-            } else if (type === 'futureTrainingTwo') {
-              this.errors.FutureTrainingTwoDetails = 'Maximum 30 Words!';
-              this.errorNoti(this.errors.FutureTrainingTwoDetails);
+              // this.errorNoti(this.errors.FutureTrainingOneDetails);
+            } else {
+              this.errors.FutureTrainingOneDetails = '';
             }
-          } else {
-            this.errors.FutureTrainingOneDetails = '';
-            this.errors.FutureTrainingTwoDetails = '';
+              if (type === 'futureTrainingTwo') {
+              this.errors.FutureTrainingTwoDetails = 'Maximum 30 Words!';
+              // this.errorNoti(this.errors.FutureTrainingTwoDetails);
+            }else {
+                this.errors.FutureTrainingTwoDetails = '';
+              }
           }
         } else {
           if (wordCount > 10) {
@@ -677,21 +679,25 @@ export default {
             } else {
               if (type === 'AreaOne') {
                 this.errors.AreaOne = 'Maximum 10 Words!';
-                this.errorNoti(this.errors.AreaOne);
-              } else if (type === 'AreaTwo') {
+                // this.errorNoti(this.errors.AreaOne);
+              } else {
+                this.errors.AreaOne = '';
+              }
+              if (type === 'AreaTwo') {
                 this.errors.AreaTwo = 'Maximum 10 Words!';
-                this.errorNoti(this.errors.AreaTwo);
+                // this.errorNoti(this.errors.AreaTwo);
+              }else {
+                this.errors.AreaTwo = '';
               }
 
             }
-
           } else {
             // Clear errors safely
             if (type === 'personal' && this.errors.PersonalIN && typeof this.errors.PersonalIN === 'object') {
               this.errors.PersonalIN[index].Name = '';
             }
-            if (type === 'AreaOne') this.errors.AreaOne = '';
-            if (type === 'AreaTwo') this.errors.AreaTwo = '';
+            // if (type === 'AreaOne') this.errors.AreaOne = '';
+            // if (type === 'AreaTwo') this.errors.AreaTwo = '';
           }
         }
 
@@ -700,8 +706,7 @@ export default {
       }
     },
     store() {
-      console.log('area',this.errors)
-        // Reset errors
+
         this.errors = {};
         if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
           this.errors.PersonalIN = {};
@@ -747,58 +752,58 @@ export default {
 
         if (oneWordCount > 30) {
           this.errors.FutureTrainingOneDetails = `Maximum 30 Words. Currently: ${oneWordCount}`;
-          this.errorNoti(this.errors.FutureTrainingOneDetails);
+          // this.errorNoti(this.errors.FutureTrainingOneDetails);
           hasError = true;
         }
         if (twoWordCount > 30) {
           this.errors.FutureTrainingTwoDetails = `Maximum 30 Words. Currently: ${twoWordCount}`;
-          this.errorNoti(this.errors.FutureTrainingTwoDetails);
+          // this.errorNoti(this.errors.FutureTrainingTwoDetails);
           hasError = true;
         }
         if (AreaOneCount > 10) {
 
-          this.errors.AreaOne = `Maximum 10 Words.Future Training 1 Currently: ${AreaOneCount}`;
-          console.log('validateWordCounts',this.errors.AreaOne)
-          this.errorNoti(this.errors.AreaOne);
+          this.errors.AreaOne = `Maximum 10 Words.Currently: ${AreaOneCount}`;
+          // this.errorNoti(this.errors.AreaOne);
           hasError = true;
         }
         if (AreaTwoCount > 10) {
-          this.errors.AreaTwo = `Maximum 10 Words.Future Training 2 Currently: ${AreaTwoCount}`;
-          console.log('validateWordCounts',this.errors.AreaTwo)
-          this.errorNoti(this.errors.AreaTwo);
+          this.errors.AreaTwo = `Maximum 10 Words.Currently: ${AreaTwoCount}`;
+          // this.errorNoti(this.errors.AreaTwo);
           hasError = true;
         }
-      console.log('before submit',this.errors.AreaOne )
         return hasError;
       },
     validateInitiatives() {
         let hasError = false;
         const titleSet = new Set();
+
         this.form.initiative.forEach((item, index) => {
-          const title = item.Name?.trim() || '';
-          const wordCount = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
-          if (wordCount > 10) {
-            if (!this.errors.PersonalIN[index]) this.errors.PersonalIN[index] = {};
-            this.errors.PersonalIN[index].Name = `Maximum 10 Words.`;
-            this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
-            hasError = true;
-          }
           if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
             this.errors.PersonalIN[index] = {};
           }
-
+          console.log('item',item)
+          const title = item.Name?.trim() || '';
+          const wordCount = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
           if (!item.Name) {
             this.errors.PersonalIN[index].Name = 'Name is required.';
             this.errorNoti(this.errors.PersonalIN[index].Name);
             hasError = false;
-          }
-          if (titleSet.has(title.toLowerCase())) {
-            this.errors.PersonalIN[index].Name = 'Duplicate title found.';
-            this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
-            hasError = true;
-          } else {
-            titleSet.add(title.toLowerCase());
-            this.errors.PersonalIN[index].Name=''
+          }else {
+            if (wordCount > 10) {
+              if (!this.errors.PersonalIN[index]) this.errors.PersonalIN[index] = {};
+              this.errors.PersonalIN[index].Name = `Maximum 10 Words.`;
+              this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
+              hasError = true;
+            }else {
+              if (titleSet.has(title.toLowerCase())) {
+                this.errors.PersonalIN[index].Name = 'Duplicate title found.';
+                this.errorNoti(`Initiative ${index + 1}: ${this.errors.PersonalIN[index].Name}`);
+                hasError = true;
+              } else {
+                titleSet.add(title.toLowerCase());
+                this.errors.PersonalIN[index].Name = '';
+              }
+            }
           }
 
           if (!item.Type) {
@@ -811,11 +816,12 @@ export default {
 
           if (!item.Date) {
             this.errors.PersonalIN[index].Date = 'Date is required.';
-            this.errorNoti(this.errors.PersonalIN[index].Date);
+            // this.errorNoti(this.errors.PersonalIN[index].Date);
             hasError = false;
           }else {
             this.errors.PersonalIN[index].Date = ''
           }
+
         });
         return hasError;
       },
@@ -823,7 +829,6 @@ export default {
       let hasError = false;
       const titleSet = new Set();
 
-      // Ensure outer error object exists
       if (!this.errors.RequiredIN || typeof this.errors.RequiredIN !== 'object') {
         this.errors.RequiredIN = {};
       }
@@ -833,31 +838,32 @@ export default {
 
         const title = item.TrainingTitle?.trim() || '';
 
-        if (!title) {
-          this.errors.RequiredIN[index2].TrainingTitle = 'Title is required.';
-          this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
-          hasError = true;
-        } else {
-          const wordCount = title.split(/\s+/).filter(Boolean).length;
+        const wordCount = item.TrainingTitle?.trim().split(/\s+/).filter(Boolean).length || 0;
+        if (!item.TrainingTitle) {
+          this.errors.RequiredIN[index2].TrainingTitle = 'Training Title is required.';
+          // this.errorNoti(this.errors.RequiredIN[index2].TrainingTitle);
+          hasError = false;
+        }else {
           if (wordCount > 10) {
-            this.errors.RequiredIN[index2].TrainingTitle = 'Maximum 10 words.';
-            this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
+            if (!this.errors.RequiredIN[index2]) this.errors.RequiredIN[index2]= {};
+            this.errors.RequiredIN[index2].TrainingTitle = `Maximum 10 Words.`;
+            // this.errorNoti(`Initiative ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
             hasError = true;
-          }
-
-          if (titleSet.has(title.toLowerCase())) {
-            this.errors.RequiredIN[index2].TrainingTitle = 'Duplicate title found.';
-            this.errorNoti(`Training ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
-            hasError = true;
-          } else {
-            titleSet.add(title.toLowerCase());
-            this.errors.RequiredIN[index2].TrainingTitle='';
+          }else {
+            if (titleSet.has(title.toLowerCase())) {
+              this.errors.RequiredIN[index2].TrainingTitle = 'Duplicate title found.';
+              // this.errorNoti(`Initiative ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
+              hasError = true;
+            } else {
+              titleSet.add(title.toLowerCase());
+              this.errors.RequiredIN[index2].TrainingTitle = '';
+            }
           }
         }
 
         if (!item.TrainingType) {
           this.errors.RequiredIN[index2].TrainingType = 'Type is required.';
-          this.errorNoti(this.errors.RequiredIN[index2].TrainingType);
+          // this.errorNoti(this.errors.RequiredIN[index2].TrainingType);
           hasError = false;
         }else{
           this.errors.RequiredIN[index2].TrainingType = ''
@@ -865,13 +871,12 @@ export default {
 
         if (!item.TrainingDate) {
           this.errors.RequiredIN[index2].TrainingDate = 'Date is required.';
-          this.errorNoti(this.errors.RequiredIN[index2].TrainingDate);
+          // this.errorNoti(this.errors.RequiredIN[index2].TrainingDate);
           hasError = false;
         }else{
           this.errors.RequiredIN[index2].TrainingDate = ''
         }
       });
-
 
       return hasError;
     },
@@ -887,22 +892,21 @@ export default {
       ];
 
       // Reset all errors first
-      for (const t of titles) {
-        this.errors[t.key] = '';
-      }
+      // for (const t of titles) {
+      //   this.errors[t.key] = '';
+      // }
 
       for (const t of titles) {
         const lowerVal = t.value.toLowerCase();
 
         if (t.value && titleSet.has(lowerVal)) {
           this.errors[t.key] = 'Duplicate data found.';
-          this.errorNoti(`${t.label}: ${this.errors[t.key]}`);
+          // this.errorNoti(`${t.label}: ${this.errors[t.key]}`);
           hasError = true;
         } else {
           titleSet.add(lowerVal);
         }
       }
-      console.log('dublicate',this.errors)
       return hasError;
     },
     validateFormFields() {
@@ -1193,7 +1197,6 @@ export default {
         }
 
         this.form.training.push({ TrainingTitle: '', TrainingType: '', TrainingDate: '' });
-        console.log('this.form.training',this.form.training)
       } else {
         this.errorNoti('No more than 5 training entries can be added!');
       }
