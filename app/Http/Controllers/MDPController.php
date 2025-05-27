@@ -18,6 +18,7 @@ use App\Models\MDPEmployeeTrainingList;
 use App\Models\MDPPersonalInitiative;
 use App\Models\MDPTraining;
 use Carbon\Carbon;
+use Facade\Ignition\SolutionProviders\DefaultDbNameSolutionProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -90,7 +91,7 @@ class MDPController extends Controller
     }
 
     public function store(ManagementDevelopmentPlaneRequest $request){
-//        dd($request->all());
+
         DB::beginTransaction();
 
         try {
@@ -185,7 +186,6 @@ class MDPController extends Controller
             if ($ManagementDevelopmentPlane->save()){
 
                 foreach ($initiative as $value){
-
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
@@ -238,6 +238,7 @@ class MDPController extends Controller
 
     public function update(ManagementDevelopmentPlaneUpdateRequest $request){
 
+
         DB::beginTransaction();
         try {
             $token = $request->bearerToken();
@@ -286,11 +287,12 @@ class MDPController extends Controller
                     $MDPPersonalInitiative->save();
                 }
                 foreach ($training as $item){
+
                     $MDPTraining = new MDPTraining();
                     $MDPTraining->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPTraining->TrainingTitle = $item['TrainingTitle'];
                     $MDPTraining->TrainingType = $item['TrainingType'];
-                    $MDPTraining->TrainingDate = date("Y-m-d H:i:s", strtotime($value['TrainingDate'])) ;
+                    $MDPTraining->TrainingDate = date("Y-m-d H:i:s", strtotime($item['TrainingDate'])) ;
                     $MDPTraining->save();
                 }
 

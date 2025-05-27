@@ -79,7 +79,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Official Email</label>
-                              <input type="email" name="OfficialEmail" readonly v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }" required>
+                              <input type="email" name="OfficialEmail" v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }" required>
                               <small v-if="form.OfficialEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.OfficialEmail)" class="text-danger">
                                 Invalid email format.
                               </small>
@@ -645,6 +645,43 @@ export default {
 
       })
     },
+
+    store() {
+
+        this.errors = {};
+        if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
+          this.errors.PersonalIN = {};
+        }
+
+        // Run validations
+        const futureWordErrors = this.validateWordCountsFuture();
+        const initiativeErrors = this.validateInitiatives();
+        const requiredErrors = this.validateRequiredTraining();
+        const futureErrorsDuplicate = this.validateFutureTrainingDuplicate();
+
+        if (futureWordErrors || initiativeErrors|| requiredErrors ||futureErrorsDuplicate || !this.validateFormFields()) {
+          return;
+        }
+        const formData = this.buildFormData();
+
+        // Submit
+        this.isSubmitting=true;
+        this.PreLoader=true;
+        axios.post(baseurl + 'api/mdp/store', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }).then(response => {
+          this.successNoti(response.data.message);
+          this.redirect(this.mainOrigin + 'mdp-list');
+          this.clearFormDataState();
+          this.PreLoader = false;
+          this.isSubmitting = false;
+        }).catch(error => {
+          this.isSubmitting = false;
+          this.PreLoader = false;
+          this.errorNoti('Upload failed.');
+          console.error(error);
+        });
+      },
     countSpace(val, type, module, index) {
       try {
         const wordCount = val.trim().split(/\s+/).length;
@@ -657,12 +694,12 @@ export default {
             } else {
               this.errors.FutureTrainingOneDetails = '';
             }
-              if (type === 'futureTrainingTwo') {
+            if (type === 'futureTrainingTwo') {
               this.errors.FutureTrainingTwoDetails = 'Maximum 30 Words!';
               // this.errorNoti(this.errors.FutureTrainingTwoDetails);
             }else {
-                this.errors.FutureTrainingTwoDetails = '';
-              }
+              this.errors.FutureTrainingTwoDetails = '';
+            }
           }
         } else {
           if (wordCount > 10) {
@@ -705,43 +742,6 @@ export default {
         console.error("Max word limit crossed", error);
       }
     },
-    store() {
-
-        this.errors = {};
-        if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
-          this.errors.PersonalIN = {};
-        }
-
-        // Run validations
-        const futureWordErrors = this.validateWordCountsFuture();
-        const initiativeErrors = this.validateInitiatives();
-        const requiredErrors = this.validateRequiredTraining();
-        const futureErrorsDuplicate = this.validateFutureTrainingDuplicate();
-
-        if (futureWordErrors || initiativeErrors|| requiredErrors ||futureErrorsDuplicate || !this.validateFormFields()) {
-          return;
-        }
-        const formData = this.buildFormData();
-
-        // Submit
-        this.isSubmitting=true;
-        this.PreLoader=true;
-        axios.post(baseurl + 'api/mdp/store', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(response => {
-          this.successNoti(response.data.message);
-          this.redirect(this.mainOrigin + 'mdp-list');
-          this.clearFormDataState();
-          this.PreLoader = false;
-          this.isSubmitting = false;
-        }).catch(error => {
-          this.isSubmitting = false;
-          this.PreLoader = false;
-          this.errorNoti('Upload failed.');
-          console.error(error);
-        });
-      },
-
     validateWordCountsFuture() {
         let hasError = false;
 
@@ -959,13 +959,13 @@ export default {
         this.form.initiative.forEach((item, index) => {
           formData.append(`initiative[${index}][Name]`, item.Name);
           formData.append(`initiative[${index}][Type]`, item.Type);
-          formData.append(`initiative[${index}][Date]`, item.Date);
+          formData.append(`initiative[${index}][Date]`,  moment(item.Date).format('YYYY-MM-DD H:mm:ss'));
         });
 
         this.form.training.forEach((item, index) => {
           formData.append(`training[${index}][TrainingTitle]`, item.TrainingTitle);
           formData.append(`training[${index}][TrainingType]`, item.TrainingType);
-          formData.append(`training[${index}][TrainingDate]`, item.TrainingDate);
+          formData.append(`training[${index}][TrainingDate]`,  moment(item.TrainingDate).format('YYYY-MM-DD H:mm:ss'));
         });
 
         return formData;
