@@ -658,29 +658,30 @@ export default {
         const initiativeErrors = this.validateInitiatives();
         const requiredErrors = this.validateRequiredTraining();
         const futureErrorsDuplicate = this.validateFutureTrainingDuplicate();
+        const findDuplicateTitleError = this.findDuplicateTitle();
 
-        if (futureWordErrors || initiativeErrors|| requiredErrors ||futureErrorsDuplicate || !this.validateFormFields()) {
+        if (futureWordErrors || initiativeErrors|| requiredErrors|| findDuplicateTitleError ||futureErrorsDuplicate || !this.validateFormFields()) {
           return;
         }
         const formData = this.buildFormData();
 
-        // Submit
-        this.isSubmitting=true;
-        this.PreLoader=true;
-        axios.post(baseurl + 'api/mdp/store', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(response => {
-          this.successNoti(response.data.message);
-          this.redirect(this.mainOrigin + 'mdp-list');
-          this.clearFormDataState();
-          this.PreLoader = false;
-          this.isSubmitting = false;
-        }).catch(error => {
-          this.isSubmitting = false;
-          this.PreLoader = false;
-          this.errorNoti('Upload failed.');
-          console.error(error);
-        });
+        // // Submit
+        // this.isSubmitting=true;
+        // this.PreLoader=true;
+        // axios.post(baseurl + 'api/mdp/store', formData, {
+        //   headers: { 'Content-Type': 'multipart/form-data' }
+        // }).then(response => {
+        //   this.successNoti(response.data.message);
+        //   this.redirect(this.mainOrigin + 'mdp-list');
+        //   this.clearFormDataState();
+        //   this.PreLoader = false;
+        //   this.isSubmitting = false;
+        // }).catch(error => {
+        //   this.isSubmitting = false;
+        //   this.PreLoader = false;
+        //   this.errorNoti('Upload failed.');
+        //   console.error(error);
+        // });
       },
     countSpace(val, type, module, index) {
       try {
@@ -970,12 +971,88 @@ export default {
 
         return formData;
       },
-    findDuplicateTitle(){
-      let initiative = this.form.initiative;
-      let required = this.form.training;
-      let future = [ ]
-      future.push({AreaOne: this.form.AreaOne , AreaTwo: this.form.AreaTwo})
-      console.log('list', initiative, required,future);
+    findDuplicateTitle() {
+      console.log('findDuplicateTitle')
+
+      let hasError = false
+
+      // ✅ Reset errors
+      this.errors = {
+        AreaOne: '',
+        AreaTwo: '',
+        FutureTrainingOneDetails: '',
+        FutureTrainingTwoDetails: '',
+        PersonalIN: {},
+        RequiredIN: {},
+      }
+
+      // ✅ Build comparison list with `label`
+      const compareList = [
+        { key: 'AreaOne', section: 'titles', label: 'Future Training 1', value: this.form.AreaOne?.trim() || '' },
+        { key: 'AreaTwo', section: 'titles', label: 'Future Training 2', value: this.form.AreaTwo?.trim() || '' },
+        { key: 'FutureTrainingOneDetails', section: 'titles', label: 'Training Details 1', value: this.form.FutureTrainingOneDetails?.trim() || '' },
+        { key: 'FutureTrainingTwoDetails', section: 'titles', label: 'Training Details 2', value: this.form.FutureTrainingTwoDetails?.trim() || '' },
+      ]
+
+
+      this.form.initiative.forEach((item, index) => {
+        compareList.push({
+          key: `PersonalIN-${index}`,
+          section: 'PersonalIN',
+          label: `Initiative[${index + 1}]`,
+          value: item.Name?.trim() || '',
+          index
+        })
+      })
+
+      this.form.training.forEach((item, index) => {
+        compareList.push({
+          key: `RequiredIN-${index}`,
+          section: 'RequiredIN',
+          label: `Training[${index + 1}]`,
+          value: item.TrainingTitle?.trim() || '',
+          index
+        })
+      })
+
+      // ✅ Detect duplicates with tracking
+      const seen = {}
+      const duplicates = {}
+
+      compareList.forEach(item => {
+        const val = item.value.toLowerCase()
+        if (!val) return
+
+        if (seen[val]) {
+          duplicates[val] = seen[val]  // store the original item
+        } else {
+          seen[val] = item
+        }
+      })
+
+      // ✅ Assign errors
+      compareList.forEach(item => {
+        const val = item.value.toLowerCase()
+        if (duplicates[val]) {
+          hasError = true
+          const original = duplicates[val]
+          const message = `This value is duplicated with "${original.label}".`
+
+          if (item.section === 'titles') {
+            this.errors[item.key] = message
+          } else if (item.section === 'PersonalIN') {
+            this.errors.PersonalIN[item.index] = message
+          } else if (item.section === 'RequiredIN') {
+            this.errors.RequiredIN[item.index] = message
+          }
+        }
+      })
+
+      if (hasError) {
+        this.errorNoti('There are duplicate fields in your form.')
+      }
+
+      console.log('errors', this.errors)
     },
 
     onFileChange(e) {
