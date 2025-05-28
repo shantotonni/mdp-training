@@ -519,8 +519,9 @@ export default {
       const initiativeErrors = this.validateInitiatives();
       const requiredErrors = this.validateRequiredTraining();
       const futureErrorsDuplicate = this.validateFutureTrainingDuplicate();
+      const findDuplicateTitleError = this.findDuplicateTitle();
 
-      if (futureWordErrors || initiativeErrors|| requiredErrors ||futureErrorsDuplicate || !this.validateFormFields()) {
+      if (futureWordErrors || initiativeErrors|| requiredErrors ||findDuplicateTitleError ||futureErrorsDuplicate || !this.validateFormFields()) {
         return;
       }
       const formData = this.buildFormData();
@@ -545,6 +546,7 @@ export default {
         console.error(error);
       });
     },
+
     countSpace(val, type, module, index) {
       try {
         const wordCount = val.trim().split(/\s+/).length;
@@ -807,6 +809,7 @@ export default {
 
       return true;
     },
+
     buildFormData() {
       const formData = new FormData();
 
@@ -833,12 +836,92 @@ export default {
 
       return formData;
     },
-    findDuplicateTitle(){
-      let initiative = this.form.initiative;
-      let required = this.form.training;
-      let future = [ ]
-      future.push({AreaOne: this.form.AreaOne , AreaTwo: this.form.AreaTwo})
-      console.log('list', initiative, required,future);
+    findDuplicateTitle() {
+
+      let hasError = false;
+
+      // 1. Reset all errors
+      this.errors = {
+        AreaOne: '',
+        AreaTwo: '',
+        FutureTrainingOneDetails: '',
+        FutureTrainingTwoDetails: '',
+        PersonalIN: {},
+        RequiredIN: {}
+      };
+
+      // 2. Prepare comparison list
+      const compareList = [];
+
+      // Add titles
+      compareList.push(
+          { key: 'AreaOne', section: 'titles', label: 'Future Training 1', value: this.form.AreaOne?.trim() || '' },
+          { key: 'AreaTwo', section: 'titles', label: 'Future Training 2', value: this.form.AreaTwo?.trim() || '' },
+          { key: 'FutureTrainingOneDetails', section: 'titles', label: 'Future Training Details 1', value: this.form.FutureTrainingOneDetails?.trim() || '' },
+          { key: 'FutureTrainingTwoDetails', section: 'titles', label: 'Future Training Details 2', value: this.form.FutureTrainingTwoDetails?.trim() || '' }
+      );
+
+      // Add initiative entries
+      this.form.initiative.forEach((item, index) => {
+        compareList.push({
+          key: `PersonalIN-${index}`,
+          section: 'PersonalIN',
+          label: `Initiative[${index + 1}]`,
+          value: item.Name?.trim() || '',
+          index
+        });
+      });
+
+      // Add training titles
+      this.form.training.forEach((item, index) => {
+        compareList.push({
+          key: `RequiredIN-${index}`,
+          section: 'RequiredIN',
+          label: `Training[${index + 1}]`,
+          value: item.TrainingTitle?.trim() || '',
+          index
+        });
+      });
+
+      // 3. Detect duplicates
+      const seen = {};      // key = value, value = first item
+      const duplicates = {}; // key = value, value = original item
+
+      compareList.forEach(item => {
+        const val = item.value.toLowerCase();
+        if (!val) return;
+
+        if (seen[val]) {
+          duplicates[val] = seen[val]; // save the first occurrence
+        } else {
+          seen[val] = item;
+        }
+      });
+
+      // 4. Assign errors
+      compareList.forEach(item => {
+        const val = item.value.toLowerCase();
+        if (duplicates[val]) {
+          hasError = true;
+          const original = duplicates[val];
+
+          const message = `The value "${item.value}" is duplicated.`;
+
+          if (item.section === 'titles') {
+            this.errors[item.key] = message;
+          } else if (item.section === 'PersonalIN') {
+            this.errors.PersonalIN[item.index] = message;
+          } else if (item.section === 'RequiredIN') {
+            this.errors.RequiredIN[item.index] = message;
+          }
+        }
+      });
+
+      // 5. Optional: Show toast or UI message
+      if (hasError) {
+        this.errorNoti('There are duplicate values in your form.');
+      }
+
     },
 
     downloadTraining(){
