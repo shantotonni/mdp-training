@@ -71,6 +71,7 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
 
 
     //Route::get('mdp/edit/{ID}', [MDPController::class,'edit']);
+    Route::get('get-new-training', [MDPController::class,'getNewTrainingOfferedList2025']);
     Route::post('get-employee-by-employee-code', [MDPController::class,'getEmployeeByEmployeeCode']);
     Route::post('get-supervisor-by-employee-code', [MDPController::class,'getSupervisorByEmployeeCode']);
     Route::get('get-level-wise-suggestive-list/{StaffID}', [MDPController::class,'getLevelWiseSuggestiveList']);

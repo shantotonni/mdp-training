@@ -17,8 +17,9 @@ use App\Models\ManagementDevelopmentPlane;
 use App\Models\MDPEmployeeTrainingList;
 use App\Models\MDPPersonalInitiative;
 use App\Models\MDPTraining;
+use App\Models\NewMDPEmployeeTrainingList;
+use App\Traits\MDPCommonTrait;
 use Carbon\Carbon;
-use Facade\Ignition\SolutionProviders\DefaultDbNameSolutionProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -26,6 +27,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class MDPController extends Controller
 {
+    use MDPCommonTrait;
     public function index(Request $request)
     {
 
@@ -89,9 +91,44 @@ class MDPController extends Controller
 
         return new ManagementDevelopmentPlaneCollection($mdp->paginate(15),$mdpIds);
     }
+    public function getMDPEligibleList(Request $request){
+        $empCode =$request->empcode;
+        $period =$request->Period;
+        $list = $this->mdpEligibleList($empCode,$period);
+        if (!empty($list)){
+            return response()->json([
+               'status'=>'success',
+               'message'=>'Welcome To MDP Training'
+            ]);
+        }else{
+
+
+            return response()->json([
+               'status'=>'error',
+               'message'=>'Welcome To MDP Training!',
+               'data'=>[
+                   [
+                       'Name'=>'Shafique Mohammod Mostafaa',
+                       'Designation'=>'Manager, Training',
+                       'Contact'=>'01709644143',
+                       'ExtNo'=>'154',
+                       'Email'=>'shafique@aci-bd.com'
+                   ],
+                   [
+                       'Name'=>'Mohammad Shahadat Ullah',
+                       'Designation'=>'Deputy Manager, Training',
+                       'Contact'=>'01708467576',
+                       'ExtNo'=>'154',
+                       'Email'=>'shahadatullah@aci-bd.com'
+                   ]
+               ]
+            ]);
+
+        }
+    }
 
     public function store(ManagementDevelopmentPlaneRequest $request){
-
+        dd($request->all());
         DB::beginTransaction();
 
         try {
@@ -683,6 +720,26 @@ class MDPController extends Controller
         ]);
     }
 
+
+    public function getNewTrainingOfferedList2025(Request $request){
+
+        $period = $request->Period;
+        $empcode = $request->StaffID;
+        $deptCode = $request->DeptCode;
+        $List = NewMDPEmployeeTrainingList::where('AppraisalPeriod','=',$period)->where('Active','=','Y');
+            if (!empty($deptCode )){
+                $List->where('DepartmentCode','=',$deptCode);
+
+            }else if(!empty($empcode)){
+                $List->where('StaffID','=',$empcode);
+            }
+
+        $List = $List->get();
+        return response()->json([
+            'data'=>$List
+        ]);
+    }
+
     public function getEmployeeByEmployeeCode(Request $request){
         $empcode = $request->EmpCode;
         $empcodelength = strlen($empcode);
@@ -693,7 +750,6 @@ class MDPController extends Controller
         }else{
             $empcode = $empcode;
         }
-
         if ($empcode){
             $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education','emphist')->first();
             $dateFrom =  Carbon::now()->year -5;
@@ -753,18 +809,44 @@ class MDPController extends Controller
             }
 
             $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
+            $list = $this->mdpEligibleList($empcode,$period);
+            if (!empty($list)){
+                return response()->json([
+                    'status'=>'success',
+                    'message'=>'Welcome To MDP Training',
+                    'employee'=>new EmployeeResource($employee),
+                    'training_history'=>$training_history,
+                    'training_list'=>$dup,
+                    'dropDown'=>$dropDown,
+                    'period'=>$period,
+                ]);
+            }else{
+                return response()->json([
+                    'status'=>'error',
+                    'message'=>'Welcome To MDP Training!',
+                    'data'=>[
+                        [
+                            'Name'=>'Shafique Mohammod Mostafaa',
+                            'Designation'=>'Manager, Training',
+                            'Contact'=>'01709644143',
+                            'ExtNo'=>'154',
+                            'Email'=>'shafique@aci-bd.com'
+                        ],
+                        [
+                            'Name'=>'Mohammad Shahadat Ullah',
+                            'Designation'=>'Deputy Manager, Training',
+                            'Contact'=>'01708467576',
+                            'ExtNo'=>'154',
+                            'Email'=>'shahadatullah@aci-bd.com'
+                        ]
+                    ]
+                ]);
 
-            return response()->json([
-                'employee'=>new EmployeeResource($employee),
-                'training_history'=>$training_history,
-                'training_list'=>$dup,
-                'dropDown'=>$dropDown,
-                'period'=>$period
-            ]);
+            }
         }else{
             return response()->json([
-                'status'=>200,
-                'msg'=>'EmpCode Not Found'
+                'status'=>'error',
+                'message'=>'EmpCode Not Found'
             ]);
         }
     }
