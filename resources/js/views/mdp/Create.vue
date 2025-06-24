@@ -760,26 +760,36 @@ export default {
     // this.getNewTrainingList()
   },
   created() {
-    if(this.$route.params.ID){
-      axios.get(baseurl + `api/mdp/edit/${this.$route.params.ID}`).then((response)=>{
-        this.form.fill(response.data.data);
-        this.form.AppraisalPeriod = response.data.data.AppraisalPeriod
-        this.SelectedAreaOne = response.data.data.AreaOne
-        this.SelectedAreaTwo = response.data.data.AreaTwo
-        this.form.training = response.data.data.training
-        this.moduleStatus = true;
-        this.getEmployeeByStaffID();
-        this.getNewTrainingList();
-      });
-    }else{
-      this.getUserData()
-      this.initFormDataState();
-      this.getEmployeeByStaffID();
-      this.getNewTrainingList()
-    }
-    // this.getEmployeeByStaffID();
+    this.loadFormData();
+
   },
+
   methods: {
+
+    async loadFormData() {
+      if (this.$route.params.ID) {
+        try {
+          // this.form.AppraisalPeriod = this.$route.params.YEAR;
+          const response = await axios.get(baseurl + `api/mdp/edit/${this.$route.params.ID}/${this.$route.params.YEAR}`);
+          const data = response.data.data;
+          this.form.fill(data);
+          this.SelectedAreaOne = data.AreaOne;
+          this.SelectedAreaTwo = data.AreaTwo;
+          this.form.training = data.training;
+          this.moduleStatus = true;
+
+          await this.getEmployeeByStaffID();
+          await this.getNewTrainingList();
+        } catch (error) {
+          console.error('Error loading form data:', error);
+        }
+      } else {
+        this.getUserData();
+        this.initFormDataState();
+        await this.getEmployeeByStaffID();
+        await this.getNewTrainingList();
+      }
+    },
     store() {
       this.errors = {};
 
@@ -797,11 +807,11 @@ export default {
       if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
         // this.isSubmitting = false;
         // this.PreLoader = false;
-        console.log('shima')
+
         return ;
-        console.log('sdsd')
+
       }else{
-        console.log('sdsd')
+
         const formData = this.buildFormData();
         this.isSubmitting = true;
         this.PreLoader = true;
@@ -813,27 +823,26 @@ export default {
         }).then(response => {
           if (response.data.status ==="error"){
             this.errorNoti(response.data.message);
-            // this.PreLoader = false;
+            this.PreLoader = false;
             this.isSubmitting = false;
           }else{
             this.successNoti(response.data.message);
-            // this.redirect(this.mainOrigin + 'mdp-list');
-            // this.clearFormDataState();
-            // this.PreLoader = false;
+            this.redirect(this.mainOrigin + 'mdp-list');
+            this.clearFormDataState();
+            this.PreLoader = false;
             this.isSubmitting = false;
           }
         }).catch(error => {
           this.errorNoti('Upload failed.');
-          // this.PreLoader = false;
+          this.PreLoader = false;
           this.isSubmitting = false;
         });
       }
     },
-    getEmployeeByStaffID(){
-
+    async getEmployeeByStaffID(){
       axios.post(baseurl +'api/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
-        Period: this.form.ApprisalPeriod,
+        Period: this.form.AppraisalPeriod,
       }).then((response)=>{
 
         this.status=response.data.status;
@@ -854,12 +863,12 @@ export default {
           this.form.StaffID = response.data.employee.StaffID;
           this.dropDown = response.data.dropDown;
           this.training_list = response.data.training_list;
-          if (!this.moduleStatus){
-            this.form.AppraisalPeriod = response.data.period;
+          // if (!this.moduleStatus){
+          //   this.form.AppraisalPeriod = response.data.period;
             // const years = this.form.AppraisalPeriod.split('-')
             // this.highestYear = parseInt(years[1]);
             // this.DefaultDate = `${this.highestYear}-06-01`;
-          }
+          // }
           this.setEditTrainingList();
           this.Level = response.data.employee.Level;
 
@@ -917,7 +926,8 @@ export default {
       console.log('Mapped Training:', train);
     },
 
-    getNewTrainingList(){
+    async getNewTrainingList(){
+      // alert(this.form.StaffID);
       axios.get(baseurl+'api/get-new-training?StaffID='+this.form.StaffID
           +'&Period='+this.form.AppraisalPeriod
       ).then((response)=>{
@@ -1398,6 +1408,7 @@ export default {
         this.$store.commit('me', response);
         if(response.payload.Type ==='employee'){
           this.form.StaffID = response.payload.EmpCode;
+          this.form.AppraisalPeriod = response.appraisalPeriod;
           this.getEmployeeByStaffID()
           $('#StaffID').attr('readonly', true);
         }

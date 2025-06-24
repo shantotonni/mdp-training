@@ -155,7 +155,7 @@ class MDPController extends Controller
                     'message' => $validator->errors()->first()]);
             }
 
-            dd('sdsd');
+
             $token = $request->bearerToken();
             $payload = JWTAuth::setToken($token)->getPayload();
             $empcode = $payload->get('EmpCode');
@@ -320,7 +320,7 @@ class MDPController extends Controller
                 'status' => 'error',
                 'message' => $validator->errors()->first()]);
         }
-dd('sdsd');
+
 
             $token = $request->bearerToken();
             $payload = JWTAuth::setToken($token)->getPayload();
@@ -394,7 +394,7 @@ dd('sdsd');
         }
     }
 
-    public function edit($id){
+    public function edit($id, $year){
         $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
 
         $training_list = MDPEmployeeTrainingList::where('StaffID', $mdp->StaffID)->where('isDropDown','Y')->first();
@@ -835,17 +835,19 @@ dd('sdsd');
             }else{
                 $dup = $training_list_by_empcode;
             }
-            $MDPAppraisalPeriod = ManagementDevelopmentPlane::select(DB::raw("Right(AppraisalPeriod,4) as AppraisalPeriod "))->where('StaffID', $empcode)->orderby('ID','DESC')->first();
+            $MDPAppraisalPeriod = ManagementDevelopmentPlane::select(DB::raw("left(AppraisalPeriod,4) as thisYear,Right(AppraisalPeriod,4) as NextYear"))->where('StaffID', $empcode)->orderby('ID','DESC')->first();
             if (!empty($MDPAppraisalPeriod)){
-                $nextYear=($MDPAppraisalPeriod->AppraisalPeriod)+1;
-                $period = ($MDPAppraisalPeriod->AppraisalPeriod).'-'.$nextYear;
+                $nextYear=($MDPAppraisalPeriod->NextYear)+1;
+                $period = ($MDPAppraisalPeriod->NextYear).'-'.$nextYear;
             }else{
+                $prevYear=date('Y', strtotime('-1 year'));
                 $nextYear=date('Y', strtotime('+1 year'));
                 $period=date('Y').'-'.$nextYear;
             }
 
             $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
-            $list = $this->mdpEligibleList($empcode,$period);
+            $list = DB::select(DB::raw("exec usp_doLoadMDPEmployeeTrainingList '$request->Period','$empcode'" ));
+
             if (!empty($list)){
                 return response()->json([
                     'status'=>'success',
@@ -860,22 +862,6 @@ dd('sdsd');
                 return response()->json([
                     'status'=>'error',
                     'message'=>'Welcome To MDP Training!',
-                    'data'=>[
-                        [
-                            'Name'=>'Shafique Mohammod Mostafaa',
-                            'Designation'=>'Manager, Training',
-                            'Contact'=>'01709644143',
-                            'ExtNo'=>'154',
-                            'Email'=>'shafique@aci-bd.com'
-                        ],
-                        [
-                            'Name'=>'Mohammad Shahadat Ullah',
-                            'Designation'=>'Deputy Manager, Training',
-                            'Contact'=>'01708467576',
-                            'ExtNo'=>'154',
-                            'Email'=>'shahadatullah@aci-bd.com'
-                        ]
-                    ]
                 ]);
 
             }

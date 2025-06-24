@@ -46,7 +46,7 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::group(['prefix' => 'mdp'],function () {
         Route::get('list',[MDPController::class,'index']);
         Route::post('store',[MDPController::class,'store']);
-        Route::get('edit/{ID}', [MDPController::class,'edit']);
+        Route::get('edit/{ID}/{YEAR}', [MDPController::class,'edit']);
         Route::post('update', [MDPController::class,'update']);
         Route::post('all-mdp-print', [MDPController::class,'allMDPPrint']);
         Route::get('print/{ID}', [MDPController::class,'print']);

@@ -139,11 +139,21 @@ class AuthController extends Controller
             $departments = ActionPlan::select('Department')->groupBy('Department')->get();
             $divisions = ActionPlan::select('Division')->groupBy('Division')->get();
         }
+        $MDPAppraisalPeriod = ManagementDevelopmentPlane::select(DB::raw("left(AppraisalPeriod,4) as thisYear,Right(AppraisalPeriod,4) as NextYear"))->where('StaffID', $empcode)->orderby('ID','DESC')->first();
+        if (!empty($MDPAppraisalPeriod)){
+            $nextYear=($MDPAppraisalPeriod->NextYear)+1;
+            $period = ($MDPAppraisalPeriod->NextYear).'-'.$nextYear;
+        }else{
+            $prevYear=date('Y', strtotime('-1 year'));
+            $nextYear=date('Y', strtotime('+1 year'));
+            $period=date('Y').'-'.$nextYear;
+        }
         return response()->json([
             'personal' => $personal,
             'payload' => $payload,
             'departments' => $departments,
             'divisions' => $divisions,
+            'appraisalPeriod' => $period,
         ]);
     }
 

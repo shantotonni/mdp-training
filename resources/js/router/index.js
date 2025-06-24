@@ -105,7 +105,7 @@ const routes = [
             //mdp list
             {path: baseurl + 'mdp-list', name: 'MDPList', component: MDPList},
             {path: baseurl + 'mdp-create', name: 'MDPCreate', component: MDPCreate},
-            {path: baseurl + 'mdp-edit/:ID', name: 'MDPEdit', component: MDPEdit},
+            {path: baseurl + 'mdp-edit/:ID/:YEAR', name: 'MDPEdit', component: MDPEdit},
             {path: baseurl + 'all-mdp-print', name: 'AllMDPPrint', component: AllMDPPrint},
             {path: baseurl + 'mdp-print/:ID', name: 'MDPPrint', component: MDPPrint},
             {path: baseurl + 'all-mdp-print_two/:ID', name: 'AllMDPPrintTwo', component: AllMDPPrintTwo},
