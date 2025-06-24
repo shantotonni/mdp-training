@@ -490,7 +490,7 @@
                             </div>
                             <!--                        submit-->
                             <div class="modal-footer">
-                              <button type="submit" class="btn btn-primary" :disabled="isSubmitting"  @click="store()">
+                              <button type="submit" class="btn btn-primary" :disabled="isSubmitting"  @click="store($event)">
                                 Submit
 <!--                                {{isSubmitting?'Submitting...':'Submit'}}-->
                               </button>
@@ -790,7 +790,7 @@ export default {
         await this.getNewTrainingList();
       }
     },
-    store() {
+    store(e) {
       this.errors = {};
 
       if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
@@ -805,8 +805,9 @@ export default {
       const formFieldsValid = this.validateFormFields(); // true = valid
 
       if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
-        // this.isSubmitting = false;
-        // this.PreLoader = false;
+        e.preventDefault()
+         this.isSubmitting = false;
+         this.PreLoader = false;
 
         return ;
 
