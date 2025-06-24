@@ -310,7 +310,7 @@
                               <!--                          v-if="dropDown==='YES'"-->
                               <div class="col-6 col-md-6" >
                                 <div class="form-group">
-                                  <label>Select Training Title</label>
+                                  <label>Select Training Title {{train.selectedTraining}}}</label>
                                   <multiselect
                                       v-model="train.selectedTraining"
                                       :options="newTrainingList"
@@ -322,10 +322,11 @@
                                       :required="true"
                                       label="TrainingTitle"
                                       track-by="TrainingCode"
-                                      placeholder="Select or Type Training"
+                                      placeholder="Select Training"
                                       @tag="Level==='TOP'? addCustomTraining($event, train) : null"
                                       @input="onTrainingSelected($event, train)"
                                   ></multiselect>
+
 
 
                                   <!--                              <select v-model="train.TrainingCode" name="Type" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }" required>-->
@@ -716,9 +717,9 @@ export default {
             {Name: '' , Type: '', Date:   new Date(currentYear, 5, 1)}
         ],
         training: [
-            { TrainingCode: '' ,TrainingTitle: '' , TrainingType: '', TrainingDate:  new Date(currentYear, 5, 1)},
-            { TrainingCode: '',TrainingTitle: '' , TrainingType: '', TrainingDate:  new Date(currentYear, 5, 1)},
-            { TrainingCode: '',TrainingTitle: '' , TrainingType: '', TrainingDate:  new Date(currentYear, 5, 1)},
+            { TrainingCode: '' ,TrainingTitle: '' , TrainingType: '', TrainingDate:  new Date(currentYear, 5, 1), selectedTraining: null},
+            { TrainingCode: '',TrainingTitle: '' , TrainingType: '', TrainingDate:  new Date(currentYear, 5, 1), selectedTraining: null},
+            { TrainingCode: '',TrainingTitle: '' , TrainingType: '', TrainingDate:  new Date(currentYear, 5, 1), selectedTraining: null},
         ],
       }),
       isLoading: false,
@@ -749,6 +750,9 @@ export default {
     $('#cropperModal').on('shown.bs.modal', () => {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     });
+    this.$watch('form.training', (newVal) => {
+      console.log('Training updated:', JSON.stringify(newVal, null, 2));
+    }, { deep: true });
     // this.getNewTrainingList()
   },
   created() {
@@ -892,23 +896,26 @@ export default {
       }
     },
     onTrainingSelected(selectedItem, train) {
-      console.log('Selected:', selectedItem);
-
       if (selectedItem && typeof selectedItem === 'object') {
+        // When user selects from the list
         train.TrainingCode = selectedItem.TrainingCode || null;
         train.TrainingTitle = selectedItem.TrainingTitle || '';
         train.TrainingType = selectedItem.CompetencyType || null;
-        train.selectedTraining = selectedItem;
+        train.selectedTraining = selectedItem; // Vue tracks this object
       } else if (typeof selectedItem === 'string') {
+        // When user types a new one (tagged)
         train.TrainingCode = null;
         train.TrainingType = null;
         train.TrainingTitle = selectedItem;
-        train.selectedTraining = null;
+        train.selectedTraining = {
+          TrainingTitle: selectedItem, // create a minimal object for v-model to bind
+          TrainingCode: null,
+        };
       }
 
       console.log('Mapped Training:', train);
-      console.log('Training:', this.form.training);
     },
+
     getNewTrainingList(){
       axios.get(baseurl+'api/get-new-training?StaffID='+this.form.StaffID
           +'&Period='+this.form.AppraisalPeriod
