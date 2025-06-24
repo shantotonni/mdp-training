@@ -490,7 +490,7 @@
                             </div>
                             <!--                        submit-->
                             <div class="modal-footer">
-                              <button type="submit" class="btn btn-primary" :disabled="isSubmitting"  @click="store()">
+                              <button type="submit" class="btn btn-primary" :disabled="isSubmitting"  @click="store($event)">
                                 Submit
 <!--                                {{isSubmitting?'Submitting...':'Submit'}}-->
                               </button>
@@ -780,7 +780,7 @@ export default {
     // this.getEmployeeByStaffID();
   },
   methods: {
-    store() {
+    store(e) {
       this.errors = {};
 
       if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
@@ -795,13 +795,11 @@ export default {
       const formFieldsValid = this.validateFormFields(); // true = valid
 
       if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
-        // this.isSubmitting = false;
-        // this.PreLoader = false;
-        console.log('shima')
+        e.preventDefault();
+        this.isSubmitting = false;
+        this.PreLoader = false;
         return ;
-        console.log('sdsd')
       }else{
-        console.log('sdsd')
         const formData = this.buildFormData();
         this.isSubmitting = true;
         this.PreLoader = true;
@@ -813,18 +811,18 @@ export default {
         }).then(response => {
           if (response.data.status ==="error"){
             this.errorNoti(response.data.message);
-            // this.PreLoader = false;
+            this.PreLoader = false;
             this.isSubmitting = false;
           }else{
             this.successNoti(response.data.message);
-            // this.redirect(this.mainOrigin + 'mdp-list');
-            // this.clearFormDataState();
-            // this.PreLoader = false;
+             this.redirect(this.mainOrigin + 'mdp-list');
+             this.clearFormDataState();
+             this.PreLoader = false;
             this.isSubmitting = false;
           }
         }).catch(error => {
           this.errorNoti('Upload failed.');
-          // this.PreLoader = false;
+          this.PreLoader = false;
           this.isSubmitting = false;
         });
       }
@@ -862,8 +860,6 @@ export default {
           }
           this.setEditTrainingList();
           this.Level = response.data.employee.Level;
-
-
         }else{
           this.NotEligibleInfo = response.data.data;
           this.NotEligibleInfoMessage = response.data.message;
@@ -871,7 +867,7 @@ export default {
         }
 
       }).catch((error)=>{
-
+        //
       })
     },
     setEditTrainingList(){
@@ -913,10 +909,8 @@ export default {
           TrainingCode: null,
         };
       }
-
       console.log('Mapped Training:', train);
     },
-
     getNewTrainingList(){
       axios.get(baseurl+'api/get-new-training?StaffID='+this.form.StaffID
           +'&Period='+this.form.AppraisalPeriod
@@ -928,7 +922,6 @@ export default {
       })
     },
     onTrainingCodePicked(selectedTraining, train) {
-
       if (selectedTraining && typeof selectedTraining === 'object') {
         train.TrainingType = selectedTraining.CompetencyType;
       } else {
@@ -946,7 +939,6 @@ export default {
       train.TrainingTitle = customEntry.TrainingTitle;
     },
     addCustomTrainingA(newTag,type, index = null) {
-
       const customTraining = {
         TrainingCode: null,
         TrainingTitle: newTag,
@@ -965,8 +957,6 @@ export default {
       } else if (type === 'AreaTwo') {
         this.form.AreaTwo = customTraining;
       }
-
-
     },
     countSpace(val, type, module, index) {
       try {

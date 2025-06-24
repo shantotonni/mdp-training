@@ -860,22 +860,6 @@ dd('sdsd');
                 return response()->json([
                     'status'=>'error',
                     'message'=>'Welcome To MDP Training!',
-                    'data'=>[
-                        [
-                            'Name'=>'Shafique Mohammod Mostafaa',
-                            'Designation'=>'Manager, Training',
-                            'Contact'=>'01709644143',
-                            'ExtNo'=>'154',
-                            'Email'=>'shafique@aci-bd.com'
-                        ],
-                        [
-                            'Name'=>'Mohammad Shahadat Ullah',
-                            'Designation'=>'Deputy Manager, Training',
-                            'Contact'=>'01708467576',
-                            'ExtNo'=>'154',
-                            'Email'=>'shahadatullah@aci-bd.com'
-                        ]
-                    ]
                 ]);
 
             }
