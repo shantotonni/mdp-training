@@ -3,7 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 class ManagementDevelopmentPlaneRequest extends FormRequest
 {
     /**
@@ -38,5 +39,15 @@ class ManagementDevelopmentPlaneRequest extends FormRequest
             'SuppervisorEmail'  =>'required',
             'Signature'         =>'required',
         ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors();
+
+        throw new HttpResponseException(response()->json([
+            'status' => 'error',
+            'message' => 'Validation failed',
+            'errors' => $errors,
+        ], 422));
     }
 }

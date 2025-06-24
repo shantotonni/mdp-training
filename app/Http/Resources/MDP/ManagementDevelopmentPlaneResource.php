@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\MDP;
 
+use App\Models\MDPTraining;
+use App\Models\NewMDPEmployeeTrainingList;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,6 +24,8 @@ class ManagementDevelopmentPlaneResource extends JsonResource
 //        $expload_areay_two = explode('*',$area_two_chunk);
 
         $age = Carbon::parse($this->DateOfBirth)->age;
+        $areaOneTitle = NewMDPEmployeeTrainingList::select('TrainingTitle')->where('TrainingCode','=', $this->AreaOne)->first();
+        $areaTwoTitle = NewMDPEmployeeTrainingList::select('TrainingTitle')->where('TrainingCode', '=',$this->AreaTwo)->first();
 
         return [
             'ID'=> $this->ID,
@@ -31,8 +35,11 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'to_period'=>$to_period,
             'FutureTrainingOneDetails'=> $this->FutureTrainingOneDetails,
             'AreaOne'=> $this->AreaOne,
+            'AreaOneTitle' => $areaOneTitle->TrainingTitle,
             'FutureTrainingTwoDetails'=> $this->FutureTrainingTwoDetails,
             'AreaTwo'=> $this->AreaTwo,
+            'AreaTwoTitle' => $areaTwoTitle->TrainingTitle,
+
             'CreatedDate'=> date('F j, Y',strtotime($this->CreatedDate)),
             'CurrentPosition'=> $this->CurrentPosition,
             'Department'=> $this->Department,
