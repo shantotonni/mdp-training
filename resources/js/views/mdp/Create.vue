@@ -864,12 +864,14 @@ export default {
           this.form.StaffID = response.data.employee.StaffID;
           this.dropDown = response.data.dropDown;
           this.training_list = response.data.training_list;
-          // if (!this.moduleStatus){
-          //   this.form.AppraisalPeriod = response.data.period;
+          if (!this.moduleStatus){
+            this.getNewTrainingList();
+            // this.form.AppraisalPeriod = response.data.period;
             // const years = this.form.AppraisalPeriod.split('-')
             // this.highestYear = parseInt(years[1]);
             // this.DefaultDate = `${this.highestYear}-06-01`;
-          // }
+          }
+
           this.setEditTrainingList();
           this.Level = response.data.employee.Level;
 
