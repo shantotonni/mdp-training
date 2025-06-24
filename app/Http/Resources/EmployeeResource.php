@@ -23,6 +23,18 @@ class EmployeeResource extends JsonResource
         }else{
             $mobile = '';
         }
+
+        $category = '';
+        if (isset($this->Grade)) {
+            $gradeNumber = intval(substr($this->Grade, -2)); // get last 2 digits
+            if ($gradeNumber >= 1 && $gradeNumber <= 4) {
+                $category = 'JUNIOR';
+            } elseif ($gradeNumber >= 5 && $gradeNumber <= 7) {
+                $category = 'MID';
+            } elseif ($gradeNumber >= 8 && $gradeNumber <= 11) {
+                $category = 'TOP';
+            }
+        }
         return [
             'StaffID'               => $this->EmpCode,
             'EmployeeName'          => isset($this->personal) ? $this->personal->Name: '',
@@ -41,6 +53,8 @@ class EmployeeResource extends JsonResource
             'PresentJobStartedOn'   => isset($this->LastPromoDate) ? date('Y-m-d',strtotime($this->LastPromoDate)): '',
             'Qualification'         => isset($this->education) ? $this->education->Degree: '',
             'JoiningDate'           => date('Y-m-d',strtotime($this->JoiningDate)),
+            'Grade'                 => $this->Grade,
+            'Level'              => $category,
         ];
     }
 }
