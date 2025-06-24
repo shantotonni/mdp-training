@@ -275,7 +275,7 @@ class MDPController extends Controller
 
 
     public function update(ManagementDevelopmentPlaneUpdateRequest $request){
-dd('sdsd');
+
         DB::beginTransaction();
         try {
             $token = $request->bearerToken();

@@ -136,7 +136,8 @@
                                                 <span v-if="mdp.MDPStatus === 'Approved' " class="badge badge-success"> Approved</span>
                                               </td>
                                               <td class="text-center" style="white-space: nowrap" >
-                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm" ><i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
+                                                <router-link :to="`mdp-edit/${mdp.ID}`" class="btn btn-info btn-sm"  v-if="mdp.MDPStatus === 'Pending' ">
+                                                  <i class="mdi mdi-square-edit-outline"></i> Edit</router-link>
                                                 <router-link :to="`mdp-print/${mdp.ID}`" class="btn btn-info btn-sm" v-if="mdp.MDPStatus === 'Approved' || type === 'admin'">
                                                   <i class="mdi mdi-printer"></i> MDP</router-link>
                                                 <router-link :to="`mdp-print_two/${mdp.ID}`" class="btn btn-info btn-sm" v-if="mdp.MDPStatus === 'Approved' || type === 'admin'">

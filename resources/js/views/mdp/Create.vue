@@ -310,7 +310,7 @@
                               <!--                          v-if="dropDown==='YES'"-->
                               <div class="col-6 col-md-6" >
                                 <div class="form-group">
-                                  <label>Select Training Title {{train.selectedTraining}}}</label>
+                                  <label v-if="train.TrainingTitle">Select Training Title</label>
                                   <multiselect
                                       v-model="train.selectedTraining"
                                       :options="newTrainingList"

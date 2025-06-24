@@ -99,7 +99,7 @@
 <!--                                </p>-->
                                 <span style="font-size: 20px">1.</span> <p style="font-size: 20px">
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">
-                                    <b v-if="mdplist.AreaOne">{{mdplist.AreaOne}} : </b>
+                                    <b v-if="mdplist.AreaOne">{{mdplist.AreaOneTitle}} : </b>
                                     {{ mdplist.FutureTrainingOneDetails }}</span>
                                 </p>
                                 <p>
@@ -124,7 +124,7 @@
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;font-size: 20px">
                                     <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">
-                                      <b v-if="mdplist.AreaTwo">{{mdplist.AreaTwo}} : </b>{{ mdplist.FutureTrainingTwoDetails }}</span>
+                                      <b v-if="mdplist.AreaTwo">{{mdplist.AreaOneTitle}} : </b>{{ mdplist.FutureTrainingTwoDetails }}</span>
                                   </span>
                                 </p>
                                 <p>

@@ -30,7 +30,7 @@
                                       <th class="text-center">Employee Name</th>
                                       <th class="text-center">Designation</th>
                                       <th class="text-center">Joining Date</th>
-                                      <th class="text-center">Present Job Starte On</th>
+                                      <th class="text-center">Present Job Started On</th>
                                       <th class="text-center">Mobile</th>
                                     </tr>
                                   </thead>
