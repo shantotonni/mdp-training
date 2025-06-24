@@ -55,7 +55,8 @@
           </div>
             <div class="row" v-else>
                 <div class="col-md-7">
-                  <form @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()">
+<!--                   @submit.prevent="store()" @keydown="form.onKeydown($event)"-->
+                  <form v-on:change="saveFormDataState()">
                     <div class="card">
                       <div class="datatable" v-if="!isLoading">
                         <div class="card-body">
@@ -75,7 +76,7 @@
                                   <div class="form-group">
                                     <label>Staff ID</label>
                                     <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID"
-                                           class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" @change="getEmployeeByStaffID" required>
+                                           class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" readonly @change="getEmployeeByStaffID" required>
                                     <div class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                                   </div>
                                 </div>
@@ -207,7 +208,7 @@
                                 <div class="form-group">
                                   <label>Supervisor Staff ID</label>
                                   <input type="text" name="SuppervisorStaffID" v-model="form.SuppervisorStaffID" class="form-control"
-                                         :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @input="getSupervisorByStaffID" required>
+                                         :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @change="getSupervisorByStaffID" required>
                                   <div class="error" v-if="form.errors.has('SuppervisorStaffID')" v-html="form.errors.get('SuppervisorStaffID')" />
                                 </div>
                               </div>
@@ -489,7 +490,10 @@
                             </div>
                             <!--                        submit-->
                             <div class="modal-footer">
-                              <button type="submit" class="btn btn-primary" :disabled="isSubmitting" >{{isSubmitting?'Submitting...':'Submit'}}</button>
+                              <button type="submit" class="btn btn-primary" :disabled="isSubmitting"  @click="store()">
+                                Submit
+<!--                                {{isSubmitting?'Submitting...':'Submit'}}-->
+                              </button>
                               <!--                            <button  class="btn btn-secondary" @click="clearFormDataState">Clear Data</button>-->
 
                             </div>
@@ -750,9 +754,9 @@ export default {
     $('#cropperModal').on('shown.bs.modal', () => {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     });
-    this.$watch('form.training', (newVal) => {
-      console.log('Training updated:', JSON.stringify(newVal, null, 2));
-    }, { deep: true });
+    // this.$watch('form.training', (newVal) => {
+    //   console.log('Training updated:', JSON.stringify(newVal, null, 2));
+    // }, { deep: true });
     // this.getNewTrainingList()
   },
   created() {
@@ -790,17 +794,14 @@ export default {
       const findDuplicateTitleError = this.findDuplicateTitle();
       const formFieldsValid = this.validateFormFields(); // true = valid
 
-
-      if (
-          futureWordErrors ||
-          initiativeErrors ||
-          requiredErrors ||
-          futureErrorsDuplicate ||
-          findDuplicateTitleError ||
-          !formFieldsValid
-      ) {
-        return;
+      if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
+        // this.isSubmitting = false;
+        // this.PreLoader = false;
+        console.log('shima')
+        return ;
+        console.log('sdsd')
       }else{
+        console.log('sdsd')
         const formData = this.buildFormData();
         this.isSubmitting = true;
         this.PreLoader = true;
@@ -809,24 +810,24 @@ export default {
 
         axios.post(baseurl + url, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
-        })
-            .then(response => {
-              this.successNoti(response.data.message);
-              this.redirect(this.mainOrigin + 'mdp-list');
-              this.clearFormDataState();
-              this.PreLoader = false;
-              this.isSubmitting = false;
-            })
-            .catch(error => {
-              this.errorNoti('Upload failed.');
-              console.error(error);
-              this.PreLoader = false;
-              this.isSubmitting = false;
-            });
+        }).then(response => {
+          if (response.data.status ==="error"){
+            this.errorNoti(response.data.message);
+            // this.PreLoader = false;
+            this.isSubmitting = false;
+          }else{
+            this.successNoti(response.data.message);
+            // this.redirect(this.mainOrigin + 'mdp-list');
+            // this.clearFormDataState();
+            // this.PreLoader = false;
+            this.isSubmitting = false;
+          }
+        }).catch(error => {
+          this.errorNoti('Upload failed.');
+          // this.PreLoader = false;
+          this.isSubmitting = false;
+        });
       }
-
-
-
     },
     getEmployeeByStaffID(){
 
@@ -1342,6 +1343,10 @@ export default {
       return hasError;
     },
     getSupervisorByStaffID(){
+      this.form.SuppervisorName = '';
+      this.form.SuppervisorDesignation = '';
+      this.form.SuppervisorEmail = '';
+      this.form.SuppervisorMobile = '';
       axios.post(baseurl +'api/get-supervisor-by-employee-code/', {
         EmpCode: this.form.StaffID,
         SuperVisorEmpCode: this.form.SuppervisorStaffID,
@@ -1349,6 +1354,11 @@ export default {
         // console.log(response)
         if (response.data.status === 'error'){
           this.errorNoti(response.data.message);
+          this.form.SuppervisorName = '';
+          this.form.SuppervisorDesignation = '';
+          this.form.SuppervisorEmail = '';
+          this.form.SuppervisorMobile = '';
+          this.form.SuppervisorStaffID = '';
         }else {
           this.form.SuppervisorName = response.data.employee.SuppervisorName;
           this.form.SuppervisorDesignation = response.data.employee.SuppervisorDesignation;

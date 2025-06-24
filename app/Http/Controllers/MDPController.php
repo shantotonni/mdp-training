@@ -22,6 +22,7 @@ use App\Traits\MDPCommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -127,11 +128,34 @@ class MDPController extends Controller
         }
     }
 
-    public function store(ManagementDevelopmentPlaneRequest  $request){
+    public function store(Request  $request){
 
         DB::beginTransaction();
 
         try {
+            $validator = Validator::make($request->all(), [
+                'AppraisalPeriod'   =>'required',
+                'StaffID'           =>'required',
+                'EmployeeName'      =>'required',
+                'Designation'       =>'required',
+                'Department'        =>'required',
+                'OfficialEmail'=>'required',
+                'Mobile'            =>'required|min:11|max:11',
+                'JoiningDate'       =>'required',
+                'CurrentPosition'   =>'required',
+                'Qualification'     =>'required',
+                'SuppervisorStaffID'=>'required',
+                'SuppervisorEmail'  =>'required',
+                'Signature'         =>'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()->first()]);
+            }
+
+            dd('sdsd');
             $token = $request->bearerToken();
             $payload = JWTAuth::setToken($token)->getPayload();
             $empcode = $payload->get('EmpCode');
@@ -274,10 +298,30 @@ class MDPController extends Controller
     }
 
 
-    public function update(ManagementDevelopmentPlaneUpdateRequest $request){
-
+    public function update(Request $request){
         DB::beginTransaction();
         try {
+        $validator = Validator::make($request->all(), [
+            'AppraisalPeriod'   =>'required',
+            'StaffID'           =>'required',
+            'EmployeeName'      =>'required',
+            'Designation'       =>'required',
+            'Department'        =>'required',
+            'Mobile'            =>'required|min:11|max:11',
+            'JoiningDate'       =>'required',
+            'CurrentPosition'   =>'required',
+            'Qualification'     =>'required',
+            'SuppervisorEmail'=>'required',
+            'SuppervisorStaffID'=>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()->first()]);
+        }
+dd('sdsd');
+
             $token = $request->bearerToken();
             $payload = JWTAuth::setToken($token)->getPayload();
             $empcode = $payload['EmpCode'];
@@ -868,6 +912,7 @@ class MDPController extends Controller
     }
 
     public function getSupervisorByEmployeeCode(Request $request){
+
         $first_character = mb_substr($request->SuperVisorEmpCode, 0, 1);
         if ($first_character !== 'C'){
             if ($request->SuperVisorEmpCode === $request->EmpCode){
