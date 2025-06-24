@@ -54,7 +54,7 @@ class EmployeeResource extends JsonResource
             'Qualification'         => isset($this->education) ? $this->education->Degree: '',
             'JoiningDate'           => date('Y-m-d',strtotime($this->JoiningDate)),
             'Grade'                 => $this->Grade,
-            'Category'              => $category,
+            'Level'              => $category,
         ];
     }
 }

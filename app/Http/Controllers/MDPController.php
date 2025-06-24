@@ -127,8 +127,8 @@ class MDPController extends Controller
         }
     }
 
-    public function store(ManagementDevelopmentPlaneRequest $request){
-        dd($request->all());
+    public function store(ManagementDevelopmentPlaneRequest  $request){
+
         DB::beginTransaction();
 
         try {
@@ -209,8 +209,8 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->SuppervisorDesignation = $request->SuppervisorDesignation;
             $ManagementDevelopmentPlane->SuppervisorEmail = $request->SuppervisorEmail;
             $ManagementDevelopmentPlane->SuppervisorMobile = $request->SuppervisorMobile;
-            $ManagementDevelopmentPlane->AreaOne = $request->AreaOne;
-            $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
+            $ManagementDevelopmentPlane->AreaOne = $request->futureTrainingTitleOne;
+            $ManagementDevelopmentPlane->AreaTwo = $request->futureTrainingTitleTwo;
             $ManagementDevelopmentPlane->CreatedBy = $empcode;
             $ManagementDevelopmentPlane->CreatedDate = Carbon::now();
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
@@ -234,6 +234,7 @@ class MDPController extends Controller
                 foreach ($training as $item){
                     $MDPTraining = new MDPTraining();
                     $MDPTraining->MDPID = $ManagementDevelopmentPlane->ID;
+                    $MDPTraining->TrainingCode  = $item['TrainingCode'];
                     $MDPTraining->TrainingTitle = $item['TrainingTitle'];
                     $MDPTraining->TrainingType = $item['TrainingType'];
                     $MDPTraining->TrainingDate = date('Y-m-d H:i:s', strtotime($item['TrainingDate']))  ;
@@ -274,8 +275,7 @@ class MDPController extends Controller
 
 
     public function update(ManagementDevelopmentPlaneUpdateRequest $request){
-
-
+dd('sdsd');
         DB::beginTransaction();
         try {
             $token = $request->bearerToken();
@@ -307,10 +307,11 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->SuppervisorDesignation = $request->SuppervisorDesignation;
             $ManagementDevelopmentPlane->SuppervisorEmail = $request->SuppervisorEmail;
             $ManagementDevelopmentPlane->SuppervisorMobile = $request->SuppervisorMobile;
-            $ManagementDevelopmentPlane->AreaOne = $request->AreaOne;
-            $ManagementDevelopmentPlane->AreaTwo = $request->AreaTwo;
+            $ManagementDevelopmentPlane->AreaOne = $request->futureTrainingTitleOne;
+            $ManagementDevelopmentPlane->AreaTwo = $request->futureTrainingTitleTwo;
             $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
             $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
+
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             $ManagementDevelopmentPlane->UpdatedDate = Carbon::now();
             if ($ManagementDevelopmentPlane->save()){
@@ -320,16 +321,17 @@ class MDPController extends Controller
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
                     $MDPPersonalInitiative->Type  = $value['Type'];
-                    $MDPPersonalInitiative->Date  = date("Y-m-d H:i:s", strtotime($value['Date'])) ;
+                    $MDPPersonalInitiative->Date  =  date("Y-m-d H:i:s", strtotime($value['Date'])) ;
                     $MDPPersonalInitiative->save();
                 }
                 foreach ($training as $item){
 
                     $MDPTraining = new MDPTraining();
                     $MDPTraining->MDPID = $ManagementDevelopmentPlane->ID;
+                    $MDPTraining->TrainingCode  = $item['TrainingCode'];
                     $MDPTraining->TrainingTitle = $item['TrainingTitle'];
                     $MDPTraining->TrainingType = $item['TrainingType'];
-                    $MDPTraining->TrainingDate = date("Y-m-d H:i:s", strtotime($item['TrainingDate'])) ;
+                    $MDPTraining->TrainingDate = date('Y-m-d H:i:s', strtotime($item['TrainingDate']))  ;
                     $MDPTraining->save();
                 }
 
@@ -722,19 +724,9 @@ class MDPController extends Controller
 
 
     public function getNewTrainingOfferedList2025(Request $request){
-
         $period = $request->Period;
         $empcode = $request->StaffID;
-        $deptCode = $request->DeptCode;
-        $List = NewMDPEmployeeTrainingList::where('AppraisalPeriod','=',$period)->where('Active','=','Y');
-            if (!empty($deptCode )){
-                $List->where('DepartmentCode','=',$deptCode);
-
-            }else if(!empty($empcode)){
-                $List->where('StaffID','=',$empcode);
-            }
-
-        $List = $List->get();
+        $List = DB::select(DB::raw("exec usp_doLoadMDPEmployeeTrainingList '$period','$empcode'" ));
         return response()->json([
             'data'=>$List
         ]);
