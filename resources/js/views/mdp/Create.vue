@@ -311,8 +311,9 @@
                               <!--                          v-if="dropDown==='YES'"-->
                               <div class="col-6 col-md-6" >
                                 <div class="form-group">
-                                  <label v-if="train.TrainingTitle">Select Training Title</label>
+                                  <label v-if="newTrainingList">Select Training Title</label>
                                   <multiselect
+                                      v-if="newTrainingList"
                                       v-model="train.selectedTraining"
                                       :options="newTrainingList"
                                       :multiple="false"
@@ -324,7 +325,7 @@
                                       label="TrainingTitle"
                                       track-by="TrainingCode"
                                       placeholder="Select Training"
-                                      @tag="Level==='TOP'? addCustomTraining($event, train) : null"
+                                      @tag="Level==='TOP' ? addCustomTraining($event, train) : null"
                                       @input="onTrainingSelected($event, train)"
                                   ></multiselect>
 
@@ -423,6 +424,7 @@
                                     <div class="form-group">
                                       <label>Future Training 1</label>
                                       <multiselect
+                                          v-if="newTrainingList"
                                           v-model="form.AreaOne"
                                           :options="newTrainingList"
                                           :multiple="false"
@@ -435,8 +437,8 @@
                                           track-by="TrainingCode"
                                           placeholder="Select or Type Training"
                                           @tag="Level==='TOP'? addCustomTrainingA($event,'AreaOne' ):null"
-
-                                          required></multiselect>
+                                          required>
+                                      </multiselect>
                                       <!--                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"-->
                                       <!--                                         @input="countSpace(form.AreaOne,'AreaOne','area')"   name="Title" placeholder="Title"  required>-->
                                       <small v-if="errors.AreaOne" class="error">{{ errors.AreaOne }}</small>
@@ -456,6 +458,7 @@
                                     <div class="form-group">
                                       <label>Future Training 2</label>
                                       <multiselect
+                                          v-if="newTrainingList"
                                           v-model="form.AreaTwo"
                                           :options="newTrainingList"
                                           :multiple="false"
@@ -657,6 +660,7 @@ import 'vue-advanced-cropper/dist/style.css';
 
 import Cropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
+
 export default {
   name: "List",
   computed: {
@@ -864,12 +868,14 @@ export default {
           this.form.StaffID = response.data.employee.StaffID;
           this.dropDown = response.data.dropDown;
           this.training_list = response.data.training_list;
-          // if (!this.moduleStatus){
-          //   this.form.AppraisalPeriod = response.data.period;
+          if (!this.moduleStatus){
+            this.getNewTrainingList();
+            // this.form.AppraisalPeriod = response.data.period;
             // const years = this.form.AppraisalPeriod.split('-')
             // this.highestYear = parseInt(years[1]);
             // this.DefaultDate = `${this.highestYear}-06-01`;
-          // }
+          }
+
           this.setEditTrainingList();
           this.Level = response.data.employee.Level;
 
@@ -932,6 +938,7 @@ export default {
       axios.get(baseurl+'api/get-new-training?StaffID='+this.form.StaffID
           +'&Period='+this.form.AppraisalPeriod
       ).then((response)=>{
+        console.log(response)
         this.newTrainingList = response.data.data;
         this.PreLoader = false;
       }).catch((error)=>{
