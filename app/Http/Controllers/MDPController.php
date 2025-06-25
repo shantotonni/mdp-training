@@ -18,6 +18,7 @@ use App\Models\MDPEmployeeTrainingList;
 use App\Models\MDPPersonalInitiative;
 use App\Models\MDPTraining;
 use App\Models\NewMDPEmployeeTrainingList;
+use App\Models\TrainingName;
 use App\Traits\MDPCommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -753,16 +754,38 @@ class MDPController extends Controller
         ]);
     }
 
-    public function getAllTrainingTitle(){
-        $departments = DB::select('
-            SELECT 
-                DISTINCT TrainingTitle 
-            From MDPTraining 
-            WHERE TrainingTitle IS NOT NULL
-            ORDER BY 1
-        ');
+    public function getAllTrainingTitle(Request $request){
+        //working on it 25
+//        dd($request->session);
+        $period=$request->session;
+        $session = substr($period, 0, 4);
+        $mdp = ManagementDevelopmentPlane::select(DB::raw("left(AppraisalPeriod,4) AS AppraisalPeriod"))
+                ->where(DB::raw("Right(AppraisalPeriod,4)"),'=',$session)->orderbydesc('ID')->first();
+
+        if ($mdp->AppraisalPeriod <= $session){
+            $Training = MDPTraining::Select('TrainingTitle','TrainingCode')
+                        ->whereIsNotNull('TrainingTitle')
+                        ->orderbydesc('TrainingCode')
+                        ->distinct()
+                        ->get();
+//
+//                DB::select('
+//            SELECT
+//                DISTINCT TrainingTitle
+//            From MDPTraining
+//            WHERE TrainingTitle IS NOT NULL
+//            ORDER BY 1
+//        ');
+        }else{
+            $Training = TrainingName::Select(DB::raw("TrnCode as TrainingCode,TrnName as TrainingTitle"))
+                        ->orderbydesc('TrnCode')
+                        ->distinct()
+                        ->get();
+        }
+
+
         return response()->json([
-            'trainingtitle'=>$departments
+            'trainingtitle'=>$Training
         ]);
     }
 

@@ -447,7 +447,7 @@
                                       <br>
                                       <small>Explain how this training 1 will help the company.</small>
                                       <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }"
-                                             style="height: 90px" name="Reason" placeholder="Max 50 words" @input="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne','future')"  required>
+                                             style="height: 90px" name="Reason" placeholder="Max 30 words" @input="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne','future')"  required>
                                       <div class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
                                       <small v-if="errors.FutureTrainingOneDetails" class="error">{{ errors.FutureTrainingOneDetails }}</small>
                                       <div class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
@@ -991,15 +991,15 @@ export default {
         const wordCount = val.trim().split(/\s+/).filter(Boolean).length;
 
         if (module === 'future') {
-          if (wordCount > 50) {
+          if (wordCount > 30) {
             if (type === 'futureTrainingOne') {
-              this.errors.FutureTrainingOneDetails = 'Maximum 50 Words!';
+              this.errors.FutureTrainingOneDetails = 'Maximum 30 Words!';
               // this.errorNoti(this.errors.FutureTrainingOneDetails);
             } else {
               this.errors.FutureTrainingOneDetails = '';
             }
             if (type === 'futureTrainingTwo') {
-              this.errors.FutureTrainingTwoDetails = 'Maximum 50 Words!';
+              this.errors.FutureTrainingTwoDetails = 'Maximum 30 Words!';
               // this.errorNoti(this.errors.FutureTrainingTwoDetails);
             }else {
               this.errors.FutureTrainingTwoDetails = '';
@@ -1054,13 +1054,13 @@ export default {
       const AreaOneCount = this.form.AreaOne.TrainingTitle.trim().split(/\s+/).filter(Boolean).length;
       const AreaTwoCount = this.form.AreaTwo.TrainingTitle.trim().split(/\s+/).filter(Boolean).length;
 
-      if (oneWordCount > 50) {
-        this.errors.FutureTrainingOneDetails = `Maximum 50 Words. Currently: ${oneWordCount}`;
+      if (oneWordCount > 30) {
+        this.errors.FutureTrainingOneDetails = `Maximum 30 Words. Currently: ${oneWordCount}`;
         // this.errorNoti(this.errors.FutureTrainingOneDetails);
         hasError = true;
       }
-      if (twoWordCount > 50) {
-        this.errors.FutureTrainingTwoDetails = `Maximum 50 Words. Currently: ${twoWordCount}`;
+      if (twoWordCount > 30) {
+        this.errors.FutureTrainingTwoDetails = `Maximum 30 Words. Currently: ${twoWordCount}`;
         // this.errorNoti(this.errors.FutureTrainingTwoDetails);
         hasError = true;
       }

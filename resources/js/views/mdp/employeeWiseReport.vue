@@ -26,7 +26,7 @@
                     <div class="row">
                       <div class="col-md-2">
                         <div class="form-group">
-                          <select id="sessionP" class="form-control" v-model="sessionP" style="  height: 43px;" required>
+                          <select id="sessionP" class="form-control" v-model="sessionP" @change="getAllTrainingTitle" style="  height: 43px;" required>
                             <option value="">Period</option>
                             <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>
                           </select>
@@ -225,7 +225,8 @@ export default {
       // this.$toaster.success('Data Successfully Refresh');
     },
     getAllTrainingTitle(){
-      axios.get(baseurl + 'api/mdp/get-all-training-title').then((response)=>{
+
+      axios.get(baseurl + 'api/mdp/get-all-training-title?session='+this.sessionP).then((response)=>{
         this.trainingTitlesList = response.data.trainingtitle;
       }).catch((error)=>{
 

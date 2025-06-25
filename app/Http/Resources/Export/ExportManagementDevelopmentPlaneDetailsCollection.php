@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Export;
 
+use App\Models\NewMDPEmployeeTrainingList;
+use App\Models\TrainingName;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -13,9 +15,12 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
+
+
         return [
             'data'=>$this->collection->transform(function ($mdp) use($empcode){
-
+                $areaOneTitle = TrainingName::select('TrnName')->where('TrnCode','=', $mdp->AreaOne)->first();
+                $areaTwoTitle = TrainingName::select('TrnName')->where('TrnCode', '=',$mdp->AreaTwo)->first();
                 if ($mdp->SuppervisorStaffID == $empcode){
                     $superVisor  = 'Y';
                 }else{
@@ -63,11 +68,13 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     $array['RequiredPlannedDate' .'-'. $countRe]      = isset($row['TrainingDate'])?date("m/d/y",strtotime($row['TrainingDate'])):'';
                 }
 
-                $array['FutureTrainingTitle-1']   = $mdp->FutureTrainingOne;
-                $array['FutureTrainingDetails-1'] = $mdp->AreaOne;
+                $array['FutureTrainingTitle-1'] = $areaOneTitle->TrnName;
+                $array[' FutureTrainingDetails-1']   = $mdp->FutureTrainingOneDetails;
 
-                $array['FutureTrainingTitle-2']   = $mdp->FutureTrainingTwo ?? ''; // use null coalescing if it might not exist
-                $array['FutureTrainingDetails-2'] = $mdp->AreaTwo ?? '';
+
+                $array['FutureTrainingTitle-2 '] = $areaTwoTitle->TrnName ?? '';
+                $array['FutureTrainingDetails-2']   = $mdp->FutureTrainingTwoDetails ?? ''; // use null coalescing if it might not exist
+
 
                 return $array;
 
