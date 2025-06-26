@@ -22,6 +22,7 @@ use App\Models\TrainingName;
 use App\Traits\MDPCommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -870,23 +871,38 @@ class MDPController extends Controller
 
             $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
             $list = DB::select(DB::raw("exec usp_doLoadMDPEmployeeTrainingList '$request->Period','$empcode'" ));
+            $newMdp = NewMDPEmployeeTrainingList::where('AppraisalPeriod','=',$period);
+            if ($empcode){
+                $newMdp->where('StaffID','=',$empcode);
+            }else{
+               // $newMdp->where('DepartmentCode','=','dsds');
+            }
 
-            if (!empty($list)){
-                return response()->json([
-                    'status'=>'success',
-                    'message'=>'Welcome To MDP Training',
-                    'employee'=>new EmployeeResource($employee),
-                    'training_history'=>$training_history,
-                    'training_list'=>$dup,
-                    'dropDown'=>$dropDown,
-                    'period'=>$period,
-                ]);
+            $newMdp = $newMdp->first();
+            if ($newMdp){
+                if (!empty($list)){
+                    return response()->json([
+                        'status'=>'success',
+                        'message'=>'Welcome To MDP Training',
+                        'employee'=>new EmployeeResource($employee),
+                        'training_history'=>$training_history,
+                        'training_list'=>$dup,
+                        'dropDown'=>$dropDown,
+                        'period'=>$period,
+                    ]);
+                }else{
+                    return response()->json([
+                        'status'=>'error',
+                        'message'=>'Welcome To MDP Training Form!',
+                        'data'=>'notEligible'
+                    ]);
+                }
             }else{
                 return response()->json([
                     'status'=>'error',
-                    'message'=>'Welcome To MDP Training!',
+                    'message'=>'You have already submitted the MDP for this Year!',
+                    'data'=>'alreadySubmitted'
                 ]);
-
             }
         }else{
             return response()->json([
