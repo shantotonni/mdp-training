@@ -22,6 +22,7 @@ use App\Models\TrainingName;
 use App\Traits\MDPCommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -734,6 +735,7 @@ class MDPController extends Controller
             'departments'=>$departments
         ]);
     }
+
     public function getAllMDPEmployee(Request $request){
         $staffId = $request->staffId;
         $session = $request->sessionP;
@@ -757,7 +759,7 @@ class MDPController extends Controller
     public function getAllTrainingTitle(Request $request){
         //working on it 25
 //        dd($request->session);
-        $period=$request->session;
+        $period = $request->session;
         $session = substr($period, 0, 4);
         $mdp = ManagementDevelopmentPlane::select(DB::raw("left(AppraisalPeriod,4) AS AppraisalPeriod"))
                 ->where(DB::raw("Right(AppraisalPeriod,4)"),'=',$session)->orderbydesc('ID')->first();
@@ -788,7 +790,6 @@ class MDPController extends Controller
             'trainingtitle'=>$Training
         ]);
     }
-
 
     public function getNewTrainingOfferedList2025(Request $request){
         $period = $request->Period;
@@ -831,14 +832,6 @@ class MDPController extends Controller
                 ->where('MDPTrainingFeedback.Status','=', 'done')
                 ->get();
 
-//            $training_history = MDPTraining::query()->whereIn('MDPID',$mdp)
-//                ->select('MDPTraining.TrainingTitle','MDPTraining.TrainingType',DB::raw(" '' as CompetencyType"),'MDPTrainingFeedback.DoneDate')
-//                ->leftJoin('MDPTrainingFeedback','MDPTrainingFeedback.TrainingID','=','MDPTraining.ID')
-//                ->whereBetween(DB::raw("LEFT(MDPTrainingFeedback.DoneDate,4)"),[date('Y', strtotime('-4 year')),date('Y')])
-//                ->where('MDPTrainingFeedback.Status','=', 'done')
-//                ->orderBy('MDPTrainingFeedback.DoneDate','desc')
-//                ->get();
-
             $training_list_by_empcode = MDPEmployeeTrainingList::where('StaffID', $empcode)->get();
 
             $dup = array();
@@ -858,35 +851,46 @@ class MDPController extends Controller
             }else{
                 $dup = $training_list_by_empcode;
             }
-            $MDPAppraisalPeriod = ManagementDevelopmentPlane::select(DB::raw("left(AppraisalPeriod,4) as thisYear,Right(AppraisalPeriod,4) as NextYear"))->where('StaffID', $empcode)->orderby('ID','DESC')->first();
+            $MDPAppraisalPeriod = ManagementDevelopmentPlane::select(DB::raw("left(AppraisalPeriod,4) as thisYear,Right(AppraisalPeriod,4) as NextYear"))
+                ->where('StaffID', $empcode)->orderby('ID','DESC')->first();
             if (!empty($MDPAppraisalPeriod)){
                 $nextYear=($MDPAppraisalPeriod->NextYear)+1;
                 $period = ($MDPAppraisalPeriod->NextYear).'-'.$nextYear;
             }else{
                 $prevYear=date('Y', strtotime('-1 year'));
                 $nextYear=date('Y', strtotime('+1 year'));
-                $period=date('Y').'-'.$nextYear;
+                $period= date('Y').'-'.$nextYear;
             }
 
             $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
             $list = DB::select(DB::raw("exec usp_doLoadMDPEmployeeTrainingList '$request->Period','$empcode'" ));
+            //dd($nextYear);
+            $newMdp = ManagementDevelopmentPlane::query()->where('AppraisalPeriod','=','2025-2026')->where('StaffID','=',$empcode)->first();
 
-            if (!empty($list)){
-                return response()->json([
-                    'status'=>'success',
-                    'message'=>'Welcome To MDP Training',
-                    'employee'=>new EmployeeResource($employee),
-                    'training_history'=>$training_history,
-                    'training_list'=>$dup,
-                    'dropDown'=>$dropDown,
-                    'period'=>$period,
-                ]);
+            if ($newMdp == null){
+                if (!empty($list)){
+                    return response()->json([
+                        'status'            => 'success',
+                        'message'           => 'Welcome To MDP Training',
+                        'employee'          => new EmployeeResource($employee),
+                        'training_history'  => $training_history,
+                        'training_list'     => $dup,
+                        'dropDown'          => $dropDown,
+                        'period'            => $period,
+                    ]);
+                }else{
+                    return response()->json([
+                        'status'    => 'error',
+                        'message'   => 'Welcome To MDP Training Form!',
+                        'data'      => 'notEligible'
+                    ]);
+                }
             }else{
                 return response()->json([
-                    'status'=>'error',
-                    'message'=>'Welcome To MDP Training!',
+                    'status'    => 'error',
+                    'message'   => 'You have already submitted the MDP for this Year!',
+                    'data'      => 'alreadySubmitted'
                 ]);
-
             }
         }else{
             return response()->json([

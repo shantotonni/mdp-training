@@ -87,8 +87,11 @@
                                 </div>
                               </div>
 
-                              <br>
-                              <br>
+
+                              <div class="page-break" style=" page-break-before: always;"></div>
+
+
+
                               <div class="fourth_part">
                                 <p style="font-weight: bold;font-size: 20px">B. For development to take future responsibilities</p>
                                 <p style="font-size: 20px">Other than those mentioned in A, list below two areas of personal development / training that you would
@@ -124,7 +127,7 @@
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;font-size: 20px">
                                     <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">
-                                      <b v-if="mdplist.AreaTwo">{{mdplist.AreaOneTitle}} : </b>{{ mdplist.FutureTrainingTwoDetails }}</span>
+                                      <b v-if="mdplist.AreaTwo">{{mdplist.AreaTwoTitle}} : </b>{{ mdplist.FutureTrainingTwoDetails }}</span>
                                   </span>
                                 </p>
                                 <p>
@@ -271,7 +274,12 @@ export default {
     },
 }
 </script>
-<style scoped>
-
+<style>
+@media print {
+  .page-break {
+    page-break-after: always !important;
+    break-before: page !important; /* modern browsers */
+  }
+}
 </style>
 

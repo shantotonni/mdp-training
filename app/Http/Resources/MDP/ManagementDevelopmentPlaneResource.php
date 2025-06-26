@@ -25,8 +25,15 @@ class ManagementDevelopmentPlaneResource extends JsonResource
 //        $expload_areay_two = explode('*',$area_two_chunk);
 
         $age = Carbon::parse($this->DateOfBirth)->age;
-        $areaOneTitle = TrainingName::select('TrnName')->where('TrnCode','=', $this->AreaOne)->first();
-        $areaTwoTitle = TrainingName::select('TrnName')->where('TrnCode', '=',$this->AreaTwo)->first();
+
+       if (is_int($this->AreaOne)){
+           $areaOneTitle = TrainingName::select('TrnName')->where('TrnCode','=', $this->AreaOne)->first();
+           $areaTwoTitle = TrainingName::select('TrnName')->where('TrnCode', '=',$this->AreaTwo)->first();
+       }else{
+           $areaOneTitle=null;
+           $areaTwoTitle=null;
+       }
+
 
         return [
             'ID'=> $this->ID,
@@ -36,10 +43,10 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'to_period'=>$to_period,
             'FutureTrainingOneDetails'=> $this->FutureTrainingOneDetails,
             'AreaOne'=> $this->AreaOne,
-            'AreaOneTitle' => $areaOneTitle->TrnName,
+            'AreaOneTitle' => $areaOneTitle? $areaOneTitle->TrnName:$this->AreaOne,
             'FutureTrainingTwoDetails'=> $this->FutureTrainingTwoDetails,
             'AreaTwo'=> $this->AreaTwo,
-            'AreaTwoTitle' => $areaTwoTitle->TrnName,
+            'AreaTwoTitle' => $areaTwoTitle? $areaTwoTitle->TrnName:$this->AreaTwo,
 
             'CreatedDate'=> date('F j, Y',strtotime($this->CreatedDate)),
             'CurrentPosition'=> $this->CurrentPosition,
@@ -47,12 +54,11 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'Designation'=> $this->Designation,
             'Signature'=> $this->Signature,
             'EmployeeName'=> $this->EmployeeName,
-            'JoiningDate'=> date('Y-m-d',strtotime($this->JoiningDate)),
+            'JoiningDate'=> date('d-m-Y',strtotime($this->JoiningDate)),
             'Mobile'=> $this->Mobile,
-            'DateOfBirth'=> date('Y-m-d',strtotime($this->DateOfBirth)),
-//            'Age'=> $age,
+            'DateOfBirth'=> date('d-m-Y',strtotime($this->DateOfBirth)),
             'OfficialEmail'=> $this->OfficialEmail,
-            'PresentJobStartedOn'=> $this->PresentJobStartedOn ? date('Y-m-d',strtotime($this->PresentJobStartedOn)) : '',
+            'PresentJobStartedOn'=> $this->PresentJobStartedOn ? date('d-m-Y',strtotime($this->PresentJobStartedOn)) : date('d-m-Y',strtotime($this->JoiningDate)),
             'Qualification'=> $this->Qualification,
             'SuppervisorDesignation'=> $this->SuppervisorDesignation,
             'SuppervisorEmail'=> $this->SuppervisorEmail,
