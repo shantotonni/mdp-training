@@ -299,7 +299,6 @@ class MDPController extends Controller
         }
     }
 
-
     public function update(Request $request){
         DB::beginTransaction();
         try {
@@ -342,10 +341,10 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->Department = $request->Department;
             $ManagementDevelopmentPlane->OfficialEmail = $request->OfficialEmail;
             $ManagementDevelopmentPlane->Mobile = $request->Mobile;
-            $ManagementDevelopmentPlane->DateOfBirth = $request->DateOfBirth;
-            $ManagementDevelopmentPlane->JoiningDate = $request->JoiningDate;
+            $ManagementDevelopmentPlane->DateOfBirth = date('Y-m-d',strtotime($request->DateOfBirth));
+            $ManagementDevelopmentPlane->JoiningDate = date('Y-m-d',strtotime($request->JoiningDate));
             $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
-            $ManagementDevelopmentPlane->PresentJobStartedOn = $request->PresentJobStartedOn;
+            $ManagementDevelopmentPlane->PresentJobStartedOn = date('Y-m-d',strtotime($request->PresentJobStartedOn));
             $ManagementDevelopmentPlane->Qualification = $request->Qualification;
 
             $ManagementDevelopmentPlane->SuppervisorStaffID = $request->SuppervisorStaffID;
@@ -360,7 +359,9 @@ class MDPController extends Controller
 
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             $ManagementDevelopmentPlane->UpdatedDate = Carbon::now();
+
             if ($ManagementDevelopmentPlane->save()){
+
                 foreach ($initiative as $value){
 
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
@@ -413,6 +414,7 @@ class MDPController extends Controller
         $dateTo =  Carbon::now()->year;
 //        $training_history = DB::select("EXEC SP_TrainingUserReport '$mdp->StaffID','$dateFrom','$dateTo' ");
         $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$mdp->StaffID'");
+
         return response()->json([
             'training_list'=>$training_list_by_empcode,
             'training_history'=>$training_history,
@@ -635,7 +637,7 @@ class MDPController extends Controller
            'top_training' => $top_training
         ]);
     }
-    
+
     public function getEmployeeWiseReport(Request $request){
 
         $session = $request->sessionP;
@@ -864,31 +866,31 @@ class MDPController extends Controller
             $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
             $list = DB::select(DB::raw("exec usp_doLoadMDPEmployeeTrainingList '$request->Period','$empcode'" ));
             //dd($nextYear);
-            $newMdp = ManagementDevelopmentPlane::query()->where('AppraisalPeriod','=',$request->Period)->where('StaffID','=',$empcode)->first();
 
+            $newMdp = ManagementDevelopmentPlane::query()->where('AppraisalPeriod','=',$request->Period)->where('StaffID','=',$empcode)->first();
             if ($newMdp == null){
                 if (!empty($list)){
                     return response()->json([
-                        'status'            => 'success',
-                        'message'           => 'Welcome To MDP Training',
-                        'employee'          => new EmployeeResource($employee),
-                        'training_history'  => $training_history,
-                        'training_list'     => $dup,
-                        'dropDown'          => $dropDown,
-                        'period'            => $period,
+                        'status'=>'success',
+                        'message'=>'Welcome To MDP Training',
+                        'employee'=>new EmployeeResource($employee),
+                        'training_history'=>$training_history,
+                        'training_list'=>$dup,
+                        'dropDown'=>$dropDown,
+                        'period'=>$period,
                     ]);
                 }else{
                     return response()->json([
-                        'status'    => 'error',
-                        'message'   => 'Welcome To MDP Training Form!',
-                        'data'      => 'notEligible'
+                        'status'=>'error',
+                        'message'=>'Welcome To MDP Training Form!',
+                        'data'=>'notEligible'
                     ]);
                 }
             }else{
                 return response()->json([
-                    'status'    => 'error',
-                    'message'   => 'You have already submitted the MDP for this Year!',
-                    'data'      => 'alreadySubmitted'
+                    'status'=>'error',
+                    'message'=>'You have already submitted the MDP for this Year!',
+                    'data'=>'alreadySubmitted'
                 ]);
             }
         }else{

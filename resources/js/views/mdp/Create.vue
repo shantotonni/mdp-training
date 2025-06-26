@@ -11,15 +11,15 @@
               </router-link>
               <button type="button" class="btn btn-primary btn-sm" @click="reload">
                 <i class="fas fa-sync"></i>
+                Reload
               </button>
             </div>
           </div>
         </div>
       </breadcrumb>
-
       <div class="row" v-if="isFullPageLoading">
-        <div class="col-xl-12" v-if="cardShow && !moduleStatus">
-          <div class="row" v-if=" this.Type!=='admin' ">
+        <div class="col-xl-12" v-if="cardShow">
+          <div class="row" v-if=" this.form.Type!=='admin' && !moduleStatus">
             <div class="col-md-12">
               <div class="card">
                 <div class="datatable">
@@ -29,10 +29,10 @@
                         <div class="col-md-12 d-flex justify-content-center"  v-if="EligibleInfo==='notEligible'">
                           <div class="w-100 mt-5 p-4 bg-light border border-danger rounded shadow text-center" style="max-width: 600px;">
                             <h2 class="mb-3 fw-bold text-primary">
-                              Welcome to the MDP Training Form ({{ form.AppraisalPeriod }})
+                              Welcome to the MDP Training Form {{ form.AppraisalPeriod}}
                             </h2>
                             <div>
-                              <p class="text-secondary mb-3" >
+                              <p class="text-secondary mb-3">
                                 We're sorry — you're <strong class="text-danger">not eligible</strong> to fill out this form.
                               </p>
                               <p class="text-muted mb-4">
@@ -50,7 +50,7 @@
                         <div class="col-md-12 d-flex justify-content-center"  v-else-if="EligibleInfo==='alreadySubmitted'">
                           <div class="w-100 mt-5 p-4 bg-light border border-success rounded shadow text-center" style="max-width: 600px;">
                             <h2 class="mb-3 fw-bold text-primary">
-                              <p >Welcome to the MDP Training Form ({{ form.AppraisalPeriod }})</p>
+                              <p >Welcome to the MDP Training Form</p>
                             </h2>
                             <h5 class="mb-3 fw-bold text-primary">
                               <p class="text-success">You have already submitted the MDP for this Year.</p>
@@ -61,7 +61,7 @@
                         <div class="col-md-12 d-flex justify-content-center"  v-else>
                           <div class="w-100 mt-5 p-4 bg-light border border-warning rounded shadow text-center" style="max-width: 600px;">
                             <h2 class="mb-3 fw-bold text-primary">
-                              <p >Welcome to the MDP Training Form ({{ form.AppraisalPeriod }})</p>
+                              <p >Welcome to the MDP Training Form</p>
                             </h2>
                           </div>
                         </div>
@@ -72,7 +72,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
         <div class="col-xl-12" v-else>
@@ -99,7 +98,7 @@
                               <div class="form-group">
                                 <label>Staff ID</label>
                                 <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" :readonly="this.status==='admin'" @change="getEmployeeByStaffID" required>
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" readonly @change="getEmployeeByStaffID" required>
                                 <div class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -576,7 +575,7 @@
                 </div>
               </div>
             </div>
-          </div v-else>
+          </div>
         </div>
       </div>
       <div class="row" v-else>
@@ -659,11 +658,22 @@
 <!--    </div>-->
 
 
+
+
+
     </div>
     <data-export/>
     <div>
       <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
     </div>
+<!--    <div id="app">-->
+<!--      <cropper-->
+<!--          class="cropper" -->
+<!--          :src="form.Signature"-->
+<!--          :stencil-props="{  aspectRatio: 200/60  }"-->
+<!--          @change="change"-->
+<!--      ></cropper>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -769,6 +779,8 @@ export default {
       EligibleInfoMessage: '',
       status: '',
 
+
+
       cardShow: false,
       moduleStatus: false,
       PreLoader: false,
@@ -814,13 +826,12 @@ export default {
           // this.form.AppraisalPeriod = this.$route.params.YEAR;
           const response = await axios.get(baseurl + `api/mdp/edit/${this.$route.params.ID}/${this.$route.params.YEAR}`);
           const data = response.data.data;
-          console.log(response,'response')
           this.form.fill(data);
           this.SelectedAreaOne = data.AreaOne;
           this.SelectedAreaTwo = data.AreaTwo;
           this.form.training = data.training;
-          this.training_history = response.data.training_history;
           this.moduleStatus = true;
+
           await this.getEmployeeByStaffID();
           await this.getNewTrainingList();
         } catch (error) {
@@ -892,10 +903,8 @@ export default {
         this.isFullPageLoading=true
         this.status = response.data.status;
         if (response.data.status==='success'){
-
           this.cardShow=false;
           this.training_history = response.data.training_history;
-          console.log(this.training_history,'training_history')
           this.form.EmployeeName = response.data.employee.EmployeeName;
           this.form.Designation = response.data.employee.Designation;
           this.form.Department = response.data.employee.Department;
@@ -910,7 +919,7 @@ export default {
           this.form.Qualification = response.data.employee.Qualification;
           this.form.StaffID = response.data.employee.StaffID;
           this.dropDown = response.data.dropDown;
-          //this.training_list = response.data.training_list;
+          this.training_list = response.data.training_list;
           if (!this.moduleStatus){
             this.getNewTrainingList();
             // this.form.AppraisalPeriod = response.data.period;
@@ -979,6 +988,8 @@ export default {
           TrainingCode: null,
         };
       }
+
+      console.log('Mapped Training:', train);
     },
 
     async getNewTrainingList(){
@@ -986,6 +997,7 @@ export default {
       axios.get(baseurl+'api/get-new-training?StaffID='+this.form.StaffID
           +'&Period='+this.form.AppraisalPeriod
       ).then((response)=>{
+        console.log(response)
         this.newTrainingList = response.data.data;
         this.PreLoader = false;
       }).catch((error)=>{
@@ -1452,6 +1464,7 @@ export default {
         EmpCode: this.form.StaffID,
         SuperVisorEmpCode: this.form.SuppervisorStaffID,
       }).then((response)=>{
+        // console.log(response)
         if (response.data.status === 'error'){
           this.errorNoti(response.data.message);
           this.form.SuppervisorName = '';
@@ -1496,11 +1509,10 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
         this.$store.commit('me', response);
-        this.form.AppraisalPeriod = response.appraisalPeriod;
-        this.Type = response.payload.Type;
         if(response.payload.Type ==='employee'){
           this.form.StaffID = response.payload.EmpCode;
-
+          this.Type = response.payload.Type;
+          this.form.AppraisalPeriod = response.appraisalPeriod;
           this.getEmployeeByStaffID()
           $('#StaffID').attr('readonly', true);
         }
@@ -1584,7 +1596,7 @@ export default {
       }
     },
     change({coordinates, canvas}) {
-      //
+      console.log(coordinates, canvas)
     },
     //keep data in the localstorage as cache till 72h
     initFormDataState() {
@@ -1679,7 +1691,7 @@ export default {
           bus.$emit('data-table-import', dataSets, columns, 'Last Five Years Training History')
         }
       }).catch((error)=>{
-       //
+        console.log(response)
       })
     },
     modalHide(){
