@@ -50,7 +50,7 @@
                         <div class="col-md-12 d-flex justify-content-center"  v-else-if="EligibleInfo==='alreadySubmitted'">
                           <div class="w-100 mt-5 p-4 bg-light border border-success rounded shadow text-center" style="max-width: 600px;">
                             <h2 class="mb-3 fw-bold text-primary">
-                              <p >Welcome to the MDP Training Form</p>
+                              <p >Welcome to the MDP Training Form {{ form.AppraisalPeriod}}</p>
                             </h2>
                             <h5 class="mb-3 fw-bold text-primary">
                               <p class="text-success">You have already submitted the MDP for this Year.</p>
@@ -61,7 +61,7 @@
                         <div class="col-md-12 d-flex justify-content-center"  v-else>
                           <div class="w-100 mt-5 p-4 bg-light border border-warning rounded shadow text-center" style="max-width: 600px;">
                             <h2 class="mb-3 fw-bold text-primary">
-                              <p >Welcome to the MDP Training Form</p>
+                              <p >Welcome to the MDP Training Form {{ form.AppraisalPeriod}}</p>
                             </h2>
                           </div>
                         </div>
