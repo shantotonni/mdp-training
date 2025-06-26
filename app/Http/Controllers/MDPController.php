@@ -413,7 +413,6 @@ class MDPController extends Controller
         $dateTo =  Carbon::now()->year;
 //        $training_history = DB::select("EXEC SP_TrainingUserReport '$mdp->StaffID','$dateFrom','$dateTo' ");
         $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$mdp->StaffID'");
-
         return response()->json([
             'training_list'=>$training_list_by_empcode,
             'training_history'=>$training_history,
@@ -865,7 +864,7 @@ class MDPController extends Controller
             $training_history= DB::select("exec SP_doLoadMDPFiveYearsTraining '$empcode'");
             $list = DB::select(DB::raw("exec usp_doLoadMDPEmployeeTrainingList '$request->Period','$empcode'" ));
             //dd($nextYear);
-            $newMdp = ManagementDevelopmentPlane::query()->where('AppraisalPeriod','=','2025-2026')->where('StaffID','=',$empcode)->first();
+            $newMdp = ManagementDevelopmentPlane::query()->where('AppraisalPeriod','=',$request->Period)->where('StaffID','=',$empcode)->first();
 
             if ($newMdp == null){
                 if (!empty($list)){

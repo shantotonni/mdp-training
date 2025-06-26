@@ -155,7 +155,7 @@ class AuthController extends Controller
             'payload' => $payload,
             'departments' => $departments,
             'divisions' => $divisions,
-            'appraisalPeriod' => $period,
+            'appraisalPeriod' => config('app.taxYear'),
         ]);
     }
 

@@ -11,7 +11,6 @@
               </router-link>
               <button type="button" class="btn btn-primary btn-sm" @click="reload">
                 <i class="fas fa-sync"></i>
-                Reload
               </button>
             </div>
           </div>
@@ -19,8 +18,8 @@
       </breadcrumb>
 
       <div class="row" v-if="isFullPageLoading">
-        <div class="col-xl-12" v-if="cardShow">
-          <div class="row" v-if=" this.form.Type!=='admin' && !moduleStatus">
+        <div class="col-xl-12" v-if="cardShow && !moduleStatus">
+          <div class="row" v-if=" this.Type!=='admin' ">
             <div class="col-md-12">
               <div class="card">
                 <div class="datatable">
@@ -30,7 +29,7 @@
                         <div class="col-md-12 d-flex justify-content-center"  v-if="EligibleInfo==='notEligible'">
                           <div class="w-100 mt-5 p-4 bg-light border border-danger rounded shadow text-center" style="max-width: 600px;">
                             <h2 class="mb-3 fw-bold text-primary">
-                              Welcome to the MDP Training Form (2025-2026)
+                              Welcome to the MDP Training Form ({{ form.AppraisalPeriod }})
                             </h2>
                             <div>
                               <p class="text-secondary mb-3" >
@@ -51,7 +50,7 @@
                         <div class="col-md-12 d-flex justify-content-center"  v-else-if="EligibleInfo==='alreadySubmitted'">
                           <div class="w-100 mt-5 p-4 bg-light border border-success rounded shadow text-center" style="max-width: 600px;">
                             <h2 class="mb-3 fw-bold text-primary">
-                              <p >Welcome to the MDP Training Form</p>
+                              <p >Welcome to the MDP Training Form ({{ form.AppraisalPeriod }})</p>
                             </h2>
                             <h5 class="mb-3 fw-bold text-primary">
                               <p class="text-success">You have already submitted the MDP for this Year.</p>
@@ -62,7 +61,7 @@
                         <div class="col-md-12 d-flex justify-content-center"  v-else>
                           <div class="w-100 mt-5 p-4 bg-light border border-warning rounded shadow text-center" style="max-width: 600px;">
                             <h2 class="mb-3 fw-bold text-primary">
-                              <p >Welcome to the MDP Training Form</p>
+                              <p >Welcome to the MDP Training Form ({{ form.AppraisalPeriod }})</p>
                             </h2>
                           </div>
                         </div>
@@ -73,6 +72,7 @@
                 </div>
               </div>
             </div>
+
           </div>
         </div>
         <div class="col-xl-12" v-else>
@@ -99,7 +99,7 @@
                               <div class="form-group">
                                 <label>Staff ID</label>
                                 <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" readonly @change="getEmployeeByStaffID" required>
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" :readonly="this.status==='admin'" @change="getEmployeeByStaffID" required>
                                 <div class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -576,7 +576,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div v-else>
         </div>
       </div>
       <div class="row" v-else>
@@ -814,12 +814,13 @@ export default {
           // this.form.AppraisalPeriod = this.$route.params.YEAR;
           const response = await axios.get(baseurl + `api/mdp/edit/${this.$route.params.ID}/${this.$route.params.YEAR}`);
           const data = response.data.data;
+          console.log(response,'response')
           this.form.fill(data);
           this.SelectedAreaOne = data.AreaOne;
           this.SelectedAreaTwo = data.AreaTwo;
           this.form.training = data.training;
+          this.training_history = response.data.training_history;
           this.moduleStatus = true;
-
           await this.getEmployeeByStaffID();
           await this.getNewTrainingList();
         } catch (error) {
@@ -888,12 +889,13 @@ export default {
         EmpCode: this.form.StaffID,
         Period: this.form.AppraisalPeriod,
       }).then((response)=>{
-        console.log(response)
         this.isFullPageLoading=true
         this.status = response.data.status;
         if (response.data.status==='success'){
+
           this.cardShow=false;
           this.training_history = response.data.training_history;
+          console.log(this.training_history,'training_history')
           this.form.EmployeeName = response.data.employee.EmployeeName;
           this.form.Designation = response.data.employee.Designation;
           this.form.Department = response.data.employee.Department;
@@ -1494,10 +1496,11 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
         this.$store.commit('me', response);
+        this.form.AppraisalPeriod = response.appraisalPeriod;
+        this.Type = response.payload.Type;
         if(response.payload.Type ==='employee'){
           this.form.StaffID = response.payload.EmpCode;
-          this.Type = response.payload.Type;
-          this.form.AppraisalPeriod = response.appraisalPeriod;
+
           this.getEmployeeByStaffID()
           $('#StaffID').attr('readonly', true);
         }
