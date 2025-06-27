@@ -226,9 +226,9 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->OfficialEmail = $request->OfficialEmail;
             $ManagementDevelopmentPlane->Mobile = $request->Mobile;
             $ManagementDevelopmentPlane->DateOfBirth = $request->DateOfBirth;
-            $ManagementDevelopmentPlane->JoiningDate = $request->JoiningDate;
-            $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
-            $ManagementDevelopmentPlane->PresentJobStartedOn = $request->PresentJobStartedOn;
+            $ManagementDevelopmentPlane->JoiningDate = date('Y-m-d H:i:s', strtotime($request->JoiningDate))  ;
+            $ManagementDevelopmentPlane->CurrentPosition = date('Y-m-d H:i:s', strtotime($request->CurrentPosition))  ;
+            $ManagementDevelopmentPlane->PresentJobStartedOn = date('Y-m-d H:i:s', strtotime($request->PresentJobStartedOn));
             $ManagementDevelopmentPlane->Qualification = $request->Qualification;
             $ManagementDevelopmentPlane->SuppervisorStaffID = $request->SuppervisorStaffID;
             $ManagementDevelopmentPlane->SuppervisorName = $request->SuppervisorName;
@@ -874,7 +874,7 @@ class MDPController extends Controller
                         'status'=>'success',
                         'message'=>'Welcome To MDP Training',
                         'employee'=>new EmployeeResource($employee),
-                        'training_history'=>$training_history,
+//                        'training_history'=>$training_history,
                         'training_list'=>$dup,
                         'dropDown'=>$dropDown,
                         'period'=>$period,

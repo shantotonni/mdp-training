@@ -26,7 +26,7 @@ class ManagementDevelopmentPlaneResource extends JsonResource
 
         $age = Carbon::parse($this->DateOfBirth)->age;
 
-       if (is_int($this->AreaOne)){
+       if ($this->AreaOne){
            $areaOneTitle = TrainingName::select('TrnName')->where('TrnCode','=', $this->AreaOne)->first();
            $areaTwoTitle = TrainingName::select('TrnName')->where('TrnCode', '=',$this->AreaTwo)->first();
        }else{
