@@ -750,6 +750,7 @@ export default {
       }
     },
     store() {
+      alert('submit initial')
       this.errors = {};
 
       if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
@@ -764,11 +765,12 @@ export default {
       const formFieldsValid = this.validateFormFields(); // true = valid
 
       if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
+        alert('error')
          this.isSubmitting = false;
          this.PreLoader = false;
           return ;
       }else{
-
+        alert('submit success')
         const formData = this.buildFormData();
         this.isSubmitting = true;
         this.PreLoader = true;
