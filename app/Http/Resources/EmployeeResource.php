@@ -52,7 +52,7 @@ class EmployeeResource extends JsonResource
             //'PresentJobStartedOn' => isset($this->emphist) ? date('Y-m-d',strtotime($this->emphist->EffectiveDate)): '',
             'PresentJobStartedOn'   => isset($this->LastPromoDate) ? date('d-m-Y',strtotime($this->LastPromoDate)): date('d-m-Y',strtotime($this->JoiningDate)),
             'Qualification'         => isset($this->education) ? $this->education->Degree: '',
-            'JoiningDate'           => date('d-m-Y',strtotime($this->JoiningDate)),
+            'JoiningDate'           => $this->JoiningDate? date('d-m-Y',strtotime($this->JoiningDate)):'',
             'Grade'                 => $this->Grade,
             'Level'              => $category,
         ];
