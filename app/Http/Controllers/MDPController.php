@@ -161,7 +161,6 @@ class MDPController extends Controller
             $empcode = $payload->get('EmpCode');
             $role = $payload->get('Type');
             if ($role != 'admin'){
-
                 if ($empcode != $request->StaffID){
                     return response()->json([
                         'status' => 'error',
@@ -222,9 +221,9 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->Business = $request->Business;
             $ManagementDevelopmentPlane->OfficialEmail = $request->OfficialEmail;
             $ManagementDevelopmentPlane->Mobile = $request->Mobile;
-            $ManagementDevelopmentPlane->DateOfBirth = $request->DateOfBirth;
+            $ManagementDevelopmentPlane->DateOfBirth = date('Y-m-d',strtotime($request->DateOfBirth));
             $ManagementDevelopmentPlane->JoiningDate = date('Y-m-d H:i:s', strtotime($request->JoiningDate))  ;
-            $ManagementDevelopmentPlane->CurrentPosition = date('Y-m-d H:i:s', strtotime($request->CurrentPosition))  ;
+            $ManagementDevelopmentPlane->CurrentPosition = $request->CurrentPosition;
             $ManagementDevelopmentPlane->PresentJobStartedOn = date('Y-m-d H:i:s', strtotime($request->PresentJobStartedOn));
             $ManagementDevelopmentPlane->Qualification = $request->Qualification;
             $ManagementDevelopmentPlane->SuppervisorStaffID = $request->SuppervisorStaffID;
@@ -244,13 +243,12 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
 
             if ($ManagementDevelopmentPlane->save()){
-
                 foreach ($initiative as $value){
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
                     $MDPPersonalInitiative->Type  = $value['Type'];
-                    $MDPPersonalInitiative->Date  =  date("Y-m-d H:i:s", strtotime($value['Date'])) ;
+                    $MDPPersonalInitiative->Date = !empty($value['Date']) ? date("Y-m-d H:i:s", strtotime($value['Date'])) : null;
 
                     $MDPPersonalInitiative->save();
                 }
@@ -358,9 +356,7 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->UpdatedDate = Carbon::now();
 
             if ($ManagementDevelopmentPlane->save()){
-
                 foreach ($initiative as $value){
-
                     $MDPPersonalInitiative = new MDPPersonalInitiative();
                     $MDPPersonalInitiative->MDPID = $ManagementDevelopmentPlane->ID;
                     $MDPPersonalInitiative->Name  = $value['Name'];
@@ -368,6 +364,7 @@ class MDPController extends Controller
                     $MDPPersonalInitiative->Date  =  date("Y-m-d H:i:s", strtotime($value['Date'])) ;
                     $MDPPersonalInitiative->save();
                 }
+
                 foreach ($training as $item){
 
                     $MDPTraining = new MDPTraining();
@@ -505,7 +502,6 @@ class MDPController extends Controller
         return new ManagementDevelopmentPlanPrintCollection($allMdp);
 
     }
-
 
     public function mdpExport(Request $request){
         $session = $request->sessionP;
