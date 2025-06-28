@@ -77,8 +77,8 @@
         <div class="col-xl-12" v-else>
           <div class="row" >
             <div class="col-md-7">
-              <!--                   @submit.prevent="store()" @keydown="form.onKeydown($event)"-->
-              <form v-on:change="saveFormDataState()">
+              <!--                   @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()" -->
+              <form @submit.prevent="store()">
                 <div class="card">
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
@@ -213,31 +213,18 @@
                               </div>
                             </div>
                           </div>
-                          <!--                          <div class="col-md-4" >-->
-                          <!--                            <div class="form-group">-->
-                          <!--                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>-->
-                          <!--                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" -->
-                          <!--                                     :class="{ 'is-invalid': form.errors.has('Signature') }" required>-->
-                          <!--                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>-->
-                          <!--                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">-->
-                          <!--                            </div>-->
-                          <!--                          </div>-->
-                          <!--                          <div class="col-md-4">-->
-                          <!--                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>-->
-                          <!--                          </div>-->
                         </div>
                         <hr>
                       </div>
-                      <!--                    supervisor and training-->
+                      <!--supervisor and training-->
                       <div class="col-md-12">
                         <div class="row">
-                          <!--                          supervisor-->
-<!--                          27-->
+                          <!--supervisor-->
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Type your Supervisor Staff ID, then press Enter</label>
                               <input type="text" name="SuppervisorStaffID" v-model="form.SuppervisorStaffID" class="form-control"
-                                     :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @change="getSupervisorByStaffID && validateFormFields" required>
+                                     :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @keydown.enter.prevent="getSupervisorByStaffID" @change="validateFormFields" required>
                               <small class="error" v-if="form.errors.has('SuppervisorStaffID')" v-html="form.errors.get('SuppervisorStaffID')" />
                             </div>
                           </div>
@@ -330,8 +317,7 @@
                           </div>
                         </div>
                         <hr>
-                        <!--                        Required-->
-                        <!--                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'" style="width: 230px;height: 45px">Suggestive List</button>-->
+                        <!--Required-->
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
                         <hr>
@@ -358,50 +344,12 @@
                                   @input="onTrainingSelected($event, train)"
                               ></multiselect>
 
-
-
-                              <!--                              <select v-model="train.TrainingCode" name="Type" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }" required>-->
-                              <!--                                <option value="">Select Type</option>-->
-                              <!--                                <option :value="list.TrainingCode" v-for="(list,i) in newTrainingList" :key="i">{{list.TrainingTitle}}</option>-->
-                              <!--                              </select>-->
-
                               <small v-if="errors.RequiredIN && errors.RequiredIN[index2]" class="error">
                                 {{ errors.RequiredIN[index2].TrainingTitle}}
                               </small>
                               <small class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
                             </div>
                           </div>
-
-                          <!--                          PREVIOUS METHOD-->
-                          <div>
-                            <!--                            <div class="col-6 col-md-6" v-if="dropDown==='YES'">-->
-                            <!--                              <div class="form-group">-->
-                            <!--                                <label>Select Training Title</label>-->
-                            <!--                                <select v-model="train.TrainingTitle" name="Type" id="TrainingTitle" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingTitle') }" required>-->
-                            <!--                                  <option value="">Select Type</option>-->
-                            <!--                                  <option :value="list.TrainingTitle" v-for="(list,i) in training_list" :key="i">{{list.TrainingTitle}}</option>-->
-                            <!--                                </select>-->
-                            <!--                                <small v-if="errors.RequiredIN && errors.RequiredIN[index2]" class="error">-->
-                            <!--                                  {{ errors.RequiredIN[index2].TrainingTitle }}-->
-                            <!--                                </small>-->
-                            <!--                                <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />-->
-                            <!--                              </div>-->
-                            <!--                            </div>-->
-
-                            <!--                            <div class="col-4 col-md-4" v-else>-->
-                            <!--                              <div class="form-group">-->
-                            <!--                                <label>Select Training Title</label>-->
-                            <!--                                <input v-model="train.TrainingTitle" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="TrainingTitle" placeholder="Type Or Copy From Suggestive List" required>-->
-                            <!--                                <div class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />-->
-                            <!--                                <small  v-if="errors.RequiredIN?.[index2]?.TrainingTitle" class="error">-->
-                            <!--                                  {{ errors.RequiredIN[index2].TrainingTitle }}-->
-                            <!--                                </small>-->
-                            <!--                              </div>-->
-                            <!--                            </div>-->
-
-                          </div>
-                          <!--                          PREVIOUS METHOD ENDS HERE-->
-
 
                           <div class="col-2 col-md-2">
                             <div class="form-group">
@@ -470,8 +418,6 @@
                                       @tag="Level==='TOP'? addCustomTrainingA($event,'AreaOne' ):null"
                                       required>
                                   </multiselect>
-                                  <!--                                  <input v-model="form.AreaOne" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaOne') }"-->
-                                  <!--                                         @input="countSpace(form.AreaOne,'AreaOne','area')"   name="Title" placeholder="Title"  required>-->
                                   <small v-if="errors.AreaOne" class="error">{{ errors.AreaOne }}</small>
                                   <small class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
 
@@ -502,11 +448,8 @@
                                       placeholder="Select or Type Training"
                                       @tag="Level==='TOP'? addCustomTrainingA($event,'AreaTwo' ):null"
                                   ></multiselect>
-                                  <!--                                  <input v-model="form.AreaTwo" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('AreaTwo') }"-->
-                                  <!--                                         @input="countSpace(form.AreaTwo,'AreaTwo','area')"   name="Title" placeholder="Title"  required>-->
                                   <small v-if="errors.AreaTwo" class="error">{{ errors.AreaTwo }}</small>
                                   <small class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
-
 
                                   <br>
                                   <small>Explain how this training 2 will help the company.</small>
@@ -522,12 +465,7 @@
                         </div>
                         <!--                        submit-->
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-primary" :disabled="isSubmitting"  @click="store($event)">
-                            Submit
-                            <!--                                {{isSubmitting?'Submitting...':'Submit'}}-->
-                          </button>
-                          <!--                            <button  class="btn btn-secondary" @click="clearFormDataState">Clear Data</button>-->
-
+                          <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit</button>
                         </div>
                       </div>
                     </div>
@@ -623,7 +561,7 @@
             </div>
           </div>
           <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
-          <!--                                     Modal Footer -->
+          <!--Modal Footer -->
           <div class="modal-footer">
             <button class="btn btn-secondary btn-sm" data-dismiss="modal" @click="resetCropper">Cancel</button>
             <button class="btn btn-info btn-sm" @click="prepareCrop">Crop</button>
@@ -634,51 +572,11 @@
     </div>
     <div>
     <!--    modal-->
-
-<!--    <div class="modal fade bs-example-modal-lg" id="suggestiveModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">-->
-<!--      <div class="modal-dialog modal-lg">-->
-<!--        <div class="modal-content">-->
-<!--          <div class="modal-header">-->
-<!--            <h5 class="modal-title mt-0" id="myLargeModalLabel">Suggestive Learning Offering List</h5>-->
-<!--            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="modalHide()">×</button>-->
-<!--          </div>-->
-<!--          <div class="modal-body">-->
-<!--            <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">-->
-<!--              <thead>-->
-<!--              <tr>-->
-<!--                <th>Learning Topic</th>-->
-<!--              </tr>-->
-<!--              </thead>-->
-<!--              <tbody>-->
-<!--              <tr v-for="(suggestive, i) in suggestive_list" :key="i" v-if="suggestive_list.length">-->
-<!--                <td>{{ suggestive.TrainingTitle }}</td>-->
-<!--              </tr>-->
-<!--              </tbody>-->
-<!--            </table>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; /.modal-content &ndash;&gt;-->
-<!--      </div>-->
-<!--      &lt;!&ndash; /.modal-dialog &ndash;&gt;-->
-<!--    </div>-->
-
-
-
-
-
     </div>
     <data-export/>
     <div>
       <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
     </div>
-<!--    <div id="app">-->
-<!--      <cropper-->
-<!--          class="cropper" -->
-<!--          :src="form.Signature"-->
-<!--          :stencil-props="{  aspectRatio: 200/60  }"-->
-<!--          @change="change"-->
-<!--      ></cropper>-->
-<!--    </div>-->
   </div>
 </template>
 
@@ -809,7 +707,6 @@ export default {
   },
   created() {
     this.loadFormData();
-
   },
 
   methods: {
@@ -852,8 +749,8 @@ export default {
         await this.getNewTrainingList();
       }
     },
+    store() {
 
-    store(e) {
       this.errors = {};
 
       if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
@@ -868,12 +765,9 @@ export default {
       const formFieldsValid = this.validateFormFields(); // true = valid
 
       if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
-        e.preventDefault()
          this.isSubmitting = false;
          this.PreLoader = false;
-
-        return ;
-
+          return ;
       }else{
 
         const formData = this.buildFormData();
@@ -909,7 +803,7 @@ export default {
         EmpCode: this.form.StaffID,
         Period: this.form.AppraisalPeriod,
       }).then((response)=>{
-        this.isFullPageLoading=true
+        this.isFullPageLoading = true
         this.status = response.data.status;
         if (response.data.status==='success'){
           this.cardShow=false;
@@ -937,6 +831,7 @@ export default {
           this.EligibleInfoMessage = response.data.message;
           this.cardShow = true;
         }
+        this.PreLoader = false
 
       }).catch((error)=>{
 
@@ -974,7 +869,6 @@ export default {
             item.selectedTraining = null; // Or handle custom trainings
           }
         });
-
     },
     onTrainingSelected(selectedItem, train) {
       if (selectedItem && typeof selectedItem === 'object') {
@@ -993,10 +887,7 @@ export default {
           TrainingCode: null,
         };
       }
-
     },
-
-
     onTrainingCodePicked(selectedTraining, train) {
 
       if (selectedTraining && typeof selectedTraining === 'object') {
@@ -1016,7 +907,6 @@ export default {
       train.TrainingTitle = customEntry.TrainingTitle;
     },
     addCustomTrainingA(newTag,type, index = null) {
-
       const customTraining = {
         TrainingCode: null,
         TrainingTitle: newTag,
@@ -1035,8 +925,6 @@ export default {
       } else if (type === 'AreaTwo') {
         this.form.AreaTwo = customTraining;
       }
-
-
     },
     countSpace(val, type, module, index) {
       try {
@@ -1094,8 +982,6 @@ export default {
             if (type === 'personal' && this.errors.PersonalIN && typeof this.errors.PersonalIN === 'object') {
               this.errors.PersonalIN[index].Name = '';
             }
-            // if (type === 'AreaOne') this.errors.AreaOne = '';
-            // if (type === 'AreaTwo') this.errors.AreaTwo = '';
           }
         }
 
@@ -1108,34 +994,17 @@ export default {
 
       const oneWordCount = this.form.FutureTrainingOneDetails.trim().split(/\s+/).filter(Boolean).length;
       const twoWordCount = this.form.FutureTrainingTwoDetails.trim().split(/\s+/).filter(Boolean).length;
-      // const AreaOneCount = this.form.AreaOne.TrainingTitle.trim().split(/\s+/).filter(Boolean).length;
-      // const AreaTwoCount = this.form.AreaTwo.TrainingTitle.trim().split(/\s+/).filter(Boolean).length;
       const message = `Maximum 30 Words. Currently: `;
 
       if ( oneWordCount > 30) {
 
         this.form.errors.set('FutureTrainingOneDetails',  message +oneWordCount);
-        // this.errors.FutureTrainingOneDetails = `Maximum 30 Words. Currently: ${oneWordCount}`;
-        // this.errorNoti(this.errors.FutureTrainingOneDetails);
         hasError = true;
       }
       if (twoWordCount > 30) {
         this.form.errors.set('FutureTrainingTwoDetails',  message + oneWordCount);
-        // this.errors.FutureTrainingTwoDetails = `Maximum 30 Words. Currently: ${twoWordCount}`;
-        // this.errorNoti(this.errors.FutureTrainingTwoDetails);
         hasError = true;
       }
-      // if (AreaOneCount > 40) {
-      //
-      //   this.errors.AreaOne = `Maximum 40 Words.Currently: ${AreaOneCount}`;
-      //   // this.errorNoti(this.errors.AreaOne);
-      //   hasError = true;
-      // }
-      // if (AreaTwoCount > 40) {
-      //   this.errors.AreaTwo = `Maximum 40 Words.Currently: ${AreaTwoCount}`;
-      //   // this.errorNoti(this.errors.AreaTwo);
-      //   hasError = true;
-      // }
       return hasError;
     },
     validateInitiatives() {
@@ -1177,7 +1046,6 @@ export default {
         }else {
           this.errors.PersonalIN[index].Type = ''
         }
-
         if (!item.Date) {
           this.errors.PersonalIN[index].Date = 'Date is required.';
           // this.errorNoti(this.errors.PersonalIN[index].Date);
@@ -1285,36 +1153,19 @@ export default {
         'SuppervisorStaffID', 'AreaOne',
         'FutureTrainingOneDetails', 'AreaTwo', 'FutureTrainingTwoDetails'
       ];
-
       for (const field of requiredFields) {
         if (!this.form[field]) {
           const message = `${field} is required.`;
           this.form.errors.set(field, message);
-          // this.errorNoti(message);
-          // this.$nextTick(() => {
-          //   const fieldElement = this.$refs[field];
-          //
-          //   if (fieldElement) {
-          //     // If it's a native input element
-          //     if (fieldElement.focus) {
-          //       fieldElement.focus();
-          //     }
-          //
-          //     // If it's a Vue component (like <multiselect>)
-          //     if (fieldElement.$el && fieldElement.$el.scrollIntoView) {
-          //       fieldElement.$el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          //     } else if (fieldElement.scrollIntoView) {
-          //       // Native element fallback
-          //       fieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          //     }
-          //   }
-          // });
-
+          this.form.SuppervisorName = '';
+          this.form.SuppervisorDesignation = '';
+          this.form.SuppervisorEmail = '';
+          this.form.SuppervisorMobile = '';
           return false;
+        }else {
+          this.form.errors.clear(field);
         }
-
       }
-
       for (const [i, item] of this.form.initiative.entries()) {
         if (!item.Name || !item.Type || !item.Date) {
           const message=`Personal Initiative ${i + 1} is incomplete.`;
@@ -1323,23 +1174,13 @@ export default {
           return false;
         }
       }
-
       for (const [i, item] of this.form.training.entries()) {
-        // if (!item.TrainingTitle || !item.TrainingType || !item.TrainingDate) {
         if (!item.TrainingTitle) {
-          // this.errorNoti(` Required Training ${i + 1} is incomplete.`);
           const message=`Required Training ${i + 1} is incomplete.`;
           this.form.errors.set(item.TrainingTitle, message);
-          // this.errorNoti(message);
           return false;
         }
       }
-
-      // if (!this.croppedBlob) {
-      //   this.errorNoti('Please crop the signature image.');
-      //   return false;
-      // }
-
       return true;
     },
     buildFormData() {
@@ -1383,7 +1224,6 @@ export default {
       compareList.push(
           { key: 'AreaOne', section: 'titles', label: 'Future Training 1', value: this.form.AreaOne.TrainingTitle?.trim() || '' },
           { key: 'AreaTwo', section: 'titles', label: 'Future Training 2', value: this.form.AreaTwo.TrainingTitle?.trim() || '' },
-
           { key: 'FutureTrainingOneDetails', section: 'titles', label: 'Future Training Details 1', value: this.form.FutureTrainingOneDetails?.trim() || '' },
           { key: 'FutureTrainingTwoDetails', section: 'titles', label: 'Future Training Details 2', value: this.form.FutureTrainingTwoDetails?.trim() || '' }
       );
@@ -1449,6 +1289,7 @@ export default {
       return hasError;
     },
     getSupervisorByStaffID(){
+      const formFieldsValid = this.validateFormFields(); // true = valid
       axios.post(baseurl +'api/get-supervisor-by-employee-code/', {
         EmpCode: this.form.StaffID,
         SuperVisorEmpCode: this.form.SuppervisorStaffID,
@@ -1513,11 +1354,7 @@ export default {
 
         $('#cropperModal').modal('show');
       }
-
-
     },
-
-
     prepareCrop() {
       const canvas = this.$refs.cropper.getCroppedCanvas({
         width: 200,
@@ -1557,12 +1394,7 @@ export default {
       this.croppedBlob = null
 
       $('#cropperModal').modal('hide')
-      // ✅ Reset the input field so selecting same image again will trigger change
-      this.$nextTick(() => {
-        this.$refs.fileInput.value = null;
-      });
     },
-
     changeImage(event) {
       let file = event.target.files[0];
       let reader = new FileReader();
@@ -1640,7 +1472,6 @@ export default {
         this.errorNoti('No more than 5 training entries can be added!');
       }
     },
-
     deleteFind: function (index) {
       this.form.initiative.splice(index, 1);
     },

@@ -130,10 +130,9 @@ class MDPController extends Controller
         }
     }
 
-    public function store(Request  $request){
+    public function store(ManagementDevelopmentPlaneRequest  $request){
 
         DB::beginTransaction();
-
         try {
             $validator = Validator::make($request->all(), [
                 'AppraisalPeriod'   =>'required',
