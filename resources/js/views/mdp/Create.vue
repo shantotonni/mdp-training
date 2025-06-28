@@ -393,7 +393,7 @@
                         </div>
 
                         <hr>
-                        <!--                        future-->
+                        <!--future-->
                         <div class="row">
                           <p style="font-size: 13px;font-weight: bold;color:#0000B9"> B. For development to take future responsibilities
                             Other than those mentioned in A, list below two areas of personal development/training that you would like to see
@@ -465,7 +465,7 @@
                             </div>
                           </div>
                         </div>
-                        <!--                        submit-->
+                        <!-- submit-->
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit</button>
                         </div>
@@ -683,8 +683,6 @@ export default {
       EligibleInfo: '',
       EligibleInfoMessage: '',
       status: '',
-
-
 
       cardShow: false,
       moduleStatus: false,
@@ -1158,10 +1156,6 @@ export default {
         if (!this.form[field]) {
           const message = `${field} is required.`;
           this.form.errors.set(field, message);
-          this.form.SuppervisorName = '';
-          this.form.SuppervisorDesignation = '';
-          this.form.SuppervisorEmail = '';
-          this.form.SuppervisorMobile = '';
           return false;
         }else {
           //shanto bhai this field is not working properly for areaone
@@ -1217,9 +1211,7 @@ export default {
       return formData;
     },
     findDuplicateTitle() {
-
       let hasError = false;
-
       const compareList = [];
 
       // Add titles
@@ -1291,7 +1283,6 @@ export default {
       return hasError;
     },
     getSupervisorByStaffID(){
-      const formFieldsValid = this.validateFormFields(); // true = valid
       axios.post(baseurl +'api/get-supervisor-by-employee-code/', {
         EmpCode: this.form.StaffID,
         SuperVisorEmpCode: this.form.SuppervisorStaffID,
