@@ -36,17 +36,17 @@ class EmployeeResource extends JsonResource
             }
         }
         return [
-            'StaffID'               => $this->EmpCode,
+            'StaffID'               => $this->EmpCode?$this->EmpCode:'',
             'EmployeeName'          => isset($this->personal) ? $this->personal->Name: '',
-            'DivCode'               => $this->DivCode,
+            'DivCode'               => $this->DivCode?$this->DivCode:'',
             'Division'              => isset($this->division) ? $this->division->DivName: '',
-            'DeptCode'              => $this->DeptCode,
+            'DeptCode'              => $this->DeptCode?$this->DeptCode:'',
             'Department'            => isset($this->department) ? $this->department->DeptName: '',
             'Business'              => isset($this->department) ? $this->department->DeptUnit: '',
-            'DesgCode'              => $this->DesgCode,
+            'DesgCode'              => $this->DesgCode?$this->DesgCode:'',
             'Designation'           => isset($this->designation) ? $this->designation->DesgName: '',
             'OfficialEmail'         => isset($this->email) ? $this->email->EmailID: '',
-            'Mobile'                => $mobile,
+            'Mobile'                => $mobile?$mobile:'',
             'DateOfBirth'           => isset($this->personal) ? date('d-m-Y',strtotime($this->personal->BirthDate)): '',
             'CurrentPosition'       => isset($this->designation) ? $this->designation->DesgName: '',
             //'PresentJobStartedOn' => isset($this->emphist) ? date('Y-m-d',strtotime($this->emphist->EffectiveDate)): '',
