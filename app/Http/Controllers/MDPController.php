@@ -761,23 +761,15 @@ class MDPController extends Controller
 //        dd($request->session);
         $period = $request->session;
         $session = substr($period, 0, 4);
-        $mdp = ManagementDevelopmentPlane::select(DB::raw("left(AppraisalPeriod,4) AS AppraisalPeriod"))
-                ->where(DB::raw("Right(AppraisalPeriod,4)"),'=',$session)->orderbydesc('ID')->first();
 
-        if ($mdp->AppraisalPeriod <= $session){
-            $Training = MDPTraining::Select('TrainingTitle','TrainingCode')
-                        ->whereIsNotNull('TrainingTitle')
-                        ->orderbydesc('TrainingCode')
-                        ->distinct()
-                        ->get();
-//
-//                DB::select('
-//            SELECT
-//                DISTINCT TrainingTitle
-//            From MDPTraining
-//            WHERE TrainingTitle IS NOT NULL
-//            ORDER BY 1
-//        ');
+        if ($period != '2025-2026'){
+            $Training=   DB::select('
+            SELECT
+                DISTINCT TrainingTitle
+            From MDPTraining
+            WHERE TrainingTitle IS NOT NULL
+            ORDER BY 1
+        ');
         }else{
             $Training = TrainingName::Select(DB::raw("TrnCode as TrainingCode,TrnName as TrainingTitle"))
                         ->orderbydesc('TrnCode')
