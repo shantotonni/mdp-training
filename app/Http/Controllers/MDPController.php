@@ -130,7 +130,7 @@ class MDPController extends Controller
         }
     }
 
-    public function store(ManagementDevelopmentPlaneRequest  $request){
+    public function store(Request  $request){
 
         DB::beginTransaction();
         try {
@@ -153,7 +153,7 @@ class MDPController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => $validator->errors()->first()]);
+                    'message' => $validator->errors()]);
             }
 
             $token = $request->bearerToken();

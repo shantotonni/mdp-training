@@ -776,9 +776,20 @@ export default {
           headers: { 'Content-Type': 'multipart/form-data' },
         }).then(response => {
           if (response.data.status ==="error"){
-            this.errorNoti(response.data.message);
+
+            if (response.data.errors) {
+              for (const field in response.data.errors) {
+                this.form.errors.set(field, response.data.errors[field][0]);
+              }
+            } else {
+              this.errorNoti(response.data.message);
+            }
             this.PreLoader = false;
             this.isSubmitting = false;
+
+            // this.errorNoti(response.data.message);
+            // this.PreLoader = false;
+            // this.isSubmitting = false;
           }else{
             this.successNoti(response.data.message);
             this.redirect(this.mainOrigin + 'mdp-list');
