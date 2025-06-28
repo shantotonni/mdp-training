@@ -20,7 +20,7 @@
                             <div class="card-body">
                               <div style="text-align: center">
                                 <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
-                                <h3>Personal Training Commitment 2024-2025</h3>
+                                <h3>Personal Training Commitment 2025-2026</h3>
                               </div>
                               <div class="first_part">
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
@@ -185,5 +185,11 @@ export default {
  @media print{@page {size: landscape}}
  p{
    margin:0
+ }
+ @media print {
+   .page-break {
+     page-break-after: always !important;
+     break-before: page !important; /* modern browsers */
+   }
  }
 </style>
