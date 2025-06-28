@@ -354,7 +354,9 @@
                           <div class="col-2 col-md-2">
                             <div class="form-group">
                               <label>Competency Type</label>
-                              <select v-model="train.TrainingType"  @change="validateRequiredTraining" name="TrainingType" id="TrainingType" class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }" required>
+                              <select v-model="train.TrainingType"
+                                      :disabled="train.selectedTraining" name="TrainingType" id="TrainingType"
+                                      class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }" required>
                                 <option value="">Select Type</option>
                                 <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
@@ -415,6 +417,7 @@
                                       label="TrainingTitle"
                                       track-by="TrainingCode"
                                       placeholder="Select or Type Training"
+                                      @change="validateFormFields"
                                       @tag="Level==='TOP'? addCustomTrainingA($event,'AreaOne' ):null"
                                       required>
                                   </multiselect>
@@ -424,7 +427,7 @@
                                   <br>
                                   <small>Explain how this training 1 will help the company.</small>
                                   <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control"  :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }"
-                                         style="height: 90px" name="Reason" placeholder="Max 30 words" @input="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne','future')"  required>
+                                         style="height: 90px;font-size: 16px !important;" name="Reason" placeholder="Max 30 words" @input="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne','future')"  required>
                                   <small class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
                                   <small v-if="errors.FutureTrainingOneDetails" class="error">{{ errors.FutureTrainingOneDetails }}</small>
                                 </div>
@@ -444,7 +447,6 @@
                                       :required="true"
                                       label="TrainingTitle"
                                       track-by="TrainingCode"
-
                                       placeholder="Select or Type Training"
                                       @tag="Level==='TOP'? addCustomTrainingA($event,'AreaTwo' ):null"
                                   ></multiselect>
@@ -453,8 +455,8 @@
 
                                   <br>
                                   <small>Explain how this training 2 will help the company.</small>
-                                  <input v-model="form.FutureTrainingTwoDetails" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }"
-                                         style="height: 90px" name="Reason" placeholder="Max 30 words"  @input="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo','future')" required>
+                                  <input v-model="form.FutureTrainingTwoDetails"  type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }"
+                                         style="height: 90px ;font-size: 16px !important;" name="Reason" placeholder="Max 30 words"  @input="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo','future')" required>
                                   <small class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />
                                   <small v-if="errors.FutureTrainingTwoDetails" class="error">{{ errors.FutureTrainingTwoDetails }}</small>
 
@@ -750,7 +752,6 @@ export default {
       }
     },
     store() {
-
       this.errors = {};
 
       if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
@@ -1163,6 +1164,7 @@ export default {
           this.form.SuppervisorMobile = '';
           return false;
         }else {
+          //shanto bhai this field is not working properly for areaone
           this.form.errors.clear(field);
         }
       }
@@ -1467,7 +1469,7 @@ export default {
         if (!Array.isArray(this.form.initiative)) {
           this.form.initiative = [];
         }
-        this.form.initiative.push({ Name: '', Type: '', Date: `${this.highestYear}-06-01` });
+        this.form.initiative.push({ Name: '', Type: '', Date: moment().format('DD-MM-YYYY') });
       } else {
         this.errorNoti('No more than 5 training entries can be added!');
       }

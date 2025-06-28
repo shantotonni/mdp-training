@@ -20,6 +20,7 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
         return [
             'data'=>$this->collection->transform(function ($mdp) use($empcode){
                 $areaOneTitle = TrainingName::select('TrnName')->where('TrnCode','=', $mdp->AreaOne)->first();
+
                 $areaTwoTitle = TrainingName::select('TrnName')->where('TrnCode', '=',$mdp->AreaTwo)->first();
                 if ($mdp->SuppervisorStaffID == $empcode){
                     $superVisor  = 'Y';
@@ -29,7 +30,8 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                 $i=0;
                 $array =  [
                     'ID'=>  $mdp->ID,
-                    'SubmittedDateAndTime'         =>date("m/d/Y ", strtotime($mdp->CreatedDate)),
+
+                    'SubmittedDateAndTime'         => date('m/d/Y h:i:s A', strtotime($mdp->CreatedDate)) ,
                     'AppraisalPeriod'              => $mdp->AppraisalPeriod,
                     'StaffID'                       => $mdp->StaffID,
                     'EmployeeName'      => $mdp->EmployeeName,
@@ -68,11 +70,11 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
                     $array['RequiredPlannedDate' .'-'. $countRe]      = isset($row['TrainingDate'])?date("m/d/y",strtotime($row['TrainingDate'])):'';
                 }
 
-                $array['FutureTrainingTitle-1'] = $areaOneTitle->TrnName;
+                $array['FutureTrainingTitle-1'] = $areaOneTitle?$areaOneTitle->TrnName: $mdp->AreaOne;
                 $array[' FutureTrainingDetails-1']   = $mdp->FutureTrainingOneDetails;
 
 
-                $array['FutureTrainingTitle-2 '] = $areaTwoTitle->TrnName ?? '';
+                $array['FutureTrainingTitle-2 '] = $areaTwoTitle?$areaTwoTitle->TrnName: $mdp->AreaTwo;
                 $array['FutureTrainingDetails-2']   = $mdp->FutureTrainingTwoDetails ?? ''; // use null coalescing if it might not exist
 
 
