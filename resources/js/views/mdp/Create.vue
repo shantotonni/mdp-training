@@ -522,7 +522,7 @@
                         </div>
                         <!--                        submit-->
                         <div class="modal-footer">
-                          <button type="submit" class="btn btn-primary" :disabled="isSubmitting"  @click="store($event)">
+                          <button type="button" class="btn btn-primary" :disabled="isSubmitting"  @click="store($event)">
                             Submit
                             <!--                                {{isSubmitting?'Submitting...':'Submit'}}-->
                           </button>
