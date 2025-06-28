@@ -235,9 +235,9 @@
 <!--                          27-->
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label>Supervisor Staff ID</label>
+                              <label>Type your Supervisor Staff ID, then press Enter</label>
                               <input type="text" name="SuppervisorStaffID" v-model="form.SuppervisorStaffID" class="form-control"
-                                     :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @input="getSupervisorByStaffID" @change="validateFormFields" required>
+                                     :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @change="getSupervisorByStaffID && validateFormFields" required>
                               <small class="error" v-if="form.errors.has('SuppervisorStaffID')" v-html="form.errors.get('SuppervisorStaffID')" />
                             </div>
                           </div>
@@ -839,13 +839,11 @@ export default {
           this.SelectedAreaTwo = data.AreaTwo;
           this.form.training = data.training;
           this.moduleStatus = true;
-          console.log(this.SelectedAreaOne,'this.SelectedAreaOne')
          this.getTrainingHistory()
           // await this.getEmployeeByStaffID();
           await this.getNewTrainingList();
           // await this.setEditTrainingList();
         } catch (error) {
-          console.error('Error loading form data:', error);
         }
       } else {
         this.getUserData();
@@ -996,7 +994,6 @@ export default {
         };
       }
 
-      console.log('Mapped Training:', train);
     },
 
 
@@ -1452,10 +1449,6 @@ export default {
       return hasError;
     },
     getSupervisorByStaffID(){
-      this.form.SuppervisorName = '';
-      this.form.SuppervisorDesignation = '';
-      this.form.SuppervisorEmail = '';
-      this.form.SuppervisorMobile = '';
       axios.post(baseurl +'api/get-supervisor-by-employee-code/', {
         EmpCode: this.form.StaffID,
         SuperVisorEmpCode: this.form.SuppervisorStaffID,
@@ -1463,11 +1456,6 @@ export default {
         // console.log(response)
         if (response.data.status === 'error'){
           this.errorNoti(response.data.message);
-          this.form.SuppervisorName = '';
-          this.form.SuppervisorDesignation = '';
-          this.form.SuppervisorEmail = '';
-          this.form.SuppervisorMobile = '';
-          this.form.SuppervisorStaffID = '';
         }else {
           this.form.SuppervisorName = response.data.employee.SuppervisorName;
           this.form.SuppervisorDesignation = response.data.employee.SuppervisorDesignation;
@@ -1675,7 +1663,6 @@ export default {
     getTrainingHistory(){
       axios.get(baseurl +'api/mdp/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
         let dataSets = response.data.training_history
-        console.log(response.data.training_history ,'this.form.training_history ')
         if (dataSets){
           this.training_history =response.data.training_history
         }else{

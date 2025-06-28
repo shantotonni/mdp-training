@@ -926,50 +926,51 @@ class MDPController extends Controller
     }
 
     public function getSupervisorByEmployeeCode(Request $request){
+        if ($request->SuperVisorEmpCode === $request->EmpCode){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Same Employee Code'
+            ]);
+        }
+        $empcode = $request->SuperVisorEmpCode;
+        $empcodelength = strlen($empcode);
+        if ($empcodelength == 3){
+            $empcode = '00'.$empcode;
+        }elseif ($empcodelength == 4){
+            $empcode = '0'.$empcode;
+        }else{
+            $empcode = $empcode;
+        }
 
         $first_character = mb_substr($request->SuperVisorEmpCode, 0, 1);
         if ($first_character !== 'C'){
-            if ($request->SuperVisorEmpCode === $request->EmpCode){
+
+            if (Employee::where('EmpCode', $empcode)->exists()){
+                $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education')->first();
+
+                return response()->json([
+                    'employee'=>new SupervisorResource($employee),
+                ]);
+            }else{
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Same Employee Code'
+                    'message' => 'Invalid Employee Code'
                 ]);
             }
-            $empcode = $request->SuperVisorEmpCode;
-            $empcodelength = strlen($empcode);
-            if ($empcodelength == 3){
-                $empcode = '00'.$empcode;
-            }elseif ($empcodelength == 4){
-                $empcode = '0'.$empcode;
-            }else{
-                $empcode = $empcode;
-            }
-            $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education')->first();
-            return response()->json([
-                'employee'=>new SupervisorResource($employee),
-            ]);
+
         }else{
-
-            if ($request->SuperVisorEmpCode === $request->EmpCode){
+            if (ContactPersonal::where('EmpCode', $empcode)->exists()){
+                $employee = ContactPersonal::where('EmpCode', $empcode)->with('department','designation')->first();
+                return response()->json([
+                    'employee'=>new ContSupervisorResource($employee),
+                ]);
+            }else{
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Same Employee Code'
+                    'message' => 'Invalid Employee Code'
                 ]);
             }
-            $empcode = $request->SuperVisorEmpCode;
-            $empcodelength = strlen($empcode);
-            if ($empcodelength == 3){
-                $empcode = '00'.$empcode;
-            }elseif ($empcodelength == 4){
-                $empcode = '0'.$empcode;
-            }else{
-                $empcode = $empcode;
-            }
 
-            $employee = ContactPersonal::where('EmpCode', $empcode)->with('department','designation')->first();
-            return response()->json([
-                'employee'=>new ContSupervisorResource($employee),
-            ]);
         }
     }
 
