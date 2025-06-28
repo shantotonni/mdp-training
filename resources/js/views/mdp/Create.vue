@@ -134,7 +134,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Official Email</label>
-                              <input type="email" name="OfficialEmail" v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }" @change="validateFormFields" required>
+                              <input type="email" name="OfficialEmail" v-model="form.OfficialEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('OfficialEmail') }" required>
                               <small v-if="form.OfficialEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.OfficialEmail)" class="text-danger">
                                 Invalid email format.
                               </small>
@@ -144,7 +144,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Mobile</label>
-                              <input type="text" name="Mobile" v-model="form.Mobile" class="form-control" :class="{ 'is-invalid': form.errors.has('Mobile') }" @change="validateFormFields"  maxlength="11"
+                              <input type="text" name="Mobile" v-model="form.Mobile" class="form-control" :class="{ 'is-invalid': form.errors.has('Mobile') }" maxlength="11"
                                      pattern="01[0-9]{9}" required>
                               <small v-if="form.Mobile && !/^01[0-9]{9}$/.test(form.Mobile)" class="text-danger">
                                 Invalid mobile number. Must start with 01 and be 11 digits long.
@@ -162,7 +162,6 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Joining Date</label>
-                              <!--                              <datepicker v-model="form.JoiningDate" :format="customFormatter" readonly placeholder="Enter Date" input-class="form-control"></datepicker>-->
                               <input type="text" name="JoiningDate" v-model="form.JoiningDate" readonly class="form-control"
                                      :class="{ 'is-invalid': form.errors.has('JoiningDate') }" required>
                               <small class="error" v-if="form.errors.has('JoiningDate')" v-html="form.errors.get('JoiningDate')" />
@@ -180,8 +179,6 @@
                               <label>Present Job Started On</label>
                               <input type="text" name="PresentJobStartedOn" v-model="form.PresentJobStartedOn" readonly class="form-control"
                                      :class="{ 'is-invalid': form.errors.has('PresentJobStartedOn') }" required>
-                              <!--                                  <datepicker v-model="form.PresentJobStartedOn" :format="customFormatter" readonly input-class="form-control" required></datepicker>-->
-                              <!--                              <input type="text" name="PresentJobStartedOn" v-model="form.PresentJobStartedOn" class="form-control" :class="{ 'is-invalid': form.errors.has('PresentJobStartedOn') }">-->
                               <small class="error" v-if="form.errors.has('PresentJobStartedOn')" v-html="form.errors.get('PresentJobStartedOn')" />
                             </div>
                           </div>
@@ -195,9 +192,7 @@
                           <!--                          signature-->
                           <div class="col-md-4" v-if="!moduleStatus">
                             <div class="form-group">
-                              <label>Signature
-                                <!--                                (<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)-->
-                              </label>
+                              <label>Signature</label>
                               <!-- Trigger -->
                               <input type="file" @change="onFileChange"  ref="fileInput" accept="image/*" :disabled="previewUrl" required/>
 
@@ -224,7 +219,7 @@
                             <div class="form-group">
                               <label>Type your Supervisor Staff ID, then press Enter</label>
                               <input type="text" name="SuppervisorStaffID" v-model="form.SuppervisorStaffID" class="form-control"
-                                     :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }" @keydown.enter.prevent="getSupervisorByStaffID" @change="validateFormFields" required>
+                                     :class="{ 'is-invalid': form.errors.has('SuppervisorStaffID') }"  @change="getSupervisorByStaffID" required>
                               <small class="error" v-if="form.errors.has('SuppervisorStaffID')" v-html="form.errors.get('SuppervisorStaffID')" />
                             </div>
                           </div>
@@ -261,11 +256,11 @@
                           </div>
                         </div>
                         <hr>
-                        <!--                        training-->
+                        <!--training-->
                         <p style="font-size: 13px;font-weight:bold;color:#0000B9">A. To improve the performance of your present job, list below the areas where you feel that you require additional knowledge or better understanding.
                           Which you will acquire at your personal initiative:</p>
                         <hr>
-                        <!--                        Personal-->
+                        <!--Personal-->
                         <h4 style="font-size: 18px">Personal Initiative</h4>
                         <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
                           <div class="col-6 col-md-6">
@@ -322,7 +317,7 @@
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
                         <hr>
                         <div class="row" v-for="(train,index2) in form.training">
-                          <!--                          v-if="dropDown==='YES'"-->
+                          <!--v-if="dropDown==='YES'"-->
                           <div class="col-6 col-md-6" >
                             <div class="form-group">
                               <label v-if="newTrainingList">Select Training Title</label>

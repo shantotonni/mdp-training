@@ -140,7 +140,7 @@ class MDPController extends Controller
                 'EmployeeName'      =>'required',
                 'Designation'       =>'required',
                 'Department'        =>'required',
-                'OfficialEmail'=>'required',
+                'OfficialEmail'     =>'required',
                 'Mobile'            =>'required|min:11|max:11',
                 'JoiningDate'       =>'required',
                 'CurrentPosition'   =>'required',
@@ -155,7 +155,6 @@ class MDPController extends Controller
                     'status' => 'error',
                     'message' => $validator->errors()->first()]);
             }
-
 
             $token = $request->bearerToken();
             $payload = JWTAuth::setToken($token)->getPayload();
@@ -179,7 +178,6 @@ class MDPController extends Controller
                     ]);
                 }
             }
-
 
             $exist_check = ManagementDevelopmentPlane::where('AppraisalPeriod',$request->AppraisalPeriod)->where('StaffID',$request->StaffID)->exists();
             if ($exist_check){
@@ -421,6 +419,7 @@ class MDPController extends Controller
             'data'=>new ManagementDevelopmentPlaneResource($mdp)
         ]);
     }
+
     public function testsendemail(){
 
         //$data = array();
@@ -490,6 +489,7 @@ class MDPController extends Controller
         $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
         return new ManagementDevelopmentPlaneResource($mdp);
     }
+
     public function allMDPPrint(Request $request){
         $mdpIds = array_map('intval', explode(',', $request->mdpIds));
 
