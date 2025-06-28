@@ -70,8 +70,8 @@
                                     <tr>
                                       <td>Personal Development / Training to Deliver Future Job Responsibilities</td>
                                       <td>
-                                        <p>{{ mdplist.AreaOne }}</p>
-                                        <p>{{ mdplist.AreaTwo }}</p>
+                                        <p>{{ mdplist.AreaOneTitle }}</p>
+                                        <p>{{ mdplist.AreaTwoTitle }}</p>
                                       </td>
                                       <td><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ init.Type }}</p></td>
                                       <td style="width: 8%"><p v-for="(init, i) in initiative" :key="i" v-if="initiative.length">{{ customFormatter(init.Date) }}</p></td>
