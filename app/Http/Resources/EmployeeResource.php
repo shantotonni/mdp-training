@@ -35,6 +35,7 @@ class EmployeeResource extends JsonResource
                 $category = 'TOP';
             }
         }
+
         return [
             'StaffID'               => $this->EmpCode?$this->EmpCode:'',
             'EmployeeName'          => isset($this->personal) ? $this->personal->Name: '',
