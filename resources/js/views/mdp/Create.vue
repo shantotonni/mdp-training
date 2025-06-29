@@ -76,7 +76,7 @@
         </div>
         <div class="col-xl-12" v-else>
           <div class="row" >
-            <div class="col-md-7">
+            <div class="col-md-8">
               <!--                   @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()" -->
               <form @submit.prevent="store()">
                 <div class="card">
@@ -263,10 +263,10 @@
                         <!--Personal-->
                         <h4 style="font-size: 18px">Personal Initiative</h4>
                         <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
-                          <div class="col-6 col-md-6">
+                          <div class="col-5 col-md-5">
                             <div class="form-group">
                               <label>Training Title</label>
-                              <input style="font-size: 16px !important;" v-model="initiat.Name"
+                              <input style="font-size: 12px !important;" v-model="initiat.Name"
                                      type="text" class="form-control"
                                      name="amount" placeholder="Title"
                                      required
@@ -276,13 +276,10 @@
                               </small>
                             </div>
                           </div>
-                          <div class="col-2 col-md-2">
+                          <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Competency Type</label>
-                              <select v-model="initiat.Type" name="Type" id="catId"
-                                      class="form-control"
-                                      required
-                              >
+                              <select v-model="initiat.Type" name="Type" id="catId" class="form-control" required >
                                 <option value="">Select Type</option>
                                 <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
@@ -293,7 +290,7 @@
                               </small>
                             </div>
                           </div>
-                          <div class="col-2 col-md-2">
+                          <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Planned Date</label>
                               <datepicker
@@ -309,9 +306,9 @@
                               </small>
                             </div>
                           </div>
-                          <div class="col-2" style="padding-top: 30px">
-                            <button type="button" class="btn btn-danger btn-sm" v-show="index!==0" @click="deleteFind(index)">x</button>&nbsp;
-                            <button type="button" class="btn btn-success btn-sm" @click="addFind">+</button>
+                          <div class="col-1" style="padding-top: 30px">
+                            <button type="button" class="btn btn-danger btn-sm" style="font-size: 7.6px!important;" v-show="index!==0" @click="deleteFind(index)">x</button>&nbsp;
+                            <button type="button" class="btn btn-success btn-sm" style="font-size: 7.6px!important;" @click="addFind">+</button>
                           </div>
                         </div>
                         <hr>
@@ -321,11 +318,10 @@
                         <hr>
                         <div class="row" v-for="(train,index2) in form.training">
                           <!--v-if="dropDown==='YES'"-->
-                          <div class="col-6 col-md-6" >
+                          <div class="col-5 col-md-5" >
                             <div class="form-group">
                               <label v-if="newTrainingList">Select Training Title</label>
                               <multiselect
-
                                   v-if="newTrainingList"
                                   v-model="train.selectedTraining"
                                   :options="newTrainingList"
@@ -349,7 +345,7 @@
                             </div>
                           </div>
 
-                          <div class="col-2 col-md-2">
+                          <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Competency Type</label>
                               <select v-model="train.TrainingType" :disabled="train.selectedTraining" name="TrainingType" id="TrainingType"
@@ -366,7 +362,7 @@
                               </small>
                             </div>
                           </div>
-                          <div class="col-2 col-md-2">
+                          <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Planned Date</label>
                               <datepicker
@@ -383,9 +379,9 @@
                               </small>
                             </div>
                           </div>
-                          <div class="col-2" style="padding-top: 30px">
-                            <button type="button" class="btn btn-danger btn-sm" @click="Training_deleteFind(index2)" v-show="index2>2 && index2<5" >x</button>&nbsp;
-                            <button type="button" class="btn btn-success btn-sm" @click="Training_addFind">+</button>
+                          <div class="col-1" style="padding-top: 30px">
+                            <button type="button" class="btn btn-danger btn-sm" style="font-size: 7.6px!important;" @click="Training_deleteFind(index2)" v-show="index2>2 && index2<5" >x</button>&nbsp;
+                            <button type="button" class="btn btn-success btn-sm" style="font-size: 7.6px!important;" @click="Training_addFind">+</button>
                           </div>
                         </div>
 
@@ -486,7 +482,7 @@
               </form>
             </div>
             <!--five years training-->
-            <div class="col-md-5">
+            <div class="col-md-4">
               <div class="card">
                 <div class="datatable" v-if="!isLoading">
                   <div class="card-body">
@@ -1660,6 +1656,9 @@ export default {
   white-space: normal;
 }
 ::v-deep .multiselect {
+  font-size: 12px;
+}
+::v-deep .multiselect__single {
   font-size: 12px;
 }
 .cropper {

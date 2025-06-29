@@ -6,7 +6,7 @@
               <div class="float-right d-none d-md-block">
                 <div class="card-tools">
                   <router-link :to="{name: 'MDPList'}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-sync"></i>
+                    <i class="fas fa-backward"></i>
                     Back
                   </router-link>
                 </div>
