@@ -762,19 +762,13 @@ class MDPController extends Controller
         $session = substr($period, 0, 4);
 
         if ($period != '2025-2026'){
-            $Training= DB::table('MDPTraining')
-                ->select('TrainingTitle', DB::raw('NULL as TrainingCode'))
-                ->whereNotNull('TrainingTitle')
-                ->distinct()
-                ->orderBy('TrainingTitle', 'asc')
-                ->get();
-//   DB::select('
-//            SELECT
-//                DISTINCT TrainingTitle
-//            From MDPTraining
-//            WHERE TrainingTitle IS NOT NULL
-//            ORDER BY 1
-//        ');
+            $Training=   DB::select('
+            SELECT
+                DISTINCT TrainingTitle
+            From MDPTraining
+            WHERE TrainingTitle IS NOT NULL
+            ORDER BY 1
+        ');
         }else{
             $Training = TrainingName::Select(DB::raw("TrnCode as TrainingCode,TrnName as TrainingTitle"))
                         ->orderbydesc('TrnCode')

@@ -18,8 +18,8 @@
         </div>
       </breadcrumb>
       <div class="row" v-if="isFullPageLoading">
-        <div class="col-xl-12" v-if="this.Type!='admin' && cardShow">
-          <div class="row" v-if="!moduleStatus">
+        <div class="col-xl-12" v-if="cardShow">
+          <div class="row" v-if=" this.form.Type!=='admin' && !moduleStatus">
             <div class="col-md-12">
               <div class="card">
                 <div class="datatable">
@@ -98,7 +98,7 @@
                               <div class="form-group">
                                 <label>Staff ID</label>
                                 <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" :readonly="idActive" @change="getEmployeeByStaffID" required>
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" readonly @change="getEmployeeByStaffID" required>
                                 <small class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -679,7 +679,6 @@ export default {
       EligibleInfoMessage: '',
       status: '',
 
-      idActive: false,
       cardShow: false,
       moduleStatus: false,
       PreLoader: false,
@@ -746,10 +745,13 @@ export default {
       }
     },
     store() {
+      alert('submit initial')
       this.errors = {};
+
       if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
         this.errors.PersonalIN = {};
       }
+
       const futureWordErrors = this.validateWordCountsFuture(); // returns true if error exists
       const initiativeErrors = this.validateInitiatives();
       const requiredErrors = this.validateRequiredTraining();
@@ -763,6 +765,7 @@ export default {
          this.PreLoader = false;
           return ;
       }else{
+        alert('submit success')
         const formData = this.buildFormData();
         this.isSubmitting = true;
         this.PreLoader = true;
@@ -810,13 +813,7 @@ export default {
         this.isFullPageLoading = true
         this.status = response.data.status;
         if (response.data.status==='success'){
-          if (this.type==='admin'){
-            this.cardShow=true;
-            this.idActive=true;
-            this.clearFormDataState();
-          }else{
-            this.cardShow=false;
-          }
+          this.cardShow=false;
           // this.training_history = response.data.training_history;
           this.form.EmployeeName = response.data.employee.EmployeeName;
           this.form.Designation = response.data.employee.Designation;
@@ -840,7 +837,6 @@ export default {
           this.EligibleInfo = response.data.data;
           this.EligibleInfoMessage = response.data.message;
           this.cardShow = true;
-          this.errorNoti(this.EligibleInfoMessage);
         }
         this.PreLoader = false
 
@@ -1339,10 +1335,10 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
         this.$store.commit('me', response);
-        this.Type = response.payload.Type;
-        this.form.AppraisalPeriod = response.appraisalPeriod;
         if(response.payload.Type ==='employee'){
           this.form.StaffID = response.payload.EmpCode;
+          this.Type = response.payload.Type;
+          this.form.AppraisalPeriod = response.appraisalPeriod;
           this.getEmployeeByStaffID()
           $('#StaffID').attr('readonly', true);
         }
