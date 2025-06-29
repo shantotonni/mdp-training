@@ -6,7 +6,7 @@
               <div class="float-right d-none d-md-block">
                 <div class="card-tools">
                   <router-link :to="{name: 'MDPList'}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-backward"></i>
+                    <i class="fas fa-sync"></i>
                     Back
                   </router-link>
                 </div>
@@ -92,8 +92,8 @@
                                 </div>
                               </div>
 
-                              <div class="page-break" style=" page-break-before: always;"></div>
-
+                              <br>
+                              <br>
                               <div class="fourth_part">
                                 <p style="font-weight: bold;font-size: 20px">B. For development to take future responsibilities</p>
                                 <p style="font-size: 20px">Other than those mentioned in A, list below two areas of personal development / training that you would
@@ -208,8 +208,6 @@
                                   <p style="text-align: right;font-size: 20px">Page No.: 2 of 2</p>
                                 </div>
                               </div>
-                              <div class="page-break" style=" page-break-before: always;"></div>
-
                             </div>
                         </div>
                     </div>
@@ -285,11 +283,6 @@ export default {
 }
 </script>
 <style scoped>
-@media print {
-  .page-break {
-    page-break-after: always !important;
-    break-before: page !important; /* modern browsers */
-  }
-}
+
 </style>
 

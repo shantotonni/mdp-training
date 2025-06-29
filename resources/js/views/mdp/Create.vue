@@ -18,8 +18,8 @@
         </div>
       </breadcrumb>
       <div class="row" v-if="isFullPageLoading">
-        <div class="col-xl-12" v-if="cardShow">
-          <div class="row" v-if=" this.form.Type!=='admin' && !moduleStatus">
+        <div class="col-xl-12" v-if="this.Type!='admin' && cardShow">
+          <div class="row" v-if="!moduleStatus">
             <div class="col-md-12">
               <div class="card">
                 <div class="datatable">
@@ -98,7 +98,7 @@
                               <div class="form-group">
                                 <label>Staff ID</label>
                                 <input type="text" name="StaffID" id="StaffID" v-model="form.StaffID"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" readonly @change="getEmployeeByStaffID" required>
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('StaffID') }" :readonly="idActive" @change="getEmployeeByStaffID" required>
                                 <small class="error" v-if="form.errors.has('StaffID')" v-html="form.errors.get('StaffID')" />
                               </div>
                             </div>
@@ -266,26 +266,31 @@
                           <div class="col-6 col-md-6">
                             <div class="form-group">
                               <label>Training Title</label>
-                              <input style="font-size: 16px !important;" v-model="initiat.Name" @change="validateInitiatives"  type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }" name="amount" placeholder="Title" @input="countSpace(initiat.Name,'personal','personal',index)"  required>
-                              <small v-if="errors.PersonalIN && errors.PersonalIN[index]" class="error">
+                              <input style="font-size: 16px !important;" v-model="initiat.Name"
+                                     type="text" class="form-control"
+                                     name="amount" placeholder="Title"
+                                     required
+                              >
+                              <small v-if="errors.PersonalIN?.[index]?.Name" class="error">
                                 {{ errors.PersonalIN[index].Name }}
                               </small>
-                              <small class="error" v-if="form.errors.has('Name')" v-html="form.errors.get('Name')" />
                             </div>
                           </div>
                           <div class="col-2 col-md-2">
                             <div class="form-group">
                               <label>Competency Type</label>
-                              <select v-model="initiat.Type" name="Type" id="catId" @change="validateInitiatives"  class="form-control" :class="{ 'is-invalid': form.errors.has('Type') }" required>
+                              <select v-model="initiat.Type" name="Type" id="catId"
+                                      class="form-control"
+                                      required
+                              >
                                 <option value="">Select Type</option>
                                 <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
                               </select>
-                              <small v-if="errors.PersonalIN && errors.PersonalIN[index]" class="error">
+                              <small v-if="errors.PersonalIN?.[index]?.Type" class="error">
                                 {{ errors.PersonalIN[index].Type }}
                               </small>
-                              <small class="error" v-if="form.errors.has('Type')" v-html="form.errors.get('Type')" />
                             </div>
                           </div>
                           <div class="col-2 col-md-2">
@@ -297,13 +302,11 @@
                                   :disabled-dates="disabledDates"
                                   placeholder="Enter Date"
                                   input-class="form-control"
-                                  @change="validateInitiatives"
                                   required
                               ></datepicker>
-                              <small v-if="errors.PersonalIN && errors.PersonalIN[index]" class="error">
+                              <small v-if="errors.PersonalIN?.[index]?.Date" class="error">
                                 {{ errors.PersonalIN[index].Date }}
                               </small>
-                              <small class="error" v-if="form.errors.has('Date')" v-html="form.errors.get('Date')" />
                             </div>
                           </div>
                           <div class="col-2" style="padding-top: 30px">
@@ -339,27 +342,25 @@
                                   @input="onTrainingSelected($event, train)"
                               ></multiselect>
 
-                              <small v-if="errors.RequiredIN && errors.RequiredIN[index2]" class="error">
-                                {{ errors.RequiredIN[index2].TrainingTitle}}
+                              <small v-if="errors.RequiredIN?.[index2]?.TrainingTitle" class="error">
+                                {{ errors.RequiredIN[index2].TrainingTitle }}
                               </small>
-                              <small class="error" v-if="form.errors.has('TrainingTitle')" v-html="form.errors.get('TrainingTitle')" />
                             </div>
                           </div>
 
                           <div class="col-2 col-md-2">
                             <div class="form-group">
                               <label>Competency Type</label>
-                              <select v-model="train.TrainingType"
-                                      :disabled="train.selectedTraining" name="TrainingType" id="TrainingType"
-                                      class="form-control" :class="{ 'is-invalid': form.errors.has('TrainingType') }" required>
+                              <select v-model="train.TrainingType" :disabled="train.selectedTraining" name="TrainingType" id="TrainingType"
+                                      class="form-control"
+                                      required
+                              >
                                 <option value="">Select Type</option>
                                 <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
                                 <option value="Skill">Skill</option>
-
                               </select>
-                              <small class="error" v-if="form.errors.has('TrainingType')" v-html="form.errors.get('TrainingType')" />
-                              <small  v-if="errors.RequiredIN?.[index2]?.TrainingType" class="error">
+                              <small v-if="errors.RequiredIN?.[index2]?.TrainingType" class="error">
                                 {{ errors.RequiredIN[index2].TrainingType }}
                               </small>
                             </div>
@@ -376,9 +377,9 @@
                                   @change="validateRequiredTraining"
                                   required
                               ></datepicker>
-                              <small class="error" v-if="form.errors.has('TrainingDate')" v-html="form.errors.get('TrainingDate')" />
-                              <small  v-if="errors.RequiredIN?.[index2]?.TrainingDate" class="error">
-                                {{ errors.RequiredIN[index2].TrainingDate }}</small>
+                              <small v-if="errors.RequiredIN?.[index2]?.TrainingDate" class="error">
+                                {{ errors.RequiredIN[index2].TrainingDate }}
+                              </small>
                             </div>
                           </div>
                           <div class="col-2" style="padding-top: 30px">
@@ -412,7 +413,6 @@
                                       label="TrainingTitle"
                                       track-by="TrainingCode"
                                       placeholder="Select or Type Training"
-                                      @change="validateFormFields"
                                       @tag="Level==='TOP'? addCustomTrainingA($event,'AreaOne' ):null"
                                       required>
                                   </multiselect>
@@ -421,8 +421,14 @@
 
                                   <br>
                                   <small>Explain how this training 1 will help the company.</small>
-                                  <input v-model="form.FutureTrainingOneDetails" type="text" class="form-control"  :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }"
-                                         style="height: 90px;font-size: 16px !important;" name="Reason" placeholder="Max 30 words" @input="countSpace(form.FutureTrainingOneDetails,'futureTrainingOne','future')"  required>
+                                  <input v-model="form.FutureTrainingOneDetails"
+                                         type="text" class="form-control"
+                                         :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }"
+                                         style="height: 90px;font-size: 16px !important;"
+                                         name="Reason" placeholder="Max 30 words"
+                                         @input="validateWordLimit('FutureTrainingOneDetails', 30)"
+                                         required
+                                  >
                                   <small class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
                                   <small v-if="errors.FutureTrainingOneDetails" class="error">{{ errors.FutureTrainingOneDetails }}</small>
                                 </div>
@@ -450,8 +456,14 @@
 
                                   <br>
                                   <small>Explain how this training 2 will help the company.</small>
-                                  <input v-model="form.FutureTrainingTwoDetails"  type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }"
-                                         style="height: 90px ;font-size: 16px !important;" name="Reason" placeholder="Max 30 words"  @input="countSpace(form.FutureTrainingTwoDetails,'futureTrainingTwo','future')" required>
+                                  <input v-model="form.FutureTrainingTwoDetails"
+                                         type="text" class="form-control"
+                                         :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }"
+                                         style="height: 90px ;font-size: 16px !important;"
+                                         name="Reason" placeholder="Max 30 words"
+                                         @input="validateWordLimit('FutureTrainingTwoDetails', 30)"
+                                         required
+                                  >
                                   <small class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />
                                   <small v-if="errors.FutureTrainingTwoDetails" class="error">{{ errors.FutureTrainingTwoDetails }}</small>
 
@@ -568,7 +580,7 @@
       </div>
     </div>
     <div>
-    <!--    modal-->
+      <!--    modal-->
     </div>
     <data-export/>
     <div>
@@ -659,12 +671,12 @@ export default {
         AreaTwo:'',
         FutureTrainingTwoDetails:'',
         initiative: [
-            {Name: '' , Type: '', Date:  moment().format('DD-MM-YYYY') }
+          {Name: '' , Type: '', Date:  null }
         ],
         training: [
-            { TrainingCode: '' ,TrainingTitle: '' , TrainingType: '', TrainingDate:  moment().format('DD-MM-YYYY'), selectedTraining: null},
-            { TrainingCode: '',TrainingTitle: '' , TrainingType: '', TrainingDate:  moment().format('DD-MM-YYYY'), selectedTraining: null},
-            { TrainingCode: '',TrainingTitle: '' , TrainingType: '', TrainingDate:  moment().format('DD-MM-YYYY'), selectedTraining: null},
+          { TrainingCode: '' ,TrainingTitle: '' , TrainingType: '', TrainingDate:  null, selectedTraining: null},
+          { TrainingCode: '',TrainingTitle: '' , TrainingType: '', TrainingDate:  null, selectedTraining: null},
+          { TrainingCode: '',TrainingTitle: '' , TrainingType: '', TrainingDate:  null, selectedTraining: null},
         ],
       }),
       isLoading: false,
@@ -679,6 +691,7 @@ export default {
       EligibleInfoMessage: '',
       status: '',
 
+      idActive: false,
       cardShow: false,
       moduleStatus: false,
       PreLoader: false,
@@ -690,7 +703,8 @@ export default {
         AreaTwo:'',
         PersonalIN:{},
         RequiredIN:{},
-      }
+      },
+      wordLimitError: false
     }
   },
   mounted() {
@@ -698,13 +712,27 @@ export default {
     $('#cropperModal').on('shown.bs.modal', () => {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     });
-    this.resetCropper();
+    // this.resetCropper();
   },
   created() {
     this.loadFormData();
   },
-
   methods: {
+    wordCount(text) {
+      if (!text) return 0;
+      return text.trim().split(/\s+/).filter(Boolean).length;
+    },
+    validateWordLimit(field, maxWords) {
+      const wordTotal = this.wordCount(this.form[field]);
+      const message = 'Maximum 30 words allowed.';
+      if (wordTotal > maxWords) {
+        this.form.errors.set(field, message);
+        this.wordLimitError = true;
+      } else {
+        this.form.errors.clear(field);
+        this.wordLimitError = false;
+      }
+    },
     disableOutsideFiscalYear(date) {
       const today = new Date();
       const year = today.getMonth() < 6 ? today.getFullYear() : today.getFullYear();
@@ -731,7 +759,7 @@ export default {
           this.SelectedAreaTwo = data.AreaTwo;
           this.form.training = data.training;
           this.moduleStatus = true;
-         this.getTrainingHistory()
+          this.getTrainingHistory()
           // await this.getEmployeeByStaffID();
           await this.getNewTrainingList();
           // await this.setEditTrainingList();
@@ -761,9 +789,9 @@ export default {
 
       if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
         alert('error')
-         this.isSubmitting = false;
-         this.PreLoader = false;
-          return ;
+        this.isSubmitting = false;
+        this.PreLoader = false;
+        return ;
       }else{
         alert('submit success')
         const formData = this.buildFormData();
@@ -786,10 +814,6 @@ export default {
             }
             this.PreLoader = false;
             this.isSubmitting = false;
-
-            // this.errorNoti(response.data.message);
-            // this.PreLoader = false;
-            // this.isSubmitting = false;
           }else{
             this.successNoti(response.data.message);
             this.redirect(this.mainOrigin + 'mdp-list');
@@ -813,15 +837,19 @@ export default {
         this.isFullPageLoading = true
         this.status = response.data.status;
         if (response.data.status==='success'){
-          this.cardShow=false;
-          // this.training_history = response.data.training_history;
+          if (this.type==='admin'){
+            this.cardShow=true;
+            this.idActive=true;
+            this.clearFormDataState();
+          }else{
+            this.cardShow=false;
+          }
           this.form.EmployeeName = response.data.employee.EmployeeName;
           this.form.Designation = response.data.employee.Designation;
           this.form.Department = response.data.employee.Department;
           this.form.DeptCode = response.data.employee.DeptCode;
           this.form.Business = response.data.employee.Business;
           this.form.OfficialEmail = response.data.employee.OfficialEmail;
-          // this.form.Mobile = response.data.employee.Mobile;
           this.form.DateOfBirth = response.data.employee.DateOfBirth;
           this.form.JoiningDate = response.data.employee.JoiningDate;
           this.form.CurrentPosition = response.data.employee.CurrentPosition;
@@ -836,6 +864,10 @@ export default {
         }else{
           this.EligibleInfo = response.data.data;
           this.EligibleInfoMessage = response.data.message;
+          if (this.type==='admin'){
+            this.errorNoti(this.EligibleInfoMessage);
+          }
+
           this.cardShow = true;
         }
         this.PreLoader = false
@@ -858,24 +890,24 @@ export default {
       })
     },
     async setEditTrainingList(){
-        this.form.AreaOne = this.newTrainingList.find(t => t.TrainingCode === this.SelectedAreaOne);
-        this.form.AreaTwo = this.newTrainingList.find(t => t.TrainingCode === this.SelectedAreaTwo);
-        this.form.training.forEach((item, index) => {
-          const matched = this.newTrainingList.find(t => String(t.TrainingCode) === String(item.TrainingCode));
-          if (matched) {
-            item.selectedTraining = matched || {
-              TrainingCode: item.TrainingCode,
-              TrainingTitle: item.TrainingTitle,
-              isDropDown: 'N'
-            };
-            // Set TrainingType (e.g., "Skill", "Behavior", etc.)
-            item.TrainingType = item.TrainingType || matched?.CompetencyType || '';
-            item.TrainingDate= moment(item.TrainingDate).format('DD-MM-YYYY')
-                // moment(item.TrainingDate).format('YYYY-MM-DD')
-          } else {
-            item.selectedTraining = null; // Or handle custom trainings
-          }
-        });
+      this.form.AreaOne = this.newTrainingList.find(t => t.TrainingCode === this.SelectedAreaOne);
+      this.form.AreaTwo = this.newTrainingList.find(t => t.TrainingCode === this.SelectedAreaTwo);
+      this.form.training.forEach((item, index) => {
+        const matched = this.newTrainingList.find(t => String(t.TrainingCode) === String(item.TrainingCode));
+        if (matched) {
+          item.selectedTraining = matched || {
+            TrainingCode: item.TrainingCode,
+            TrainingTitle: item.TrainingTitle,
+            isDropDown: 'N'
+          };
+          // Set TrainingType (e.g., "Skill", "Behavior", etc.)
+          item.TrainingType = item.TrainingType || matched?.CompetencyType || '';
+          item.TrainingDate= item.TrainingDate
+          // moment(item.TrainingDate).format('YYYY-MM-DD')
+        } else {
+          item.selectedTraining = null; // Or handle custom trainings
+        }
+      });
     },
     onTrainingSelected(selectedItem, train) {
       if (selectedItem && typeof selectedItem === 'object') {
@@ -933,69 +965,6 @@ export default {
         this.form.AreaTwo = customTraining;
       }
     },
-    countSpace(val, type, module, index) {
-      try {
-        const wordCount = val.trim().split(/\s+/).filter(Boolean).length;
-
-        if (module === 'future') {
-          if (wordCount > 30) {
-            if (type === 'futureTrainingOne') {
-              const message ='Maximum 30 Words!';
-              this.form.errors.set(type,  message);
-              // this.errors.FutureTrainingOneDetails = 'Maximum 30 Words!';
-              // this.errorNoti(this.errors.FutureTrainingOneDetails);
-            } else {
-              this.form.errors.clear(type);
-              // this.errors.FutureTrainingOneDetails = '';
-            }
-            if (type === 'futureTrainingTwo') {
-              this.form.errors.set(type,  message);
-              // this.errors.FutureTrainingTwoDetails = 'Maximum 30 Words!';
-              // this.errorNoti(this.errors.FutureTrainingTwoDetails);
-            }else {
-              this.form.errors.clear(type);
-              // this.errors.FutureTrainingTwoDetails = '';
-            }
-          }
-        } else {
-          if (wordCount > 40) {
-            if (type === 'personal') {
-              if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
-                this.errors.PersonalIN = {};
-              }
-              if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
-                this.errors.PersonalIN[index] = {};
-              }
-              this.errors.PersonalIN[index].Name = 'Maximum 40 Words!';
-              this.errorNoti(this.errors.PersonalIN[index].Name);
-
-            } else {
-              if (type === 'AreaOne') {
-                this.errors.AreaOne = 'Maximum 40 Words!';
-                // this.errorNoti(this.errors.AreaOne);
-              } else {
-                this.errors.AreaOne = '';
-              }
-              if (type === 'AreaTwo') {
-                this.errors.AreaTwo = 'Maximum 40 Words!';
-                // this.errorNoti(this.errors.AreaTwo);
-              }else {
-                this.errors.AreaTwo = '';
-              }
-
-            }
-          } else {
-            // Clear errors safely
-            if (type === 'personal' && this.errors.PersonalIN && typeof this.errors.PersonalIN === 'object') {
-              this.errors.PersonalIN[index].Name = '';
-            }
-          }
-        }
-
-      } catch (error) {
-        console.error("Max word limit crossed", error);
-      }
-    },
     validateWordCountsFuture() {
       let hasError = false;
 
@@ -1014,7 +983,7 @@ export default {
       }
       return hasError;
     },
-    validateInitiatives() {
+    validateInitiativesBackup() {
       let hasError = false;
       const titleSet = new Set();
 
@@ -1045,7 +1014,6 @@ export default {
             }
           }
         }
-
         if (!item.Type) {
           this.errors.PersonalIN[index].Type = 'Type is required.';
           this.errorNoti(this.errors.PersonalIN[index].Type);
@@ -1064,7 +1032,99 @@ export default {
       });
       return hasError;
     },
+    validateInitiatives() {
+      let hasError = false;
+      const titleSet = new Set();
+
+      this.form.initiative.forEach((item, index) => {
+        if (!this.errors.PersonalIN[index] || typeof this.errors.PersonalIN[index] !== 'object') {
+          this.errors.PersonalIN[index] = {};
+        }
+
+        const title = item.Name?.trim() || '';
+        const wordCount = item.Name?.trim().split(/\s+/).filter(Boolean).length || 0;
+
+        // Name Validation
+        if (!item.Name) {
+          this.errors.PersonalIN[index].Name = 'Name is required.';
+          hasError = true;
+        } else if (wordCount > 40) {
+          this.errors.PersonalIN[index].Name = 'Maximum 40 Words allowed.';
+          hasError = true;
+        } else if (titleSet.has(title.toLowerCase())) {
+          this.errors.PersonalIN[index].Name = 'Duplicate title found.';
+          hasError = true;
+        } else {
+          this.errors.PersonalIN[index].Name = '';
+          titleSet.add(title.toLowerCase());
+        }
+
+        // Type Validation
+        if (!item.Type) {
+          this.errors.PersonalIN[index].Type = 'Type is required.';
+          hasError = true;
+        } else {
+          this.errors.PersonalIN[index].Type = '';
+        }
+
+        // Date Validation
+        if (!item.Date) {
+          this.errors.PersonalIN[index].Date = 'Date is required.';
+          hasError = true;
+        } else {
+          this.errors.PersonalIN[index].Date = '';
+        }
+      });
+
+      return hasError;
+    },
     validateRequiredTraining() {
+      let hasError = false;
+
+      if (!this.errors.RequiredIN || typeof this.errors.RequiredIN !== 'object') {
+        this.errors.RequiredIN = {};
+      }
+
+      const titleSet = new Set();
+
+      this.form.training.forEach((item, index2) => {
+
+        if (!this.errors.RequiredIN[index2]) this.errors.RequiredIN[index2] = {};
+
+        // Training Title Validation
+        const title = item.TrainingTitle?.trim() || '';
+
+        if (!title) {
+          this.errors.RequiredIN[index2].TrainingTitle = 'Training Title is required.';
+          hasError = true;
+        } else if (titleSet.has(title.toLowerCase())) {
+          this.errors.RequiredIN[index2].TrainingTitle = 'Duplicate title found.';
+          hasError = true;
+        } else {
+          this.errors.RequiredIN[index2].TrainingTitle = '';
+          titleSet.add(title.toLowerCase());
+        }
+
+        // Training Type Validation
+        if (!item.TrainingType) {
+          this.errors.RequiredIN[index2].TrainingType = 'Type is required.';
+          hasError = true;
+        } else {
+          this.errors.RequiredIN[index2].TrainingType = '';
+        }
+
+        // Training Date Validation
+        if (!item.TrainingDate) {
+          this.errors.RequiredIN[index2].TrainingDate = 'Date is required.';
+          hasError = true;
+        } else {
+          this.errors.RequiredIN[index2].TrainingDate = '';
+        }
+      });
+
+      return hasError;
+    },
+    validateRequiredTrainingBackup() {
       let hasError = false;
       const titleSet = new Set();
 
@@ -1078,21 +1138,12 @@ export default {
 
         const title = item.TrainingTitle?.trim() || '';
 
-        const wordCount = item.TrainingTitle?.trim().split(/\s+/).filter(Boolean).length || 0;
         if (!item.TrainingTitle) {
           this.errors.RequiredIN[index2].TrainingTitle = 'Training Title is required.';
           // this.errorNoti(this.errors.RequiredIN[index2].TrainingTitle);
           hasError = false;
         }else {
-          if
-              // (wordCount > 40) {
-              //   if (!this.errors.RequiredIN[index2]) this.errors.RequiredIN[index2]= {};
-              //   this.errors.RequiredIN[index2].TrainingTitle = `Maximum 40 Words.`;
-              //   // this.errorNoti(`Initiative ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
-              //   hasError = true;
-              // }else {
-              //   if
-          (titleSet.has(title.toLowerCase())) {
+          if (titleSet.has(title.toLowerCase())) {
             this.errors.RequiredIN[index2].TrainingTitle = 'Duplicate title found.';
             // this.errorNoti(`Initiative ${index2 + 1}: ${this.errors.RequiredIN[index2].TrainingTitle}`);
             hasError = true;
@@ -1100,9 +1151,7 @@ export default {
             titleSet.add(title.toLowerCase());
             this.errors.RequiredIN[index2].TrainingTitle = '';
           }
-          // }
         }
-
 
         if (!item.TrainingType) {
           this.errors.RequiredIN[index2].TrainingType = 'Type is required.';
@@ -1111,12 +1160,14 @@ export default {
         }else{
           this.errors.RequiredIN[index2].TrainingType = ''
         }
-
+        console.log(item.TrainingDate)
         if (!item.TrainingDate) {
+          console.log('ok')
           this.errors.RequiredIN[index2].TrainingDate = 'Date is required.';
           // this.errorNoti(this.errors.RequiredIN[index2].TrainingDate);
           hasError = false;
         }else{
+          console.log('not ok')
           this.errors.RequiredIN[index2].TrainingDate = ''
         }
 
@@ -1174,14 +1225,15 @@ export default {
         if (!item.Name || !item.Type || !item.Date) {
           const message=`Personal Initiative ${i + 1} is incomplete.`;
           this.form.errors.set(item, message);
-          // this.errorNoti(message);
+          this.errorNoti(message);
           return false;
         }
       }
       for (const [i, item] of this.form.training.entries()) {
-        if (!item.TrainingTitle) {
+        if (!item.TrainingTitle|| !item.TrainingType || !item.TrainingDate) {
           const message=`Required Training ${i + 1} is incomplete.`;
-          this.form.errors.set(item.TrainingTitle, message);
+          this.form.errors.set(item, message);
+          this.errorNoti(message);
           return false;
         }
       }
@@ -1203,7 +1255,6 @@ export default {
         if (['initiative', 'training', 'Signature'].includes(key)) continue;
         formData.append(key, this.form[key]);
       }
-
       this.form.initiative.forEach((item, index) => {
         formData.append(`initiative[${index}][Name]`, item.Name);
         formData.append(`initiative[${index}][Type]`, item.Type);
@@ -1333,12 +1384,12 @@ export default {
     },
     getUserData() {
       this.axiosPost('me', {}, (response) => {
+        this.Type = response.payload.Type;
+        this.form.AppraisalPeriod = response.appraisalPeriod;
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
         this.$store.commit('me', response);
         if(response.payload.Type ==='employee'){
           this.form.StaffID = response.payload.EmpCode;
-          this.Type = response.payload.Type;
-          this.form.AppraisalPeriod = response.appraisalPeriod;
           this.getEmployeeByStaffID()
           $('#StaffID').attr('readonly', true);
         }
@@ -1393,7 +1444,9 @@ export default {
       this.imageUrl = null
       this.previewUrl = null
       this.croppedBlob = null
-
+      this.$nextTick(() => {
+        this.$refs.fileInput.value = null;
+      });
       $('#cropperModal').modal('hide')
     },
     changeImage(event) {
@@ -1468,7 +1521,7 @@ export default {
         if (!Array.isArray(this.form.initiative)) {
           this.form.initiative = [];
         }
-        this.form.initiative.push({ Name: '', Type: '', Date: moment().format('DD-MM-YYYY') });
+        this.form.initiative.push({ Name: '', Type: '', Date: null });
       } else {
         this.errorNoti('No more than 5 training entries can be added!');
       }
@@ -1504,7 +1557,7 @@ export default {
         console.log(response)
       })
 
-          },
+    },
     downloadTraining(){
       axios.get(baseurl +'api/mdp/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
         let dataSets = response.data.training_history;

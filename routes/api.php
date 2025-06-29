@@ -29,6 +29,7 @@ Route::group(['middleware' => 'jwt','throttle:10000,1'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
+
 });
 
 Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
