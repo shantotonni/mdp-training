@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="container-fluid">
-            <breadcrumb :options="['Management Development Plan']">
+            <breadcrumb :options="['MDP List']">
                 <div class="col-sm-6">
                   <div class="float-right d-none d-md-block">
                     <div class="card-tools">

@@ -7,7 +7,7 @@
             <div class="card-tools">
               <router-link :to="{name: 'MDPList'}" class="btn btn-primary btn-sm">
                 <i class="fas fa-backward"></i>
-                Back
+                Back MDP List
               </router-link>
               <button type="button" class="btn btn-primary btn-sm" @click="reload">
                 <i class="fas fa-sync"></i>
