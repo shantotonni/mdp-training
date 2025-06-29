@@ -636,10 +636,6 @@ class MDPController extends Controller
     public function getEmployeeWiseReport(Request $request){
 
         $session = $request->sessionP;
-//        $EmpCode = $request->EmpCode;
-//        $TrainingTitle = collect($request->TrainingTitle);
-//        $TrainingTitleString = "";
-
         $Training= json_decode($request->TrainingTitle);
         $TrainingTitle = $Training->TrainingTitle;
         $Tasks = json_decode($request->Tasks);
@@ -757,10 +753,12 @@ class MDPController extends Controller
 //        dd($request->session);
         $period = $request->sessionP;
         $session = substr($period, 0, 4);
-        $mdp = ManagementDevelopmentPlane::select(DB::raw("left(AppraisalPeriod,4) AS AppraisalPeriod"))
-                ->where(DB::raw("Right(AppraisalPeriod,4)"),'=',$session)->orderbydesc('ID')->first();
 
-        if ($mdp->AppraisalPeriod <= $session){
+        $mdp = ManagementDevelopmentPlane::select(DB::raw("left(AppraisalPeriod,4) AS AppraisalPeriod"))
+                ->where(DB::raw("left(AppraisalPeriod,4)"),'=',$session)->orderbydesc('ID')->first();
+
+
+        if ($mdp->AppraisalPeriod < '2025'){
             $Training= DB::table('MDPTraining')
                 ->select('TrainingTitle', DB::raw('NULL as TrainingCode'))
                 ->whereNotNull('TrainingTitle')

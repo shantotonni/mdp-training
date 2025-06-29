@@ -325,6 +325,7 @@
                             <div class="form-group">
                               <label v-if="newTrainingList">Select Training Title</label>
                               <multiselect
+
                                   v-if="newTrainingList"
                                   v-model="train.selectedTraining"
                                   :options="newTrainingList"
@@ -401,6 +402,7 @@
                                 <div class="form-group">
                                   <label>Future Training 1</label>
                                   <multiselect
+
                                       v-if="newTrainingList"
                                       v-model="form.AreaOne"
                                       :options="newTrainingList"
@@ -424,7 +426,7 @@
                                   <input v-model="form.FutureTrainingOneDetails"
                                          type="text" class="form-control"
                                          :class="{ 'is-invalid': form.errors.has('FutureTrainingOneDetails') }"
-                                         style="height: 90px;font-size: 16px !important;"
+                                         style="height: 90px;font-size: 12px !important;"
                                          name="Reason" placeholder="Max 30 words"
                                          @input="validateWordLimit('FutureTrainingOneDetails', 30)"
                                          required
@@ -437,6 +439,7 @@
                                 <div class="form-group">
                                   <label>Future Training 2</label>
                                   <multiselect
+
                                       v-if="newTrainingList"
                                       v-model="form.AreaTwo"
                                       :options="newTrainingList"
@@ -459,7 +462,7 @@
                                   <input v-model="form.FutureTrainingTwoDetails"
                                          type="text" class="form-control"
                                          :class="{ 'is-invalid': form.errors.has('FutureTrainingTwoDetails') }"
-                                         style="height: 90px ;font-size: 16px !important;"
+                                         style="height: 90px ;font-size: 12px !important;"
                                          name="Reason" placeholder="Max 30 words"
                                          @input="validateWordLimit('FutureTrainingTwoDetails', 30)"
                                          required
@@ -1656,7 +1659,9 @@ export default {
   max-width: 100% !important;
   white-space: normal;
 }
-
+::v-deep .multiselect {
+  font-size: 12px;
+}
 .cropper {
   height: 600px;
   background: #DDD;
