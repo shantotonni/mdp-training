@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ManagementDevelopmentPlaneRequest;
-use App\Http\Requests\ManagementDevelopmentPlaneUpdateRequest;
+
 use App\Http\Resources\ContSupervisorResource;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\Export\ExportManagementDevelopmentPlaneDetailsCollection;
@@ -17,12 +16,12 @@ use App\Models\ManagementDevelopmentPlane;
 use App\Models\MDPEmployeeTrainingList;
 use App\Models\MDPPersonalInitiative;
 use App\Models\MDPTraining;
-use App\Models\NewMDPEmployeeTrainingList;
+
 use App\Models\TrainingName;
 use App\Traits\MDPCommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -759,7 +758,7 @@ class MDPController extends Controller
     public function getAllTrainingTitle(Request $request){
         //working on it 25
 //        dd($request->session);
-        $period = $request->session;
+        $period = $request->sessionP;
         $session = substr($period, 0, 4);
 
         if ($period != '2025-2026'){

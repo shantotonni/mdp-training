@@ -226,7 +226,7 @@ export default {
     },
     getAllTrainingTitle(){
 
-      axios.get(baseurl + 'api/mdp/get-all-training-title?session='+this.sessionP).then((response)=>{
+      axios.get(baseurl + 'api/mdp/get-all-training-title?sessionP='+this.sessionP).then((response)=>{
         this.trainingTitlesList = response.data.trainingtitle;
       }).catch((error)=>{
 
