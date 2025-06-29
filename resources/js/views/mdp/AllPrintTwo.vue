@@ -6,7 +6,7 @@
               <div class="float-right d-none d-md-block">
                 <div class="card-tools">
                   <router-link :to="{name: 'MDPList'}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-sync"></i>
+                    <i class="fas fa-backward"></i>
                     Back
                   </router-link>
                 </div>
@@ -20,7 +20,7 @@
                             <div class="card-body">
                               <div style="text-align: center">
                                 <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
-                                <h3>Personal Training Commitment 2024-2025</h3>
+                                <h3>Personal Training Commitment {{AppraisalPeriod}}</h3>
                               </div>
                               <div class="first_part">
                                 <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
@@ -119,6 +119,8 @@
                             </div>
                         </div>
                     </div>
+                  <div class="page-break" style=" page-break-before: always;"></div>
+
                 </div>
             </div>
         </div>
@@ -144,6 +146,7 @@ export default {
                 current_page: 1
             },
           isMessage : false,
+          AppraisalPeriod: "",
           query: "",
           PreLoader: false,
           editMode: false,
@@ -160,6 +163,7 @@ export default {
       this.initiative = response.data.data.initiative
       this.training = response.data.data.training
       this.Area = response.data.data.area
+      this.AppraisalPeriod = response.data.data[0].AppraisalPeriod
       this.PreLoader = false;
       setTimeout(function(){
         window.print()
@@ -185,5 +189,11 @@ export default {
  @media print{@page {size: landscape}}
  p{
    margin:0
+ }
+ @media print {
+   .page-break {
+     page-break-after: always !important;
+     break-before: page !important; /* modern browsers */
+   }
  }
 </style>

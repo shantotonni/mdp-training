@@ -266,7 +266,7 @@
                           <div class="col-6 col-md-6">
                             <div class="form-group">
                               <label>Training Title</label>
-                              <input style="font-size: 16px !important;" v-model="initiat.Name"
+                              <input style="font-size: 12px !important;" v-model="initiat.Name"
                                      type="text" class="form-control"
                                      name="amount" placeholder="Title"
                                      required
@@ -1660,6 +1660,9 @@ export default {
   white-space: normal;
 }
 ::v-deep .multiselect {
+  font-size: 12px;
+}
+::v-deep .multiselect__single {
   font-size: 12px;
 }
 .cropper {
