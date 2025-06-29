@@ -184,8 +184,17 @@ export default {
 </script>
 
 <style scoped>
- @media print{@page {size: landscape}}
- p{
-   margin:0
- }
+.content-page .content {
+  padding: 0 15px 10px 15px;
+   margin-top: 0px!important;
+  margin-bottom: 60px;
+}
+@media print{
+  @page {
+    size: landscape
+  }
+}
+p{
+  margin:0
+}
 </style>
