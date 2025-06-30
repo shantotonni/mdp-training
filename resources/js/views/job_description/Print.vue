@@ -8,7 +8,7 @@
                             <div class="card-body margin_p">
                               <div class="first_part">
                                 <div style="text-align:center"><img :src="`${mainOrigin}assets/images/logo-svg.png`" alt="user" class="rounded-circle" /></div>
-                                <h2 style="text-align:center">ACI Limited</h2>
+                                <h2 style="text-align:center">ACI PLC</h2>
                                 <p style="text-align:center;font-size: 22px;font-weight: bold;">Job Description</p>
                                 <hr>
                                 <p style="font-size: 16px"><span style="font-weight: bold">Job Title</span> <span style="margin-left: 200px">: {{ job_description.JobTitle }}</span></p>

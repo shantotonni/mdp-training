@@ -22,7 +22,7 @@
                               <div style="display:flex;">
                                 <div>
                                   <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
-                                  <p style="font-size:20px">Advanced Chemical Industries Limited</p>
+                                  <p style="font-size:20px">Advanced Chemical Industries PLC</p>
                                 </div>
                                 <div >
                                   <p style="font-size:15px;margin-left: 400px;margin-top: 20px;width: 200px;height: 55px; border: 1px solid black;
