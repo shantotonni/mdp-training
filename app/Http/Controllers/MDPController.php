@@ -718,35 +718,67 @@ class MDPController extends Controller
         ]);
     }
 
-    public function getAllMDPDepartment(){
-        $departments = DB::select("SELECT DISTINCT replace(Department,'&','and' ) as DeptName 
-                                            FROM ManagementDevelopmentPlane 
-                                            WHERE Department IS NOT NULL OR Department<>'' 
-                                            ORDER BY replace(Department,'&','and' ) ASC");
+    public function getAllMDPDepartment(Request $request){
+
+        $sessionP = session('sessionP');
+
+        $departments = DB::table('ManagementDevelopmentPlane as mdp')
+            ->join('Employer as e', function ($join) use ($sessionP) {
+                $join->on('e.EmpCode', '=', 'mdp.StaffID');
+                if ($sessionP) {
+                    $join->where('mdp.AppraisalPeriod', '=', $sessionP);
+                }
+            })
+            ->join('Department as d', 'd.DeptCode', '=', 'e.DeptCode')
+            ->where(function ($query) {
+                $query->whereNotNull('d.DeptName')
+                    ->orWhere('d.DeptName', '<>', '');
+            })
+            ->select(DB::raw("DISTINCT d.DeptCode, REPLACE(d.DeptName, '&', 'and') as DeptName"))
+            ->orderBy('d.DeptCode', 'ASC')
+            ->get();
+
         return response()->json([
             'departments'=>$departments
         ]);
     }
+    public function getAllMDPEmployee(Request $request)
+        {
+            $staffId = $request->staffId;
+            $session = $request->sessionP;
+            $departments = json_decode($request->Department);
 
-    public function getAllMDPEmployee(Request $request){
-        $staffId = $request->staffId;
-        $session = $request->sessionP;
-        $Department = json_decode($request->Department);
-        $emp_List = ManagementDevelopmentPlane::select(DB::raw("Distinct StaffID,CONCAT(StaffID, '- ', EmployeeName) AS Employee"));
-            if (!empty($session)){
-                $emp_List ->where(function ($q) use ($session) {
-                    $q->where('AppraisalPeriod', 'like', '%' . $session . '%');
+            $empList = DB::table('ManagementDevelopmentPlane as mdp')
+                ->select(DB::raw("DISTINCT mdp.StaffID, CONCAT(mdp.StaffID, '- ', mdp.EmployeeName) AS Employee"))
+                ->join('Employer as e', function ($join) use ($session) {
+                    $join->on('e.EmpCode', '=', 'mdp.StaffID');
+                    if (!empty($session)) {
+                        $join->where('mdp.AppraisalPeriod', '=', $session);
+                    }
                 });
+
+            // Apply department filtering if provided
+            if (!empty($departments)) {
+                $deptCodes = collect($departments)->pluck('DeptCode');
+
+                $empList = $empList
+                    ->join('Department as d', 'd.DeptCode', '=', 'e.DeptCode')
+                    ->where(function ($query) {
+                        $query->whereNotNull('d.DeptName')
+                            ->orWhere('d.DeptName', '<>', '');
+                    })
+                    ->whereIn('d.DeptCode', $deptCodes);
             }
-            if (!empty($Department) && isset($Department)){
-                $Department = collect($Department);
-                $DeptName = $Department->pluck('DeptName');
-                $emp_List = $emp_List->whereIn('Department',$DeptName);
-            }
+
+            $employees = $empList
+                ->whereNotNull('mdp.StaffID')
+                ->orderBy('mdp.StaffID', 'ASC')
+                ->get();
+
             return response()->json([
-            'employees'=>$emp_List->whereNotNull('StaffID')->orderby('StaffID','ASC')->get()
-        ]);
-    }
+                'employees' => $employees
+            ]);
+        }
 
     public function getAllTrainingTitle(Request $request){
         //working on it 25
