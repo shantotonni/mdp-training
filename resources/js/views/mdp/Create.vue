@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <breadcrumb :options="['Management Development Plan']">
+      <breadcrumb :options="['Create Management Development Plan']">
         <div class="col-sm-6">
           <div class="float-right d-none d-md-block">
             <div class="card-tools">
@@ -78,7 +78,7 @@
           <div class="row" >
             <div class="col-md-8">
               <!--                   @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()" -->
-              <form @submit.prevent="store()" v-on:change="saveFormDataState()">
+              <form @submit.prevent="store()">
                 <div class="card">
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
@@ -189,7 +189,7 @@
                               <small class="error" v-if="form.errors.has('Qualification')" v-html="form.errors.get('Qualification')" />
                             </div>
                           </div>
-                          <!--                          signature-->
+                          <!--signature-->
                           <div class="col-md-4" v-if="!moduleStatus">
                             <div class="form-group">
                               <label>Signature</label>
@@ -262,7 +262,8 @@
                         <hr>
                         <!--Personal-->
                         <h4 style="font-size: 18px">Personal Initiative</h4>
-                        <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
+
+                        <div class="row" v-for="(initiat, index) in form.initiative" :key="index" v-if="form.initiative && form.initiative.length > 0">
                           <div class="col-5 col-md-5">
                             <div class="form-group">
                               <label>Training Title</label>
@@ -310,6 +311,7 @@
                           </div>
                         </div>
                         <hr>
+                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'" style="width: 230px;height: 45px">Suggestive List</button>
                         <!--Required-->
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
@@ -567,6 +569,33 @@
     </div>
     <div>
       <!--    modal-->
+          <div class="modal fade bs-example-modal-lg" id="suggestiveModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title mt-0" id="myLargeModalLabel">Suggestive Learning Offering List</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="modalHide()">×</button>
+                </div>
+                <div class="modal-body">
+                  <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
+                    <thead>
+                    <tr>
+                      <th>Learning Topic</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(suggestive, i) in suggestive_list" :key="i" v-if="suggestive_list.length">
+                      <td>{{ suggestive.TrainingTitle }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+
     </div>
     <data-export/>
     <div>
@@ -823,12 +852,13 @@ export default {
         this.isFullPageLoading = true
         this.status = response.data.status;
         if (response.data.status==='success'){
-          if (this.type==='admin'){
+          if (this.Type==='admin'){
             this.cardShow=true;
-            this.idActive=true;
+            this.idActive=false;
             this.clearFormDataState();
           }else{
             this.cardShow=false;
+            this.idActive=true;
           }
           this.form.EmployeeName = response.data.employee.EmployeeName;
           this.form.Designation = response.data.employee.Designation;
@@ -850,7 +880,7 @@ export default {
         }else{
           this.EligibleInfo = response.data.data;
           this.EligibleInfoMessage = response.data.message;
-          if (this.type==='admin'){
+          if (this.Type==='admin'){
             this.errorNoti(this.EligibleInfoMessage);
           }
 
@@ -1356,12 +1386,20 @@ export default {
       })
     },
     getSuggestiveList(){
-      axios.get(baseurl+'api/get-level-wise-suggestive-list/' + this.form.StaffID).then((response)=>{
-        this.suggestive_list = response.data.suggestive_list;
+      axios.get(baseurl+'api/get-new-training?StaffID='+this.form.StaffID
+          +'&Period='+this.form.AppraisalPeriod
+      ).then((response)=>{
+        this.suggestive_list = response.data.data;
         $("#suggestiveModal").modal("show");
       }).catch((error)=>{
-
       })
+
+      // axios.get(baseurl+'api/get-level-wise-suggestive-list/' + this.form.StaffID).then((response)=>{
+      //   this.suggestive_list = response.data.suggestive_list;
+      //   $("#suggestiveModal").modal("show");
+      // }).catch((error)=>{
+      //
+      // })
     },
     getData() {
       axios.get(baseurl+'api/get-agree-business-user').then((response)=>{
