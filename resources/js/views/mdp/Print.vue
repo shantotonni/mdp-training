@@ -77,7 +77,12 @@
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">{{ training[i] !== undefined ? training[i].TrainingTitle: '' }}</span>
                                 </p>
                               </div>
-
+                              <br>
+                              <br>
+                              <br>
+                              <br>
+                              <br>
+                              <br>
                               <div style="display: flex">
                                 <div>
                                   <p style="font-size: 20px">Form No.: TR-003-01/07</p>
@@ -194,6 +199,8 @@
                               </div>
                               <br>
                               <p style="font-size: 20px"><span style="font-weight: bold">Note</span>: Keep a copy in the Department Training file and forward the original to Personnel Department.</p>
+                              <br>
+                              <br>
                               <br>
                               <div style="display: flex">
                                 <div>
