@@ -189,7 +189,7 @@
                               <small class="error" v-if="form.errors.has('Qualification')" v-html="form.errors.get('Qualification')" />
                             </div>
                           </div>
-                          <!--                          signature-->
+                          <!--signature-->
                           <div class="col-md-4" v-if="!moduleStatus">
                             <div class="form-group">
                               <label>Signature</label>
@@ -311,6 +311,7 @@
                           </div>
                         </div>
                         <hr>
+                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'" style="width: 230px;height: 45px">Suggestive List</button>
                         <!--Required-->
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
@@ -568,6 +569,33 @@
     </div>
     <div>
       <!--    modal-->
+          <div class="modal fade bs-example-modal-lg" id="suggestiveModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title mt-0" id="myLargeModalLabel">Suggestive Learning Offering List</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="modalHide()">×</button>
+                </div>
+                <div class="modal-body">
+                  <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
+                    <thead>
+                    <tr>
+                      <th>Learning Topic</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(suggestive, i) in suggestive_list" :key="i" v-if="suggestive_list.length">
+                      <td>{{ suggestive.TrainingTitle }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+
     </div>
     <data-export/>
     <div>
@@ -1358,12 +1386,20 @@ export default {
       })
     },
     getSuggestiveList(){
-      axios.get(baseurl+'api/get-level-wise-suggestive-list/' + this.form.StaffID).then((response)=>{
-        this.suggestive_list = response.data.suggestive_list;
+      axios.get(baseurl+'api/get-new-training?StaffID='+this.form.StaffID
+          +'&Period='+this.form.AppraisalPeriod
+      ).then((response)=>{
+        this.suggestive_list = response.data.data;
         $("#suggestiveModal").modal("show");
       }).catch((error)=>{
-
       })
+
+      // axios.get(baseurl+'api/get-level-wise-suggestive-list/' + this.form.StaffID).then((response)=>{
+      //   this.suggestive_list = response.data.suggestive_list;
+      //   $("#suggestiveModal").modal("show");
+      // }).catch((error)=>{
+      //
+      // })
     },
     getData() {
       axios.get(baseurl+'api/get-agree-business-user').then((response)=>{
