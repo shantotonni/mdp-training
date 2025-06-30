@@ -87,10 +87,7 @@
                                 </div>
                               </div>
 
-
                               <div class="page-break" style=" page-break-before: always;"></div>
-
-
 
                               <div class="fourth_part">
                                 <p style="font-weight: bold;font-size: 20px">B. For development to take future responsibilities</p>

@@ -269,7 +269,6 @@
                               <input style="font-size: 12px !important;" v-model="initiat.Name"
                                      type="text" class="form-control"
                                      name="amount" placeholder="Title"
-                                     required
                               >
                               <small v-if="errors.PersonalIN?.[index]?.Name" class="error">
                                 {{ errors.PersonalIN[index].Name }}
@@ -279,7 +278,7 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Competency Type</label>
-                              <select v-model="initiat.Type" name="Type" id="catId" class="form-control" required >
+                              <select v-model="initiat.Type" name="Type" id="catId" class="form-control">
                                 <option value="">Select Type</option>
                                 <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
@@ -299,7 +298,6 @@
                                   :disabled-dates="disabledDates"
                                   placeholder="Enter Date"
                                   input-class="form-control"
-                                  required
                               ></datepicker>
                               <small v-if="errors.PersonalIN?.[index]?.Date" class="error">
                                 {{ errors.PersonalIN[index].Date }}
@@ -330,7 +328,6 @@
                                   :close-on-select="true"
                                   :show-labels="true"
                                   :taggable="true"
-                                  :required="true"
                                   label="TrainingTitle"
                                   track-by="TrainingCode"
                                   placeholder="Select Training"
@@ -348,10 +345,7 @@
                           <div class="col-3 col-md-3">
                             <div class="form-group">
                               <label>Competency Type</label>
-                              <select v-model="train.TrainingType" :disabled="train.selectedTraining" name="TrainingType" id="TrainingType"
-                                      class="form-control"
-                                      required
-                              >
+                              <select v-model="train.TrainingType" :disabled="train.selectedTraining" name="TrainingType" id="TrainingType" class="form-control">
                                 <option value="">Select Type</option>
                                 <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
@@ -372,7 +366,6 @@
                                   placeholder="Enter Date"
                                   input-class="form-control"
                                   @change="validateRequiredTraining"
-                                  required
                               ></datepicker>
                               <small v-if="errors.RequiredIN?.[index2]?.TrainingDate" class="error">
                                 {{ errors.RequiredIN[index2].TrainingDate }}
@@ -398,7 +391,6 @@
                                 <div class="form-group">
                                   <label>Future Training 1</label>
                                   <multiselect
-
                                       v-if="newTrainingList"
                                       v-model="form.AreaOne"
                                       :options="newTrainingList"
@@ -407,12 +399,11 @@
                                       :close-on-select="true"
                                       :show-labels="true"
                                       :taggable="true"
-                                      :required="true"
                                       label="TrainingTitle"
                                       track-by="TrainingCode"
                                       placeholder="Select or Type Training"
                                       @tag="Level==='TOP'? addCustomTrainingA($event,'AreaOne' ):null"
-                                      required>
+                                      >
                                   </multiselect>
                                   <small v-if="errors.AreaOne" class="error">{{ errors.AreaOne }}</small>
                                   <small class="error" v-if="form.errors.has('AreaOne')" v-html="form.errors.get('AreaOne')" />
@@ -425,7 +416,6 @@
                                          style="height: 90px;font-size: 12px !important;"
                                          name="Reason" placeholder="Max 30 words"
                                          @input="validateWordLimit('FutureTrainingOneDetails', 30)"
-                                         required
                                   >
                                   <small class="error" v-if="form.errors.has('FutureTrainingOneDetails')" v-html="form.errors.get('FutureTrainingOneDetails')" />
                                   <small v-if="errors.FutureTrainingOneDetails" class="error">{{ errors.FutureTrainingOneDetails }}</small>
@@ -435,7 +425,6 @@
                                 <div class="form-group">
                                   <label>Future Training 2</label>
                                   <multiselect
-
                                       v-if="newTrainingList"
                                       v-model="form.AreaTwo"
                                       :options="newTrainingList"
@@ -444,7 +433,6 @@
                                       :close-on-select="true"
                                       :show-labels="true"
                                       :taggable="true"
-                                      :required="true"
                                       label="TrainingTitle"
                                       track-by="TrainingCode"
                                       placeholder="Select or Type Training"
@@ -461,7 +449,6 @@
                                          style="height: 90px ;font-size: 12px !important;"
                                          name="Reason" placeholder="Max 30 words"
                                          @input="validateWordLimit('FutureTrainingTwoDetails', 30)"
-                                         required
                                   >
                                   <small class="error" v-if="form.errors.has('FutureTrainingTwoDetails')" v-html="form.errors.get('FutureTrainingTwoDetails')" />
                                   <small v-if="errors.FutureTrainingTwoDetails" class="error">{{ errors.FutureTrainingTwoDetails }}</small>
@@ -1210,33 +1197,34 @@ export default {
         'SuppervisorStaffID', 'AreaOne',
         'FutureTrainingOneDetails', 'AreaTwo', 'FutureTrainingTwoDetails'
       ];
+      let isValid = true;
       for (const field of requiredFields) {
         if (!this.form[field]) {
           const message = `${field} is required.`;
           this.form.errors.set(field, message);
-          return false;
+          isValid = false;
         }else {
           //shanto bhai this field is not working properly for areaone
           this.form.errors.clear(field);
         }
       }
-      for (const [i, item] of this.form.initiative.entries()) {
-        if (!item.Name || !item.Type || !item.Date) {
-          const message=`Personal Initiative ${i + 1} is incomplete.`;
-          this.form.errors.set(item, message);
-          this.errorNoti(message);
-          return false;
-        }
-      }
-      for (const [i, item] of this.form.training.entries()) {
-        if (!item.TrainingTitle|| !item.TrainingType || !item.TrainingDate) {
-          const message=`Required Training ${i + 1} is incomplete.`;
-          this.form.errors.set(item, message);
-          this.errorNoti(message);
-          return false;
-        }
-      }
-      return true;
+      // for (const [i, item] of this.form.initiative.entries()) {
+      //   if (!item.Name || !item.Type || !item.Date) {
+      //     const message=`Personal Initiative ${i + 1} is incomplete.`;
+      //     this.form.errors.set(item, message);
+      //     this.errorNoti(message);
+      //     return false;
+      //   }
+      // }
+      // for (const [i, item] of this.form.training.entries()) {
+      //   if (!item.TrainingTitle|| !item.TrainingType || !item.TrainingDate) {
+      //     const message=`Required Training ${i + 1} is incomplete.`;
+      //     this.form.errors.set(item, message);
+      //     this.errorNoti(message);
+      //     return false;
+      //   }
+      // }
+      return isValid;
     },
     buildFormData() {
       const formData = new FormData();
