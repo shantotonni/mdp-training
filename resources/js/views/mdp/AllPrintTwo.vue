@@ -70,8 +70,8 @@
                                     <tr>
                                       <td>Personal Development / Training to Deliver Future Job Responsibilities</td>
                                       <td>
-                                        <p>{{ mdplist.AreaOne }}</p>
-                                        <p>{{ mdplist.AreaTwo }}</p>
+                                        <p>{{mdplist.AreaOneTitle}}</p>
+                                        <p>{{mdplist.AreaTwoTitle}}</p>
                                       </td>
                                       <td><p v-for="(init, j) in mdplist.initiative" :key="j">{{ init.Type }}</p></td>
                                       <td><p v-for="(init, j) in mdplist.initiative" :key="j">{{ customFormatter(init.Date) }}</p></td>
@@ -119,10 +119,11 @@
                             </div>
                         </div>
                     </div>
-                  <div class="page-break" style=" page-break-before: always;"></div>
-
                 </div>
+              <div class="page-break" style=" page-break-before: always;"></div>
+
             </div>
+
         </div>
       <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
 

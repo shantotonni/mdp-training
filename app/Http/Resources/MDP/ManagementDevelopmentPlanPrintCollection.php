@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\MDP;
 
+use App\Models\TrainingName;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ManagementDevelopmentPlanPrintCollection extends ResourceCollection
 {
@@ -17,7 +17,13 @@ class ManagementDevelopmentPlanPrintCollection extends ResourceCollection
                 $session = explode('-', $mdp->AppraisalPeriod);
                 $from_period = $session[0] ?? '';
                 $to_period = $session[1] ?? '';
-
+                if ($mdp->AreaOne){
+                    $areaOneTitle = TrainingName::select('TrnName')->where('TrnCode','=', $mdp->AreaOne)->first();
+                    $areaTwoTitle = TrainingName::select('TrnName')->where('TrnCode', '=',$mdp->AreaTwo)->first();
+                }else{
+                    $areaOneTitle=null;
+                    $areaTwoTitle=null;
+                }
                 return [
                     'ID' => $mdp->ID,
                     'StaffID' => $mdp->StaffID,
@@ -26,8 +32,10 @@ class ManagementDevelopmentPlanPrintCollection extends ResourceCollection
                     'to_period' => $to_period,
                     'FutureTrainingOneDetails' => $mdp->FutureTrainingOneDetails,
                     'AreaOne' => $mdp->AreaOne,
+                    'AreaOneTitle' => $areaOneTitle? $areaOneTitle->TrnName:$mdp->AreaOne,
                     'FutureTrainingTwoDetails' => $mdp->FutureTrainingTwoDetails,
                     'AreaTwo' => $mdp->AreaTwo,
+                    'AreaTwoTitle' => $areaTwoTitle? $areaTwoTitle->TrnName:$mdp->AreaTwo,
                     'CreatedDate' => date('F j, Y', strtotime($mdp->CreatedDate)),
                     'CurrentPosition' => $mdp->CurrentPosition,
                     'Department' => $mdp->Department,
