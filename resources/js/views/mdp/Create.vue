@@ -78,7 +78,7 @@
           <div class="row" >
             <div class="col-md-8">
               <!--                   @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()" -->
-              <form @submit.prevent="store()">
+              <form @submit.prevent="store()" v-on:change="saveFormDataState()">
                 <div class="card">
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
@@ -1200,7 +1200,8 @@ export default {
       let isValid = true;
       for (const field of requiredFields) {
         if (!this.form[field]) {
-          const message = `${field} is required.`;
+          const formattedField = field.replace(/([A-Z])/g, ' $1').trim();
+          const message = `${formattedField} is required.`;
           this.form.errors.set(field, message);
           isValid = false;
         }else {
