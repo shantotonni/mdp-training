@@ -68,6 +68,7 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'initiative'=> $this->initiative,
             'training'=>$this->training,
             'MDPStatus'=>$this->MDPStatus,
+            'ApprovedDate'=>$this->ApprovedDate,
             //'area'=>$this->area,
 
             //'AreaOneText'=> $this->Area,

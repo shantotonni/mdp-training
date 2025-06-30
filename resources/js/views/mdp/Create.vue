@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <breadcrumb :options="['Management Development Plan']">
+      <breadcrumb :options="['Create Management Development Plan']">
         <div class="col-sm-6">
           <div class="float-right d-none d-md-block">
             <div class="card-tools">
@@ -78,7 +78,7 @@
           <div class="row" >
             <div class="col-md-8">
               <!--                   @submit.prevent="store()" @keydown="form.onKeydown($event)" v-on:change="saveFormDataState()" -->
-              <form @submit.prevent="store()" v-on:change="saveFormDataState()">
+              <form @submit.prevent="store()">
                 <div class="card">
                   <div class="datatable" v-if="!isLoading">
                     <div class="card-body">
@@ -262,7 +262,8 @@
                         <hr>
                         <!--Personal-->
                         <h4 style="font-size: 18px">Personal Initiative</h4>
-                        <div class="row" v-for="(initiat, index) in form.initiative" :key="index">
+
+                        <div class="row" v-for="(initiat, index) in form.initiative" :key="index" v-if="form.initiative && form.initiative.length > 0">
                           <div class="col-5 col-md-5">
                             <div class="form-group">
                               <label>Training Title</label>
@@ -823,12 +824,13 @@ export default {
         this.isFullPageLoading = true
         this.status = response.data.status;
         if (response.data.status==='success'){
-          if (this.type==='admin'){
+          if (this.Type==='admin'){
             this.cardShow=true;
-            this.idActive=true;
+            this.idActive=false;
             this.clearFormDataState();
           }else{
             this.cardShow=false;
+            this.idActive=true;
           }
           this.form.EmployeeName = response.data.employee.EmployeeName;
           this.form.Designation = response.data.employee.Designation;
@@ -850,7 +852,7 @@ export default {
         }else{
           this.EligibleInfo = response.data.data;
           this.EligibleInfoMessage = response.data.message;
-          if (this.type==='admin'){
+          if (this.Type==='admin'){
             this.errorNoti(this.EligibleInfoMessage);
           }
 

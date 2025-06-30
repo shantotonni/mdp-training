@@ -992,14 +992,17 @@ class MDPController extends Controller
         $mdp = ManagementDevelopmentPlane::where('ID', $mdpID)->first();
         if ($mdp->MDPStatus == 'Approved'){
             $status = 'Pending';
+            $approvedDate = Carbon::now();
             $message = 'Successfully Disapproved';
             $title = 'Disapproved';
         }else{
             $status = 'Approved';
             $message = 'Successfully Approved';
             $title = 'Approved';
+            $approvedDate = Carbon::now();
         }
         $mdp->MDPStatus = $status;
+        $mdp->ApprovedDate = $approvedDate;
         $mdp->save();
         return response()->json([
             'status' => 'success',

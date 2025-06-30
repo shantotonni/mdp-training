@@ -45,6 +45,7 @@ class ManagementDevelopmentPlaneCollection extends ResourceCollection
                     'SuppervisorStaffID'    => $mdp->SuppervisorStaffID,
                     'SuppervisorName'       => $mdp->SuppervisorName,
                     'SuppervisorDesignation'   => $mdp->SuppervisorDesignation,
+                    'ApprovedDate'      => $mdp->ApprovedDate,
                     'SupervisorEmail'   => $mdp->SuppervisorEmail,
                     'P1'                => isset($mdp->initiative[0]) ? $mdp->initiative[0]->Name: '',
                     'P2'                => isset($mdp->initiative[1]) ? $mdp->initiative[1]->Name: '',
