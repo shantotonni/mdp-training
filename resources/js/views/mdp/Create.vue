@@ -769,7 +769,12 @@ export default {
           const data = response.data.data;
           this.form.fill(data);
           this.isFullPageLoading=true
-
+          if (this.Type==='admin'){
+            this.idActive=false;
+            this.clearFormDataState();
+          }else{
+            this.idActive=true;
+          }
           this.SelectedAreaOne = data.AreaOne;
           this.SelectedAreaTwo = data.AreaTwo;
           this.form.training = data.training;
@@ -788,7 +793,6 @@ export default {
       }
     },
     store() {
-      alert('submit initial')
       this.errors = {};
 
       if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
@@ -803,12 +807,10 @@ export default {
       const formFieldsValid = this.validateFormFields(); // true = valid
 
       if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
-        alert('error')
         this.isSubmitting = false;
         this.PreLoader = false;
         return ;
       }else{
-        alert('submit success')
         const formData = this.buildFormData();
         this.isSubmitting = true;
         this.PreLoader = true;
@@ -944,7 +946,6 @@ export default {
       }
     },
     onTrainingCodePicked(selectedTraining, train) {
-
       if (selectedTraining && typeof selectedTraining === 'object') {
         train.TrainingType = selectedTraining.CompetencyType;
       } else {
