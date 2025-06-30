@@ -193,7 +193,7 @@
                                 </p>
                                 <p style="font-size: 20px">
                                   Date: <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">
-                                  {{ mdplist.CreatedDate }}
+                                  {{ mdplist.ApprovedDate }}
                                 </span>
                                 </p>
                               </div>
@@ -259,9 +259,9 @@ export default {
           mdpIds: stored
        }).then((response)=>{
       this.mdpWholeList = response.data.data
-      this.initiative = response.data.data.initiative
-      this.training = response.data.data.training
-      this.Area = response.data.data.area
+      // this.initiative = response.data.data.initiative
+      // this.training = response.data.data.training
+      // this.Area = response.data.data.area
          this.PreLoader = false;
       $('#mdp').printThis({
         importCSS: true,
