@@ -8,7 +8,6 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class ManagementDevelopmentPlanPrintCollection extends ResourceCollection
 {
 
-    //got custom json resposne we use toarray
     public function toArray($request)
     {
         return [
@@ -56,6 +55,7 @@ class ManagementDevelopmentPlanPrintCollection extends ResourceCollection
                     'initiative' => $mdp->initiative,
                     'training' => $mdp->training,
                     'MDPStatus' => $mdp->MDPStatus,
+                    'ApprovedDate'=>$mdp->ApprovedDate?date('F j, Y', strtotime($mdp->ApprovedDate)):''
                 ];
             }),
 

@@ -190,7 +190,7 @@
                                  </p>
                                  <p style="font-size: 20px">
                                    Date: <span style="display: inline-block;border-bottom: 1px solid;width: 400px;text-align: center">
-                                  {{ mdplist.CreatedDate }}
+                                  {{ mdplist.ApprovedDate }}
                                 </span>
                                  </p>
                                </div>
