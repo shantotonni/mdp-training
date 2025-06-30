@@ -68,12 +68,9 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'initiative'=> $this->initiative,
             'training'=>$this->training,
             'MDPStatus'=>$this->MDPStatus,
-<<<<<<< HEAD
-            'ApprovedDate'=>$this->ApprovedDate,
             'Business'=>$this->Business,
-=======
             'ApprovedDate'=>$this->ApprovedDate?date('F j, Y',strtotime($this->ApprovedDate)):'',
->>>>>>> 9a79e11b875e3f116ed9e6c632dde16d06d4e2f9
+
             //'area'=>$this->area,
 
             //'AreaOneText'=> $this->Area,
