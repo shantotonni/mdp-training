@@ -63,9 +63,9 @@
                                   <tbody>
                                     <tr>
                                       <td>In-house or External Training By the Company for Delivering Present Job Responsibility</td>
-                                      <td><p v-for="(train, j) in training" :key="i" v-if="training.length">{{ train.TrainingTitle }}</p></td>
-                                      <td><p v-for="(train, j) in training" :key="i" v-if="training.length">{{ train.TrainingType }}</p></td>
-                                      <td><p v-for="(train, j) in training" :key="i" v-if="training.length">{{ customFormatter(train.TrainingDate) }}</p></td>
+                                      <td><p v-for="(train, j) in mdplist.training" :key="j" v-if="mdplist.training.length">{{ train.TrainingTitle }}</p></td>
+                                      <td><p v-for="(train, j) in mdplist.training" :key="j" v-if="mdplist.training.length">{{ train.TrainingType }}</p></td>
+                                      <td><p v-for="(train, j) in mdplist.training" :key="j" v-if="mdplist.training.length">{{ customFormatter(train.TrainingDate) }}</p></td>
                                     </tr>
                                     <tr>
                                       <td>Personal Development / Training to Deliver Future Job Responsibilities</td>
@@ -78,7 +78,7 @@
                                     </tr>
                                     <tr>
                                       <td>Knowledge and skill will be Acquire at personal Initiative</td>
-                                      <td><p v-for="(init, j) in initiative" :key="j" v-if="initiative.length">{{ init.Name }}</p></td>
+                                      <td><p v-for="(init, j) in mdplist.initiative" :key="j" v-if="mdplist.initiative.length">{{ init.Name }}</p></td>
                                       <td></td>
                                       <td></td>
                                     </tr>
@@ -161,9 +161,9 @@ export default {
       mdpIds: stored
     }).then((response)=>{
       this.mdpWholeList = response.data.data
-      this.initiative = response.data.data.initiative
-      this.training = response.data.data.training
-      this.Area = response.data.data.area
+      // this.initiative = response.data.data.initiative
+      // this.training = response.data.data.training
+      // this.Area = response.data.data.area
       this.AppraisalPeriod = response.data.data[0].AppraisalPeriod
       this.PreLoader = false;
       setTimeout(function(){

@@ -259,9 +259,9 @@ export default {
           mdpIds: stored
        }).then((response)=>{
       this.mdpWholeList = response.data.data
-      this.initiative = response.data.data.initiative
-      this.training = response.data.data.training
-      this.Area = response.data.data.area
+      // this.initiative = response.data.data.initiative
+      // this.training = response.data.data.training
+      // this.Area = response.data.data.area
          this.PreLoader = false;
       $('#mdp').printThis({
         importCSS: true,
