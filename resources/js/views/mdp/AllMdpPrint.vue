@@ -22,7 +22,7 @@
                               <div style="display:flex;">
                                 <div>
                                   <img :src="`${mainOrigin}logo/logo.png`" style="height: 60px;" alt="user" class="rounded-circle" />
-                                  <p style="font-size:20px">Advanced Chemical Industries Limited</p>
+                                  <p style="font-size:20px">Advanced Chemical Industries PLC</p>
                                 </div>
                                 <div >
                                   <p style="font-size:15px;margin-left: 400px;margin-top: 20px;width: 200px;height: 55px; border: 1px solid black;
@@ -102,7 +102,7 @@
 <!--                                </p>-->
                                 <span style="font-size: 20px">1.</span> <p style="font-size: 20px">
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">
-                                    <b v-if="mdplist.AreaOne">{{mdplist.AreaOne}} : </b>
+                                      <b v-if="mdplist.AreaOne">{{mdplist.AreaOneTitle}} : </b>
                                     {{ mdplist.FutureTrainingOneDetails }}</span>
                                 </p>
                                 <p>
@@ -127,7 +127,7 @@
                                 <p>
                                   <span style="display: inline-block;border-bottom: 1px solid;width: 940px;font-size: 20px">
                                     <span style="display: inline-block;border-bottom: 1px solid;width: 940px;">
-                                      <b v-if="mdplist.AreaTwo">{{mdplist.AreaTwo}} : </b>{{ mdplist.FutureTrainingTwoDetails }}</span>
+                                      <b v-if="mdplist.AreaTwo">{{mdplist.AreaTwoTitle}} : </b>{{ mdplist.FutureTrainingTwoDetails }}</span>
                                   </span>
                                 </p>
                                 <p>

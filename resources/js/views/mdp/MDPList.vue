@@ -48,7 +48,8 @@
                                         <div class="row">
                                           <div class="col-md-2">
                                             <div class="form-group">
-                                              <select id="sessionP" class="form-control defineHeight"   v-model="sessionP"   @click="getAllEmpID" >
+                                              <select id="sessionP" class="form-control defineHeight"   v-model="sessionP"
+                                                      @change="getAllEmpID && getAllDepartment" >
                                                 <option value="">Period</option>
                                                 <option v-for="(session,index) in sessions" :value="session.Name"
                                                      :key="index">{{session.Name}}</option>
@@ -64,7 +65,7 @@
                                                   :close-on-select="true"
                                                   :show-labels="true"
                                                   label="DeptName"
-                                                  track-by="DeptName"
+                                                  track-by="DeptCode"
                                                   @click="getAllEmpID"
                                                   placeholder="SBU's"></multiselect>
 <!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
@@ -148,7 +149,7 @@
                                                 <button v-if="(mdp.Supervisor === 'Y' || type === 'admin') && mdp.MDPStatus === 'Approved'"
                                                         @click="approvedMDP(mdp.ID)" class="btn btn-warning btn-sm"><i class="mdi mdi-printer"></i> Disapproved</button>
 
-                                                <button @click="destroy(mdp.ID)"  class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                                <button  v-if="mdp.MDPStatus === 'Pending' " @click="destroy(mdp.ID)"  class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                               </td>
                                           </tr>
                                         </tbody>
@@ -272,13 +273,14 @@ export default {
           });
         },
         getAllDepartment(){
-          axios.get(baseurl + 'api/mdp/get-all-mdp-department').then((response)=>{
+          axios.get(baseurl + 'api/mdp/get-all-mdp-department?sessionP='+this.sessionP).then((response)=>{
             this.departments = response.data.departments;
           }).catch((error)=>{
 
           })
         },
         getAllEmpID(){
+          console.log('this.sessionP',this.sessionP,this.Department);
               axios.get(baseurl + 'api/mdp/get-all-mdp-employee?sessionP=' + this.sessionP
                   + "&Department=" + JSON.stringify(this.Department)
               ).then((response)=>{

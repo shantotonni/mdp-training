@@ -55,20 +55,37 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
 
                 ];
 
-                $count = 0;
-                foreach ($mdp->initiative as $row){
-                    $count++;
-                    $array['PersonalTrainingTitle' .'-'. $count]     = isset($row['Name'])?$row['Name']:'';
-                    $array['PersonalCompetencyType' .'-'. $count]    = isset($row['Type'])?$row['Type']:'';
-                    $array['PersonalPlannedDate' .'-'. $count]      =isset($row['Date'])?date("m/d/Y ", strtotime($row['Date'])):'';
+
+                // Personal Initiative Section
+                for ($count = 1; $count <= 5; $count++) {
+                    $row = isset($mdp->initiative[$count - 1]) ? $mdp->initiative[$count - 1] : [];
+                    $array['PersonalTrainingTitle-' . $count]     = isset($row['Name']) ? $row['Name'] : '';
+                    $array['PersonalCompetencyType-' . $count]    = isset($row['Type']) ? $row['Type'] : '';
+                    $array['PersonalPlannedDate-' . $count]       = isset($row['Date']) ? date("m/d/Y", strtotime($row['Date'])) : '';
                 }
-                $countRe = 0;
-                foreach ($mdp->training as $row){
-                    $countRe++;
-                    $array['RequiredTrainingTitle' .'-'.$countRe]     = isset($row['TrainingTitle'])?$row['TrainingTitle']:'';
-                    $array['RequiredCompetencyType' .'-'. $countRe]   = isset($row['TrainingType'])?$row['TrainingType']:'';
-                    $array['RequiredPlannedDate' .'-'. $countRe]      = isset($row['TrainingDate'])?date("m/d/y",strtotime($row['TrainingDate'])):'';
+
+// Required Training Section
+                for ($countRe = 1; $countRe <= 5; $countRe++) {
+                    $row = isset($mdp->training[$countRe - 1]) ? $mdp->training[$countRe - 1] : [];
+                    $array['RequiredTrainingTitle-' . $countRe]   = isset($row['TrainingTitle']) ? $row['TrainingTitle'] : '';
+                    $array['RequiredCompetencyType-' . $countRe]  = isset($row['TrainingType']) ? $row['TrainingType'] : '';
+                    $array['RequiredPlannedDate-' . $countRe]     = isset($row['TrainingDate']) ? date("m/d/y", strtotime($row['TrainingDate'])) : '';
                 }
+
+//                $count = 0;
+//                foreach ($mdp->initiative as $row){
+//                    $count++;
+//                    $array['PersonalTrainingTitle' .'-'. $count]     = isset($row['Name'])?$row['Name']:'';
+//                    $array['PersonalCompetencyType' .'-'. $count]    = isset($row['Type'])?$row['Type']:'';
+//                    $array['PersonalPlannedDate' .'-'. $count]      =isset($row['Date'])?date("m/d/Y ", strtotime($row['Date'])):'';
+//                }
+//                $countRe = 0;
+//                foreach ($mdp->training as $row){
+//                    $countRe++;
+//                    $array['RequiredTrainingTitle' .'-'.$countRe]     = isset($row['TrainingTitle'])?$row['TrainingTitle']:'';
+//                    $array['RequiredCompetencyType' .'-'. $countRe]   = isset($row['TrainingType'])?$row['TrainingType']:'';
+//                    $array['RequiredPlannedDate' .'-'. $countRe]      = isset($row['TrainingDate'])?date("m/d/y",strtotime($row['TrainingDate'])):'';
+//                }
 
                 $array['FutureTrainingTitle-1'] = $areaOneTitle?$areaOneTitle->TrnName: $mdp->AreaOne;
                 $array[' FutureTrainingDetails-1']   = $mdp->FutureTrainingOneDetails;
