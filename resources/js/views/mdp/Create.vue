@@ -321,6 +321,7 @@
                           <div class="col-5 col-md-5" >
                             <div class="form-group">
                               <label v-if="newTrainingList">Select Training Title</label>
+
                               <multiselect
                                   v-if="newTrainingList"
                                   v-model="train.selectedTraining"
@@ -346,8 +347,8 @@
 
                           <div class="col-3 col-md-3">
                             <div class="form-group">
-                              <label>Competency Type</label>
-                              <select v-model="train.TrainingType" :disabled="train.selectedTraining" name="TrainingType" id="TrainingType" class="form-control">
+                              <label>Competency Type </label>
+                              <select v-model="train.TrainingType" :disabled="train.selectedTraining ? !train.selectedTraining.TrainingCode.startsWith('cus_') : false" name="TrainingType" id="TrainingType" class="form-control">
                                 <option value="">Select Type</option>
                                 <option value="Behavior">Behavior</option>
                                 <option value="Knowledge">Knowledge</option>
@@ -784,6 +785,7 @@ export default {
           this.SelectedAreaOne = data.AreaOne;
           this.SelectedAreaTwo = data.AreaTwo;
           this.form.training = data.training;
+          this.Level = data.Level;
           this.moduleStatus = true;
           if (this.form && this.form.Signature) {
             this.existingSignatureUrl = window.location.origin +baseurl+`/signature/`+this.form.Signature;

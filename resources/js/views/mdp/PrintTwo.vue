@@ -62,7 +62,7 @@
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td style="padding: ">In-house or External Training By the Company for Delivering Present Job Responsibility</td>
+                                      <td>In-house or External Training By the Company for Delivering Present Job Responsibility</td>
                                       <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingTitle }}</p></td>
                                       <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ train.TrainingType }}</p></td>
                                       <td><p v-for="(train, i) in training" :key="i" v-if="training.length">{{ customFormatter(train.TrainingDate) }}</p></td>
@@ -114,13 +114,13 @@
                                    <p>Signature of the Department Head</p>
                                  </div>
                                </div>
-                                <div style="position: absolute;
-                                bottom: 0;
-                              "
-                                >
+                                <div style="position: fixed;
+                                  bottom: 0;
+                                  width: 100%;
+                                  text-align: left;
+                                  font-size: 12px;">
                                   <p>Form No: TR-003-01/07</p>
                                 </div>
-
                               </div>
                             </div>
                         </div>

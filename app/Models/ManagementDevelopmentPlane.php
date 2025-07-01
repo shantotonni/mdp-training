@@ -29,6 +29,9 @@ class ManagementDevelopmentPlane extends Model
     public function areaTwoTraining() {
         return $this->belongsTo(MDPTraining::class, 'AreaTwo', 'TrainingCode');
     }
+    public function employee(){
+        return $this->hasOne(Employee::class,'EmpCode','StaffID');
+    }
 //    public function area(){
 //        return $this->hasMany(Area::class,'MDPID','ID');
 //    }
