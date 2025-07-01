@@ -185,7 +185,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Qualification</label>
-                              <input type="text" name="Qualification" readonly v-model="form.Qualification" class="form-control" :class="{ 'is-invalid': form.errors.has('Qualification') }" required>
+                              <input type="text" name="Qualification"  v-model="form.Qualification" class="form-control" :class="{ 'is-invalid': form.errors.has('Qualification') }" required>
                               <small class="error" v-if="form.errors.has('Qualification')" v-html="form.errors.get('Qualification')" />
                             </div>
                           </div>
@@ -200,11 +200,11 @@
                           </div>
                           <div class="col-md-4" >
                             <div class="form-group">
-                              <div v-if="previewUrl">
+                              <div v-if="previewUrl || existingSignatureUrl">
                                 <label>Preview:</label> <span>
-                                    <button type="button" class="btn btn-danger btn-sm" @click="resetCropper">x</button>&nbsp;
+                                    <button type="button" class="btn btn-danger btn-sm" @click="resetCropper" v-if="previewUrl">x</button>&nbsp;
                                   </span>
-                                <img :src="previewUrl" style="width: 200px; height: 60px;" />
+                                <img :src="previewUrl||existingSignatureUrl" style="width: 200px; height: 60px;" />
                               </div>
                             </div>
                           </div>
@@ -320,7 +320,7 @@
                           <!--v-if="dropDown==='YES'"-->
                           <div class="col-5 col-md-5" >
                             <div class="form-group">
-                              <label v-if="newTrainingList">Select Training Title</label>
+                              <label v-if="newTrainingList">Select Training Title {{Level}}</label>
                               <multiselect
                                   v-if="newTrainingList"
                                   v-model="train.selectedTraining"
@@ -334,10 +334,10 @@
                                   track-by="TrainingCode"
                                   placeholder="Select Training"
                                   @change="validateRequiredTraining"
-                                  @tag="Level==='TOP' ? addCustomTraining($event, train) : null"
+                                  @tag="Level==='Top' ? addCustomTraining($event, train) : null"
                                   @input="onTrainingSelected($event, train)"
                               ></multiselect>
-
+<!--                              @tag="Level==='TOP' ? addCustomTraining($event, train) : null"-->
                               <small v-if="errors.RequiredIN?.[index2]?.TrainingTitle" class="error">
                                 {{ errors.RequiredIN[index2].TrainingTitle }}
                               </small>
@@ -404,7 +404,7 @@
                                       label="TrainingTitle"
                                       track-by="TrainingCode"
                                       placeholder="Select or Type Training"
-                                      @tag="Level==='TOP'? addCustomTrainingA($event,'AreaOne' ):null"
+                                      @tag="Level==='Top'? addCustomTrainingA($event,'AreaOne' ):null"
                                       >
                                   </multiselect>
                                   <small v-if="errors.AreaOne" class="error">{{ errors.AreaOne }}</small>
@@ -438,7 +438,7 @@
                                       label="TrainingTitle"
                                       track-by="TrainingCode"
                                       placeholder="Select or Type Training"
-                                      @tag="Level==='TOP'? addCustomTrainingA($event,'AreaTwo' ):null"
+                                      @tag="Level==='Top'? addCustomTrainingA($event,'AreaTwo' ):null"
                                   ></multiselect>
                                   <small v-if="errors.AreaTwo" class="error">{{ errors.AreaTwo }}</small>
                                   <small class="error" v-if="form.errors.has('AreaTwo')" v-html="form.errors.get('AreaTwo')" />
@@ -619,7 +619,7 @@ import 'vue-advanced-cropper/dist/style.css';
 
 import Cropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
-
+import { v4 as uuidv4 } from 'uuid';
 export default {
   name: "List",
   computed: {
@@ -650,6 +650,8 @@ export default {
       startDate: currentYear+'-07-01',
       endDate: highestYear+'-06-30',
       previewUrl: null,
+      existingSignatureUrl: null, // This will hold the URL to the stored image
+
       croppedBlob: null,
       imageUrl: null,
       cropper: null,
@@ -775,10 +777,14 @@ export default {
           }else{
             this.idActive=true;
           }
+
           this.SelectedAreaOne = data.AreaOne;
           this.SelectedAreaTwo = data.AreaTwo;
           this.form.training = data.training;
           this.moduleStatus = true;
+          if (this.form && this.form.Signature) {
+            this.existingSignatureUrl = window.location.origin +baseurl+`/signature/`+this.form.Signature;
+          }
           this.getTrainingHistory()
           // await this.getEmployeeByStaffID();
           await this.getNewTrainingList();
@@ -916,7 +922,7 @@ export default {
           item.selectedTraining = matched || {
             TrainingCode: item.TrainingCode,
             TrainingTitle: item.TrainingTitle,
-            isDropDown: 'N'
+
           };
           // Set TrainingType (e.g., "Skill", "Behavior", etc.)
           item.TrainingType = item.TrainingType || matched?.CompetencyType || '';
@@ -942,6 +948,7 @@ export default {
         train.selectedTraining = {
           TrainingTitle: selectedItem, // create a minimal object for v-model to bind
           TrainingCode: null,
+
         };
       }
     },
@@ -954,21 +961,23 @@ export default {
     },
     addCustomTraining(newTitle, train) {
       const customEntry = {
-        TrainingCode: 'CUSTOM_' + Date.now(),
+        TrainingCode: 'cus_' + uuidv4().slice(0, 5).toUpperCase(),
         TrainingTitle: newTitle,
       };
       this.newTrainingList.push(customEntry);
       train.selectedTraining = customEntry;
       train.TrainingCode = customEntry.TrainingCode;
       train.TrainingTitle = customEntry.TrainingTitle;
+
+
     },
     addCustomTrainingA(newTag,type, index = null) {
       const customTraining = {
-        TrainingCode: null,
+        TrainingCode: 'cus_' + uuidv4().slice(0, 5).toUpperCase(),
         TrainingTitle: newTag,
         TrainingType: type, // Let user select this later
         // CompetencyType: 'Custom', // Or 'Future' if for Area fields
-        TrainingDate: `${this.highestYear}-06-01`
+        TrainingDate: " "
       };
 
       // Add to list so it appears in options

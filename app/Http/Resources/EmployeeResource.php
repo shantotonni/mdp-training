@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class EmployeeResource extends JsonResource
 {
+
     public function toArray($request)
     {
         if (isset($this->personal)){
@@ -28,11 +29,11 @@ class EmployeeResource extends JsonResource
         if (isset($this->Grade)) {
             $gradeNumber = intval(substr($this->Grade, -2)); // get last 2 digits
             if ($gradeNumber >= 1 && $gradeNumber <= 4) {
-                $category = 'JUNIOR';
+                $category = 'Junior';
             } elseif ($gradeNumber >= 5 && $gradeNumber <= 7) {
-                $category = 'MID';
+                $category = 'Mid';
             } elseif ($gradeNumber >= 8 && $gradeNumber <= 11) {
-                $category = 'TOP';
+                $category = 'Top';
             }
         }
 

@@ -37,6 +37,7 @@
         "print-this": "^1.16.0",
         "read-excel-file": "^5.0.0",
         "sweetalert2": "^9.17.4",
+        "uuid": "^11.1.0",
         "v-toaster": "^1.0.3",
         "vee-validate": "^3.4.14",
         "vform": "^2.1.2",
