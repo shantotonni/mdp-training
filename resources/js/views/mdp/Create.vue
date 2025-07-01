@@ -190,7 +190,7 @@
                             </div>
                           </div>
                           <!--signature-->
-                          <div class="col-md-4" v-if="!moduleStatus">
+                          <div class="col-md-4" >
                             <div class="form-group">
                               <label>Signature</label>
                               <!-- Trigger -->

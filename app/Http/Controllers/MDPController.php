@@ -11,6 +11,7 @@ use App\Http\Resources\MDP\ManagementDevelopmentPlaneCollection;
 use App\Http\Resources\MDP\ManagementDevelopmentPlaneResource;
 use App\Http\Resources\MDP\ManagementDevelopmentPlanPrintCollection;
 use App\Http\Resources\SupervisorResource;
+use App\Mail\MDPCreateMail;
 use App\Models\ContactPersonal;
 use App\Models\Employee;
 use App\Models\ManagementDevelopmentPlane;
@@ -23,7 +24,9 @@ use App\Traits\MDPCommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -263,14 +266,14 @@ class MDPController extends Controller
                 }
 
                 $email = $request->SuppervisorEmail;
-                $explode = explode('@', $email);
+//                $explode = explode('@', $email);
 //                if ($explode[1] === 'aci-bd.com') {
 //                    Config::set('mail.mailers.smtp.host', 'mail.aci-bd.com');
 //
 //                    $data = 'MDP Submitted!';
 //                    Mail::to($email)->send(new MDPCreateMail($data, $request->EmployeeName, $request->Designation ));
 //                }
-                //else {
+//                else {
 //                    Artisan::call('config:clear');
 //                    Artisan::call('cache:clear');
 //                    Artisan::call('config:cache');
@@ -329,6 +332,39 @@ class MDPController extends Controller
             MDPPersonalInitiative::where('MDPID',$request->ID)->delete();
             MDPTraining::where('MDPID',$request->ID)->delete();
 
+            $imageDimantion = Image::make($request->file('Signature'));
+
+            if ($imageDimantion->width() != 200 || $imageDimantion->height() != 60) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Image dimensions must be 200x60 pixels.'
+                ]);
+            }
+
+            if ($request->hasFile('Signature')) {
+                $file = $request->file('Signature');
+
+                // Create a unique name with extension
+                $filename = 'signature_' . time() . '.' . $file->getClientOriginalExtension();
+                $destination = public_path('signature/');
+                //code for remove old file
+                if ($ManagementDevelopmentPlane->Signature != '' && $ManagementDevelopmentPlane->Signature != null) {
+                    $file_old = $destination . $ManagementDevelopmentPlane->Signature;
+                    if (file_exists($file_old)) {
+                        unlink($file_old);
+                    }
+                }
+
+                if (!file_exists($destination)) {
+                    mkdir($destination, 0755, true);
+                }
+
+                Image::make($file)->encode('jpeg', 95)->save(public_path('signature/').$filename);
+
+            } else {
+                $filename = '';
+            }
+
             $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;
             $ManagementDevelopmentPlane->StaffID = $request->StaffID;
             $ManagementDevelopmentPlane->EmployeeName = $request->EmployeeName;
@@ -351,6 +387,7 @@ class MDPController extends Controller
             $ManagementDevelopmentPlane->AreaTwo = $request->futureTrainingTitleTwo;
             $ManagementDevelopmentPlane->FutureTrainingOneDetails = $request->FutureTrainingOneDetails;
             $ManagementDevelopmentPlane->FutureTrainingTwoDetails = $request->FutureTrainingTwoDetails;
+            $ManagementDevelopmentPlane->Signature = $filename;
 
             $ManagementDevelopmentPlane->UpdatedBy = $empcode;
             $ManagementDevelopmentPlane->UpdatedDate = Carbon::now();
