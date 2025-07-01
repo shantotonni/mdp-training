@@ -265,7 +265,30 @@ class MDPController extends Controller
                     $MDPTraining->save();
                 }
 
-                $email = $request->SuppervisorEmail;
+                DB::commit();
+
+                // Mail পাঠানোর অংশ Transaction এর বাইরে
+                try {
+                    $email = $request->SuppervisorEmail;
+                    $explode = explode('@', $email);
+
+                    if ($explode[1] === 'aci-bd.com') {
+                        Config::set('mail.mailers.smtp.host', 'mail.aci-bd.com');
+                    } else {
+                        Artisan::call('config:clear');
+                        Artisan::call('cache:clear');
+                        Artisan::call('config:cache');
+                        Artisan::call('optimize');
+                        Config::set('mail.mailers.smtp.host', 'smtp.agni.com');
+                    }
+
+                    Mail::to($email)->send(new MDPCreateMail('MDP Submitted!', $request->EmployeeName, $request->Designation));
+
+                } catch (\Exception $mailEx) {
+                    \Log::error('Mail Sending Failed: ' . $mailEx->getMessage());
+                }
+
+//                $email = $request->SuppervisorEmail;
 //                $explode = explode('@', $email);
 //                if ($explode[1] === 'aci-bd.com') {
 //                    Config::set('mail.mailers.smtp.host', 'mail.aci-bd.com');
@@ -280,8 +303,8 @@ class MDPController extends Controller
 //                    Artisan::call('optimize');
 //                    Config::set('mail.mailers.smtp.host', 'smtp.agni.com');
 //                }
+//                DB::commit();
 
-                DB::commit();
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Successfully Submitted.'
