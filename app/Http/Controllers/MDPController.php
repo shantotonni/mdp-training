@@ -285,7 +285,6 @@ class MDPController extends Controller
                     Mail::to($email)->send(new MDPCreateMail('MDP Submitted!', $request->EmployeeName, $request->Designation));
 
                 } catch (\Exception $mailEx) {
-                    // Mail পাঠানোর সময় error হলেও কিছু করার দরকার নাই
                     \Log::error('Mail Sending Failed: ' . $mailEx->getMessage());
                 }
 
@@ -304,6 +303,7 @@ class MDPController extends Controller
 //                    Artisan::call('optimize');
 //                    Config::set('mail.mailers.smtp.host', 'smtp.agni.com');
 //                }
+//                DB::commit();
 
                 return response()->json([
                     'status' => 'success',
