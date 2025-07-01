@@ -355,16 +355,16 @@ class MDPController extends Controller
             MDPPersonalInitiative::where('MDPID',$request->ID)->delete();
             MDPTraining::where('MDPID',$request->ID)->delete();
 
-            $imageDimantion = Image::make($request->file('Signature'));
-
-            if ($imageDimantion->width() != 200 || $imageDimantion->height() != 60) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Image dimensions must be 200x60 pixels.'
-                ]);
-            }
-
             if ($request->hasFile('Signature')) {
+                $imageDimantion = Image::make($request->file('Signature'));
+
+                if ($imageDimantion->width() != 200 || $imageDimantion->height() != 60) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Image dimensions must be 200x60 pixels.'
+                    ]);
+                }
+
                 $file = $request->file('Signature');
 
                 // Create a unique name with extension
@@ -385,7 +385,7 @@ class MDPController extends Controller
                 Image::make($file)->encode('jpeg', 95)->save(public_path('signature/').$filename);
 
             } else {
-                $filename = '';
+                $filename = $ManagementDevelopmentPlane->Signature;
             }
 
             $ManagementDevelopmentPlane->AppraisalPeriod = $request->AppraisalPeriod;

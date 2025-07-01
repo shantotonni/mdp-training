@@ -194,7 +194,7 @@
                             <div class="form-group">
                               <label>Signature</label>
                               <!-- Trigger -->
-                              <input type="file" @change="onFileChange"  ref="fileInput" accept="image/*" :disabled="previewUrl" required/>
+                              <input type="file" @change="onFileChange"  ref="fileInput" accept="image/*" :disabled="previewUrl" :required="!isSignature"/>
 
                             </div>
                           </div>
@@ -320,7 +320,7 @@
                           <!--v-if="dropDown==='YES'"-->
                           <div class="col-5 col-md-5" >
                             <div class="form-group">
-                              <label v-if="newTrainingList">Select Training Title {{Level}}</label>
+                              <label v-if="newTrainingList">Select Training Title</label>
                               <multiselect
                                   v-if="newTrainingList"
                                   v-model="train.selectedTraining"
@@ -713,6 +713,7 @@ export default {
       moduleStatus: false,
       PreLoader: false,
       isSubmitting: false,
+      isSignature: null,
       errors: {
         FutureTrainingOneDetails: '',
         FutureTrainingTwoDetails: '',
@@ -769,7 +770,9 @@ export default {
           // this.form.AppraisalPeriod = this.$route.params.YEAR;
           const response = await axios.get(baseurl + `api/mdp/edit/${this.$route.params.ID}/${this.$route.params.YEAR}`);
           const data = response.data.data;
+          console.log(data)
           this.form.fill(data);
+          this.isSignature = data.Signature
           this.isFullPageLoading=true
           if (this.Type==='admin'){
             this.idActive=false;
@@ -1467,6 +1470,7 @@ export default {
         // Optional: Preview base64 image from the blob
         const reader = new FileReader();
         reader.onload = e => {
+          console.log(e.target.result)
           this.form.Signature = e.target.result; // for preview or hidden input
         };
         reader.readAsDataURL(blob);

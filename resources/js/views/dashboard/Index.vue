@@ -18,10 +18,9 @@
                 <span @click="mdpInfoDetails()" id="myBtn">Read more</span>
               </sub>
               </li>
-
             </ol>
           </div>
-          <div class="col-md-12" style="display: -webkit-inline-box;margin-top: 80px">
+          <div class="col-md-12 col-sm-12" style="display: -webkit-inline-box;margin-top: 80px">
             <div class="d-none d-md-block" style="margin: 0 auto">
                 <router-link :to="{name: 'MDPCreate'}" class="btn btn-success" style="color: white">
                   <div style="padding: 0px 100px;">
