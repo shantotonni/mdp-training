@@ -452,7 +452,7 @@ class MDPController extends Controller
     }
 
     public function edit($id, $year){
-        $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training')->first();
+        $mdp = ManagementDevelopmentPlane::where('ID',$id)->with('initiative','training','employee')->first();
 
         $training_list = MDPEmployeeTrainingList::where('StaffID', $mdp->StaffID)->where('isDropDown','Y')->first();
 
