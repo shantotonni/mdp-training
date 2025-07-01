@@ -311,7 +311,7 @@
                           </div>
                         </div>
                         <hr>
-                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" v-if="dropDown==='NO'" style="width: 230px;height: 45px">Suggestive List</button>
+                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" style="width: 230px;height: 45px">Suggestive List</button>
                         <!--Required-->
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
