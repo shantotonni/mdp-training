@@ -15,112 +15,24 @@
 </head>
 <body><!-- Begin page -->
 <div id="wrapper"><!-- Top Bar Start -->
-    <div class="content-page"><!-- Start content -->
-        <div class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <table class="body-wrap" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
-                            <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                <td style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
-                                <td class="container" width="600" style="
-                                                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                                                box-sizing: border-box;
-                                                font-size: 14px;
-                                                vertical-align: top;
-                                                display: block !important;
-                                                max-width: 600px !important;
-                                                clear: both !important;
-
-                                            "
-                                        valign="top"
-                                >
-                                    <div class="content" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; padding: 20px;">
-                                        <table
-                                                class="main"
-                                                width="100%"
-                                                cellpadding="0"
-                                                cellspacing="0"
-                                                itemprop="action"
-                                                itemscope
-                                                itemtype="http://schema.org/ConfirmAction"
-                                                style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; margin: 0; border: none;"
-                                        >
-                                            <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                                <td class="content-wrap" style="
-                                                                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                                                                box-sizing: border-box;
-                                                                font-size: 14px;
-                                                                vertical-align: top;
-                                                                margin: 0;
-                                                                padding: 30px;
-                                                                border: 3px solid #3c4ccf;
-                                                                border-radius: 7px;
-                                                                background-color: #fff;
-                                                            " valign="top">
-                                                    <meta itemprop="name" content="Confirm Email" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;" />
-                                                    <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                                            <td
-                                                                    class="content-block"
-                                                                    style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
-                                                                    valign="top"
-                                                            >
-                                                                Hello,
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                                            <td
-                                                                    class="content-block"
-                                                                    style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
-                                                                    valign="top"
-                                                            >
-                                                                One of your associates, {{ $name }}, {{ $Designation }} has submitted MDP for your kind perusal.
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                                            <td
-                                                                    class="content-block"
-                                                                    style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
-                                                                    valign="top"
-                                                            >
-                                                                Please click below for Review & approval :
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                                            <td
-                                                                    class="content-block"
-                                                                    style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
-                                                                    valign="top"
-                                                            >
-                                                                MDP List : http://202.53.171.12/mdp-training/mdp-list
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-                                                            <td
-                                                                    class="content-block"
-                                                                    style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
-                                                                    valign="top"
-                                                            >
-                                                                Please kindly take immediate action.
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div><!-- END wrapper --><!-- jQuery  -->
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#f6f6f6" style="font-family: Arial, sans-serif; margin: 0; padding: 20px 0;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background: #fff; border: 3px solid #3c4ccf; border-radius: 7px; padding: 30px;">
+                    <tr>
+                        <td style="font-size: 14px; color: #333;">
+                            <p>Hello,</p>
+                            <p>One of your associates, {{ $name }}, {{ $Designation }} has submitted MDP for your kind perusal.</p>
+                            <p>Please click below for Review & approval :</p>
+                            <p><a href="https://hrconnect.acigroup.info/mdp-list" target="_blank" style="color: #3c4ccf;">MDP List</a></p>
+                            <p>Please kindly take immediate action.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
 <script src="{{asset('assets/js/jquery.min.js')}}"></script>
 <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('assets/js/metisMenu.min.js')}}"></script>
