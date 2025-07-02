@@ -25,17 +25,18 @@ class EmployeeResource extends JsonResource
             $mobile = '';
         }
 
-        $category = '';
-        if (isset($this->Grade)) {
-            $gradeNumber = intval(substr($this->Grade, -2)); // get last 2 digits
-            if ($gradeNumber >= 1 && $gradeNumber <= 4) {
-                $category = 'Junior';
-            } elseif ($gradeNumber >= 5 && $gradeNumber <= 7) {
-                $category = 'Mid';
-            } elseif ($gradeNumber >= 8 && $gradeNumber <= 11) {
-                $category = 'Top';
-            }
-        }
+
+//        $category = '';
+//        if (isset($this->Grade)) {
+//            $gradeNumber = intval(substr($this->Grade, -2)); // get last 2 digits
+//            if ($gradeNumber >= 1 && $gradeNumber <= 4) {
+//                $category = 'Junior';
+//            } elseif ($gradeNumber >= 5 && $gradeNumber <= 7) {
+//                $category = 'Mid';
+//            } elseif ($gradeNumber >= 8 && $gradeNumber <= 11) {
+//                $category = 'Top';
+//            }
+//        }
 
         return [
             'StaffID'               => $this->EmpCode?$this->EmpCode:'',
@@ -55,8 +56,8 @@ class EmployeeResource extends JsonResource
             'PresentJobStartedOn'   => isset($this->LastPromoDate) ? date('d-m-Y',strtotime($this->LastPromoDate)): date('d-m-Y',strtotime($this->JoiningDate)),
             'Qualification'         => isset($this->education) ? $this->education->Degree: '',
             'JoiningDate'           => $this->JoiningDate? date('d-m-Y',strtotime($this->JoiningDate)):'',
-            'Grade'                 => $this->Grade,
-            'Level'              => $category,
+            'Grade'                 => $this->grade->Grade,
+            'Level'                 => $this->grade->Labeling,
         ];
     }
 }

@@ -878,7 +878,7 @@ class MDPController extends Controller
             $empcode = $empcode;
         }
         if ($empcode){
-            $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education','emphist')->first();
+            $employee = Employee::where('EmpCode', $empcode)->with('department','designation','email','personal','education','emphist','grade')->first();
             $dateFrom =  Carbon::now()->year -5;
             $dateTo =  Carbon::now()->year;
             //prev

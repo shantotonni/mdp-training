@@ -36,4 +36,7 @@ class Employee extends Model
     public function emphist(){
         return $this->hasOne(EMPHIST::class,'EMPCODE','EmpCode')->orderBy('SerialNo','desc');
     }
+    public function grade(){
+        return $this->hasOne(SalaryGrade::class,'Grade','Grade');
+    }
 }
