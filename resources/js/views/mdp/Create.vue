@@ -1477,9 +1477,7 @@ export default {
         };
         reader.readAsDataURL(blob);
         this.previewUrl = URL.createObjectURL(blob)
-        // Or directly upload/send this blob:
-        // this.uploadImage(blob);
-      }, 'image/jpeg', 0.95); // high quality
+      }, 'image/png');
       $('#cropperModal').modal('hide')
     },
     resetCropper() {

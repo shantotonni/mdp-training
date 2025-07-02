@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => 'sqlsrv',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,55 +34,11 @@ return [
     */
 
     'connections' => [
-
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'url' => env('DATABASE_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-        ],
-
-        'mysql' => [
-            'driver' => 'mysql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
-        ],
-
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'schema' => 'public',
-            'sslmode' => 'prefer',
-        ],
-
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL'),
+            'url' => '',
             'host' => '192.168.100.2',
-            'port' => env('DB_PORT', '1433'),
+            'port' => '1433',
             'database' => 'PIMSNEW',
             'username' => 'sa',
             'password' => 'dataport',
@@ -90,40 +46,40 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
-        'hr_db' => [
-            'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB2_HOST', 'localhost'),
-            'port' => env('DB2_PORT', '1433'),
-            'database' => env('DB2_DATABASE', 'forge'),
-            'username' => env('DB2_USERNAME', 'forge'),
-            'password' => env('DB2_PASSWORD', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-        ],
-        'HRPayroll' => [
-            'driver' => 'sqlsrv',
-            'host' => '192.168.41.160',
-            'port' => '1433',
-            'database' => 'HRPayroll',
-            'username' => 'sa',
-            'password' => 'dataport',
-            'charset' => 'utf8',
-            'prefix' => '',
-            'strict' => false,
-        ],
-        'GroupDashBoard' => [
-            'driver' => 'sqlsrv',
-            'host' => '192.168.100.62',
-            'port' => '1433',
-            'database' => 'GroupDashBoard',
-            'username' => 'sa',
-            'password' => 'dataport',
-            'charset' => 'utf8',
-            'prefix' => '',
-            'strict' => false,
-        ],
+//        'hr_db' => [
+//            'driver' => 'sqlsrv',
+//            'url' => env('DATABASE_URL'),
+//            'host' => env('DB2_HOST', 'localhost'),
+//            'port' => env('DB2_PORT', '1433'),
+//            'database' => env('DB2_DATABASE', 'forge'),
+//            'username' => env('DB2_USERNAME', 'forge'),
+//            'password' => env('DB2_PASSWORD', ''),
+//            'charset' => 'utf8',
+//            'prefix' => '',
+//            'prefix_indexes' => true,
+//        ],
+//        'HRPayroll' => [
+//            'driver' => 'sqlsrv',
+//            'host' => '192.168.41.160',
+//            'port' => '1433',
+//            'database' => 'HRPayroll',
+//            'username' => 'sa',
+//            'password' => 'dataport',
+//            'charset' => 'utf8',
+//            'prefix' => '',
+//            'strict' => false,
+//        ],
+//        'GroupDashBoard' => [
+//            'driver' => 'sqlsrv',
+//            'host' => '192.168.100.62',
+//            'port' => '1433',
+//            'database' => 'GroupDashBoard',
+//            'username' => 'sa',
+//            'password' => 'dataport',
+//            'charset' => 'utf8',
+//            'prefix' => '',
+//            'strict' => false,
+//        ],
     ],
 
     /*

@@ -155,8 +155,8 @@
                                <br>
                                <div class="six_part">
                                  <p style="font-size: 20px">
-                                   Signature of employee: <span style="display: inline-block;border-bottom: 1px solid;width: 300px;text-align: center">
-                                    <img v-if="mdplist.Signature" :src="loadSignature(mdplist.Signature)" style='height: 40px; width: 150px' />
+                                   Signature of employee: <span style="display: inline-block;width: 300px;text-align: center">
+                                    <img v-if="mdplist.Signature" :src="loadSignature(mdplist.Signature)" style='height: 32px; width: 130px' />
                                   </span>
                                  </p>
                                  <p style="font-size: 20px">
@@ -204,11 +204,7 @@
                                <br>
                                <p style="font-size: 20px"><span style="font-weight: bold">Note</span>: Keep a copy in the Department Training file and forward the original to Personnel Department.</p>
                                <br>
-                               <br>
-                               <br>
-                               <br>
-                               <br>
-                               <div style="display: flex">
+                               <div style="display: flex;">
                                  <div>
                                    <p style="font-size: 20px">Form No.: TR-003-01/07</p>
                                  </div>
