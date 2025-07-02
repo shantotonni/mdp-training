@@ -1576,7 +1576,7 @@ export default {
           this.form.training = [];
         }
 
-        this.form.training.push({ TrainingTitle: '', TrainingType: '', TrainingDate:moment().format('DD-MM-YYYY')});
+        this.form.training.push({ TrainingTitle: '', TrainingType: '', TrainingDate:''});
       } else {
         this.errorNoti('No more than 5 training entries can be added!');
       }
