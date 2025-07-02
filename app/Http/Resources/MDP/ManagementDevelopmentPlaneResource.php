@@ -4,6 +4,7 @@ namespace App\Http\Resources\MDP;
 
 use App\Models\MDPTraining;
 use App\Models\NewMDPEmployeeTrainingList;
+use App\Models\SalaryGrade;
 use App\Models\TrainingName;
 use Carbon\Carbon;
 use Dflydev\DotAccessData\Data;
@@ -34,18 +35,19 @@ class ManagementDevelopmentPlaneResource extends JsonResource
            $areaOneTitle=null;
            $areaTwoTitle=null;
        }
-
-        $category = '';
-        if (isset($this->employee->Grade)) {
-            $gradeNumber = intval(substr($this->employee->Grade, -2)); // get last 2 digits
-            if ($gradeNumber >= 1 && $gradeNumber <= 4) {
-                $category = 'Junior';
-            } elseif ($gradeNumber >= 5 && $gradeNumber <= 7) {
-                $category = 'Mid';
-            } elseif ($gradeNumber >= 8 && $gradeNumber <= 11) {
-                $category = 'Top';
-            }
-        }
+       $grade = $this->employee->Grade;
+       $label = SalaryGrade::select('Labeling')->where('Grade','=',$grade)->first();
+//        $category = '';
+//        if (isset($this->employee->Grade)) {
+//            $gradeNumber = intval(substr($this->employee->Grade, -2)); // get last 2 digits
+//            if ($gradeNumber >= 1 && $gradeNumber <= 4) {
+//                $category = 'Junior';
+//            } elseif ($gradeNumber >= 5 && $gradeNumber <= 7) {
+//                $category = 'Mid';
+//            } elseif ($gradeNumber >= 8 && $gradeNumber <= 11) {
+//                $category = 'Top';
+//            }
+//        }
 
 
         return [
@@ -84,8 +86,8 @@ class ManagementDevelopmentPlaneResource extends JsonResource
             'Business'=>$this->Business,
             'Signature'=>$this->Signature,
             'ApprovedDate'=>$this->ApprovedDate?date('F j, Y',strtotime($this->ApprovedDate)):'',
-            'Grade'                 => $this->employee->Grade,
-            'Level'              => $category,
+            'Grade'                 => $grade,
+            'Level'              => $label->Labeling,
             //'area'=>$this->area,
 
             //'AreaOneText'=> $this->Area,
