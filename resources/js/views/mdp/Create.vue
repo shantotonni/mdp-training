@@ -551,10 +551,18 @@
                   :src="imageUrl"
                   :aspect-ratio="10 / 3"
                   :auto-crop-area="1"
-                  :view-mode="1"
+                  :view-mode="0"
                   :min-crop-box-width="200"
                   :min-crop-box-height="60"
-                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;" required
+                  :zoomable="true"
+                  :scalable="true"
+                  :movable="true"
+                  :crop-box-resizable="true"
+                  :background="false"
+                  :responsive="true"
+                  :wheel-zoom-ratio="0.1"
+                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
+                  required
               />
             </div>
           </div>
@@ -1466,9 +1474,7 @@ export default {
           alert("Failed to generate cropped image.");
           return;
         }
-
         this.croppedBlob = blob;
-
         // Optional: Preview base64 image from the blob
         const reader = new FileReader();
         reader.onload = e => {
