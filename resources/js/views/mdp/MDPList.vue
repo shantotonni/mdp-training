@@ -13,18 +13,12 @@
                         <i class="fas fa-plus"></i>
                         Add MDP
                       </router-link>
-                      <router-link :to="{name: 'AllMDPPrint'}" class="btn btn-success btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
+                      <router-link :to="{name: 'AllMDPPrint'}" class="btn btn-info btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
                         <i class="fas fa-download"></i> All MDP
                       </router-link>
-                      <router-link :to="{name: 'AllMDPPrintTwo'}" class="btn btn-success btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
+                      <router-link :to="{name: 'AllMDPPrintTwo'}" class="btn btn-info btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
                         <i class="fas fa-download"></i> All PTC
                       </router-link>
-
-
-                      <!--                      <button type="button" class="btn btn-primary btn-sm" @click="exportFeedback">-->
-<!--                        <i class="mdi mdi-database-export"></i>-->
-<!--                        Feedback Export-->
-<!--                      </button>-->
                       <button type="button" class="btn btn-info btn-sm" @click="exportMDPDetailsList" v-if="type ==='admin'">
                         <i class="fas fa-download"></i>
                         Export-1
@@ -70,7 +64,6 @@
                                                   track-by="business"
                                                   @input="getAllDepartment"
                                                   placeholder="Business"></multiselect>
-<!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
                                             </div>
                                             <div class="col-md-3" v-if="type === 'admin'" >
                                               <multiselect
@@ -82,9 +75,8 @@
                                                   :show-labels="true"
                                                   label="DeptName"
                                                   track-by="DeptCode"
-                                                  @click="getAllEmpID"
+                                                  @input="getAllEmpID"
                                                   placeholder="SBU's"></multiselect>
-<!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
                                             </div>
                                           <div class="col-md-3" v-if="type === 'admin'">
                                             <div class="form-group">
@@ -97,6 +89,7 @@
                                                   :show-labels="true"
                                                   label="Employee"
                                                   track-by="StaffID"
+
                                                   placeholder="Employee"></multiselect>
                                             </div>
                                           </div>
@@ -107,11 +100,6 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-<!--                                  <div class="row" v-if="mdplist.length>0">-->
-<!--                                    <div class="col-md-12 text-left" style="background-color: #cfdef6; color: black">-->
-<!--                                      <span>No. of Submitted MDPs: <b>{{mdplist.length}}</b> </span>-->
-<!--                                    </div>-->
-<!--                                  </div>-->
                                     <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
                                         <thead>
                                           <tr>
@@ -285,16 +273,16 @@ export default {
           axios.get(baseurl + 'api/mdp/get-all-mdp-business?sessionP='+this.sessionP).then((response)=>{
             this.businessList = Array.isArray(response.data.business) ? response.data.business : [];
             this.getAllDepartment();
-            console.log('business')
+            this.getAllEmpID();
           }).catch((error)=>{
 
           })
         },
       getAllDepartment(){
-        console.log('department')
           axios.get(baseurl + 'api/mdp/get-all-mdp-department?sessionP='+this.sessionP
               +"&Business=" + JSON.stringify(this.business)).then((response)=>{
             this.departments = response.data.departments;
+            this.getAllEmpID();
           }).catch((error)=>{
 
           })

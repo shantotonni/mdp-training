@@ -864,6 +864,7 @@ class MDPController extends Controller
 
             $empList = DB::table('ManagementDevelopmentPlane as mdp')
                 ->select(DB::raw("DISTINCT mdp.StaffID, CONCAT(mdp.StaffID, '- ', mdp.EmployeeName) AS Employee"))
+                ->join('Personal as p', 'p.EmpCode', '=', 'mdp.StaffID')->where('p.Active', '=', 'Y')
                 ->join('Employer as e', function ($join) use ($session) {
                     $join->on('e.EmpCode', '=', 'mdp.StaffID');
                     if (!empty($session)) {
