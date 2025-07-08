@@ -76,7 +76,7 @@
                                                   label="DeptName"
                                                   track-by="DeptCode"
                                                   @input="getAllEmpID"
-                                                  placeholder="SBU's"></multiselect>
+                                                  placeholder="Department"></multiselect>
                                             </div>
                                           <div class="col-md-3" v-if="type === 'admin'">
                                             <div class="form-group">

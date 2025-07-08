@@ -56,7 +56,7 @@
                             :show-labels="true"
                             label="DeptName"
                             track-by="DeptName"
-                            placeholder="SBU's"></multiselect>
+                            placeholder="Department"></multiselect>
                       </div>
 <!--                      <div class="col-md-2">-->
 <!--                        <div class="form-group">-->
