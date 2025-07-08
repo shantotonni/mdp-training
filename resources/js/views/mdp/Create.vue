@@ -311,7 +311,9 @@
                           </div>
                         </div>
                         <hr>
-                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList()" style="width: 230px;height: 45px">Suggestive List</button>
+                        <button type="button" class="btn btn-primary float-right" @click="getSuggestiveList('N')" style="width: 230px;height: 45px">
+                          Suggestive List
+                        </button>
                         <!--Required-->
                         <h4 style="font-size: 18px">Required Training</h4>
                         <p style="font-size: 13px">Which will require in-house or external training that you think should be organized by the Company.</p>
@@ -479,7 +481,7 @@
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-9" style="color: #0f6674"><p>Last Five Years Training History</p> </div>
-                        <div class="col-md-3 text-right">
+                        <div class="col-md-3 text-right p-0">
                           <button class="btn btn-info btn-sm " @click="downloadTraining"> <i class="fas fa-download"></i> Download</button>
                         </div>
                       </div>
@@ -582,8 +584,13 @@
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title mt-0" id="myLargeModalLabel">Suggestive Learning Offering List</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="modalHide()">×</button>
+                    <div class="col-md-6">
+                      <h5 class="modal-title mt-0" id="myLargeModalLabel">Suggestive Learning Offering List</h5>
+                    </div>
+                    <div class="col-md-6 text-right">
+                      <button class="btn btn-info btn-sm " @click="getSuggestiveList('Y')"> <i class="fas fa-download"></i> Download</button>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="modalHide()">×</button>
+                    </div>
                 </div>
                 <div class="modal-body">
                   <table class="table table-bordered table-striped dt-responsive nowrap dataTable no-footer dtr-inline table-sm small">
@@ -881,6 +888,7 @@ export default {
             this.cardShow=false;
             this.idActive=true;
           }
+          this.form.AppraisalPeriod = response.data.period;
           this.form.EmployeeName = response.data.employee.EmployeeName;
           this.form.Designation = response.data.employee.Designation;
           this.form.Department = response.data.employee.Department;
@@ -1408,12 +1416,27 @@ export default {
 
       })
     },
-    getSuggestiveList(){
+    getSuggestiveList(val){
       axios.get(baseurl+'api/get-new-training?StaffID='+this.form.StaffID
           +'&Period='+this.form.AppraisalPeriod
       ).then((response)=>{
         this.suggestive_list = response.data.data;
         $("#suggestiveModal").modal("show");
+        if (val==='Y'){
+          if (this.suggestive_list.length>0){
+                let selectedkeys = ['TrainingCode','TrainingTitle','CompetencyType']
+                let  actualkeys = Object.keys(this.suggestive_list[0]).filter((item) => item !== 'row_num')
+
+                let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+                let columns =selectedkeys.filter(key =>actualkeys.includes(key)).map((item) => {
+                  let title = item.replace(rex, '$1$4 $2$3$5')
+                  return {title, key: item}
+                });
+                //this.generateExport(dataSets, columns, 'Job Card Report')
+                bus.$emit('data-table-import', this.suggestive_list, columns, 'Suggestive Learning Offering List')
+            }
+
+          }
       }).catch((error)=>{
       })
 
@@ -1604,6 +1627,7 @@ export default {
       })
 
     },
+
     downloadTraining(){
       axios.get(baseurl +'api/mdp/get-export-training-history?empcode='+ this.form.StaffID).then((response)=>{
         let dataSets = response.data.training_history;
