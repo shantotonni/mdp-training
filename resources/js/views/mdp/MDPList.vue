@@ -2,7 +2,7 @@
     <div class="content">
         <div class="container-fluid">
             <breadcrumb :options="['MDP List']">
-                <div class="col-md-7">
+                <div class="col-md-6">
                   <div class="float-right d-none d-md-block">
                     <div class="card-tools">
                       <button class="btn btn-outline-dark btn-sm" v-if="type ==='admin'">
@@ -11,13 +11,13 @@
                       </button>
                       <router-link :to="{name: 'MDPCreate'}" class="btn btn-success btn-sm" style="color: white">
                         <i class="fas fa-plus"></i>
-                        Add Management Development Plan
+                        Add MDP
                       </router-link>
                       <router-link :to="{name: 'AllMDPPrint'}" class="btn btn-success btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
-                        <i class="fas fa-plus"></i> All MDP
+                        <i class="fas fa-download"></i> All MDP
                       </router-link>
                       <router-link :to="{name: 'AllMDPPrintTwo'}" class="btn btn-success btn-sm" style="color: white" v-if="filterStatus && type ==='admin'">
-                        <i class="fas fa-plus"></i> All PTC
+                        <i class="fas fa-download"></i> All PTC
                       </router-link>
 
 

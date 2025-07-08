@@ -1,7 +1,7 @@
 <template>
   <div class="page-title-box">
     <div class="row align-items-center">
-      <div class="col-sm-5">
+      <div class="col-sm-6">
         <h4 class="page-title">{{ options[options.length - 1] }}</h4>
 <!--        requirement per training dept-->
 <!--        <ol class="breadcrumb">-->
