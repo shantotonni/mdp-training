@@ -2,7 +2,7 @@
     <div class="content">
         <div class="container-fluid">
             <breadcrumb :options="['MDP List']">
-                <div class="col-sm-6">
+                <div class="col-md-7">
                   <div class="float-right d-none d-md-block">
                     <div class="card-tools">
                       <button class="btn btn-outline-dark btn-sm" v-if="type ==='admin'">
@@ -33,7 +33,10 @@
                         <i class="fas fa-download"></i>
                         Export-2
                       </button>
-
+                      <button type="button" class="btn btn-primary btn-sm" @click="reload">
+                        <i class="fas fa-sync"></i>
+                        Reload
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -48,14 +51,27 @@
                                         <div class="row">
                                           <div class="col-md-2">
                                             <div class="form-group">
-                                              <select id="sessionP" class="form-control defineHeight"   v-model="sessionP"
-                                                      @change="getAllEmpID && getAllDepartment" >
+                                              <select id="sessionP" class="form-control defineHeight" v-model="sessionP" @change="getAllBusiness()" >
                                                 <option value="">Period</option>
-                                                <option v-for="(session,index) in sessions" :value="session.Name"
-                                                     :key="index">{{session.Name}}</option>
+                                                <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>
                                               </select>
                                             </div>
                                           </div>
+                                            <div class="col-md-3" v-if="type === 'admin'" >
+                                              <multiselect
+                                                  v-if="Array.isArray(businessList)"
+                                                  v-model="business"
+                                                  :options="businessList"
+                                                  :multiple="true"
+                                                  :searchable="true"
+                                                  :close-on-select="true"
+                                                  :show-labels="true"
+                                                  label="business"
+                                                  track-by="business"
+                                                  @input="getAllDepartment"
+                                                  placeholder="Business"></multiselect>
+<!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
+                                            </div>
                                             <div class="col-md-3" v-if="type === 'admin'" >
                                               <multiselect
                                                   v-model="Department"
@@ -70,13 +86,8 @@
                                                   placeholder="SBU's"></multiselect>
 <!--                                                <input v-model="query" type="text" class="form-control" placeholder="Search By Staff ID">-->
                                             </div>
-
                                           <div class="col-md-3" v-if="type === 'admin'">
                                             <div class="form-group">
-<!--                                              <select id="Department" class="form-control" v-model="Department">-->
-<!--                                                <option value="">Select Department</option>-->
-<!--                                                <option v-for="(dept,index) in departments" :value="dept.DeptName" :key="index">{{dept.DeptName}}</option>-->
-<!--                                              </select>-->
                                               <multiselect
                                                   v-model="EmployeeList"
                                                   :options="employees"
@@ -89,12 +100,8 @@
                                                   placeholder="Employee"></multiselect>
                                             </div>
                                           </div>
-                                          <div class="col-md-3">
+                                          <div class="col-md-1">
                                             <button type="submit" @click="getAllMDPList('true')" class="btn btn-success defineHeight"><i class="mdi mdi-filter"></i>Filter</button>
-                                            <button type="button" class="btn btn-primary defineHeight" @click="reload">
-                                              <i class="fas fa-sync"></i>
-                                              Reload
-                                            </button>
                                           </div>
                                         </div>
                                     </div>
@@ -197,7 +204,9 @@ export default {
           mdplist: [],
           type: '',
           departments: [],
+          businessList: [],
           employees: [],
+          business: '',
           sessions: '',
           pagination: {
               current_page: 1
@@ -227,7 +236,6 @@ export default {
     mounted() {
         document.title = 'MDP List | MDP';
         this.getAllMDPList();
-        this.getAllDepartment();
         this.getAllSession();
         this.getData();
     },
@@ -238,6 +246,7 @@ export default {
             axios.get(baseurl + 'api/mdp/list?page='+ this.pagination.current_page
                 + "&EmployeeList=" +  JSON.stringify(this.EmployeeList)
                 + "&Department=" + JSON.stringify(this.Department)
+                + "&Business=" + JSON.stringify(this.business)
                 + "&sessionP=" + this.sessionP
             ).then((response)=>{
               this.getAllEmpID()
@@ -272,16 +281,27 @@ export default {
             this.errorNoti(error);
           });
         },
-        getAllDepartment(){
-          axios.get(baseurl + 'api/mdp/get-all-mdp-department?sessionP='+this.sessionP).then((response)=>{
+      getAllBusiness(){
+          axios.get(baseurl + 'api/mdp/get-all-mdp-business?sessionP='+this.sessionP).then((response)=>{
+            this.businessList = Array.isArray(response.data.business) ? response.data.business : [];
+            this.getAllDepartment();
+            console.log('business')
+          }).catch((error)=>{
+
+          })
+        },
+      getAllDepartment(){
+        console.log('department')
+          axios.get(baseurl + 'api/mdp/get-all-mdp-department?sessionP='+this.sessionP
+              +"&Business=" + JSON.stringify(this.business)).then((response)=>{
             this.departments = response.data.departments;
           }).catch((error)=>{
 
           })
         },
         getAllEmpID(){
-          console.log('this.sessionP',this.sessionP,this.Department);
               axios.get(baseurl + 'api/mdp/get-all-mdp-employee?sessionP=' + this.sessionP
+                  +"&Business=" + JSON.stringify(this.business)
                   + "&Department=" + JSON.stringify(this.Department)
               ).then((response)=>{
                 this.employees = response.data.employees;
