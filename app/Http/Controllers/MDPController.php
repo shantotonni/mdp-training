@@ -22,6 +22,8 @@ use App\Models\TrainingName;
 use App\Traits\MDPCommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -294,25 +296,25 @@ class MDPController extends Controller
                 DB::commit();
 
                 // Mail পাঠানোর অংশ Transaction এর বাইরে
-//                try {
-//                    $email = $request->SuppervisorEmail;
-//                    $explode = explode('@', $email);
-//
-//                    if ($explode[1] === 'aci-bd.com') {
-//                        Config::set('mail.mailers.smtp.host', 'mail.aci-bd.com');
-//                    } else {
-//                        Artisan::call('config:clear');
-//                        Artisan::call('cache:clear');
-//                        Artisan::call('config:cache');
-//                        Artisan::call('optimize');
-//                        Config::set('mail.mailers.smtp.host', 'smtp.agni.com');
-//                    }
-//
-//                    Mail::to($email)->send(new MDPCreateMail('MDP Submitted!', $request->EmployeeName, $request->Designation));
-//
-//                } catch (\Exception $mailEx) {
-//                    \Log::error('Mail Sending Failed: ' . $mailEx->getMessage());
-//                }
+                try {
+                    $email = $request->SuppervisorEmail;
+                    $explode = explode('@', $email);
+
+                    if ($explode[1] === 'aci-bd.com') {
+                        Config::set('mail.mailers.smtp.host', 'mail.aci-bd.com');
+                    } else {
+                        Artisan::call('config:clear');
+                        Artisan::call('cache:clear');
+                        Artisan::call('config:cache');
+                        Artisan::call('optimize');
+                        Config::set('mail.mailers.smtp.host', 'smtp.agni.com');
+                    }
+
+                    Mail::to($email)->send(new MDPCreateMail('MDP Submitted!', $request->EmployeeName, $request->Designation));
+
+                } catch (\Exception $mailEx) {
+                    \Log::error('Mail Sending Failed: ' . $mailEx->getMessage());
+                }
 
 //                $email = $request->SuppervisorEmail;
 //                $explode = explode('@', $email);
