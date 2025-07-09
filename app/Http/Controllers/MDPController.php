@@ -1047,7 +1047,7 @@ class MDPController extends Controller
 //                        'training_history'=>$training_history,
                         'training_list'=>$dup,
                         'dropDown'=>$dropDown,
-                        'period'=>$period,
+                        'period'=>'2025-2026',
                     ]);
                 }else{
                     return response()->json([

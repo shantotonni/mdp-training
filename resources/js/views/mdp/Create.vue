@@ -18,7 +18,7 @@
         </div>
       </breadcrumb>
       <div class="row" v-if="isFullPageLoading">
-        <div class="col-xl-12" v-if="this.Type!='admin' && cardShow">
+        <div class="col-xl-12" v-if="Type!='admin' && cardShow">
           <div class="row" v-if="!moduleStatus">
             <div class="col-md-12">
               <div class="card">
@@ -679,7 +679,7 @@ export default {
       suggestive_list: [],
       form: new Form({
         ID :'',
-        AppraisalPeriod :'',
+        AppraisalPeriod :'2025-2026',
         StaffID :'',
         EmployeeName :'',
         Designation :'',
@@ -749,6 +749,7 @@ export default {
     // this.resetCropper();
   },
   created() {
+    this.getUserData();
     this.loadFormData();
   },
   methods: {
@@ -779,6 +780,7 @@ export default {
 
       return date < fiscalStart || date > fiscalEnd;
     },
+
     async loadFormData() {
       this.PreLoader=true
       if (this.$route.params.ID) {
@@ -818,60 +820,9 @@ export default {
         await this.getNewTrainingList();
       }
     },
-    store() {
-      this.errors = {};
 
-      if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
-        this.errors.PersonalIN = {};
-      }
-
-      const futureWordErrors = this.validateWordCountsFuture(); // returns true if error exists
-      const initiativeErrors = this.validateInitiatives();
-      const requiredErrors = this.validateRequiredTraining();
-      const futureErrorsDuplicate = this.validateFutureTrainingDuplicate();
-      const findDuplicateTitleError = this.findDuplicateTitle();
-      const formFieldsValid = this.validateFormFields(); // true = valid
-
-      if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
-        this.isSubmitting = false;
-        this.PreLoader = false;
-        return ;
-      }else{
-        const formData = this.buildFormData();
-        this.isSubmitting = true;
-        this.PreLoader = true;
-
-        let url = this.moduleStatus ? 'api/mdp/update' : 'api/mdp/store';
-
-        axios.post(baseurl + url, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }).then(response => {
-          if (response.data.status ==="error"){
-
-            if (response.data.errors) {
-              for (const field in response.data.errors) {
-                this.form.errors.set(field, response.data.errors[field][0]);
-              }
-            } else {
-              this.errorNoti(response.data.message);
-            }
-            this.PreLoader = false;
-            this.isSubmitting = false;
-          }else{
-            this.successNoti(response.data.message);
-            this.redirect(this.mainOrigin + 'mdp-list');
-            this.clearFormDataState();
-            this.PreLoader = false;
-            this.isSubmitting = false;
-          }
-        }).catch(error => {
-          this.errorNoti('Upload failed.');
-          this.PreLoader = false;
-          this.isSubmitting = false;
-        });
-      }
-    },
     async getEmployeeByStaffID(){
+      console.log('this.form.StaffID',this.form.StaffID)
       this.PreLoader=true
       axios.post(baseurl +'api/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
@@ -954,6 +905,60 @@ export default {
         }
       });
     },
+    store() {
+      this.errors = {};
+
+      if (!this.errors.PersonalIN || typeof this.errors.PersonalIN !== 'object') {
+        this.errors.PersonalIN = {};
+      }
+
+      const futureWordErrors = this.validateWordCountsFuture(); // returns true if error exists
+      const initiativeErrors = this.validateInitiatives();
+      const requiredErrors = this.validateRequiredTraining();
+      const futureErrorsDuplicate = this.validateFutureTrainingDuplicate();
+      const findDuplicateTitleError = this.findDuplicateTitle();
+      const formFieldsValid = this.validateFormFields(); // true = valid
+
+      if (futureWordErrors || initiativeErrors || requiredErrors || futureErrorsDuplicate || findDuplicateTitleError || !formFieldsValid) {
+        this.isSubmitting = false;
+        this.PreLoader = false;
+        return ;
+      }else{
+        const formData = this.buildFormData();
+        this.isSubmitting = true;
+        this.PreLoader = true;
+
+        let url = this.moduleStatus ? 'api/mdp/update' : 'api/mdp/store';
+
+        axios.post(baseurl + url, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }).then(response => {
+          if (response.data.status ==="error"){
+
+            if (response.data.errors) {
+              for (const field in response.data.errors) {
+                this.form.errors.set(field, response.data.errors[field][0]);
+              }
+            } else {
+              this.errorNoti(response.data.message);
+            }
+            this.PreLoader = false;
+            this.isSubmitting = false;
+          }else{
+            this.successNoti(response.data.message);
+            this.redirect(this.mainOrigin + 'mdp-list');
+            this.clearFormDataState();
+            this.PreLoader = false;
+            this.isSubmitting = false;
+          }
+        }).catch(error => {
+          this.errorNoti('Upload failed.');
+          this.PreLoader = false;
+          this.isSubmitting = false;
+        });
+      }
+    },
+
     onTrainingSelected(selectedItem, train) {
       if (selectedItem && typeof selectedItem === 'object') {
         // When user selects from the list
@@ -1454,21 +1459,7 @@ export default {
 
       })
     },
-    getUserData() {
-      this.axiosPost('me', {}, (response) => {
-        this.Type = response.payload.Type;
-        this.form.AppraisalPeriod = response.appraisalPeriod;
-        this.image = `${this.mainOrigin}assets/images/avatar.png`;
-        this.$store.commit('me', response);
-        if(response.payload.Type ==='employee'){
-          this.form.StaffID = response.payload.EmpCode;
-          this.getEmployeeByStaffID()
-          $('#StaffID').attr('readonly', true);
-        }
-      }, (error) => {
-        this.errorNoti(error);
-      });
-    },
+
     onFileChange(e) {
       const file = e.target.files[0];
       if (file) {
@@ -1667,7 +1658,22 @@ export default {
       document.body.appendChild(link);
       link.click();
       link.remove();
-    }
+    },
+    getUserData() {
+      this.axiosPost('me', {}, (response) => {
+        this.Type = response.payload.Type;
+        this.form.AppraisalPeriod = response.appraisalPeriod;
+        this.image = `${this.mainOrigin}assets/images/avatar.png`;
+        this.$store.commit('me', response);
+        if(response.payload.Type !='admin'){
+          this.form.StaffID = response.payload.EmpCode;
+          this.getEmployeeByStaffID();
+          $('#StaffID').attr('readonly', true);
+        }
+      }, (error) => {
+        this.errorNoti(error);
+      });
+    },
   },
 }
 </script>
