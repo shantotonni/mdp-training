@@ -749,7 +749,7 @@ export default {
     // this.resetCropper();
   },
   created() {
-    this.getUserData();
+    //this.getUserData();
     this.loadFormData();
   },
   methods: {
@@ -788,7 +788,6 @@ export default {
           // this.form.AppraisalPeriod = this.$route.params.YEAR;
           const response = await axios.get(baseurl + `api/mdp/edit/${this.$route.params.ID}/${this.$route.params.YEAR}`);
           const data = response.data.data;
-          console.log(data)
           this.form.fill(data);
           this.isSignature = data.Signature
           this.isFullPageLoading=true
@@ -822,7 +821,6 @@ export default {
     },
 
     async getEmployeeByStaffID(){
-      console.log('this.form.StaffID',this.form.StaffID)
       this.PreLoader=true
       axios.post(baseurl +'api/get-employee-by-employee-code/', {
         EmpCode: this.form.StaffID,
@@ -1212,14 +1210,11 @@ export default {
         }else{
           this.errors.RequiredIN[index2].TrainingType = ''
         }
-        console.log(item.TrainingDate)
         if (!item.TrainingDate) {
-          console.log('ok')
           this.errors.RequiredIN[index2].TrainingDate = 'Date is required.';
           // this.errorNoti(this.errors.RequiredIN[index2].TrainingDate);
           hasError = false;
         }else{
-          console.log('not ok')
           this.errors.RequiredIN[index2].TrainingDate = ''
         }
 
@@ -1492,7 +1487,6 @@ export default {
         // Optional: Preview base64 image from the blob
         const reader = new FileReader();
         reader.onload = e => {
-          console.log(e.target.result)
           this.form.Signature = e.target.result; // for preview or hidden input
         };
         reader.readAsDataURL(blob);
@@ -1526,7 +1520,7 @@ export default {
       }
     },
     change({coordinates, canvas}) {
-      console.log(coordinates, canvas)
+     //
     },
     //keep data in the localstorage as cache till 72h
     initFormDataState() {
@@ -1665,7 +1659,7 @@ export default {
         this.form.AppraisalPeriod = response.appraisalPeriod;
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
         this.$store.commit('me', response);
-        if(response.payload.Type !='admin'){
+        if(response.payload.Type !== 'admin'){
           this.form.StaffID = response.payload.EmpCode;
           this.getEmployeeByStaffID();
           $('#StaffID').attr('readonly', true);
