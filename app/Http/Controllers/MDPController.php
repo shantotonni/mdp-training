@@ -792,7 +792,7 @@ class MDPController extends Controller
                 $query->whereNotNull('d.DeptName')
                     ->orWhere('d.DeptName', '<>', '');
             })
-            ->select(DB::raw(" distinct d.DeptUnit as business"))
+            ->select(DB::raw("distinct d.DeptUnit as business"))
             ->orderBy('d.DeptUnit', 'ASC')
             ->get();
 
@@ -847,7 +847,7 @@ class MDPController extends Controller
 
         $departments = $departmentData
             ->select(DB::raw("DISTINCT d.DeptCode, REPLACE(d.DeptName, '&', 'and') as DeptName"))
-            ->orderBy('d.DeptCode', 'ASC')
+            ->orderBy(DB::raw("REPLACE(d.DeptName, '&', 'and')"), 'ASC')
             ->get();
 
         return response()->json([
@@ -949,11 +949,11 @@ class MDPController extends Controller
                 ->select('TrainingTitle', DB::raw('NULL as TrainingCode'))
                 ->whereNotNull('TrainingTitle')
                 ->distinct()
-                ->orderBy('TrainingTitle', 'asc')
+                ->orderBy('TrainingTitle', 'ASC')
                 ->get();
         }else{
             $Training = TrainingName::Select(DB::raw("TrnCode as TrainingCode,TrnName as TrainingTitle"))
-                        ->orderbydesc('TrnCode')
+                         ->orderBy('TrnName', 'ASC')
                         ->distinct()
                         ->get();
         }

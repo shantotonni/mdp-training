@@ -9,10 +9,10 @@
         <div class="account-card-content">
           <ValidationObserver v-slot="{ handleSubmit }">
             <form class="form-horizontal m-t-30" @submit.prevent="handleSubmit(onSubmit)">
-              <ValidationProvider name="User ID" mode="eager" rules="required" v-slot="{ errors }">
+              <ValidationProvider name="Staff ID" mode="eager" rules="required" v-slot="{ errors }">
                 <div class="form-group">
                   <label for="EmpCode">Staff ID</label>
-                  <input type="text" class="form-control" :class="{'error-border': errors[0]}" id="EmpCode" v-model="EmpCode" name="email" placeholder="EmpCode" autocomplete="off">
+                  <input type="text" class="form-control" :class="{'error-border': errors[0]}" id="EmpCode" v-model="EmpCode" name="email" placeholder="Staff ID" autocomplete="off">
                   <span class="error-message"> {{ errors[0] }}</span>
                 </div>
               </ValidationProvider>

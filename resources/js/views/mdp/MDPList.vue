@@ -225,6 +225,9 @@ export default {
         document.title = 'MDP List | MDP';
         this.getAllMDPList();
         this.getAllSession();
+        this.getAllBusiness();
+        this.getAllDepartment();
+        this.getAllEmpID();
         this.getData();
     },
     methods: {
