@@ -35,8 +35,14 @@
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
-                          <input type="text" class="form-control" name="empcode" v-model="empcode" placeholder="Enter Employee Code" @change="getAllEmpCodeWiseTraingList">
+                          <input type="text" class="form-control" name="empcode" v-model="empcode" placeholder="Enter Employee Code">
                         </div>
+                      </div>
+                      <div class="col-md-2">
+                          <button type="button" class="btn btn-info" @click="getAllEmpCodeWiseTraingList" >
+                            <i class="mdi mdi-filter"></i>
+                            Filter
+                          </button>
                       </div>
                     </div>
                   </div>
@@ -62,7 +68,7 @@
                   <thead>
                   <tr>
                     <th style="width: 10%">Training Title</th>
-                    <th>Training Type</th>
+<!--                    <th>Training Type</th>-->
                     <th>Task Progress</th>
                     <th>Done Date</th>
                     <th>Offer Date One</th>
@@ -79,7 +85,7 @@
                   <tbody>
                     <tr v-for="(training, i) in form.training_list" :key="training.ID" v-if="form.training_list.length && tableDataVisible">
                       <td>{{ training.TrainingTitle }}</td>
-                      <td>{{ training.TrainingType }}</td>
+<!--                      <td>{{ training.TrainingType }}</td>-->
                       <td>
                         <select name="Status" id="Status" v-model="training.Status" class="form-control">
                           <option value="done">Done</option>
