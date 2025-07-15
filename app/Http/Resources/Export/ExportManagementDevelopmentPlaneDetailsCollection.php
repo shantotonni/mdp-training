@@ -18,7 +18,9 @@ class ExportManagementDevelopmentPlaneDetailsCollection extends ResourceCollecti
 
 
         return [
+
             'data'=>$this->collection->transform(function ($mdp) use($empcode){
+
                 $areaOneTitle = TrainingName::select('TrnName')->where('TrnCode','=', $mdp->AreaOne)->first();
 
                 $areaTwoTitle = TrainingName::select('TrnName')->where('TrnCode', '=',$mdp->AreaTwo)->first();

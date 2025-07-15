@@ -4,7 +4,7 @@
       <div class="card overflow-hidden account-card mx-3">
         <div class="bg-primary p-4 text-white text-center position-relative">
           <h4 class="font-20 m-b-5">HR Connect</h4>
-          <p class="text-white-50 mb-4">Tax Certificate, Management Development Plan, Action Plan, Job Description</p>
+          <p class="text-white-50 mb-4">Management Development Plan, Action Plan, Tax Certificate, Job Description</p>
         </div>
         <div class="account-card-content">
           <ValidationObserver v-slot="{ handleSubmit }">

@@ -13,6 +13,7 @@ use App\Models\UserLog;
 use App\Services\AccessLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,10 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+//        Artisan::call('config:clear');
+//        Artisan::call('cache:clear');
+//        Artisan::call('config:cache');
+//        Artisan::call('optimize');
         $validator = Validator::make($request->all(), [
             'EmpCode' => 'required|string',
             'Password' => 'required|string|min:4',
@@ -33,7 +38,6 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => 'Invalid'], 400);
         }
-
         $user = User::where('EmpCode', $request->EmpCode)->where('Password', $request->Password)->first();
         if ($user) {
             $userInfo = [

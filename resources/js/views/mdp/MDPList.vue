@@ -336,11 +336,13 @@ export default {
           })
         },
       exportMDPList(){
-      this.PreLoader = true;
-        axios.get(baseurl + 'api/mdp/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
-            + "&Department=" + JSON.stringify(this.Department)
-            + "&sessionP=" + this.sessionP
-        ).then((response)=>{
+        if(this.sessionP.length>0){
+            this.PreLoader = true;
+            axios.get(baseurl + 'api/mdp/export-mdp-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
+                + "&Business=" + JSON.stringify(this.business)
+                + "&Department=" + JSON.stringify(this.Department)
+                + "&sessionP=" + this.sessionP
+            ).then((response)=>{
               let dataSets = response.data.data;
               if (dataSets.length > 0) {
                 let columns = Object.keys(dataSets[0]);
@@ -354,15 +356,18 @@ export default {
                 this.PreLoader = false;
               }
             }).catch((error)=>{
-          this.PreLoader = false;
-        })
+              this.PreLoader = false;
+            })
+          }else{
+            this.errorNoti('Please use the filter before proceeding.');
+          }
+
       },
       exportMDPDetailsList(){
-      this.PreLoader = true;
-        axios.get(baseurl + 'api/mdp/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList)
-            + "&Department=" + JSON.stringify(this.Department)
-            + "&sessionP=" + this.sessionP
-        ).then((response)=>{
+          if (this.sessionP.length>0 || this.EmployeeList.length>0){
+            this.PreLoader = true;
+            axios.get(baseurl + 'api/mdp/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList) + "&sessionP=" + this.sessionP
+            ).then((response)=>{
               let dataSets = response.data.data;
               if (dataSets.length > 0) {
                 let columns = Object.keys(dataSets[0]);
@@ -376,8 +381,12 @@ export default {
                 this.PreLoader = false;
               }
             }).catch((error)=>{
-          this.PreLoader = false;
-        })
+              this.PreLoader = false;
+            })
+          }else{
+            this.errorNoti('Please use the employee filter before proceeding.');
+          }
+
       },
     // exportMDPDetailsList(){
     //   console.log(this.query)

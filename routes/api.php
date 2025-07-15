@@ -46,6 +46,7 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     //mdp route
     Route::group(['prefix' => 'mdp'],function () {
         Route::get('list',[MDPController::class,'index']);
+        Route::get('not-submitted-list',[MDPController::class,'notSubmittedIndex']);
         Route::post('store',[MDPController::class,'store']);
         Route::get('edit/{ID}/{YEAR}', [MDPController::class,'edit']);
         Route::post('update', [MDPController::class,'update']);

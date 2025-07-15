@@ -29,10 +29,14 @@
             </a>
             <ul class="submenu">
               <li @click="hideSideBar()">
+                <router-link :to="{name: 'ApprovedMDPStatusReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Approved List Report</router-link>
+                <router-link :to="{name: 'PendingMDPStatusReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Pending List Report</router-link>
+                <router-link :to="{name: 'NotSubmittedMDPStatusReport'}" ><i class="mdi mdi-floor-plan"></i>Not Submitted MDP List Report</router-link>
                 <router-link :to="{name: 'MDPChartReport'}" ><i class="mdi mdi-floor-plan"></i>MDP Echart Report</router-link>
                 <router-link :to="{name: 'PendingPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Pending PTC Report</router-link>
                 <router-link :to="{name: 'ApprovedPTCReport'}" ><i class="mdi mdi-floor-plan"></i>Approved PTC Report</router-link>
                 <router-link :to="{name: 'TotalReport'}" ><i class="mdi mdi-floor-plan"></i>Total Report</router-link>
+
               </li>
             </ul>
           </li>

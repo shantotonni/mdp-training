@@ -60,6 +60,9 @@ import MDPPeriodWiseFeedback from '../views/chart/training_feedback/LearningTran
 import FeedbackDetails from '../views/chart/training_feedback/FeedbackDetails.vue'
 
 //report
+import NotSubmittedMDPStatusReport from '../views/report/NotSubmittedMDPReport.vue'
+import ApprovedMDPStatusReport from '../views/report/ApprovedMDPStatusReport.vue'
+import PendingMDPStatusReport from '../views/report/PendingMDPStatusReport.vue'
 import PendingPTCReport from '../views/report/PendingPTCReport.vue'
 import ApprovedPTCReport from '../views/report/ApprovedPTCReport.vue'
 import TotalReport from '../views/report/TotalReport.vue'
@@ -145,6 +148,9 @@ const routes = [
             {path: baseurl + 'mdp-period-wise-feedback/:Period', name: 'MDPPeriodWiseFeedback', component: MDPPeriodWiseFeedback},
             {path: baseurl + 'mdp-period-wise-feedback/feedback-details/:Period/:TrainingTitle', name: 'FeedbackDetails', component: FeedbackDetails},
             //report PendingPTCReport
+            {path: baseurl + 'not-submitted-mdp-report', name: 'NotSubmittedMDPStatusReport', component: NotSubmittedMDPStatusReport},
+            {path: baseurl + 'approve-mdp-report', name: 'ApprovedMDPStatusReport', component: ApprovedMDPStatusReport},
+            {path: baseurl + 'pending-mdp-report', name: 'PendingMDPStatusReport', component: PendingMDPStatusReport},
             {path: baseurl + 'pending-PTC-report', name: 'PendingPTCReport', component: PendingPTCReport},
             {path: baseurl + 'approved-PTC-report', name: 'ApprovedPTCReport', component: ApprovedPTCReport},
             {path: baseurl + 'total-report', name: 'TotalReport', component: TotalReport},
