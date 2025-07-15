@@ -136,18 +136,20 @@ class MDPController extends Controller
         $Department = json_decode($request->Department);
 
 
-        $employees = DB::table('Personal as P')
+        $employees = DB::table('MDPEligibleList as ME')
+
             ->leftJoin('ManagementDevelopmentPlane as M', function ($join) use ($session) {
-                $join->on('P.EmpCode', '=', 'M.StaffID')
+                $join->on('ME.StaffID', '=', 'M.StaffID')
                     ->where('M.AppraisalPeriod', '=', $session);
             })
+            ->join('Personal as P', 'P.EmpCode', '=', 'ME.StaffID')
             ->join('Employer as E', 'E.EmpCode', '=', 'P.EmpCode')
             ->join('Designation as D', 'D.DesgCode', '=', 'E.DesgCode')
             ->join('Department as DP', 'DP.DeptCode', '=', 'E.DeptCode')
             ->leftJoin('EmployeeEmailId as EM', 'EM.EmpCode', '=', 'P.EmpCode')
             ->whereNull('M.StaffID')
-            ->where('P.Active', '=', 'Y')
-            ->orderBy('P.EmpCode')
+            ->where('ME.Period', '=', '2025-2026')
+            ->orderBy('P.EmpCode','asc')
             ->select([
                 'P.EmpCode as StaffID',
                 'P.Name',
@@ -156,6 +158,7 @@ class MDPController extends Controller
                 'DP.DeptUnit as Business',
                 'EM.EmailID as Email',
                 'P.MobileNo as Mobile',
+                'P.Active',
                 DB::raw("'$session' as AppraisalPeriod")
             ]);
 
@@ -205,7 +208,6 @@ class MDPController extends Controller
             $EmployeeIDs = $EmployeeList->pluck('StaffID');
             $employees = $employees->whereIn('StaffID',$EmployeeIDs);
         }
-
         return response()->json([
            'status'=>'success',
            'data'=>$employees->paginate(15), 'exportdata'=>$employees->get()
