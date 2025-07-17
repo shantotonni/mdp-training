@@ -132,6 +132,7 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
+
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
