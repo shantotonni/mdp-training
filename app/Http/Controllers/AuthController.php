@@ -98,6 +98,7 @@ class AuthController extends Controller
                 if ($match){
                     $user = ContactPersonal::where('EmpCode','=', $match['StaffID'])
                         ->where('Active','=','Y')->first();
+
                     if ($user) {
                         $userInfo = [
                             'EmpCode' => $user->EmpCode,
