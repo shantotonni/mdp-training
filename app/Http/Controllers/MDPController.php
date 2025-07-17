@@ -208,9 +208,11 @@ class MDPController extends Controller
             $EmployeeIDs = $EmployeeList->pluck('StaffID');
             $employees = $employees->whereIn('StaffID',$EmployeeIDs);
         }
+
         return response()->json([
-           'status'=>'success',
-           'data'=>$employees->paginate(15), 'exportdata'=>$employees->get()
+           'status'=>'success', 'exportdata'=>$employees->get(),
+           'data'=>$employees->paginate(15)
+
 
         ]);
 
