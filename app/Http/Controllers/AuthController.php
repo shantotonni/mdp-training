@@ -29,10 +29,6 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
-            //        Artisan::call('config:clear');
-//        Artisan::call('cache:clear');
-//        Artisan::call('config:cache');
-//        Artisan::call('optimize');
             $validator = Validator::make($request->all(), [
                 'EmpCode' => 'required|string',
                 'Password' => 'required|string|min:4',
@@ -41,9 +37,9 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return response()->json(['message' => 'Invalid'], 400);
             }
-            $empcode =strtolower($request->EmpCode);
+            $empcode =strtoupper($request->EmpCode);
             $password =$request->Password;
-            if ($empcode[0]!='c'){
+            if ($empcode[0]!='C'){
                 $user = User::select('UserManagerOnlineApp.*','e.Name')
                     ->join('Personal as e','e.EmpCode','=','UserManagerOnlineApp.EmpCode')
                     ->where('UserManagerOnlineApp.EmpCode', $empcode)
@@ -88,17 +84,15 @@ class AuthController extends Controller
                     }
                 }
             }else{
+
                 $path = storage_path('app/public/data/supervisor_list.json'); // Adjust path if needed
                 $supervisorData = json_decode(file_get_contents($path), true);
-                $match = collect($supervisorData)->first(function ($supervisor) use ($empcode, $password){
-                    return isset($supervisor['StaffID'],$supervisor['Password']) &&
-                        strtolower($supervisor['StaffID']) === $empcode &&
-                        strtolower($supervisor['Password']) === strtolower($password) ;
+                $matched = collect($supervisorData)->first(function($item) use ($empcode, $password) {
+                    return $item['StaffID'] === $empcode && $item['Password'] === $password;
                 });
-                if ($match){
-                    $user = ContactPersonal::where('EmpCode','=', $match['StaffID'])
-                        ->where('Active','=','Y')->first();
 
+                if ($matched){
+                    $user = ContactPersonal::where('EmpCode','=', $matched['StaffID'])->first();
                     if ($user) {
                         $userInfo = [
                             'EmpCode' => $user->EmpCode,
@@ -111,6 +105,11 @@ class AuthController extends Controller
                             'status' => 'success',
                             'access_token' => $this->generateToken($userInfo)
                         ], 200);
+                    }else{
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'User Not Found'
+                        ], 404);
                     }
                 } else {
                     return response()->json([
@@ -119,7 +118,6 @@ class AuthController extends Controller
                     ], 404);
                 }
             }
-
         }catch (Exception $exception){
             return response()->json([
                 'status' => 'error',
