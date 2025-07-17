@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActionPlan;
 use App\Models\Admin;
+use App\Models\ContactPersonal;
 use App\Models\Employee;
 use App\Models\jwt\JWT;
 use App\Models\ManagementDevelopmentPlane;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use mysql_xdevapi\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -26,51 +28,105 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-//        Artisan::call('config:clear');
+        try {
+            //        Artisan::call('config:clear');
 //        Artisan::call('cache:clear');
 //        Artisan::call('config:cache');
 //        Artisan::call('optimize');
-        $validator = Validator::make($request->all(), [
-            'EmpCode' => 'required|string',
-            'Password' => 'required|string|min:4',
-        ]);
+            $validator = Validator::make($request->all(), [
+                'EmpCode' => 'required|string',
+                'Password' => 'required|string|min:4',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Invalid'], 400);
-        }
-        $user = User::where('EmpCode', $request->EmpCode)->where('Password', $request->Password)->first();
-        if ($user) {
-            $userInfo = [
-                'EmpCode' => $user->EmpCode,
-                'staffCode' => $user->EmpCode,
-                'Business' => '',
-                'type' => 'employee',
-            ];
-            return response()->json([
-                'status' => 'success',
-                'access_token' => $this->generateToken($userInfo)
-            ], 200);
-        }else{
-            $is_admin = Admin::where('EmpCode', $request->EmpCode)->where('Password', $request->Password)->first();
-
-            if ($is_admin) {
-                $user = [
-                    'EmpCode' => $request->EmpCode,
-                    'staffCode' => $request->EmpCode,
-                    'Business' => $is_admin->Business,
-                    'type' => $is_admin->type,
-                ];
-                return response()->json([
-                    'status' => 'success',
-                    'access_token' => $this->generateToken($user)
-                ], 200);
-            } else {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'User/Password Wrong'
-                ], 404);
+            if ($validator->fails()) {
+                return response()->json(['message' => 'Invalid'], 400);
             }
+            $empcode =strtolower($request->EmpCode);
+            $password =$request->Password;
+            if ($empcode[0]!='c'){
+                $user = User::select('UserManagerOnlineApp.*','e.Name')
+                    ->join('Personal as e','e.EmpCode','=','UserManagerOnlineApp.EmpCode')
+                    ->where('UserManagerOnlineApp.EmpCode', $empcode)
+                    ->where('UserManagerOnlineApp.Password', $request->Password)
+                    ->where('e.Active','=','Y')
+                    ->first();
+                if ($user) {
+                    $userInfo = [
+                        'EmpCode' => $user->EmpCode,
+                        'staffCode' => $user->EmpCode,
+                        'Name' => $user->Name,
+                        'Business' => '',
+                        'type' => 'employee',
+                    ];
+                    return response()->json([
+                        'status' => 'success',
+                        'access_token' => $this->generateToken($userInfo)
+                    ], 200);
+                }else{
+                    $is_admin = Admin::select('MDPAdminUser.*','e.Name')->where('MDPAdminUser.EmpCode', $empcode)->where('MDPAdminUser.Password', $request->Password)
+                        ->join('Personal as e','e.EmpCode','=','MDPAdminUser.EmpCode')
+                        ->where('e.Active','=','Y')
+                        ->first();
+
+                    if ($is_admin) {
+                        $user = [
+                            'EmpCode' => $empcode,
+                            'staffCode' => $empcode,
+                            'Business' => $is_admin->Business,
+                            'Name' => $is_admin->Name,
+                            'type' => $is_admin->type,
+                        ];
+                        return response()->json([
+                            'status' => 'success',
+                            'access_token' => $this->generateToken($user)
+                        ], 200);
+                    } else {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'User/Password Wrong'
+                        ], 404);
+                    }
+                }
+            }else{
+                $path = storage_path('app/public/data/supervisor_list.json'); // Adjust path if needed
+                $supervisorData = json_decode(file_get_contents($path), true);
+                $match = collect($supervisorData)->first(function ($supervisor) use ($empcode, $password){
+                    return isset($supervisor['StaffID'],$supervisor['Password']) &&
+                        strtolower($supervisor['StaffID']) === $empcode &&
+                        strtolower($supervisor['Password']) === strtolower($password) ;
+                });
+                if ($match){
+                    $user = ContactPersonal::where('EmpCode','=', $match['StaffID'])
+                        ->where('Active','=','Y')->first();
+
+                    if ($user) {
+                        $userInfo = [
+                            'EmpCode' => $user->EmpCode,
+                            'staffCode' => $user->EmpCode,
+                            'Name' => $user->Name,
+                            'Business' => '',
+                            'type' => 'employee',
+                        ];
+                        return response()->json([
+                            'status' => 'success',
+                            'access_token' => $this->generateToken($userInfo)
+                        ], 200);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'User/Password Wrong'
+                    ], 404);
+                }
+            }
+
+        }catch (Exception $exception){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something Went Wrong' .$exception->getMessage()
+            ], 404);
         }
+
     }
 
     public function changePass(Request $request)
@@ -136,8 +192,14 @@ class AuthController extends Controller
         $token = $request->bearerToken();
         $payload = JWTAuth::setToken($token)->getPayload();
         $empcode = $payload['EmpCode'];
+        $const = strtolower($empcode);
 
-        $personal = Employee::where('EmpCode', $empcode)->with('email','personal')->first();
+        if (  $const[0] !='c'){
+            $personal = Employee::where('EmpCode', $empcode)->with('email','personal')->first();
+
+        }else{
+            $personal = ContactPersonal::where('EmpCode', $empcode)->with('email')->first();
+        }
         $departments = [];
         $divisions = [];
         if (!$personal) {
@@ -201,6 +263,7 @@ class AuthController extends Controller
             'iss' => $_SERVER['SERVER_NAME'],
             'exp' => time() + 12 * 30 * (24 * 60 * 60),// 1 Month
             'EmpCode' => $user['EmpCode'],
+            'Name' => $user['Name'],
             'staffCode' => $user['staffCode'],
             'Business' => $user['Business'],
             'Type' => $user['type'],

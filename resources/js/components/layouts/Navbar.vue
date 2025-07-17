@@ -26,7 +26,7 @@
         <li class="dropdown notification-list list-inline-item">
           <div class="dropdown notification-list nav-pro-img">
             <a class="dropdown-toggle nav-link arrow-none waves-effect nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-              {{ personal.Name ? personal.Name: 'Admin' }}
+              {{ Name ? Name: 'Admin' }}
             </a>
           </div>
         </li>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       image: '',
-      personal: {}
+      Name: ''
     }
   },
   created() {
@@ -61,10 +61,11 @@ export default {
       this.axiosPost('me', {}, (response) => {
         this.image = `${this.mainOrigin}assets/images/avatar.png`;
         this.$store.commit('me', response);
-        if (response.personal){
-          this.personal = response.personal.personal
+        if (response.payload.Name){
+
+          this.Name =response.payload.Name
         }else {
-          this.personal = ''
+          this.Name = ''
         }
 
       }, (error) => {

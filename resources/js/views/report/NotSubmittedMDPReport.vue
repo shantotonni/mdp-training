@@ -32,8 +32,8 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <select id="sessionP" class="form-control defineHeight" v-model="sessionP" @change="getAllBusiness()" >
-                            <option value="">Period</option>
-                            <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>
+                            <option value="2025-2026">2025-2026</option>
+<!--                            <option v-for="(session,index) in sessions" :value="session.Name" :key="index">{{session.Name}}</option>-->
                           </select>
                         </div>
                       </div>
@@ -98,6 +98,7 @@
                       <th>Official Email</th>
                       <th>Mobile</th>
                       <th>Appraisal Period</th>
+                      <th>Active</th>
                       <th>MDP Status</th>
                     </tr>
                     </thead>
@@ -112,6 +113,10 @@
                       <td>{{ mdp.Email }}</td>
                       <td>{{ mdp.Mobile }}</td>
                       <td>{{ mdp.AppraisalPeriod }}</td>
+                      <td>
+                        <span v-if="mdp.Active === 'Y' " class="badge badge-success"> Active</span>
+                        <span v-if="mdp.Active === 'N' " class="badge badge-danger"> InActive</span>
+                      </td>
                       <td>
                         <span class="badge badge-danger"> Not Submitted</span>
                       </td>
@@ -178,7 +183,7 @@ export default {
       EmployeeList: [],
       mdpIDList: [],
       mdpNo: 0,
-      sessionP: "",
+      sessionP: "2025-2026",
       editMode: false,
       isLoading: false,
       PreLoader: false,
