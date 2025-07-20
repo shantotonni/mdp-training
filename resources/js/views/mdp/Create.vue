@@ -242,7 +242,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor Email</label>
-                              <input type="text" name="SuppervisorEmail" readonly v-model="form.SuppervisorEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorEmail') }" required>
+                              <input type="text" name="SuppervisorEmail" :readonly="form.SuppervisorEmail.length >0" v-model="form.SuppervisorEmail" class="form-control" :class="{ 'is-invalid': form.errors.has('SuppervisorEmail') }" required>
                               <small class="error" v-if="form.errors.has('SuppervisorEmail')" v-html="form.errors.get('SuppervisorEmail')" />
                             </div>
                           </div>
