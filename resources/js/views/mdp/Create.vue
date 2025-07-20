@@ -234,7 +234,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor Designation</label>
-                              <input type="text" name="SuppervisorDesignation" readonly v-model="form.SuppervisorDesignation" class="form-control"
+                              <input type="text" name="SuppervisorDesignation"   :readonly="form.SuppervisorDesignation.length >0" v-model="form.SuppervisorDesignation" class="form-control"
                                      :class="{ 'is-invalid': form.errors.has('SuppervisorDesignation') }" required>
                               <small class="error" v-if="form.errors.has('SuppervisorDesignation')" v-html="form.errors.get('SuppervisorDesignation')" />
                             </div>
@@ -249,7 +249,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Supervisor Mobile</label>
-                              <input type="text" name="SuppervisorMobile" readonly v-model="form.SuppervisorMobile" class="form-control"
+                              <input type="text" name="SuppervisorMobile"  :readonly="form.SuppervisorMobile.length >0" v-model="form.SuppervisorMobile" class="form-control"
                                      :class="{ 'is-invalid': form.errors.has('SuppervisorMobile') }" required>
                               <small class="error" v-if="form.errors.has('SuppervisorMobile')" v-html="form.errors.get('SuppervisorMobile')" />
                             </div>
