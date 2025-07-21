@@ -47,6 +47,7 @@ class AuthController extends Controller
                     ->where('e.Active','=','Y')
                     ->first();
                 if ($user) {
+
                     $userInfo = [
                         'EmpCode' => $user->EmpCode,
                         'staffCode' => $user->EmpCode,
@@ -59,17 +60,20 @@ class AuthController extends Controller
                         'access_token' => $this->generateToken($userInfo)
                     ], 200);
                 }else{
-                    $is_admin = Admin::select('MDPAdminUser.*','e.Name')->where('MDPAdminUser.EmpCode', $empcode)->where('MDPAdminUser.Password', $request->Password)
-                        ->join('Personal as e','e.EmpCode','=','MDPAdminUser.EmpCode')
-                        ->where('e.Active','=','Y')
+                    $is_admin = Admin::select('MDPAdminUser.*')
+                        ->where('MDPAdminUser.EmpCode', $empcode)
+                        ->where('MDPAdminUser.Password', $request->Password)
+//                        ->join('Personal as e','e.EmpCode','=','MDPAdminUser.EmpCode')
+//                        ->where('e.Active','=','Y')
                         ->first();
 
                     if ($is_admin) {
+
                         $user = [
-                            'EmpCode' => $empcode,
-                            'staffCode' => $empcode,
+                            'EmpCode' => $is_admin->EmpCode,
+                            'staffCode' => $is_admin->EmpCode,
                             'Business' => $is_admin->Business,
-                            'Name' => $is_admin->Name,
+                            'Name' => 'Admin',
                             'type' => $is_admin->type,
                         ];
                         return response()->json([

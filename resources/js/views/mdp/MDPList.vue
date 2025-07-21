@@ -366,7 +366,11 @@ export default {
       exportMDPDetailsList(){
           if (this.sessionP.length>0 || this.EmployeeList.length>0){
             this.PreLoader = true;
-            axios.get(baseurl + 'api/mdp/export-mdp-details-list?EmployeeList=' +  JSON.stringify(this.EmployeeList) + "&sessionP=" + this.sessionP
+            axios.get(baseurl + 'api/mdp/export-mdp-details-list?EmployeeList='
+                +  JSON.stringify(this.EmployeeList)
+                + "&Business=" + JSON.stringify(this.business)
+                + "&Department=" + JSON.stringify(this.Department)
+                + "&sessionP=" + this.sessionP
             ).then((response)=>{
               let dataSets = response.data.data;
               if (dataSets.length > 0) {

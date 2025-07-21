@@ -17,7 +17,6 @@ use App\Models\ManagementDevelopmentPlane;
 use App\Models\MDPEmployeeTrainingList;
 use App\Models\MDPPersonalInitiative;
 use App\Models\MDPTraining;
-use App\Models\NewMDPEmployeeTrainingList;
 use App\Models\TrainingName;
 use App\Traits\MDPCommonTrait;
 use Carbon\Carbon;
@@ -795,27 +794,95 @@ class MDPController extends Controller
 //        return new ExportManagementDevelopmentPlaneDetailsCollection($mdp_list);
 //    }
     public function mdpDetailsExport(Request $request){
-        $appraisalPeriod = $request->sessionP;
-        $EmployeeList= json_decode($request->EmployeeList);
+        $token = $request->bearerToken();
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $empcode = $payload['EmpCode'];
+        $role = $payload['Type'];
+        $status = $request->status;
+        $session = $request->sessionP;
+        if ($role == 'admin'){
 
-        $val = ManagementDevelopmentPlane::select('ID');
-        if (!empty($EmployeeList) && isset($EmployeeList)){
-            $EmployeeList = collect($EmployeeList);
-            $EmployeeIDs = $EmployeeList->pluck('StaffID');
-            $val = $val->whereIn('StaffID',$EmployeeIDs);
-        }
-        if (!empty($appraisalPeriod)){
-            $val = $val->where('AppraisalPeriod','=',$appraisalPeriod);
+            $mdp = ManagementDevelopmentPlane::query();
+            $Business = json_decode($request->Business);
+            $Department = json_decode($request->Department);
 
-        }
-        $val =  $val->get();
-        $mdps =[];
-        foreach ($val as $value){
-            array_push($mdps,$value->ID);
-        }
-        $mdpIDS= implode(",", $mdps);
 
-        $sql = "SP_doLoadMDPDetailsWTraining '$mdpIDS'";
+            if (empty($Department)){
+
+                if (!empty($Business) && isset($Business)) {
+                    $Business = collect($Business);
+
+                    // Optional: clean up DeptName values if needed
+                    $Business = $Business->map(function ($item) {
+                        $item->business = preg_replace('/\s+and\s+/i', ' & ', $item->business);
+                        $item->business = preg_replace('/\s+/', ' ', $item->business);
+                        $item->business = trim($item->business);
+                        return $item;
+                    });
+
+                    $BusinessName = $Business->pluck('business');
+
+                    $Departments = Department::select('DeptName')->whereIn('DeptUnit',$BusinessName->toArray())->get();
+                    $deptlist=[];
+                    foreach ($Departments as $val) {
+                        $deptlist[] = $val->DeptName;
+                    }
+
+                    $mdp = $mdp->whereIn('Department', $deptlist);
+                }
+            }else{
+
+                if (!empty($Department) && isset($Department)) {
+                    $Department = collect($Department);
+
+                    // Optional: clean up DeptName values if needed
+                    $Department = $Department->map(function ($item) {
+                        $item->DeptName = preg_replace('/\s+and\s+/i', ' & ', $item->DeptName);
+                        $item->DeptName = preg_replace('/\s+/', ' ', $item->DeptName);
+                        $item->DeptName = trim($item->DeptName);
+                        return $item;
+                    });
+                    $DeptName = $Department->pluck('DeptName');
+
+                    $mdp = $mdp->whereIn('Department', $DeptName->toArray());
+                }
+            }
+
+
+            $EmployeeList= json_decode($request->EmployeeList);
+            if (!empty($EmployeeList) && isset($EmployeeList)){
+                $EmployeeList = collect($EmployeeList);
+                $EmployeeIDs = $EmployeeList->pluck('StaffID');
+                $mdp = $mdp->whereIn('StaffID',$EmployeeIDs);
+            }
+            if ($session){
+                $mdp = $mdp->where('AppraisalPeriod',$session);
+            }
+            $mdp = $mdp->orderBy('ID','desc')->whereNotNull('StaffID');
+        }else{
+
+            $mdp = ManagementDevelopmentPlane::query();
+            $Department = json_decode($request->Department);
+            if (!empty($Department) && isset($Department)){
+                $Department = collect($Department);
+                $DeptName = $Department->pluck('DeptName');
+                $mdp = $mdp->whereIn('Department',$DeptName);
+            }
+            if ($session){
+                $mdp = $mdp->where('AppraisalPeriod',$session);
+            }
+            $mdp = $mdp->orderBy('ID','desc')
+                ->where(function ($query) use($empcode){
+                    $query->where('StaffID',$empcode);
+                    $query->orWhere('SuppervisorStaffID', $empcode);
+                })
+                ->whereNotNull('StaffID');
+        }
+        if ($status){
+            $mdp->where('MDPStatus','=',$status);
+        }
+        $mdpIds = $mdp->pluck('ID')->implode(',');
+        $sql = "SP_doLoadMDPDetailsWTraining '$mdpIds'";
         $mdps = DB::select($sql);
         return response()->json([
            'data'=>$mdps

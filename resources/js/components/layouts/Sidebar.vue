@@ -14,7 +14,7 @@
             </a>
             <ul class="submenu">
               <li @click="hideSideBar()"><router-link :to="{name: 'MDPList'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP List</router-link></li>
-              <li @click="hideSideBar()" v-if="EmpCode === 'admin'"><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP Training Status</router-link></li>
+              <li @click="hideSideBar()" v-if="EmpCode === 'Admin'"><router-link :to="{name: 'TrainingFeedback'}" ><i class="mdi mdi-format-list-bulleted-type"></i>MDP Training Status</router-link></li>
 <!--              <li v-if="EmpCode === 'admin'"><router-link :to="{name: 'TrainingFeedback2nd'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Training Feedback</router-link></li>-->
               <li @click="hideSideBar()" v-if="EmpCode === 'admin'"><router-link :to="{name: 'AdditionalTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Additional Training</router-link></li>
               <li @click="hideSideBar()" v-if="EmpCode === 'admin'"><router-link :to="{name: 'TopRankedTraining'}" ><i class="mdi mdi-format-list-bulleted-type"></i>Top Ranked Training</router-link></li>
