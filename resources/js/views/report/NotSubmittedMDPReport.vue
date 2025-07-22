@@ -11,7 +11,7 @@
               </button>
               <button type="button" class="btn btn-info btn-sm" @click="exportMDPList" v-if="type ==='admin'">
                 <i class="fas fa-download"></i>
-                Export
+                Export Employee Status
               </button>
               <button type="button" class="btn btn-primary btn-sm" @click="reload">
                 <i class="fas fa-sync"></i>
@@ -98,7 +98,7 @@
                       <th>Official Email</th>
                       <th>Mobile</th>
                       <th>Appraisal Period</th>
-                      <th>Active</th>
+                      <th>Employee Status</th>
                       <th>MDP Status</th>
                     </tr>
                     </thead>
@@ -316,7 +316,7 @@ export default {
               let title = item.replace(rex, '$1$4 $2$3$5')
               return {title, key: item}
             });
-            bus.$emit('data-table-import', dataSets, columns, 'MDP Export 2')
+            bus.$emit('data-table-import', dataSets, columns, 'Export Employee Status')
             this.PreLoader = false;
           }
         }).catch((error)=>{
