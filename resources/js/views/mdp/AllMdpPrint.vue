@@ -85,12 +85,12 @@
                               <br>
                               <br>
                               <br>
-                              <div style="display: flex">
+                              <div style="display: flex;position: absolute;position: fixed;bottom: 0">
                                 <div>
                                   <p style="font-size: 20px">Form No.: TR-003-01/07</p>
                                 </div>
                                 <div style="margin-left: 600px">
-                                  <p style="text-align: right;font-size: 20px">Page No.: 1 of 2</p>
+<!--                                  <p style="text-align: right;font-size: 20px">Page No.: 1 of 2</p>-->
                                 </div>
                               </div>
                               <div class="page-break" style=" page-break-before: always;"></div>
@@ -199,14 +199,12 @@
                               </div>
                               <br>
                               <p style="font-size: 20px"><span style="font-weight: bold">Note</span>: Keep a copy in the Department Training file and forward the original to Personnel Department.</p>
-                              <br>
-                              <br>
-                              <div style="display: flex">
+                              <div style="display: flex;position: absolute;position: fixed;bottom: 0">
                                 <div>
                                   <p style="font-size: 20px">Form No.: TR-003-01/07</p>
                                 </div>
                                 <div style="margin-left: 600px">
-                                  <p style="text-align: right;font-size: 20px">Page No.: 2 of 2</p>
+<!--                                  <p style="text-align: right;font-size: 20px">Page No.: 2 of 2</p>-->
                                 </div>
                               </div>
                             </div>
