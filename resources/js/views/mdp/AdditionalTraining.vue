@@ -218,6 +218,7 @@
         </div>
       </div>
     </div>
+    <data-export/>
   </div>
 </template>
 
