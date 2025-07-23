@@ -80,6 +80,7 @@ Route::group(['middleware' => ['jwt','throttle:10000,1']], function () {
     Route::get('get-level-wise-suggestive-list/{StaffID}', [MDPController::class,'getLevelWiseSuggestiveList']);
 
     Route::get('export-mdp-feedback', [MDPController::class,'mdpFeedbackExport']);
+    Route::get('get-all-training-list', [MDPController::class,'getAllExistingTrainingList']);
 
 
 

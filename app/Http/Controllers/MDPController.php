@@ -828,6 +828,13 @@ class MDPController extends Controller
             'data' => $feedbackCollection
         ]);
     }
+    public function getAllExistingTrainingList(Request $request){
+      $list = DB::table('TrainingName')->select(
+          DB::raw('TrnCode as TrainingCode,TrnName as TrainingName,CompType as CompetencyType,CompCluster as CompetencyCluster'))->get();
+        return response()->json([
+            'data' => $list
+        ]);
+    }
 
     public function search($query){
         return new ManagementDevelopmentPlaneCollection(ManagementDevelopmentPlane::where('StaffID','LIKE',"%$query%")->latest()->paginate(10));

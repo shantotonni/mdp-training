@@ -148,6 +148,7 @@ const routes = [
             {path: baseurl + 'mdp-period-wise-feedback/:Period', name: 'MDPPeriodWiseFeedback', component: MDPPeriodWiseFeedback},
             {path: baseurl + 'mdp-period-wise-feedback/feedback-details/:Period/:TrainingTitle', name: 'FeedbackDetails', component: FeedbackDetails},
             //report PendingPTCReport
+
             {path: baseurl + 'not-submitted-mdp-report', name: 'NotSubmittedMDPStatusReport', component: NotSubmittedMDPStatusReport},
             {path: baseurl + 'approve-mdp-report', name: 'ApprovedMDPStatusReport', component: ApprovedMDPStatusReport},
             {path: baseurl + 'pending-mdp-report', name: 'PendingMDPStatusReport', component: PendingMDPStatusReport},

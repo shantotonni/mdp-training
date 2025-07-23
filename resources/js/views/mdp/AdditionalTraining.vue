@@ -1,7 +1,18 @@
 <template>
   <div class="content" style="margin-bottom: 300px">
     <div class="container-fluid">
-      <breadcrumb :options="['Additional Training']"/>
+      <breadcrumb :options="['Additional Training']">
+        <div class="col-sm-6">
+          <div class="float-right d-none d-md-block">
+            <div class="card-tools">
+              <button type="button" class="btn btn-primary btn-sm" @click="exportReport" >
+                <i class="fa fa-file-excel"></i>
+                Export All Training
+              </button>
+            </div>
+          </div>
+        </div>
+      </breadcrumb>
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
@@ -354,6 +365,26 @@ export default {
     },
     reload() {
       this.training_list = "";
+    },
+    exportReport(){
+        this.PreLoader = true;
+        axios.get(baseurl + 'api/get-all-training-list'
+        ).then((response)=>{
+          let dataSets = response.data.data;
+          if (dataSets.length > 0) {
+            let columns = Object.keys(dataSets[0]);
+            columns = columns.filter((item) => item !== 'row_num');
+            let rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+            columns = columns.map((item) => {
+              let title = item.replace(rex, '$1$4 $2$3$5')
+              return {title, key: item}
+            });
+            bus.$emit('data-table-import', dataSets, columns, 'All Existing Training List')
+            this.PreLoader = false;
+          }
+        }).catch((error)=>{
+          this.PreLoader = false;
+        })
     },
 
   },
