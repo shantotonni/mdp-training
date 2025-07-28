@@ -7,7 +7,7 @@
             <div class="card-tools">
               <button type="button" class="btn btn-primary btn-sm" @click="exportReport" >
                 <i class="fa fa-file-excel"></i>
-                Export All Training
+                Export All Existing Training
               </button>
             </div>
           </div>
@@ -217,6 +217,7 @@
           </div>
         </div>
       </div>
+      <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
     </div>
     <data-export/>
   </div>
@@ -237,6 +238,7 @@ export default {
   mixins: [Common],
   data() {
     return {
+      PreLoader: false,
       personal: {},
       isMessage: false,
       editMode: false,

@@ -830,7 +830,7 @@ class MDPController extends Controller
     }
     public function getAllExistingTrainingList(Request $request){
       $list = DB::table('TrainingName')->select(
-          DB::raw('TrnCode as TrainingCode,TrnName as TrainingName,CompType as CompetencyType,CompCluster as CompetencyCluster'))->get();
+          DB::raw('TrnCode as TrainingCode,TrnName as TrainingName,CompType as CompetencyType,CompCluster as CompetencyCluster,EntryDate'))->get();
         return response()->json([
             'data' => $list
         ]);

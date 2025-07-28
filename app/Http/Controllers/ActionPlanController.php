@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+
 class ActionPlanController extends Controller
 {
     public function index(Request $request){
@@ -89,57 +90,88 @@ class ActionPlanController extends Controller
             $finds = $request->finds;
 
             // Validate image dimensions
-            $imageDimantion = Image::make($request->Signature);
-            if ($imageDimantion->width() != 200 || $imageDimantion->height() != 60) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Image dimensions must be 200x60 pixels.'
-                ]);
-            }
+//            $imageDimantion = Image::make($request->Signature);
+//            if ($imageDimantion->width() != 200 || $imageDimantion->height() != 60) {
+//                return response()->json([
+//                    'status' => 'error',
+//                    'message' => 'Image dimensions must be 200x60 pixels.'
+//                ]);
+//            }
+//
+//            //FOR IMAGE
+//            if ($request->Signature) {
+//                $image   = $request->Signature;
+//                $name    = uniqid().time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+//                Image::make($image)->save(public_path('action_plan/signature/').$name);
+//            } else {
+//                $name = '';
+//            }
+            $base64Image = $request->Signature;
 
-            //FOR IMAGE
-            if ($request->Signature) {
-                $image   = $request->Signature;
-                $name    = uniqid().time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-                Image::make($image)->save(public_path('action_plan/signature/').$name);
-            } else {
-                $name = '';
-            }
+            if ($base64Image && preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+                $data = substr($base64Image, strpos($base64Image, ',') + 1);
+                $data = base64_decode($data);
 
-            $ActionPlane                            = new ActionPlan();
-            $ActionPlane->ActionPlanPeriod          = $request->ActionPlanPeriod;
-            $ActionPlane->StaffID                   = $request->StaffID;
-            $ActionPlane->EmployeeName              = $request->EmployeeName;
-            $ActionPlane->Designation               = $request->Designation;
-            $ActionPlane->Department                = $request->Department;
-            $ActionPlane->Division                  = $request->Division;
-            $ActionPlane->OfficialEmail             = $request->OfficialEmail;
-            $ActionPlane->Mobile                    = $request->Mobile;
-
-            $ActionPlane->SuppervisorStaffID        = $request->SuppervisorStaffID;
-            $ActionPlane->SuppervisorName           = $request->SuppervisorName;
-            $ActionPlane->SuppervisorDesignation    = $request->SuppervisorDesignation;
-            $ActionPlane->SuppervisorEmail          = $request->SuppervisorEmail;
-            $ActionPlane->SuppervisorMobile         = $request->SuppervisorMobile;
-            $ActionPlane->Signature                 = $name;
-            $ActionPlane->CreatedBy                 = $empcode;
-            $ActionPlane->UpdatedBy                 = $empcode;
-            if ($ActionPlane->save()){
-                foreach ($finds as $value){
-                    $details                         = new ActionPlanTask();
-                    $details->EmployeeActionPlanID   = $ActionPlane->ID;
-                    $details->TaskName               = $value['TaskName'];
-                    $details->TargetDateOfCompletion = isset($value['TargetDateOfCompletion']) ? $value['TargetDateOfCompletion'] : '';
-                    $details->CriterionOfMeasurement = isset($value['CriterionOfMeasurement']) ? $value['CriterionOfMeasurement'] : '';
-                    $details->save();
+                if ($data === false) {
+                    return response()->json(['status' => 'error', 'message' => 'Invalid base64 image.']);
                 }
 
-                DB::commit();
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Successfully Submitted.'
-                ]);
+                $extension = strtolower($type[1]); // png, jpg, etc.
+                $filename = 'signature_' . time() . '.' . $extension;
+                $path = public_path('action_plan/signature/' . $filename);
+
+                if (!file_exists(dirname($path))) {
+                    mkdir(dirname($path), 0755, true);
+                }
+
+                $image = \Image::make($data);
+                if ($image->width() != 200 || $image->height() != 60) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Image dimensions must be 200x60 pixels.'
+                    ]);
+                }
+
+                $image->save($path);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'No valid signature provided.']);
             }
+
+
+            $ActionPlane                            = new ActionPlan();
+                $ActionPlane->ActionPlanPeriod          = $request->ActionPlanPeriod;
+                $ActionPlane->StaffID                   = $request->StaffID;
+                $ActionPlane->EmployeeName              = $request->EmployeeName;
+                $ActionPlane->Designation               = $request->Designation;
+                $ActionPlane->Department                = $request->Department;
+                $ActionPlane->Division                  = $request->Division;
+                $ActionPlane->OfficialEmail             = $request->OfficialEmail;
+                $ActionPlane->Mobile                    = $request->Mobile;
+
+                $ActionPlane->SuppervisorStaffID        = $request->SuppervisorStaffID;
+                $ActionPlane->SuppervisorName           = $request->SuppervisorName;
+                $ActionPlane->SuppervisorDesignation    = $request->SuppervisorDesignation;
+                $ActionPlane->SuppervisorEmail          = $request->SuppervisorEmail;
+                $ActionPlane->SuppervisorMobile         = $request->SuppervisorMobile;
+                $ActionPlane->Signature                 = $filename;
+                $ActionPlane->CreatedBy                 = $empcode;
+                $ActionPlane->UpdatedBy                 = $empcode;
+                if ($ActionPlane->save()){
+                    foreach ($finds as $value){
+                        $details                         = new ActionPlanTask();
+                        $details->EmployeeActionPlanID   = $ActionPlane->ID;
+                        $details->TaskName               = $value['TaskName'];
+                        $details->TargetDateOfCompletion = isset($value['TargetDateOfCompletion']) ? $value['TargetDateOfCompletion'] : '';
+                        $details->CriterionOfMeasurement = isset($value['CriterionOfMeasurement']) ? $value['CriterionOfMeasurement'] : '';
+                        $details->save();
+                    }
+
+                    DB::commit();
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Successfully Submitted.'
+                    ]);
+                }
 
         } catch (\Exception $exception) {
             return response()->json([
@@ -213,9 +245,8 @@ class ActionPlanController extends Controller
     public function delete($id){
         DB::beginTransaction();
         try {
-            MDPTraining::where('MDPID',$id)->delete();
-            MDPPersonalInitiative::where('MDPID',$id)->delete();
-            ManagementDevelopmentPlane::where('ID',$id)->delete();
+            ActionPlanTask::where('EmployeeActionPlanID',$id)->delete();
+            ActionPlan::where('ID',$id)->delete();
 
             DB::commit();
             return response()->json([

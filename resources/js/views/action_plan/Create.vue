@@ -103,16 +103,24 @@
                               <div class="error" v-if="form.errors.has('Department')" v-html="form.errors.get('Department')" />
                             </div>
                           </div>
-                          <div class="col-md-4">
+                          <!--signature-->
+                          <div class="col-md-4" >
                             <div class="form-group">
-                              <label>Signature(<span style="font-size: 10px;color: blue">Image dimensions must be 200x60 pixels.</span>)</label>
-                              <input @change="changeImage($event)" type="file" name="Signature" class="form-control" :class="{ 'is-invalid': form.errors.has('Signature') }">
-                              <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
-                              <img v-if="form.Signature" :src="showImage(form.Signature)" alt="" height="60px" width="200px">
+                              <label>Signature</label>
+                              <!-- Trigger -->
+                              <input type="file" @change="onFileChange"  ref="fileInput" accept="image/*" :disabled="previewUrl" :required="!isSignature"/>
+
                             </div>
                           </div>
-                          <div class="col-md-4">
-                            <a href="https://imageresizer.com/" target="_blank" style="margin-top: 32px;display: block;font-weight: bold;">Suggestive Link for Signature Resize</a>
+                          <div class="col-md-4" >
+                            <div class="form-group">
+                              <div v-if="previewUrl || existingSignatureUrl">
+                                <label>Preview:</label> <span>
+                                    <button type="button" class="btn btn-danger btn-sm" @click="resetCropper" v-if="previewUrl">x</button>&nbsp;
+                                  </span>
+                                <img :src="previewUrl||existingSignatureUrl" style="width: 200px; height: 60px;" />
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <hr>
@@ -229,9 +237,56 @@
         </div>
       </div>
     </div>
+    <!-- signature Modal -->
     <div>
       <loader v-if="PreLoader" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
     </div>
+    <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content" style="height: 90vh; display: flex; flex-direction: column;">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h5 class="modal-title">Crop Image</h5>
+            <button type="button" class="close" data-dismiss="modal" @click="resetCropper">
+              <span>&times;</span>
+            </button>
+          </div>
+
+          <!-- Modal Body (Flex Grow) -->
+          <div class="modal-body p-0" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+            <div v-if="imageUrl" style="flex: 1; position: relative;">
+              <cropper
+                  ref="cropper"
+                  :src="imageUrl"
+                  :aspect-ratio="10 / 3"
+                  :auto-crop-area="1"
+                  :view-mode="0"
+                  :min-crop-box-width="200"
+                  :min-crop-box-height="60"
+                  :zoomable="true"
+                  :scalable="true"
+                  :movable="true"
+                  :crop-box-resizable="true"
+                  :background="false"
+                  :responsive="true"
+                  :wheel-zoom-ratio="0.1"
+                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
+                  required
+              />
+            </div>
+          </div>
+          <div class="error" v-if="form.errors.has('Signature')" v-html="form.errors.get('Signature')"/>
+          <!--Modal Footer -->
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" data-dismiss="modal" @click="resetCropper">Cancel</button>
+            <button class="btn btn-info btn-sm" @click="prepareCrop">Crop</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -242,22 +297,37 @@ import moment from "moment";
 import {Common} from "../../mixins/common";
 // Basic Use - Covers most scenarios
 import { VueEditor } from "vue2-editor";
+
+import 'vue-advanced-cropper/dist/style.css';
+
+import Cropper from 'vue-cropperjs'
+import 'cropperjs/dist/cropper.css'
+import { v4 as uuidv4 } from 'uuid';
 export default {
   name: "List",
   mixins: [Common],
   components: {
     Datepicker,
-    VueEditor
+    VueEditor,
+    Cropper
   },
   data() {
     return {
+      previewUrl: null,
+      existingSignatureUrl: null, // This will hold the URL to the stored image
+      imageDimensions: '',
+      croppedBlob: null,
+      imageUrl: null,
+      cropper: null,
+      isSignature: null,
+
       employee: [],
       supervisor: [],
       divisions: [],
       departments: [],
       form: new Form({
         ID :'',
-        ActionPlanPeriod :'2024-2025',
+        ActionPlanPeriod :'2025-2026',
         StaffID :'',
         EmployeeName :'',
         Designation :'',
@@ -287,6 +357,57 @@ export default {
     this.getUserData()
   },
   methods: {
+    onFileChange(e) {
+      const file = e.target.files[0];
+      if (file) {
+        this.imageUrl = URL.createObjectURL(file); // this stores the image URL
+        this.previewUrl = null;
+        this.croppedBlob = null;
+
+        $('#cropperModal').modal('show');
+      }
+    },
+    prepareCrop() {
+      const canvas = this.$refs.cropper.getCroppedCanvas({
+        width: 200,
+        height: 60,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+      });
+
+      if (!canvas) {
+        alert("Something went wrong! Image source not readable");
+        return;
+      }
+
+      canvas.toBlob(blob => {
+        if (!blob) {
+          alert("Failed to generate cropped image.");
+          return;
+        }
+        this.croppedBlob = blob;
+        // Optional: Preview base64 image from the blob
+        const reader = new FileReader();
+        reader.onload = e => {
+          this.form.Signature = e.target.result; // for preview or hidden input
+        };
+        reader.readAsDataURL(blob);
+        this.previewUrl = URL.createObjectURL(blob)
+      }, 'image/png');
+      $('#cropperModal').modal('hide')
+    },
+    resetCropper() {
+      this.imageUrl = null
+      this.previewUrl = null
+      this.croppedBlob = null
+      this.$nextTick(() => {
+        this.$refs.fileInput.value = null;
+      });
+      $('#cropperModal').modal('hide')
+    },
+    change({coordinates, canvas}) {
+      //
+    },
     store(){
       this.form.busy = true;
       this.PreLoader = true;
