@@ -30,7 +30,7 @@
                             </select>
                         </div>
                       </div>
-                      <div class="col-md-1">
+                      <div class="col-md-2">
                         <button type="submit" @click="getAllActionPlanList" class="btn btn-success"><i class="mdi mdi-filter"></i>Filter</button>
                       </div>
                     </div>
